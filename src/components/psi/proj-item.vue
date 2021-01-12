@@ -39,7 +39,7 @@ export default {
     users () {
       return this.project.users.length > 5 ? this.project.users.slice(0, 5) : this.project.users
     },
-
+    // 缩略图
     thumbnail () {
       return this.project.imgUrl ? this.project.imgUrl : require('@assets/images/projects/project-1.jpg')
     }
@@ -54,7 +54,7 @@ export default {
 
     <div class="row align-items-center">
 
-      <div class="col-auto">
+      <div class="col-auto d-none d-md-block">
         <img
           :src="thumbnail"
           class="thumbnail"
@@ -62,19 +62,28 @@ export default {
         />
       </div>
 
-      <div class="col pl-0">
-        <div class="d-flex flex-row text-center align-items-center">
-          <a href="javascript:void(0);" class="text-dark font-weight-bold title">
-            {{ project.title }}
-          </a>
-          <i v-if="project.isPublic" class="uil uil-globe font-size-14 ml-2"></i>
-          <i v-else class="uil uil-eye-slash font-size-14 ml-2"></i>
-          <b-badge class="badge-soft-primary ml-2">{{ "V " + project.version }}</b-badge>
-          <b-badge class="badge-soft-success ml-2">{{ project.frame }}</b-badge>
-          <b-badge class="badge-soft-info ml-2">{{ project.pyVer }}</b-badge>
-          <b-badge v-if="project.isArchive" class="badge-soft-warning ml-2">归档</b-badge>
-          <b-badge v-if="project.isInvalid" class="badge-soft-danger ml-2">失效</b-badge>
+      <div class="col pl-md-0">
+        <div class="row">
+          <div class="col-md-auto col-sm-12 pr-0">
+            <a href="javascript:void(0);" class="text-dark font-weight-bold title">
+              {{ project.title }}
+            </a>
+            <i v-if="project.isPublic" class="uil uil-globe font-size-14 mr-2"></i>
+            <i v-else class="uil uil-eye-slash font-size-14 mr-2"></i>
+          </div>
+          <div class="col-md-auto col-sm-12 pl-md-0">
+            <b-badge class="badge-soft-primary mr-2">{{ "V " + project.version }}</b-badge>
+            <b-badge class="badge-soft-success mr-2">{{ project.frame }}</b-badge>
+            <b-badge class="badge-soft-info mr-2">{{ project.pyVer }}</b-badge>
+            <b-badge v-if="project.isArchive" class="badge-soft-warning mr-2">归档</b-badge>
+            <b-badge v-if="project.isInvalid" class="badge-soft-danger mr-2">失效</b-badge>
+          </div>
+          
+          <span class="col-md-2 col-sm-12 ml-md-auto text-md-right d-none d-md-block update-time">
+            {{ project.updateTime | moment("from", "now") }}
+          </span>
         </div>
+          
         <div class="info-text">
           <span>
             <i class="uil uil-thumbs-up font-size-14"></i>
@@ -89,30 +98,25 @@ export default {
             {{ project.watch | numFilter }}
           </span>
         </div>
-        <div>
-          <span class="overflow-text">
+        <div class="row">
+          <span class="col-md-10 col-sm-12 overflow-text">
             {{ project.desc }}
           </span>
-          <b-badge v-for="tag in project.tags" :key="tag" variant="primary" class="ml-2">{{ tag }}</b-badge>
+          <div class="col-md-2 col-sm-12 ml-md-auto text-md-right d-none d-md-block">
+            <Users :users="users"/>
+          </div>
         </div>
-      </div>
+        <b-badge v-for="tag in project.tags" :key="tag" variant="primary" class="mr-2">{{ tag }}</b-badge>
 
-      <div class="col-auto d-flex flex-column other-info" style="width: 13%">
-        <p class="mb-auto update-time">{{ project.updateTime | moment("from", "now") }}</p>
-        <Users :users="users"/>
       </div>
 
     </div>
-    <div v-if="project.isInvalid" class="overlay"></div>
+    <div v-if="project.isInvalid" class="invalid-overlay"></div>
   </div> 
 </template>
 <style scoped>
 .proj-list-item {
   position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  /*height: 6rem;*/
   border: 1px solid #f6f6f7;
   box-shadow: none;
   border-radius: 0.3rem;
@@ -144,25 +148,7 @@ export default {
   -webkit-box-orient: vertical;
 }
 
-.other-info {
-  height: 5rem;
-  text-align: right;
-}
-
 .update-time {
   color: green;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.05);
-  z-index: 2;
-  border-radius: 0.3rem;
 }
 </style>

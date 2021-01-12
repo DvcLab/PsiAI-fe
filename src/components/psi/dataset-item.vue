@@ -39,6 +39,10 @@ export default {
     users () {
       return this.dataset.users.length > 5 ? this.dataset.users.slice(0, 5) : this.dataset.users
     },
+    // 缩略图
+    thumbnail () {
+      return this.dataset.imgUrl ? this.dataset.imgUrl : require('@assets/images/projects/project-1.jpg')
+    },
     // 用户个人信息 Url
     userDetailUrl () {
       // 暂时放置静态 Url
@@ -64,36 +68,42 @@ export default {
 
     <div class="row align-items-center">
 
-      <div class="col-auto">
+      <div class="col-auto d-none d-md-block">
         <img
-          src="@assets/images/projects/project-1.jpg"
+          :src="thumbnail"
           class="thumbnail pointer"
           alt="file-image"
           @click="toDatasetDetailPage(datasetUrl)"
         />
       </div>
 
-      <div class="col pl-0">
-
-        <div class="d-flex flex-row text-center align-items-center">
-          <span class="text-dark font-weight-bold title">
-            <a :href="userDetailUrl" class="text-dark font-weight-bold title">
-              {{ dataset.userId }}
-            </a>
-            <span> / </span>
-            <a :href="datasetUrl" class="text-dark font-weight-bold title">
-              {{ dataset.title }}
-            </a>
-          </span>
+      <div class="col pl-md-0">
+        <div class="row">
+          <div class="col-md-auto col-sm-12 pr-0">
+            <span class="text-dark font-weight-bold title">
+              <a :href="userDetailUrl" class="text-dark font-weight-bold title">
+                {{ dataset.userId }}
+              </a>
+              <span> / </span>
+              <a :href="datasetUrl" class="text-dark font-weight-bold title">
+                {{ dataset.title }}
+              </a>
+            </span>
+            <i v-if="dataset.isPublic" class="uil uil-globe font-size-14 mr-2"></i>
+            <i v-else class="uil uil-eye-slash font-size-14 mr-2"></i>
+          </div>
+          <div class="col-md-auto col-sm-12 pl-md-0">
+            <b-badge class="badge-soft-primary mr-2">{{ "V " + dataset.version }}</b-badge>
+            <b-badge class="badge-soft-success mr-2">{{ dataset.type }}</b-badge>
+            <b-badge v-if="dataset.isArchive" class="badge-soft-warning ml-2">归档</b-badge>
+            <b-badge v-if="dataset.isInvalid" class="badge-soft-danger ml-2">失效</b-badge> 
+          </div>
           
-          <i class="uil uil-globe font-size-14 ml-2"></i>
-          <b-badge class="badge-soft-primary ml-2">{{ "V " + dataset.version }}</b-badge>
-          <b-badge class="badge-soft-success ml-2">{{ dataset.type }}</b-badge>
-          <!-- <b-badge class="badge-soft-info ml-2">{{ dataset.task }}</b-badge> -->
-          <b-badge v-if="dataset.isArchive" class="badge-soft-warning ml-2">归档</b-badge>
-          <b-badge v-if="dataset.isInvalid" class="badge-soft-danger ml-2">失效</b-badge>         
+          <span class="col-md-2 col-sm-12 ml-md-auto text-md-right d-none d-md-block update-time">
+            {{ dataset.updateTime | moment("from", "now") }}
+          </span>
         </div>
-
+          
         <div class="info-text">
           <span>
             <i class="uil uil-thumbs-up font-size-14"></i>
@@ -109,33 +119,32 @@ export default {
           </span>
         </div>
 
-        <div>
-          <span class="overflow-2-text pointer" @click="toDatasetDetailPage(datasetUrl)">
+        <div class="row">
+          <span class="col-md-10 col-sm-12 overflow-2-text pointer" @click="toDatasetDetailPage(datasetUrl)">
             {{ dataset.desc }}
           </span>
-          <b-badge v-for="tag in dataset.tags" :key="tag" variant="primary" class="mr-2">{{ tag }}</b-badge>
+          <div class="col-md-2 col-sm-12 ml-md-auto text-md-right d-none d-md-block">
+            <Users :users="users"/>
+          </div>
         </div>
 
-      </div>
+        <b-badge v-for="tag in dataset.tags" :key="tag" variant="primary" class="mr-2">{{ tag }}</b-badge>
 
-      <div class="col-auto d-flex flex-column other-info" style="width: 13%">
-        <p class="mb-auto time-text">{{ dataset.updateTime | moment("from", "now") }}</p>
-        <Users :users="users"/>
       </div>
 
     </div>
 
     <div v-if="dataset.isInvalid" class="invalid-overlay"></div>
 
-  </div> 
+  </div>
 </template>
 
 <style scoped>
 .dataset-list-item {
   position: relative;
-  display: flex;
+/*  display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: center;*/
   /*height: 6rem;*/
   border: 1px solid #f6f6f7;
   box-shadow: none;
