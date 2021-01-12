@@ -1,9 +1,9 @@
 const projects = [
   {
-    title: 'Schubert / StyleTransfer',
+    title: 'StyleTransfer',
     // 图片地址
     imgUrl: '',
-    username: 'admin',
+    userId: 'admin',
     nickname: 'Admin',
     avatar: require('@assets/images/users/avatar.svg'),
     // 简介
@@ -12,9 +12,8 @@ const projects = [
     version: 1,           // 版本
     frame: 'PyTorch',     // 框架
     pyVer: 'Python 3.8',  // py版本、任务
-    like: 11,             // 点赞
-    star: 1500,             // 收藏
-    watch: 16000,          // 浏览
+    star: 1500,           // 收藏
+    fork: 11,             // fork
     // 标签
     tags: ['计算机视觉', '机器学习'],
     // 参与用户
@@ -50,10 +49,10 @@ const projects = [
     isInvalid: false
   },
   {
-    title: 'Zalando / Fashion MNIST',
+    title: 'Fashion MNIST',
     // 图片地址
     imgUrl: '',
-    username: 'admin',
+    userId: 'admin',
     nickname: 'Admin',
     avatar: require('@assets/images/users/avatar.svg'),
     // 简介
@@ -62,9 +61,8 @@ const projects = [
     version: 1,           // 版本
     frame: 'PyTorch',     // 框架
     pyVer: 'Python 3.8',  // py版本
-    like: 11,             // 点赞
     star: 1500,           // 收藏
-    watch: 16000,         // 浏览
+    fork: 16,             // fork
     // 标签
     tags: ['机器学习'],
     // 参与用户

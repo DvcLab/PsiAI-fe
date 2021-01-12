@@ -42,8 +42,23 @@ export default {
     // 缩略图
     thumbnail () {
       return this.project.imgUrl ? this.project.imgUrl : require('@assets/images/projects/project-1.jpg')
-    }
-
+    },
+    // 用户个人信息 Url
+    userDetailUrl () {
+      // 暂时放置静态 Url
+      return '/profile'
+    },
+    // 数据集 Url
+    projectUrl () {
+      // 暂时放置静态 Url
+      return '.'
+    },
+  },
+  methods: {
+    // 跳转新页面数据集详情页
+    toDatasetDetailPage (url) {
+      window.open(url, "_blank")
+    },
   }
 }
 </script>
@@ -57,25 +72,35 @@ export default {
       <div class="col-auto d-none d-md-block">
         <img
           :src="thumbnail"
-          class="thumbnail"
-          alt="file-image"
+          class="thumbnail pointer"
+          alt="project-image"
+          @click="toDatasetDetailPage(projectUrl)"
         />
       </div>
 
       <div class="col pl-md-0">
         <div class="row">
           <div class="col-md-auto col-sm-12 pr-0">
-            <a href="javascript:void(0);" class="text-dark font-weight-bold title">
+            <!-- <a href="javascript:void(0);" class="text-dark font-weight-bold title">
               {{ project.title }}
-            </a>
+            </a> -->
+            <span class="text-dark font-weight-bold title">
+              <a :href="userDetailUrl" class="text-dark font-weight-bold title">
+                {{ project.userId }}
+              </a>
+              <span> / </span>
+              <a :href="projectUrl" class="text-dark font-weight-bold title">
+                {{ project.title }}
+              </a>
+            </span>
             <i v-if="project.isPublic" class="uil uil-globe font-size-14 mr-2"></i>
             <i v-else class="uil uil-eye-slash font-size-14 mr-2"></i>
           </div>
           <div class="col-md-auto col-sm-12 pl-md-0">
-            <b-badge class="badge-soft-primary mr-2">{{ "V " + project.version }}</b-badge>
+            <!-- <b-badge class="badge-soft-primary mr-2">{{ "V " + project.version }}</b-badge>
             <b-badge class="badge-soft-success mr-2">{{ project.frame }}</b-badge>
-            <b-badge class="badge-soft-info mr-2">{{ project.pyVer }}</b-badge>
-            <b-badge v-if="project.isArchive" class="badge-soft-warning mr-2">归档</b-badge>
+            <b-badge class="badge-soft-info mr-2">{{ project.pyVer }}</b-badge> -->
+            <!-- <b-badge v-if="project.isArchive" class="badge-soft-warning mr-2">归档</b-badge> -->
             <b-badge v-if="project.isInvalid" class="badge-soft-danger mr-2">失效</b-badge>
           </div>
           
@@ -85,17 +110,18 @@ export default {
         </div>
           
         <div class="info-text">
-          <span>
+          <!-- <span>
             <i class="uil uil-thumbs-up font-size-14"></i>
             {{ project.like | numFilter }}
-          </span>
+          </span> -->
           <span>
-            <i class="uil uil-star font-size-14 ml-2"></i>
+            <i class="uil uil-star font-size-14"></i>
             {{ project.star | numFilter }}
           </span>
           <span>
-            <i class="uil  uil-eye font-size-14 ml-2"></i>
-            {{ project.watch | numFilter }}
+            <!-- <i class="uil uil-eye font-size-14 ml-2"></i> -->
+            <feather type="git-branch" class="icon-xs ml-2" style="margin-bottom: -3px;margin-right:-1px;"></feather>
+            {{ project.fork | numFilter }}
           </span>
         </div>
         <div class="row">
