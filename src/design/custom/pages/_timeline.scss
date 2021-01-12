@@ -1,0 +1,182 @@
+//
+// timeline.scss
+//
+
+/************** Horizontal timeline **************/
+
+.left-timeline {
+  .events {
+    padding-left: 35px;
+    border-left: 3px solid $gray-300;
+    .event-list {
+      position: relative;
+      &::before {
+        position: absolute;
+        top: 6px;
+        left: -45px;
+        z-index: 9;
+        width: 18px;
+        height: 18px;
+        content: '';
+        background-color: $primary;
+        border: 5px solid $card-bg;
+        border-radius: 50%;
+      }
+      &::after {
+        position: absolute;
+        top: 14px;
+        left: -38px;
+        width: 30px;
+        height: 3px;
+        content: '';
+        background-color: $gray-300;
+      }
+    }
+  }
+
+  .album {
+    img {
+      width: auto;
+      height: 36px;
+      border-radius: 4px;
+    }
+  }
+}
+
+// timeline center
+
+.timeline {
+  position: relative;
+  margin-bottom: 50px;
+  &::before {
+    position: absolute;
+    top: 30px;
+    bottom: 0;
+    left: 50%;
+    z-index: 0;
+    width: 2px;
+    content: '';
+    background-color: $gray-300;
+  }
+  .time-show {
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .timeline-box {
+    position: relative;
+    display: block;
+    padding: 20px;
+  }
+  .timeline-album {
+    margin-top: 12px;
+    a {
+      display: inline-block;
+      margin-right: 5px;
+    }
+    img {
+      width: auto;
+      height: 36px;
+      border-radius: 3px;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .timeline {
+    .time-show {
+      right: 69px;
+      text-align: right;
+    }
+    .timeline-box {
+      margin-left: 15px;
+    }
+    .timeline-icon {
+      position: absolute;
+      top: 15%;
+      left: -24px;
+      z-index: 9;
+      display: block;
+      width: 20px;
+      height: 20px;
+      margin-top: -10px;
+      text-align: center;
+      background: $primary;
+      border: 5px solid $card-bg;
+      border-radius: 50%;
+      &::before {
+        position: absolute;
+        top: 3px;
+        left: 15px;
+        width: 19px;
+        height: 3px;
+        content: '';
+        background-color: $gray-300;
+      }
+    }
+    .timeline-desk {
+      display: table-cell;
+      width: 50%;
+      vertical-align: top;
+    }
+  }
+  .timeline-item {
+    display: flex;
+    &::before {
+      display: block;
+      width: 50%;
+      content: '';
+    }
+
+    &.timeline-item-left {
+      &::after {
+        display: block;
+        width: 50%;
+        content: '';
+      }
+      .timeline-desk {
+        .album {
+          float: right;
+          margin-top: 20px;
+          a {
+            float: right;
+            margin-left: 5px;
+          }
+        }
+      }
+      .timeline-icon {
+        right: -26px;
+        left: auto;
+        &::before {
+          right: 15px;
+          left: auto;
+        }
+      }
+      &::before {
+        display: none;
+      }
+      .timeline-box {
+        margin-right: 15px;
+        margin-left: 0;
+        text-align: right;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .timeline {
+    .time-show {
+      position: relative;
+      text-align: center;
+    }
+    .event-date {
+      float: left !important;
+      margin-right: 1.5rem;
+      margin-left: 0 !important;
+    }
+    .timeline-icon {
+      display: none;
+    }
+  }
+}

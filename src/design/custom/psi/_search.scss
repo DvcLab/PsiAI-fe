@@ -1,0 +1,22 @@
+//
+// search.scss
+//
+.search {
+  position: relative;
+/*  height: 36px;
+  width: 100%;*/
+}
+
+.search-icon {
+  position: absolute;
+  color: $primary;
+  font-size: 18px;
+  user-select: none;
+  top: 8px;
+  left: 18px;
+}
+
+.search-input {
+  border-radius: calc( 1.5em + 1rem + 2px );
+  padding-left: 50px;
+}

@@ -1,0 +1,80 @@
+//
+// reboot.scss
+//
+
+// a
+
+a {
+  text-decoration: none !important;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// Forms
+label {
+  font-weight: $font-weight-semibold;
+}
+
+// Buttons
+button:focus {
+  outline: none;
+}
+
+// blockquote
+
+.blockquote{
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid $gray-200;
+  
+  &.blockquote-reverse{
+    border-left: 0;
+    border-right: 4px solid $gray-200;
+    text-align: right;
+  }
+}
+
+// Icons
+.icon-dual .feather {
+  color: $gray-600;
+  fill: rgba($gray-600, 0.12);
+}
+
+@each $color, $value in $theme-colors {
+  .icon-dual-#{$color} {
+    .feather {
+      color: $value;
+      fill: rgba($value, 0.16);
+    }
+  }
+}
+
+.icon-xs {
+  > svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+.icon-lg {
+  > svg {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+.icon-xl {
+  > svg {
+    width: 48px !important;
+    height: 48px !important;
+  }
+}
+
+.icon-xxl {
+  > svg {
+    width: 72px !important;
+    height: 72px !important;
+  }
+}

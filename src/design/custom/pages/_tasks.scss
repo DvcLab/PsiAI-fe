@@ -1,0 +1,135 @@
+//
+// tasks.scss
+//
+
+.board {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.tasks {
+  display: inline-block;
+  width: 22rem;
+  padding: 0 1rem 1rem 1rem;
+  margin-bottom: $grid-gutter-width;
+  vertical-align: top;
+  background-color: $card-bg;
+
+  @include border-radius($border-radius-sm);
+
+  &.tasks:not(:last-child) {
+    margin-right: 1.25rem;
+  }
+
+  .card {
+    margin-top: 1rem;
+    white-space: normal;
+  }
+
+  .task-header {
+    padding: 1rem;
+    margin: 0 -1rem;
+    background-color: $card-bg;
+
+    @include border-radius($border-radius-sm);
+  }
+}
+
+.task-list-items {
+  position: relative;
+  min-height: 100px;
+
+  .card {
+    cursor: pointer;
+  }
+
+  &::before {
+    position: absolute;
+    width: 100%;
+    font-weight: 600;
+    line-height: 110px;
+    text-align: center;
+    content: 'No Tasks';
+  }
+}
+
+// Task add modal
+.task-modal-content {
+  .form-control-light {
+    background-color: lighten($gray-200, 2.5%) !important;
+    border-color: lighten($gray-200, 2.5%) !important;
+  }
+}
+
+// task - gantt
+.gantt-task-details {
+  min-width: 220px;
+}
+
+// task search
+.task-search {
+  .search-input {
+    z-index: 10;
+    padding-left: 32px;
+  }
+
+  .icon-search {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 11;
+  }
+}
+
+//
+// taskboard.scss
+//
+
+.item-dropzone-area {
+  padding: 60px;
+  margin-bottom: 15px;
+  background-color: $gray-100 !important;
+  border: 1px dashed $gray-300 !important;
+}
+
+@keyframes nodeInserted {
+  from {
+    opacity: 0.2;
+  }
+
+  to {
+    opacity: 0.8;
+  }
+}
+
+.taskList {
+  min-height: 40px;
+  margin-bottom: 0;
+}
+
+.taskList li {
+  padding: 20px;
+  margin-bottom: 15px;
+  background-color: $white;
+  border: 1px solid $gray-300;
+  border-radius: 3px;
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+// .taskList li:last-of-type {
+//   margin-bottom: 0;
+// }
+
+.taskList li .btn-sm {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+.taskList .checkbox {
+  margin-top: 5px;
+  margin-left: 20px;
+}

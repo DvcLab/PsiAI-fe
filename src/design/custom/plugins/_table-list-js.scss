@@ -1,0 +1,35 @@
+//
+// Table list js.scss
+//
+
+#pagination-list {
+  .pagination {
+    li {
+      a {
+        display: block;
+        padding: 0.5rem 0.75rem;
+        margin: 0 3px;
+        line-height: 1.25;
+        border-radius: 50%;
+      }
+      &.active {
+        a {
+          color: $white;
+          background-color: $primary;
+        }
+      }
+    }
+  }
+}
+
+#transaction-list {
+  .sort {
+    background: $custom-select-background;
+  }
+}
+
+#noresult-list {
+  .error-message {
+    display: none;
+  }
+}

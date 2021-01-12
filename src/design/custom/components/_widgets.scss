@@ -1,0 +1,141 @@
+//
+// widgets.scss
+//
+
+// Simple tile box
+.widget-flat {
+  position: relative;
+  overflow: hidden;
+
+  i.widget-icon {
+    font-size: 36px;
+  }
+}
+
+/* Chat widget */
+.conversation-list {
+  height: 332px;
+  padding: 0 7px;
+  list-style: none;
+
+  li {
+    margin-bottom: 24px;
+  }
+
+  .chat-avatar {
+    float: left;
+    width: 34px;
+    text-align: center;
+
+    img {
+      width: 100%;
+      border-radius: 100%;
+    }
+
+    i {
+      font-size: 12px;
+      font-style: normal;
+    }
+  }
+
+  .ctext-wrap {
+    position: relative;
+    display: inline-block;
+    padding: 4px 12px;
+    color: $primary;
+    background: lighten($primary, 32%);
+    border-radius: $border-radius;
+
+    i {
+      position: relative;
+      display: block;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: $font-weight-bold;
+    }
+
+    p {
+      padding-top: 3px;
+      margin: 0;
+    }
+
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 99%;
+      width: 0;
+      height: 0;
+      margin-left: -1px;
+      pointer-events: none;
+      content: ' ';
+      border: solid transparent;
+      border-width: 6px;
+      border-top-color: lighten($primary, 32%);
+      border-right-color: lighten($primary, 32%);
+    }
+  }
+
+  .conversation-text {
+    float: left;
+    width: 70%;
+    margin-left: 12px;
+    font-size: 12px;
+  }
+
+  .odd {
+    .chat-avatar {
+      float: right !important;
+    }
+
+    .conversation-text {
+      float: right !important;
+      width: 70% !important;
+      margin-right: 12px;
+      text-align: right;
+    }
+
+    .ctext-wrap {
+      color: $gray-700;
+      background-color: $gray-300;
+      &::after {
+        left: 99% !important;
+        border-color: transparent;
+        border-top-color: $gray-300;
+        border-left-color: $gray-300;
+      }
+    }
+  }
+}
+
+/* profile / users */
+.profile-widget {
+  position: relative;
+
+  .card-action {
+    position: absolute;
+    top: 12px;
+    right: 7px;
+    z-index: 100;
+  }
+
+  .card-img-top {
+    max-height: 220px;
+  }
+
+  .profile-info {
+    margin-top: -2.7rem;
+  }
+}
+
+.calendar-widget {
+  .flatpickr-calendar {
+    border: $border-width solid $border-color !important;
+    box-shadow: none;
+  }
+}
+
+.calendar-widget-inline {
+  .flatpickr-input {
+    display: none;
+  }
+}

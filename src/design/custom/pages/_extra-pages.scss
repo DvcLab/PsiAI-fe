@@ -1,0 +1,16 @@
+//
+// extra-pages.scss
+//
+
+// pricing
+
+.card-pricing {
+  .card-pricing-features {
+    li {
+      padding: 10px;
+      &::before {
+        color: $primary;
+      }
+    }
+  }
+}

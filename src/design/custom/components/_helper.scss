@@ -1,0 +1,130 @@
+//
+// helper.scss
+//
+
+// Minimum width
+
+.width-xs {
+  min-width: 80px;
+}
+
+.width-sm {
+  min-width: 95px;
+}
+
+.width-md {
+  min-width: 110px;
+}
+
+.width-lg {
+  min-width: 140px;
+}
+
+.width-xl {
+  min-width: 160px;
+}
+
+// Font Family
+.font-family-secondary {
+  font-family: $font-family-secondary;
+}
+
+// avatar height
+.avatar-xs {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.avatar-sm {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.avatar {
+  width: 3rem;
+  height: 3rem;
+}
+
+.avatar-md {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.avatar-lg {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+.avatar-xl {
+  width: 6rem;
+  height: 6rem;
+}
+
+.avatar-xxl {
+  width: 7.5rem;
+  height: 7.5rem;
+}
+
+.avatar-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: $white;
+}
+
+.avatar-group {
+  padding-left: 12px;
+  .avatar-group-item {
+    display: inline-block;
+    margin: 0 0 10px -12px;
+    border: 2px solid $white;
+    border-radius: 50%;
+  }
+}
+
+// Font weight help class
+
+.font-weight-medium {
+  font-weight: 500;
+}
+
+.font-weight-semibold {
+  font-weight: 600;
+}
+
+// Text specify lines (Only chrome browser support)
+
+.sp-line-1,
+.sp-line-2,
+.sp-line-3,
+.sp-line-4 {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+}
+
+.sp-line-1 {
+  -webkit-line-clamp: 1;
+}
+
+.sp-line-2 {
+  -webkit-line-clamp: 2;
+}
+
+.sp-line-3 {
+  -webkit-line-clamp: 3;
+}
+
+.sp-line-4 {
+  -webkit-line-clamp: 4;
+}
+
+// pull in
+
+.pull-in {
+  margin-right: -$card-spacer-x;
+  margin-left: -$card-spacer-x;
+}

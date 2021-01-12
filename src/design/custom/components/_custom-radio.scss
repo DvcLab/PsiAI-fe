@@ -1,0 +1,107 @@
+//
+// custom-radio.scss
+//
+
+.radio {
+  label {
+    position: relative;
+    display: inline-block;
+    padding-left: 8px;
+    margin-bottom: 0;
+    font-weight: normal;
+    &::before {
+      position: absolute;
+      left: 0;
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      margin-left: -18px;
+      content: '';
+      background-color: $white;
+      border: 2px solid $gray-600;
+      border-radius: 50%;
+      outline: none !important;
+      -o-transition: border 0.5s ease-in-out;
+      -webkit-transition: border 0.5s ease-in-out;
+      transition: border 0.5s ease-in-out;
+    }
+    &::after {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-left: -20px;
+      content: ' ';
+      background-color: $gray-700;
+      border-radius: 50%;
+      -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+      -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+      -webkit-transition: -webkit-transform 0.1s
+        cubic-bezier(0.8, -0.33, 0.2, 1.33);
+      transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+      -ms-transform: scale(0, 0);
+      -o-transform: scale(0, 0);
+      -webkit-transform: scale(0, 0);
+      transform: scale(0, 0);
+    }
+  }
+  input[type='radio'] {
+    z-index: 1;
+    cursor: pointer;
+    outline: none !important;
+    opacity: 0;
+    &:disabled + label {
+      opacity: 0.65;
+    }
+  }
+  input[type='radio']:focus + label {
+    &::before {
+      outline: 5px auto -webkit-focus-ring-color;
+      outline: thin dotted;
+      outline-offset: -2px;
+    }
+  }
+  input[type='radio']:checked + label {
+    &::after {
+      -ms-transform: scale(1, 1);
+      -o-transform: scale(1, 1);
+      -webkit-transform: scale(1, 1);
+      transform: scale(1, 1);
+    }
+  }
+  input[type='radio']:disabled + label {
+    &::before {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.radio.radio-inline {
+  margin-top: 0;
+}
+
+.radio.radio-single {
+  label {
+    height: 17px;
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .radio-#{$color} {
+    input[type='radio'] + label {
+      &::after {
+        background-color: $value;
+      }
+    }
+    input[type='radio']:checked + label {
+      &::before {
+        border-color: $value;
+      }
+      &::after {
+        background-color: $value;
+      }
+    }
+  }
+}

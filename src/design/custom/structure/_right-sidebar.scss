@@ -1,0 +1,82 @@
+//
+// right-sidebar.scss
+//
+
+.right-bar {
+  position: fixed;
+  top: 0;
+  right: -($rightbar-width + 10px);
+  bottom: 0;
+  z-index: 9999;
+  display: block;
+  float: right !important;
+  width: $rightbar-width;
+  padding-bottom: 60px;
+  background-color: $bg-rightbar;
+  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+  transition: all 200ms ease-out;
+
+  .rightbar-title {
+    // border-bottom: 2px solid $gray-300;
+    padding: 25px 25px;
+  }
+  .right-bar-toggle {
+    width: 24px;
+    height: 24px;
+    margin-top: -4px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+  }
+  .demo-img {
+    height: 200px;
+  }
+}
+
+// Rightbar overlay
+.rightbar-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9998;
+  display: none;
+  background-color: rgba($dark, 0.55);
+  transition: all 0.2s ease-out;
+}
+
+.right-bar-enabled {
+  .right-bar {
+    right: 0;
+  }
+  .rightbar-overlay {
+    display: block;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .right-bar {
+    overflow: auto;
+    .slimscroll-menu {
+      height: auto !important;
+    }
+  }
+}
+
+.activity-widget {
+  .activity-list {
+    padding: 12px 0;
+    border-bottom: 1px solid $gray-200;
+    &:last-child {
+      border: none;
+    }
+  }
+}
+
+.upgrade-wid {
+  .laptop-img {
+    position: relative;
+    bottom: 22px;
+  }
+}

@@ -1,0 +1,113 @@
+//
+// progress.scss
+//
+
+// Custom height
+
+// Progress height small
+.progress-sm {
+  height: 5px;
+}
+
+// Progress height medium
+.progress-md {
+  height: 8px;
+}
+
+// Progress height large
+.progress-lg {
+  height: 12px;
+}
+
+// Progress height extra large
+.progress-xl {
+  height: 15px;
+}
+
+// Progress height dubble extra large
+.progress-xxl {
+  height: 25px;
+}
+
+/* Progressbar Vertical */
+.progress-vertical {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 250px;
+  min-height: 250px;
+  margin-right: 20px;
+  margin-bottom: 0;
+
+  .progress-bar {
+    width: 100%;
+  }
+
+  &.progress-xl {
+    width: 15px;
+  }
+
+  &.progress-lg {
+    width: 12px;
+  }
+
+  &.progress-md {
+    width: 8px;
+  }
+
+  &.progress-sm {
+    width: 5px;
+  }
+}
+
+.progress-vertical-bottom {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 250px;
+  min-height: 250px;
+  margin-right: 20px;
+  margin-bottom: 0;
+
+  .progress-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  &.progress-xl {
+    width: 15px;
+  }
+
+  &.progress-lg {
+    width: 12px;
+  }
+
+  &.progress-md {
+    width: 8px;
+  }
+
+  &.progress-sm {
+    width: 5px;
+  }
+}
+
+// Progress with percentage
+
+.progress-w-percent {
+  min-height: 20px;
+  margin-bottom: 20px;
+
+  .progress {
+    float: left;
+    width: 80%;
+    margin-top: 8px;
+  }
+
+  .progress-value {
+    float: right;
+    width: 20%;
+    line-height: 20px;
+    text-align: right;
+  }
+}

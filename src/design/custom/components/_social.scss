@@ -1,0 +1,13 @@
+//
+// social.scss
+//
+
+.social-list-item {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  line-height: calc(2rem - 4px);
+  color: $gray-500;
+  border: 2px solid $gray-500;
+  border-radius: 50%;
+}
