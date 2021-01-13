@@ -36,48 +36,46 @@ export default {
   <div class="container-list-item">
     <div class="row justify-content-between">
 
-      <div class="col-4 align-self-center">
+      <div class="col-md-4 col-sm-12 align-self-center">
         <a href="javascript:void(0);" class="text-dark font-weight-bold text-monospace title">
         {{ container.title }}
         </a>
-        <b-badge class="badge-soft-info ml-2">{{ container.type }}</b-badge>
-        <span class=" ml-2 detail-text">{{ container.detail }}</span>
+        <!-- <b-badge class="badge-soft-info ml-2">{{ container.type }}</b-badge>
+        <span class=" ml-2 detail-text">{{ container.detail }}</span> -->
       </div>
 
-      <div class="col-6 align-self-center">
-        <div class="float-right">
-          <span>
-            创建于 
-            <span class="time-text">{{ container.createdTime | moment("YY/MM/DD HH:mm:ss") }}</span>
-          </span>
-          <span class="ml-2">
-            累计运行 
-            <span class="time-text">{{ (container.updateTime - container.createdTime) | duration('humanize') }}</span>
-          </span>
-          <span v-if="container.state === 'running'" class="ml-2">
-            <i class="uil uil-circle mr-1 state-text state-running-text"></i>运行中(<span class="time-text">{{ container.runningDuration | duration('humanize') }}</span>)
-          </span>
-          <span v-else-if="container.state === 'keeping'" class="ml-2">
-            <i class="uil uil-circle mr-1 state-text"></i>持久化
-          </span>
-          <span v-else-if="container.state === 'stopping'" class="ml-2">
-            <i class="uil uil-circle mr-1 state-text state-stopping-text"></i>冻结
-          </span>
-        </div>
+      <div class="col-md-8 col-sm-12 ml-md-auto text-md-right">
+        <span>
+          创建于 
+          <span class="time-text">{{ container.createdTime | moment("YY/MM/DD HH:mm:ss") }}</span>
+        </span>
+        <span class="ml-2">
+          累计运行 
+          <span class="time-text">{{ (container.updateTime - container.createdTime) | duration('humanize') }}</span>
+        </span>
+        <span v-if="container.state === 'running'" class="ml-2">
+          <i class="uil uil-circle mr-1 state-text state-running-text"></i>运行中(<span class="time-text">{{ container.runningDuration | duration('humanize') }}</span>)
+        </span>
+        <span v-else-if="container.state === 'keeping'" class="ml-2">
+          <i class="uil uil-circle mr-1 state-text"></i>未运行
+        </span>
+        <span v-else-if="container.state === 'stopping'" class="ml-2">
+          <i class="uil uil-circle mr-1 state-text state-stopping-text"></i>冻结
+        </span>
       </div>
       
     </div>
 
     <div class="row">
 
-      <span class="col align-self-center">项目 
+      <span class="col-md-4 col-sm-12 align-self-center">项目 
         <a href="" class="proj-text">{{ container.proj }}</a>
       </span>
-      <span class="col align-self-center">工作分支 
+      <span class="col-md-4 col-sm-12 align-self-center">工作分支 
         <span class="proj-text">{{ container.branch }}</span>
       </span>
-      <div class="col align-self-center ">
-        <Users class="float-right" :users="users"/>
+      <div class="col-md-4 col-sm-12 ml-md-auto text-md-right">
+        <Users :users="users"/>
       </div>
       
     </div>

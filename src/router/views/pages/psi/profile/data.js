@@ -197,7 +197,7 @@ const notes = [
 
 const containers = [
   {
-    title: 'afenqi / a1b2c3a1b2c3a1b2',
+    title: 'a1b2c3a1b2c3a1b2',
     type: '基础版',
     detail: '2核4G内存',
     username: 'admin',
