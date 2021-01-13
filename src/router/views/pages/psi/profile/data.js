@@ -150,6 +150,30 @@ const datasets = [
   },
 ]
 
+const papers = [
+  {
+    id: 1,
+    title: 'GENIA corpus—a semantically annotated corpus for bio-textmining',
+    abstract: 'Motivation: Natural language processing (NLP) methods are regarded as being useful to raise the potential of text mining from biological literature. The lack of an extensively annotated corpus of this literature, however, causes a major bottleneck for applying NLP …',
+    authors: ['JD Kim', 'T Ohta', 'Y Tateisi', 'J Tsujii'],
+    publication: 'Literary and linguistic computing',
+    website: 'academic.oup.com',
+    citations: 1148,
+    releaseTime: '2003',
+    readTime: 1608175895208
+  },
+  {
+    id: 2,
+    title: 'Corpus design criteria',
+    abstract: 'Motivation: Natural language processing (NLP) methods are regarded as being useful to raise the potential of text mining from biological literature. The lack of an extensively annotated corpus of this literature, however, causes a major bottleneck for applying NLP …',
+    authors: ['S Atkins', 'J Clear', 'N Ostler'],
+    publication: 'Literary and linguistic computing',
+    website: 'academic.oup.com',
+    citations: 734,
+    releaseTime: '1992',
+  }
+]
+
 const notes = [
   {
     id: 1,
@@ -251,4 +275,4 @@ const user = {
   skills: ['UI design', 'UX', 'Sketch', 'Photoshop', 'Frontend']
 }
 
-export { projects, datasets, notes, containers, user }
+export { projects, datasets, papers, notes, containers, user }

@@ -6,7 +6,7 @@ import Datasets from './datasets'
 import Notes from './notes'
 import Containers from './containers'
 
-import { projects, datasets, notes, containers } from './data'
+import { projects, datasets, papers, notes, containers } from './data'
 
 /**
  * Profile component
@@ -24,6 +24,7 @@ export default {
 		return {
 			projectData: projects,
 			datasetData: datasets,
+			papersData: papers,
 			noteData: notes,
 			containerData: containers,
 			title: 'Profile',
@@ -50,6 +51,10 @@ export default {
 
 							<b-tab title="数据">
 								<Datasets :datasets="datasetData" :stars="datasetData" />
+							</b-tab>
+
+							<b-tab title="文献">
+								
 							</b-tab>
 
 							<b-tab title="笔记">
