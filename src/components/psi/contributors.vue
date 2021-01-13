@@ -14,13 +14,7 @@ export default {
 
 <template>
   <div class="avatar-group">
-    <!-- <img
-      v-for="user in users"
-      :key="user.userId"
-      :src="user.imgUrl"
-      class="avatar"
-      alt="file-image"
-    /> -->
+
     <popper v-for="user in users" :key="user.userId" trigger="hover" :options="{ placement: 'right' }">
 
       <a slot="reference" href="#" class="proj-avatar-popover">
@@ -68,21 +62,22 @@ export default {
 .avatar-group {
   display: inline-block;
 }
+
 .avatar {
-  width: 2rem;
-  height: 2rem;
+  width: 1.8rem;
+  height: 1.8rem;
   border: 0px solid #f1f1f1;
   border-radius: 50%;
   margin-left: -0.8rem;
-  box-shadow: 0 0.05rem 0.01rem rgba(75, 75, 90, 0.075);
+  box-shadow: 0.1rem 0.1rem 0.1rem rgba(75, 75, 90, 0.05);
 }
+
+.avatar:hover {
+  transform: scale(1.2, 1.2);
+}
+
 .proj-avatar-popover {
-  width: 2rem;
-  height: 2rem;
-}
-.overflow-text {
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  width: 1.8rem;
+  height: 1.8rem;
 }
 </style>
