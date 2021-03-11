@@ -77,10 +77,11 @@ export const actions = {
     // with new data from the API.
     // eslint-disable-next-line no-unused-vars
     validate({ commit, state }) {
-        if (!state.currentUser) return Promise.resolve(null)
-        const user = getFirebaseBackend().getAuthenticatedUser();
-        commit('SET_CURRENT_USER', user)
-        return user;
+        // if (!state.currentUser) return Promise.resolve(null)
+        // const user = getFirebaseBackend().getAuthenticatedUser();
+        // commit('SET_CURRENT_USER', user)
+        // return user;
+        return state.currentUser;
     },
 }
 
