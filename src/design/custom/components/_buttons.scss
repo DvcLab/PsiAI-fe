@@ -1,112 +1,88 @@
-//
-// buttons.scss
-//
+// 
+// _buttons.scss
+// 
 
-.btn {
-  color: $white;
+button,a {
+  outline: none !important;
+}
 
-  &:focus {
-    box-shadow: none;
+
+// Rounded Buttons
+.btn-rounded {
+  border-radius: 30px;
+}
+
+.btn-dark, .btn-secondary{
+  color: $gray-200 !important;
+}
+
+.btn-outline-light{
+  color: $gray-900;
+}
+
+.btn-outline-dark, .btn-dark{
+  &:not(:disabled):not(.disabled):active,
+  &:not(:disabled):not(.disabled).active,
+  .show > &.dropdown-toggle,
+  &:hover{
+    color: $light;
   }
+}
 
-  .icon {
-    svg {
-      width: 1rem;
-      height: 1rem;
-      margin-top: -2px;
-      margin-left: 0.1rem;
+// example 1
+
+.btn-group-example{
+  .btn{
+    position: relative;
+
+    &:first-child{
+      &::before{
+        display: none;
+      }
+    }
+
+    &:before{
+      content: "OR";
+      position: absolute;
+      font-size: 10px;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      border-radius: 50%;
+      background-color: $gray-600;
+      color: $light;
+      border: 1px solid $white;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
     }
   }
 }
 
-.btn-rounded {
-  border-radius: 2em;
-}
 
-//
-// light button
-//
-.btn-light,
-.btn-white {
-  color: $gray-900;
-}
+// Example 2
 
-.btn-white {
-  border-color: $gray-300;
-
-  @include hover-focus {
-    background-color: $gray-300;
-    border-color: $gray-400;
+.btn-label{
+  position: relative;
+  padding-left: 44px;
+  .label-icon{
+    position: absolute;
+    width: 32px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba($white, 0.1);
+    border-right: 1px solid rgba($white, 0.1);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-}
-//
-// Link buttons
-//
-// Make a button look and behave like a link
-.btn-link {
-  font-weight: $font-weight-normal;
-  color: $link-color;
-  background-color: transparent;
-
-  @include hover {
-    color: $link-hover-color;
-    text-decoration: $link-hover-decoration;
-    background-color: transparent;
-    border-color: transparent;
-  }
-  &:focus,
-  &.focus {
-    text-decoration: $link-hover-decoration;
-    border-color: transparent;
-    box-shadow: none;
-  }
-  &:disabled,
-  &.disabled {
-    color: $btn-link-disabled-color;
-    pointer-events: none;
-  } // No need for an active state here
-}
-
-//
-// Button Extra Small Size
-//
-
-.btn-xs {
-  padding: 0.2rem 0.6rem;
-  font-size: 0.75rem;
-  border-radius: 0.15rem;
-}
-
-// Soft variants
-@mixin btn-variant-soft($bg, $color) {
-  color: $color;
-  background-color: rgba($bg, $btn-soft-bg-opacity);
-  border-color: rgba($color, $btn-soft-bg-opacity);
-
-  &:focus {
-    box-shadow: none;
-  }
-
-  @include hover-focus {
-    color: $color;
-    background-color: fade-in(rgba($bg, $btn-soft-bg-opacity), 0.05);
-  }
-}
-
-@each $color, $value in $theme-colors {
-  .btn-soft-#{$color} {
-    @include btn-variant-soft($value, $value);
-  }
-}
-
-//
-// Alternate buttons
-//
-@each $color, $value in $theme-colors {
-  .btn-outline-#{$color} {
-    @include button-outline-variant($value);
-    &:focus {
-      box-shadow: none;
+  &.btn-light{
+    .label-icon{
+      background-color: rgba($dark, 0.1);
+      border-right: 1px solid rgba($dark, 0.2);
     }
   }
 }

@@ -1,43 +1,27 @@
+
 //
-// parsley.scss
+// Parsley
 //
 
-.parsley-errors-list {
-  padding: 0;
-  margin: 0;
-
-  > li {
-    position: relative;
-    display: inline-block;
-    padding: 4px 7px 4px 28px;
-    margin-top: 10px;
-    color: $danger;
-    list-style: none;
-    background-color: rgba($danger, 0.2);
-    border-radius: 7px;
-
-    &::before {
-      position: absolute;
-      top: 4px;
-      left: 8px;
-      font-family: 'unicons';
-      content: '\ebee';
-    }
-    &::after {
-      position: absolute;
-      top: -16px;
-      left: 14px;
-      content: '';
-      border: 8px solid transparent;
-      border-bottom-color: rgba($danger, 0.2);
-    }
-  }
+.error {
+  color: $danger;
 }
 
 .parsley-error {
   border-color: $danger;
 }
 
-.parsley-success {
-  border-color: $success;
+.parsley-errors-list {
+  display: none;
+  margin: 0;
+  padding: 0;
+  &.filled {
+    display: block;
+  }
+  > li {
+    font-size: 12px;
+    list-style: none;
+    color: $danger;
+    margin-top: 5px;
+  }
 }

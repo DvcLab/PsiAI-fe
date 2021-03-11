@@ -1,35 +1,38 @@
 <script>
-import appConfig from '@src/app.config'
+import appConfig from "@/app.config";
+
+import { notificationMethods } from "@/state/helpers";
 
 export default {
+  name: "app",
   page: {
     // All subcomponent titles will be injected into this template.
     titleTemplate(title) {
-      title = typeof title === 'function' ? title(this.$store) : title
-      return title ? `${title} | ${appConfig.title}` : appConfig.title
+      title = typeof title === "function" ? title(this.$store) : title;
+      return title ? `${title} | ${appConfig.title}` : appConfig.title;
     },
   },
   mounted() {
-    document.body.classList.add('left-side-menu-condensed')
-  }
-}
+    // document.querySelector("html").setAttribute('dir', 'rtl')
+  },
+  watch: {
+    /**
+     * Clear the alert message on route change
+     */
+    // eslint-disable-next-line no-unused-vars
+    $route(to, from) {
+      // clear alert on location change
+      this.clearNotification();
+    },
+  },
+  methods: {
+    clearNotification: notificationMethods.clear,
+  },
+};
 </script>
 
 <template>
   <div id="app">
-    <!--
-    Even when routes use the same component, treat them
-    as distinct and create the component again.
-    -->
-    <RouterView :key="$route.fullPath" />
+    <RouterView />
   </div>
 </template>
-
-<!-- This should generally be the only global CSS in the app. -->
-<style lang="scss">
-// Allow element/type selectors, because this is global CSS.
-// stylelint-disable selector-max-type, selector-class-pattern
-
-// Design variables and utilities from src/design.
-@import '@design';
-</style>

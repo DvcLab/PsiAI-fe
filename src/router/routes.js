@@ -1,17 +1,24 @@
-import store from '@state/store'
+import store from '@/state/store'
 
-// auth related routes
-const authRoutes = [
+export default [
+  {
+    path: '/',
+    name: 'default',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('./views/dashboards/default'),
+  },
   {
     path: '/login',
     name: 'login',
-    component: () => lazyLoadView(import('@views/pages/account/login')),
+    component: () => import('./views/account/login'),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
-          next({ name: 'dashboard' })
+          next({ name: 'default' })
         } else {
           // Continue to the login page
           next()
@@ -21,14 +28,14 @@ const authRoutes = [
   },
   {
     path: '/register',
-    name: 'register',
-    component: () => lazyLoadView(import('@views/pages/account/register')),
+    name: 'Register',
+    component: () => import('./views/account/register'),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
-          next({ name: 'dashboard' })
+          next({ name: 'default' })
         } else {
           // Continue to the login page
           next()
@@ -37,33 +44,15 @@ const authRoutes = [
     },
   },
   {
-    path: '/confirm-account',
-    name: 'confirm-account',
-    component: () => lazyLoadView(import('@views/pages/account/confirm')),
+    path: '/forgot-password',
+    name: 'Forgot password',
+    component: () => import('./views/account/forgot-password'),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
-          next({ name: 'dashboard' })
-        } else {
-          // Continue to the login page
-          next()
-        }
-      },
-    },
-  },
-  {
-    path: '/forget-password',
-    name: 'forget-password',
-    component: () =>
-      lazyLoadView(import('@views/pages/account/forgetPassword')),
-    meta: {
-      beforeResolve(routeTo, routeFrom, next) {
-        // If the user is already logged in
-        if (store.getters['auth/loggedIn']) {
-          // Redirect to the home page instead
-          next({ name: 'dashboard' })
+          next({ name: 'default' })
         } else {
           // Continue to the login page
           next()
@@ -77,34 +66,23 @@ const authRoutes = [
     meta: {
       authRequired: true,
       beforeResolve(routeTo, routeFrom, next) {
-        store.dispatch('auth/logOut')
+        if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
+          store.dispatch('auth/logOut')
+        } else {
+          store.dispatch('authfack/logout')
+        }
         const authRequiredOnPreviousRoute = routeFrom.matched.some(
-          (route) => route.meta.authRequired
+          (route) => route.push('/login')
         )
         // Navigate back to previous page, or home as a fallback
-        next(
-          authRequiredOnPreviousRoute ? { name: 'dashboard' } : { ...routeFrom }
-        )
+        next(authRequiredOnPreviousRoute ? { name: 'default' } : { ...routeFrom })
       },
     },
   },
-]
-
-// error pages
-const errorPagesRoutes = [
   {
     path: '/404',
     name: '404',
-    component: require('@views/pages/secondary/error-404').default,
-    // Allows props to be passed to the 404 page through route
-    // params, such as `resource` to define what wasn't found.
-    props: true,
-  },
-  {
-    path: '/500',
-    name: '500',
-    component: require('@views/pages/secondary/error-500').default,
-    props: true,
+    component: require('./views/utility/404').default,
   },
   // Redirect any unmatched routes to the 404 page. This may
   // require some server configuration to work in production:
@@ -113,459 +91,620 @@ const errorPagesRoutes = [
     path: '*',
     redirect: '404',
   },
-]
-
-// dashboard
-const dashboardRoutes = [
   {
-    path: '/',
-    name: 'Dashboard',
-    header: 'Navigation',
-    icon: 'home',
-    badge: {
-      text: '1',
-      varient: 'success',
-    },
-    component: () => lazyLoadView(import('@views/pages/dashboard/dashboard')),
+    path: '/dashboard/saas',
+    name: 'saas-dashboard',
     meta: { authRequired: true },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    component: () => import('./views/dashboards/saas/index')
   },
-]
-
-// apps
-const calendarAppsRoutes = [
   {
-    path: '/apps/calendar',
+    path: '/dashboard/crypto',
+    name: 'crypto-dashboard',
+    meta: { authRequired: true },
+    component: () => import('./views/dashboards/crypto/index')
+  },
+  {
+    path: '/dashboard/blog',
+    name: 'blog-dashboard',
+    meta: { authRequired: true },
+    component: () => import('./views/dashboards/blog/index')
+  },
+  {
+    path: '/calendar',
     name: 'Calendar',
-    header: 'Apps',
-    icon: 'calendar',
-    component: () => lazyLoadView(import('@views/pages/apps/calendar')),
     meta: { authRequired: true },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
-  }
-];
-
-const emailAppsRoutes = [
+    component: () => import('./views/calendar/calendar')
+  },
   {
-    path: '/apps/email',
-    name: 'Email',
-    icon: 'inbox',
+    path: '/chat',
+    name: 'chat',
     meta: { authRequired: true },
-    // create a container component
-    component: {
-      render(c) {
-        return c('router-view')
-      },
+    component: () => import('./views/chat/index')
+  },
+  {
+    path: '/apps/file-manager',
+    name: 'file-manager',
+    meta: { authRequired: true },
+    component: () => import('./views/file-manager/index')
+  },
+  {
+    path: '/ecommerce/products',
+    name: 'Products',
+    meta: { authRequired: true },
+    component: () => import('./views/ecommerce/products')
+  },
+  {
+    path: '/ecommerce/product-detail/:id',
+    name: 'Product Detail',
+    meta: { authRequired: true },
+    component: () => import('./views/ecommerce/product-detail')
+  },
+  {
+    path: '/ecommerce/orders',
+    name: 'Orders',
+    meta: { authRequired: true },
+    component: () => import('./views/ecommerce/orders')
+  },
+  {
+    path: '/ecommerce/customers',
+    name: 'Customers',
+    meta: { authRequired: true },
+    component: () => import('./views/ecommerce/customers')
+  },
+  {
+    path: '/ecommerce/cart',
+    name: 'Cart',
+    meta: { authRequired: true },
+    component: () => import('./views/ecommerce/cart')
+  },
+  {
+    path: '/ecommerce/checkout',
+    name: 'Checkout',
+    meta: { authRequired: true },
+    component: () => import('./views/ecommerce/checkout')
+  },
+  {
+    path: '/ecommerce/shops',
+    name: 'Shops',
+    meta: { authRequired: true },
+    component: () => import('./views/ecommerce/shops')
+  },
+  {
+    path: '/ecommerce/add-product',
+    name: 'Add Product',
+    meta: { authRequired: true },
+    component: () => import('./views/ecommerce/add-product')
+  },
+  {
+    path: '/blog/list',
+    name: 'blog-list',
+    meta: { authRequired: true },
+    component: () => import('./views/blog/list')
+  },
+  {
+    path: '/blog/grid',
+    name: 'blog-grid',
+    meta: { authRequired: true },
+    component: () => import('./views/blog/grid')
+  },
+  {
+    path: '/blog/detail',
+    name: 'blog-detail',
+    meta: { authRequired: true },
+    component: () => import('./views/blog/detail')
+  },
+  {
+    path: '/crypto/wallet',
+    name: 'Wallet',
+    meta: { authRequired: true },
+    component: () => import('./views/crypto/wallet/index')
+  },
+  {
+    path: '/crypto/buy-sell',
+    name: 'Buy/sell',
+    meta: { authRequired: true },
+    component: () => import('./views/crypto/buysell/index')
+  },
+  {
+    path: '/crypto/exchange',
+    name: 'Exchange',
+    meta: { authRequired: true },
+    component: () => import('./views/crypto/exchange/index')
+  },
+  {
+    path: '/crypto/lending',
+    name: 'Lending',
+    meta: { authRequired: true },
+    component: () => import('./views/crypto/lending/index')
+  },
+  {
+    path: '/crypto/orders',
+    name: 'crypto-orders',
+    meta: { authRequired: true },
+    component: () => import('./views/crypto/orders/index')
+  },
+  {
+    path: '/crypto/kyc-application',
+    name: 'kyc-application',
+    meta: { authRequired: true },
+    component: () => import('./views/crypto/kycapplication/index')
+  },
+  {
+    path: '/crypto/ico-landing',
+    name: 'Ico-landing',
+    meta: { authRequired: true },
+    component: () => import('./views/crypto/ico-landing')
+  },
+  {
+    path: '/invoices/detail',
+    name: 'Invoice Detail',
+    meta: { authRequired: true },
+    component: () => import('./views/invoices/detail')
+  },
+  {
+    path: '/invoices/list',
+    name: 'Invoice List',
+    meta: { authRequired: true },
+    component: () => import('./views/invoices/list')
+  },
+  {
+    path: '/ui/alerts',
+    name: 'Alerts',
+    meta: {
+      authRequired: true
     },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
-    children: [
-      {
-        name: 'Inbox',
-        path: 'inbox',
-        meta: { authRequired: true },
-        component: () =>
-          lazyLoadView(import('@views/pages/apps/email/inbox')),
-      },
-      {
-        path: 'read',
-        name: 'Read Email',
-        meta: { authRequired: true },
-        component: () =>
-          lazyLoadView(import('@views/pages/apps/email/reademail')),
-      },
-      {
-        path: 'compose',
-        name: 'Compose Email',
-        meta: { authRequired: true },
-        component: () =>
-          lazyLoadView(import('@views/pages/apps/email/emailcompose')),
-      },
-    ],
-  }
-];
-
-const projectAppsRoutes = [
+    component: () => import('./views/ui/alerts')
+  },
   {
-    path: '/apps/project',
-    name: 'Project',
-    icon: 'briefcase',
-    meta: { authRequired: true },
-    // create a container component
-    component: {
-      render(c) {
-        return c('router-view')
-      },
+    path: '/ui/buttons',
+    name: 'Buttons',
+    meta: {
+      authRequired: true
     },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
-    children: [
-      {
-        path: 'list',
-        name: 'List',
-        meta: { authRequired: true },
-        component: () =>
-          lazyLoadView(import('@views/pages/apps/project/list')),
-      },
-      {
-        path: 'detail',
-        name: 'Detail',
-        meta: { authRequired: true },
-        component: () =>
-          lazyLoadView(import('@views/pages/apps/project/detail')),
-      },
-    ],
-  }
-];
-
-const taskAppsRoutes = [
-  {
-    path: '/apps/task',
-    name: 'Task',
-    icon: 'bookmark',
-    meta: { authRequired: true },
-    // create a container component
-    component: {
-      render(c) {
-        return c('router-view')
-      },
-    },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
-    children: [
-      {
-        path: 'list',
-        name: 'Task List',
-        meta: { authRequired: true },
-        component: () =>
-          lazyLoadView(import('@views/pages/apps/tasks/task-list')),
-      },
-      {
-        path: 'task-board',
-        name: 'Kanban Board',
-        meta: { authRequired: true },
-        component: () =>
-          lazyLoadView(import('@views/pages/apps/tasks/task-board')),
-      },
-    ],
-  }
-];
-
-const appsRoutes = [
-  ...calendarAppsRoutes,
-  ...emailAppsRoutes,
-  ...projectAppsRoutes,
-  ...taskAppsRoutes
-]
-
-// pages
-const pagesRoutes = [
-  {
-    path: '/pages',
-    name: 'Pages',
-    icon: 'file-text',
-    header: 'Custom',
-    meta: { authRequired: true },
-    // create a container component
-    component: {
-      render(c) {
-        return c('router-view')
-      },
-    },
-    children: [
-      {
-        path: 'starter',
-        name: 'Starter',
-        component: () => lazyLoadView(import('@views/pages/secondary/starter')),
-      },
-      {
-        path: 'invoice',
-        name: 'Invoice',
-        component: () => lazyLoadView(import('@views/pages/secondary/invoice')),
-      },
-      {
-        path: 'profile',
-        name: 'Profile',
-        component: () => lazyLoadView(import('@views/pages/secondary/profile/')),
-      },
-      {
-        path: 'activity',
-        name: 'Activity',
-        component: () =>
-          lazyLoadView(import('@views/pages/secondary/activity')),
-      },
-      {
-        path: 'pricing',
-        name: 'Pricing',
-        component: () => lazyLoadView(import('@views/pages/secondary/pricing')),
-      },
-    ],
+    component: () => import('./views/ui/buttons')
   },
-]
-
-// ui
-const uiRoutes = [
   {
-    path: '/ui',
-    name: 'UI Elements',
-    icon: 'package',
-    header: 'Components',
+    path: '/ui/cards',
+    name: 'Cards',
     meta: { authRequired: true },
-    // create a container component
-    component: {
-      render(c) {
-        return c('router-view')
-      },
-    },
-    children: [
-      {
-        path: 'bootstrap',
-        name: 'Bootstrap UI',
-        component: () => lazyLoadView(import('@views/pages/ui/bootstrap/')),
-      },
-      {
-        path: 'icons',
-        name: 'Icons',
-        // create a container component
-        component: {
-          render(c) {
-            return c('router-view')
-          },
-        },
-        children: [
-          {
-            path: 'feather',
-            name: 'Feather',
-            component: () =>
-              lazyLoadView(import('@views/pages/ui/icons/feather')),
-          },
-          {
-            path: 'unicons',
-            name: 'Unicons',
-            component: () =>
-              lazyLoadView(import('@views/pages/ui/icons/unicons')),
-          },
-        ],
-      },
-      {
-        path: 'widgets',
-        name: 'Widgets',
-        component: () => lazyLoadView(import('@views/pages/ui/widget/')),
-      },
-    ],
+    component: () => import('./views/ui/cards')
   },
-]
-
-// forms
-const formsRoutes = [
   {
-    path: '/forms',
-    name: 'Forms',
-    icon: 'file-text',
+    path: '/ui/carousel',
+    name: 'Carousel',
     meta: { authRequired: true },
-    // create a container component
-    component: {
-      render(c) {
-        return c('router-view')
-      },
-    },
-    children: [
-      {
-        path: 'basic',
-        name: 'Basic',
-        component: () => lazyLoadView(import('@views/pages/ui/forms/basic')),
-      },
-      {
-        path: 'advanced',
-        name: 'Advanced',
-        component: () => lazyLoadView(import('@views/pages/ui/forms/advanced')),
-      },
-      {
-        path: 'validation',
-        name: 'Validation',
-        component: () =>
-          lazyLoadView(import('@views/pages/ui/forms/validation')),
-      },
-      {
-        path: 'wizard',
-        name: 'Wizard',
-        component: () => lazyLoadView(import('@views/pages/ui/forms/wizard/')),
-      },
-      {
-        path: 'editor',
-        name: 'Editor',
-        component: () => lazyLoadView(import('@views/pages/ui/forms/editor')),
-      },
-      {
-        path: 'uploads',
-        name: 'File Uploads',
-        component: () => lazyLoadView(import('@views/pages/ui/forms/uploads')),
-      },
-    ],
+    component: () => import('./views/ui/carousel')
   },
-]
-
-// tables
-const tablesRoutes = [
   {
-    path: '/tables',
-    name: 'Tables',
-    icon: 'grid',
+    path: '/ui/dropdowns',
+    name: 'Dropdowns',
     meta: { authRequired: true },
-    // create a container component
-    component: {
-      render(c) {
-        return c('router-view')
-      },
-    },
-    children: [
-      {
-        path: 'basic',
-        name: 'Basic Tables',
-        component: () =>
-          lazyLoadView(import('@views/pages/ui/tables/basic-table')),
-      },
-      {
-        path: 'advanced',
-        name: 'Advanced Tables',
-        component: () =>
-          lazyLoadView(import('@views/pages/ui/tables/advanced-table')),
-      },
-    ],
+    component: () => import('./views/ui/dropdowns')
   },
-]
-
-// charts
-const chartsRoutes = [
   {
-    path: '/charts',
-    name: 'Charts',
-    icon: 'pie-chart',
-    component: () => lazyLoadView(import('@views/pages/ui/chart/')),
+    path: '/ui/grid',
+    name: 'Grid',
     meta: { authRequired: true },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    component: () => import('./views/ui/grid')
   },
-]
-
-// PsiAI
-const homeRoutes = [
   {
-    path: '/',
-    name: 'Home',
-    icon: 'home',
-    component: () => lazyLoadView(import('@views/pages/psi/index-user')),
+    path: '/ui/images',
+    name: 'Images',
     meta: { authRequired: true },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    component: () => import('./views/ui/images')
   },
-]
-
-// const paperRoutes = [
-//   {
-//     path: '/paper',
-//     name: 'Paper',
-//     icon: 'file',
-//     component: () => lazyLoadView(import('@views/pages/psi/paper-index')),
-//     meta: { authRequired: true },
-//     props: (route) => ({ user: store.state.auth.currentUser || {} }),
-//   },
-// ]
-
-const projectRoutes = [
   {
-    path: '/project',
-    name: 'Projects',
-    icon: 'archive',
-    component: () => lazyLoadView(import('@views/pages/psi/projects/proj-index')),
+    path: '/ui/modals',
+    name: 'Modals',
     meta: { authRequired: true },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    component: () => import('./views/ui/modals')
   },
-]
-
-const datasetRoutes = [
   {
-    path: '/dataset',
-    name: 'Datasets',
-    icon: 'database',
-    component: () => lazyLoadView(import('@views/pages/psi/dataset-index')),
+    path: '/ui/rangeslider',
+    name: 'Rangeslider',
     meta: { authRequired: true },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    component: () => import('./views/ui/rangeslider')
   },
-]
-
-const userRoutes = [
   {
-    path: '/user',
-    name: 'Users',
-    icon: 'users',
-    component: () => lazyLoadView(import('@views/pages/psi/user-index')),
+    path: '/ui/progressbars',
+    name: 'Progressbars',
     meta: { authRequired: true },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    component: () => import('./views/ui/progressbars')
   },
-]
-
-const profileRoutes = [
   {
-    path: '/profile',
+    path: '/ui/sweet-alert',
+    name: 'Sweet-alert',
+    meta: { authRequired: true },
+    component: () => import('./views/ui/sweet-alert')
+  },
+  {
+    path: '/ui/tabs-accordions',
+    name: 'Tabs-accordions',
+    meta: { authRequired: true },
+    component: () => import('./views/ui/tabs-accordions')
+  },
+  {
+    path: '/ui/typography',
+    name: 'Typography',
+    meta: { authRequired: true },
+    component: () => import('./views/ui/typography')
+  },
+  {
+    path: '/ui/video',
+    name: 'Video',
+    meta: { authRequired: true },
+    component: () => import('./views/ui/video')
+  },
+  {
+    path: '/ui/general',
+    name: 'General',
+    meta: { authRequired: true },
+    component: () => import('./views/ui/general')
+  },
+  {
+    path: '/ui/colors',
+    name: 'Colors',
+    meta: { authRequired: true },
+    component: () => import('./views/ui/colors')
+  },
+  {
+    path: '/ui/lightbox',
+    name: 'Lightbox',
+    meta: { authRequired: true },
+    component: () => import('./views/ui/lightbox')
+  },
+  {
+    path: '/ui/image-cropper',
+    name: 'Image Cropper',
+    meta: { authRequired: true },
+    component: () => import('./views/ui/cropper')
+  },
+  {
+    path: '/projects/grid',
+    name: 'Projects Grid',
+    meta: { authRequired: true },
+    component: () => import('./views/projects/projects-grid')
+  },
+  {
+    path: '/projects/list',
+    name: 'Projects List',
+    meta: { authRequired: true },
+    component: () => import('./views/projects/projects-list')
+  },
+  {
+    path: '/projects/overview',
+    name: 'Project Overview',
+    meta: { authRequired: true },
+    component: () => import('./views/projects/overview')
+  },
+  {
+    path: '/projects/create',
+    name: 'Create New',
+    meta: { authRequired: true },
+    component: () => import('./views/projects/create')
+  },
+  {
+    path: '/contacts/grid',
+    name: 'User Grid',
+    meta: { authRequired: true },
+    component: () => import('./views/contacts/contacts-grid')
+  },
+  {
+    path: '/contacts/list',
+    name: 'User List',
+    meta: { authRequired: true },
+    component: () => import('./views/contacts/contacts-list')
+  },
+  {
+    path: '/contacts/profile',
     name: 'Profile',
-    icon: 'user',
-    component: () => lazyLoadView(import('@views/pages/psi/profile/')),
     meta: { authRequired: true },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    component: () => import('./views/contacts/contacts-profile')
   },
+  {
+    path: '/charts/apex',
+    name: 'Apex chart',
+    meta: { authRequired: true },
+    component: () => import('./views/charts/apex')
+  },
+  {
+    path: '/charts/chartjs',
+    name: 'Chartjs chart',
+    meta: { authRequired: true },
+    component: () => import('./views/charts/chartjs/index')
+  },
+  {
+    path: '/charts/chartist',
+    name: 'Chartist chart',
+    meta: { authRequired: true },
+    component: () => import('./views/charts/chartist')
+  },
+  {
+    path: '/charts/echart',
+    name: 'Echart chart',
+    meta: { authRequired: true },
+    component: () => import('./views/charts/echart/index')
+  },
+  {
+    path: '/icons/boxicons',
+    name: 'Boxicons Icon',
+    meta: { authRequired: true },
+    component: () => import('./views/icons/boxicons')
+  },
+  {
+    path: '/icons/materialdesign',
+    name: 'Materialdesign Icon',
+    meta: { authRequired: true },
+    component: () => import('./views/icons/materialdesign')
+  },
+  {
+    path: '/icons/dripicons',
+    name: 'Dripicons Icon',
+    meta: { authRequired: true },
+    component: () => import('./views/icons/dripicons')
+  },
+  {
+    path: '/icons/fontawesome',
+    name: 'Fontawesome Icon',
+    meta: { authRequired: true },
+    component: () => import('./views/icons/fontawesome')
+  },
+  {
+    path: '/maps/google',
+    name: 'Google Maps',
+    meta: { authRequired: true },
+    component: () => import('./views/maps/google')
+  },
+  {
+    path: '/maps/leaflet',
+    name: 'Leaflet Maps',
+    meta: { authRequired: true },
+    component: () => import('./views/maps/leaflet/index')
+  },
+  {
+    path: '/tables/basic',
+    name: 'Basic Tables',
+    meta: { authRequired: true },
+    component: () => import('./views/tables/basictable')
+  },
+  {
+    path: '/tables/advanced',
+    name: 'Advanced Tables',
+    meta: { authRequired: true },
+    component: () => import('./views/tables/advancedtable')
+  },
+  {
+    path: '/form/advanced',
+    name: 'Form Advanced',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/advanced')
+  },
+  {
+    path: '/form/elements',
+    name: 'Form Elements',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/elements')
+  },
+  {
+    path: '/form/layouts',
+    name: 'Form Layouts',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/layouts')
+  },
+  {
+    path: '/form/editor',
+    name: 'Form Editors',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/editors')
+  },
+  {
+    path: '/form/uploads',
+    name: 'File Uploads',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/uploads')
+  },
+  {
+    path: '/form/validation',
+    name: 'Form Validation',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/validation')
+  },
+  {
+    path: '/form/wizard',
+    name: 'Form Wizard',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/wizard')
+  },
+  {
+    path: '/form/repeater',
+    name: 'Form Repeater',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/repeater')
+  },
+  {
+    path: '/form/mask',
+    name: 'Form Mask',
+    meta: { authRequired: true },
+    component: () => import('./views/forms/mask')
+  },
+  {
+    path: '/pages/starter',
+    name: 'Starter',
+    meta: { authRequired: true },
+    component: () => import('./views/utility/starter')
+  },
+  {
+    path: '/pages/maintenance',
+    name: 'Maintenance',
+    meta: { authRequired: true },
+    component: () => import('./views/utility/maintenance')
+  },
+  {
+    path: '/pages/coming-soon',
+    name: 'coming-soon',
+    meta: { authRequired: true },
+    component: () => import('./views/utility/coming-soon')
+  },
+  {
+    path: '/pages/timeline',
+    name: 'Timeline',
+    meta: { authRequired: true },
+    component: () => import('./views/utility/timeline')
+  },
+  {
+    path: '/pages/faqs',
+    name: 'FAQs',
+    meta: { authRequired: true },
+    component: () => import('./views/utility/faqs')
+  },
+  {
+    path: '/pages/pricing',
+    name: 'Pricing',
+    meta: { authRequired: true },
+    component: () => import('./views/utility/pricing')
+  },
+  {
+    path: '/pages/404',
+    name: 'Error-404',
+    meta: { authRequired: true },
+    component: () => import('./views/utility/404')
+  },
+  {
+    path: '/pages/500',
+    name: 'Error-500',
+    meta: { authRequired: true },
+    component: () => import('./views/utility/500')
+  },
+  {
+    path: '/email/inbox',
+    name: 'Inbox',
+    meta: { authRequired: true },
+    component: () => import('./views/email/inbox')
+  },
+  {
+    path: '/email/reademail/:id',
+    name: 'Read Email',
+    meta: { authRequired: true },
+    component: () => import('./views/email/reademail')
+  },
+  {
+    path: '/email/templates/basic',
+    name: 'Email template basic',
+    meta: { authRequired: true },
+    component: () => import('./views/email/templates/basic')
+  },
+  {
+    path: '/email/templates/billing',
+    name: 'Email template billing',
+    meta: { authRequired: true },
+    component: () => import('./views/email/templates/billing')
+  },
+  {
+    path: '/email/templates/alert',
+    name: 'Email template alert',
+    meta: { authRequired: true },
+    component: () => import('./views/email/templates/alert')
+  },
+  {
+    path: '/tasks/list',
+    name: 'Task list',
+    meta: { authRequired: true },
+    component: () => import('./views/tasks/task-list')
+  },
+  {
+    path: '/tasks/kanban',
+    name: 'Kanbanboard',
+    meta: { authRequired: true },
+    component: () => import('./views/tasks/kanbanboard')
+  },
+  {
+    path: '/tasks/create',
+    name: 'Create Task',
+    meta: { authRequired: true },
+    component: () => import('./views/tasks/task-create')
+  },
+  {
+    path: '/auth/login-1',
+    name: 'Login sample',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/login-sample')
+  },
+  {
+    path: '/auth/login-2',
+    name: 'Login-2-sample',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/login-2')
+  },
+  {
+    path: '/auth/register-1',
+    name: 'Register sample',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/register-sample')
+  },
+  {
+    path: '/auth/register-2',
+    name: 'Register-2',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/register-2')
+  },
+  {
+    path: '/auth/recoverpwd',
+    name: 'Recover pwd',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/recoverpw-sample')
+  },
+  {
+    path: '/auth/recoverpwd-2',
+    name: 'Recover pwd-2',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/recoverpwd-2')
+  },
+  {
+    path: '/auth/lock-screen',
+    name: 'Lock screen',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/lockscreen')
+  },
+  {
+    path: '/auth/lock-screen-2',
+    name: 'Lock screen-2',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/lockscreen-2')
+  },
+  {
+    path: '/auth/confirm-mail',
+    name: 'confirm-mail',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/confirm-mail')
+  },
+  {
+    path: '/auth/confirm-mail-2',
+    name: 'confirm-mail-2',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/confirm-mail-2')
+  },
+  {
+    path: '/auth/email-verification',
+    name: 'email-verification',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/email-verification')
+  },
+  {
+    path: '/auth/email-verification-2',
+    name: 'email-verification-2',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/email-verification-2')
+  },
+  {
+    path: '/auth/two-step-verification',
+    name: 'two-step-verification',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/two-step-verification')
+  },
+  {
+    path: '/auth/two-step-verification-2',
+    name: 'two-step-verification-2',
+    meta: { authRequired: true },
+    component: () => import('./views/sample-pages/two-step-verification-2')
+  }
 ]
-
-const authProtectedRoutes = [
-  // ...dashboardRoutes,
-  // ...appsRoutes,
-  // ...pagesRoutes,
-  // ...uiRoutes,
-  // ...formsRoutes,
-  // ...chartsRoutes,
-  // ...tablesRoutes
-  ...homeRoutes,
-  // ...paperRoutes,
-  ...projectRoutes,
-  ...datasetRoutes,
-  ...userRoutes,
-  ...profileRoutes
-]
-const allRoutes = [...authRoutes, ...authProtectedRoutes, ...errorPagesRoutes]
-
-export { allRoutes, authProtectedRoutes }
-
-// Lazy-loads view components, but with better UX. A loading view
-// will be used if the component takes a while to load, falling
-// back to a timeout view in case the page fails to load. You can
-// use this component to lazy-load a route with:
-//
-// component: () => lazyLoadView(import('@views/my-view'))
-//
-// NOTE: Components loaded with this strategy DO NOT have access
-// to in-component guards, such as beforeRouteEnter,
-// beforeRouteUpdate, and beforeRouteLeave. You must either use
-// route-level guards instead or lazy-load the component directly:
-//
-// component: () => import('@views/my-view')
-//
-function lazyLoadView(AsyncView) {
-  const AsyncHandler = () => ({
-    component: AsyncView,
-    // A component to use while the component is loading.
-    loading: require('@components/_loading').default,
-    // Delay before showing the loading component.
-    // Default: 200 (milliseconds).
-    delay: 400,
-    // A fallback component in case the timeout is exceeded
-    // when loading the component.
-    // error: require('@views/_timeout').default,
-    // Time before giving up trying to load the component.
-    // Default: Infinity (milliseconds).
-    timeout: 10000,
-  })
-
-  return Promise.resolve({
-    functional: true,
-    render(h, { data, children }) {
-      // Transparently pass any props or children
-      // to the view component.
-      return h(AsyncHandler, data, children)
-    },
-  })
-}

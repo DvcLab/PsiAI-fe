@@ -1,65 +1,89 @@
-//
+// 
 // authentication.scss
 //
 
-// authentication pages background
-body {
-  &.authentication-bg {
-    padding-bottom: 0;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
+
+// authentication home icon
+.home-btn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
 }
 
-.authentication-form {
-  .form-group {
-    .input-group-text {
-      background-color: transparent;
+// auth 2
 
-      .icon-dual {
-        > svg {
-          width: 22px;
-          height: 22px;
-        }
-      }
+.auth-logo{
+    .auth-logo-dark{
+        display: $display-block;
     }
-  }
+    .auth-logo-light{
+        display: $display-none;
+    }
 }
 
-.icon-fb {
-  color: #3c5a98;
+.auth-body-bg{
+    background-color: $card-bg;
 }
 
-.icon-google {
-  color: #e94134;
+
+// auth-pass-inputgroup
+
+.auth-pass-inputgroup{
+    input[type="input"] + .btn .mdi-eye-outline{
+        &:before{
+            content: "\F06D1";
+        }
+    }
 }
 
-.auth-page-sidebar {
-  position: relative;
-  height: 100%;
-  padding: 0;
-  background-image: url('~~~@assets/images/auth-bg.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
+// authentication full page
 
-  .overlay {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    flex: 1;
-    background-color: rgba($black, 0.4);
-  }
+.auth-full-bg{
+    background-color: rgba($primary, 0.25);
+    display: flex;
 
-  .auth-user-testimonial {
-    position: absolute;
-    right: 0;
-    bottom: 3rem;
-    left: 0;
-    padding: 0 1.75rem;
-    margin: 0 auto;
-    color: $white;
-    text-align: center;
-  }
+    @media (min-width: 1200px){
+        height: 100vh;
+    }
+    
+
+    &::before{
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+    }
+
+    .bg-overlay{
+        background: url("~@/assets/images/bg-auth-overlay.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+.auth-full-page-content{
+    display: flex;
+
+    @media (min-width: 1200px){
+        min-height: 100vh;
+    }
+}
+
+.auth-review-carousel{
+    &.owl-theme {
+        .owl-dots {
+            .owl-dot{
+                span{
+                    background-color: rgba($primary, 0.25);
+                }
+                &.active, &:hover{
+                    span{
+                        background-color: $primary;
+                    }
+                }
+            }
+        }
+    }
 }

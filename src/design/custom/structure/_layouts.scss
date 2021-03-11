@@ -1,70 +1,60 @@
-//
-// layouts.scss
-//
+// 
+// _layouts.scss
+// 
 
-// scrollable-layout
-
-@include media-breakpoint-up(xl) {
-  .scrollable-layout {
-    padding-bottom: 0;
-    #wrapper {
-      display: flex;
+body[data-layout-size="boxed"] {
+    background-color: $boxed-body-bg;
+    #layout-wrapper {
+        background-color: $body-bg;
+        max-width: $boxed-layout-width;
+        margin: 0 auto;
+        box-shadow: $box-shadow;
     }
 
-    .left-side-menu {
-      position: relative;
-      min-width: 250px;
-      min-height: 100vh;
+    #page-topbar {
+        max-width: $boxed-layout-width;
+        margin: 0 auto;
     }
 
-    .navbar-custom {
-      position: absolute;
-    }
-
-    .content-page {
-      width: 100%;
-      padding-bottom: 60px;
-      margin-left: 0;
-    }
-
-    &.left-side-menu-condensed {
-      .left-side-menu {
-        min-width: 70px;
-      }
-      .content-page {
-        margin-left: 0 !important;
-      }
-    }
-  }
-}
-
-// boxed-layout
-
-.boxed-layout {
-  background: darken($body-bg, 2%);
-
-  #wrapper {
-    max-width: $boxed-layout-width;
-    margin: 0 auto;
-    background: $body-bg;
-    box-shadow: $box-shadow;
-  }
-
-  .navbar-custom {
-    max-width: $boxed-layout-width;
-    margin: 0 auto;
-  }
-
-  .footer {
-    max-width: calc(#{$boxed-layout-width} - #{$leftbar-width});
-    margin: 0 auto;
-    background: $body-bg;
-  }
-
-  &.left-side-menu-condensed {
-    min-height: auto;
     .footer {
-      max-width: $boxed-layout-width;
+        margin: 0 auto;
+        max-width: calc(#{$boxed-layout-width} - #{$sidebar-width});
     }
-  }
+
+    &.vertical-collpsed {
+        .footer {
+            max-width: calc(#{$boxed-layout-width} - #{$sidebar-collapsed-width});
+        }
+    }
 }
+
+
+// Horizontal Boxed Layout
+
+body[data-layout="horizontal"][data-layout-size="boxed"]{
+    #page-topbar, #layout-wrapper, .footer {
+        max-width: 100%;
+    }
+    .container-fluid, .navbar-header {
+        max-width: $boxed-layout-width;
+    }
+}
+
+// Scrollable layout
+
+body[data-layout-scrollable="true"] {
+    @media (min-width: 992px) {
+        #page-topbar, .vertical-menu{
+            position: absolute;
+        }
+    }
+
+    &[data-layout="horizontal"]{
+        @media (min-width: 992px) {
+            #page-topbar, .topnav{
+                position: absolute;
+            }
+        }
+    }
+}
+

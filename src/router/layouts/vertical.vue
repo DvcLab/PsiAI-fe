@@ -1,94 +1,106 @@
 <script>
-import { layoutComputed } from '@state/helpers'
-import Topbar from '@components/topbar'
-import SideBar from '@components/side-bar'
-import Rightsidebar from '@components/right-sidebar'
-import Footer from '@components/footer'
+import router from "@/router";
+import { layoutComputed } from "@/state/helpers";
 
+import NavBar from "@/components/nav-bar";
+import SideBar from "@/components/side-bar";
+import RightBar from "@/components/right-bar";
+import Footer from "@/components/footer";
+
+/**
+ * Vertical layout
+ */
 export default {
-	components: { Topbar, SideBar, Rightsidebar, Footer },
-	data() {
-		return {
-			// isMenuCondensed: false,
-			isMenuCondensed: true,
-			isMobileMenuOpened: false,
-			user: this.$store ? this.$store.state.auth.currentUser : {} || {},
-			layout: this.$store ? this.$store.state.layout.layoutType : null || null,
-			theme: this.$store
-				? this.$store.state.layout.leftSidebarTheme
-				: null || null,
-			type: this.$store
-				? this.$store.state.layout.leftSidebarType
-				: null || null,
-			width: this.$store ? this.$store.state.layout.layoutWidth : null || null,
-		}
-	},
-	computed: {
-		...layoutComputed,
-	},
-	created: () => {
-		document.body.classList.remove('authentication-bg')
-		document.body.classList.remove('authentication-bg-pattern')
-		document.body.removeAttribute('data-layout')
-		if (
-			/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-				navigator.userAgent
-			)
-		) {
-			if (window.screen.width >= 728 && window.screen.width <= 1028) {
-				document.body.classList.add('left-side-menu-condensed')
-			}
-		}
-	},
-	methods: {
-		toggleMenu() {
-			document.body.classList.toggle('left-side-menu-condensed')
-			this.isMenuCondensed = !this.isMenuCondensed
-			if (
-				/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(
-					navigator.userAgent
-				)
-			) {
-				this.isMobileMenuOpened = !this.isMobileMenuOpened
-				document.body.classList.toggle('sidebar-enable')
-				if (window.screen.width <= 425) {
-					document.body.classList.remove('left-side-menu-condensed')
-				}
-			}
-		},
-		toggleRightSidebar() {
-			document.body.classList.toggle('right-bar-enabled')
-		},
-		hideRightSidebar() {
-			document.body.classList.remove('right-bar-enabled')
-		},
-	},
-}
+  components: { NavBar, SideBar, RightBar, Footer },
+  data() {
+    return {
+      isMenuCondensed: false,
+    };
+  },
+  computed: {
+    ...layoutComputed,
+  },
+  created: () => {
+    document.body.removeAttribute("data-layout", "horizontal");
+    document.body.removeAttribute("data-topbar", "dark");
+    document.body.removeAttribute("data-layout-size", "boxed");
+    document.body.classList.remove("auth-body-bg");
+  },
+  methods: {
+    toggleMenu() {
+      document.body.classList.toggle("sidebar-enable");
+
+      if (window.screen.width >= 992) {
+        // eslint-disable-next-line no-unused-vars
+        router.afterEach((routeTo, routeFrom) => {
+          document.body.classList.remove("sidebar-enable");
+          document.body.classList.remove("vertical-collpsed");
+        });
+        document.body.classList.toggle("vertical-collpsed");
+      } else {
+        // eslint-disable-next-line no-unused-vars
+        router.afterEach((routeTo, routeFrom) => {
+          document.body.classList.remove("sidebar-enable");
+        });
+        document.body.classList.remove("vertical-collpsed");
+      }
+      this.isMenuCondensed = !this.isMenuCondensed;
+    },
+    toggleRightSidebar() {
+      document.body.classList.toggle("right-bar-enabled");
+    },
+    hideRightSidebar() {
+      document.body.classList.remove("right-bar-enabled");
+    },
+  },
+  mounted() {
+    if (this.loader === true) {
+      document.getElementById("preloader").style.display = "block";
+      document.getElementById("status").style.display = "block";
+
+      setTimeout(function () {
+        document.getElementById("preloader").style.display = "none";
+        document.getElementById("status").style.display = "none";
+      }, 2500);
+    } else {
+      document.getElementById("preloader").style.display = "none";
+      document.getElementById("status").style.display = "none";
+    }
+  },
+};
 </script>
 
 <template>
-	<div id="wrapper">
-		<Topbar :user="user" :is-menu-opened="isMobileMenuOpened" />
-		<SideBar
-			:is-condensed="isMenuCondensed"
-			:theme="leftSidebarTheme"
-			:type="leftSidebarType"
-			:width="layoutWidth"
-			:user="user"
-		/>
-		<!-- ============================================================== -->
-		<!-- Start Page Content here -->
-		<!-- ============================================================== -->
+  <div>
+    <div id="preloader">
+      <div id="status">
+        <div class="spinner-chase">
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+        </div>
+      </div>
+    </div>
+    <div id="layout-wrapper">
+      <NavBar />
+      <SideBar :is-condensed="isMenuCondensed" :type="leftSidebarType" :width="layoutWidth" />
+      <!-- ============================================================== -->
+      <!-- Start Page Content here -->
+      <!-- ============================================================== -->
 
-		<div class="content-page">
-			<div class="content">
-				<!-- Start Content-->
-				<div class="container-fluid">
-					<slot />
-				</div>
-			</div>
-			<Footer />
-		</div>
-		<Rightsidebar />
-	</div>
+      <div class="main-content">
+        <div class="page-content">
+          <!-- Start Content-->
+          <div class="container-fluid">
+            <slot />
+          </div>
+        </div>
+        <Footer />
+      </div>
+      <RightBar />
+    </div>
+  </div>
 </template>

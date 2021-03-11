@@ -1,0 +1,12 @@
+//
+// leaflet map
+//
+@import '~leaflet/dist/leaflet.css';
+
+.leaflet-container {
+    z-index: 99;
+}
+
+// .leaflet-default-icon-path {
+//     background-image: url('/src/assets/images/leaflet/marker-icon.png');
+// }

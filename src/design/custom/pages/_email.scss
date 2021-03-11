@@ -1,23 +1,48 @@
-//
-// email.scss
-//
+/* ==============
+  Email
+===================*/
+.email-leftbar {
+  width: 236px;
+  float: left;
+  padding: 20px;
+  border-radius: 5px;
+}
 
-.email-container {
-  margin-bottom: $grid-gutter-width;
-  background-color: $card-bg;
-  .inbox-leftbar {
-    float: left;
-    width: 250px;
-    padding: $card-spacer-x;
-    // padding: 0 20px 20px 10px;
-    padding-bottom: 184px;
-    margin-bottom: -184px;
+.email-rightbar {
+  margin-left: 260px;
+}
+
+.chat-user-box {
+  p.user-title {
+    color: $dark;
+    font-weight: 500;
   }
+  p {
+    font-size: 12px;
+  }
+}
 
-  .inbox-rightbar {
-    padding: 0 0 1.5rem 25px;
-    margin-left: 250px;
-    border-left: 5px solid $body-bg;
+@media (max-width: 767px) {
+  .email-leftbar {
+    float: none;
+    width: 100%;
+  }
+  .email-rightbar {
+    margin: 0;
+  }
+}
+
+
+.mail-list {
+  a {
+    display: block;
+    color: $gray-600;
+    line-height: 24px;
+    padding: 8px 5px;
+    &.active {
+      color: $danger;
+      font-weight: 500;
+    }
   }
 }
 
@@ -28,26 +53,23 @@
   li {
     position: relative;
     display: block;
-    height: 48px;
-    margin-bottom: 1px;
-    line-height: 48px;
+    height: 50px;
+    line-height: 50px;
     cursor: default;
-    background: $card-bg;
-    box-shadow: $box-shadow-sm;
-    transition-duration: 0.3s;
+    transition-duration: .3s;
 
-    a {
-      color: $gray-700;
+    a{
+      color: $gray-600;
     }
 
     &:hover {
-      box-shadow: $box-shadow;
-      transition-duration: 0.05s;
+      background: $gray-300;
+      transition-duration: .05s;
     }
 
     .col-mail {
-      position: relative;
       float: left;
+      position: relative;
     }
 
     .col-mail-1 {
@@ -61,13 +83,13 @@
       }
 
       .dot {
-        width: 0;
-        height: 0;
-        margin: 22px 26px 0;
-        font-size: 0;
-        line-height: 0;
         border: 4px solid transparent;
         border-radius: 100px;
+        margin: 22px 26px 0;
+        height: 0;
+        width: 0;
+        line-height: 0;
+        font-size: 0;
       }
 
       .checkbox-wrapper-mail {
@@ -75,29 +97,28 @@
       }
 
       .star-toggle {
-        margin-left: 10px;
-        color: $gray-500;
+        margin-top: 18px;
+        margin-left: 5px;
       }
 
       .title {
         position: absolute;
         top: 0;
+        left: 110px;
         right: 0;
-        left: 100px;
-        margin-bottom: 0;
-        overflow: hidden;
-        line-height: 50px;
         text-overflow: ellipsis;
+        overflow: hidden;
         white-space: nowrap;
+        margin-bottom: 0;
       }
     }
 
     .col-mail-2 {
       position: absolute;
       top: 0;
+      left: 320px;
       right: 0;
       bottom: 0;
-      left: 320px;
 
       .subject,
       .date {
@@ -106,150 +127,83 @@
       }
 
       .subject {
-        right: 110px;
         left: 0;
-        overflow: hidden;
+        right: 200px;
         text-overflow: ellipsis;
+        overflow: hidden;
         white-space: nowrap;
       }
 
       .date {
         right: 0;
-        width: 100px;
-        padding-left: 10px;
+        width: 170px;
+        padding-left: 80px;
+      }
+    }
+
+    &.active,
+    &.active:hover {
+      box-shadow: inset 3px 0 0 $primary;
+    }
+
+    
+  &.unread  {
+    background-color: $gray-300;
+    font-weight: 500;
+    color: darken($dark,5%);
+      a{
+        color: darken($dark,5%);
+        font-weight: 500;
       }
     }
   }
 
-  li.active,
-  li.mail-selected {
-    background: $gray-100;
-    transition-duration: 0.05s;
-  }
-
-  li.active,
-  li.active:hover {
-    box-shadow: inset 3px 0 0 $cyan;
-  }
-
-  li.unread a {
-    // font-weight: $font-weight-semibold;
-    color: darken($dark, 5%);
-  }
 
   .checkbox-wrapper-mail {
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
     position: relative;
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    border-radius: 3px;
-    box-shadow: inset 0 0 0 2px $gray-400;
+    box-shadow: inset 0 0 0 1px $gray-400;
+    border-radius: 1px;
 
     input {
-      cursor: pointer;
       opacity: 0;
+      cursor: pointer;
     }
-
     input:checked ~ label {
       opacity: 1;
     }
 
     label {
       position: absolute;
-      top: 3px;
-      right: 3px;
-      bottom: 3px;
-      left: 3px;
-      margin-bottom: 0 !important;
+      height: 20px;
+      width: 20px;
+      left: 0;
       cursor: pointer;
-      background: $gray-600;
       opacity: 0;
-      transition-duration: 0.05s;
-    }
-
-    label:active {
-      background: #87949b;
-    }
-  }
-}
-
-.mail-list {
-  a {
-    display: block;
-    padding: 7px 10px;
-    color: $gray-700;
-  }
-}
-
-.reply-box {
-  border: 2px solid $light;
-}
-
-@media (max-width: 648px) {
-  .email-container {
-    .inbox-leftbar {
-      float: none;
-      width: 100%;
-      padding-bottom: 1.25rem;
-      margin-bottom: 21px;
-    }
-
-    .inbox-rightbar {
-      padding-left: 0;
-      margin-left: 0;
-      border: 0;
-    }
-  }
-}
-
-@media (max-width: 520px) {
-  .inbox-rightbar {
-    > .btn-group {
-      margin-bottom: 10px;
-    }
-  }
-
-  .message-list li {
-    .col-mail-1 {
-      width: 150px;
-
-      .title {
-        left: 80px;
-      }
-    }
-
-    .col-mail-2 {
-      left: 160px;
-
-      .date {
-        padding-right: 10px;
-        padding-left: 20px;
-        text-align: right;
+      margin-bottom: 0;
+      transition-duration: .05s;
+      top: 0;
+      &:before {
+        content: "\F012C";
+        font-family: "Material Design Icons";
+        top: 0;
+        height: 20px;
+        color: darken($dark,5%);
+        width: 20px;
+        position: absolute;
+        margin-top: -16px;
+        left: 4px;
+        font-size: 13px;
       }
     }
   }
 }
 
-.chatbox {
-  position: fixed;
-  right: 35px;
-  bottom: 10px;
-  z-index: 99;
-  width: 300px;
-  background-color: $card-bg;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow;
-
-  .chat-input {
-    .form-control {
-      padding-right: 60px;
-    }
-  }
-
-  .chat-link {
-    position: absolute;
-    top: 10px;
-    right: 4px;
+@media (max-width: 575.98px) { 
+  .message-list li .col-mail-1 {
+      width: 200px;
   }
 }

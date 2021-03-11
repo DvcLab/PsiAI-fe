@@ -1,38 +1,35 @@
-//
-// footer.scss
-//
+// 
+// _footer.scss
+// 
 
 .footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: $leftbar-width;
-  padding: 19px 15px 20px;
-  color: $gray-600;
-  .footer-links {
-    a {
-      margin-left: 1.5rem;
-      color: $gray-600;
-      transition: all 0.4s;
-      &:hover {
-        color: $gray-900;
-      }
-      &:first-of-type {
-        margin-left: 0;
-      }
+    bottom: 0;
+    padding: 20px calc(#{$grid-gutter-width} / 2);
+    position: absolute;
+    right: 0;
+    color: $footer-color;
+    left: 250px;
+    height: $footer-height;
+    background-color: $footer-bg;
+
+    @media (max-width: 991.98px) {
+        left: 0;
     }
-  }
+}
+  
+// Enlarge menu
+.vertical-collpsed {
+    .footer {
+        left: $sidebar-collapsed-width;
+
+        @media (max-width: 991.98px) {
+            left: 0;
+        }
+    }
 }
 
-.footer-alt {
-  left: 0 !important;
-  text-align: center;
-  background-color: transparent;
-}
-
-@include media-breakpoint-down(sm) {
-  .footer {
-    left: 0 !important;
-    text-align: center;
-  }
+body[data-layout="horizontal"] {
+    .footer {
+        left: 0 !important;
+    }  
 }

@@ -1,61 +1,95 @@
 <script>
-import Topbar from '@components/topbar'
-import AppMenu from '@components/app-menu'
-import RightSidebar from '@components/right-sidebar'
+import HorizontalTopbar from "@/components/horizontal-topbar";
+import HorizontalNav from "@/components/horizontal-nav";
+import RightBar from "@/components/right-bar";
+import Footer from "@/components/footer";
 
+import { layoutComputed } from "@/state/helpers";
+
+/**
+ * Horizontal-layout
+ */
 export default {
-  components: { Topbar, AppMenu, RightSidebar },
+  props: {
+  },
+  components: {
+    HorizontalTopbar,
+    HorizontalNav,
+    Footer,
+    RightBar,
+  },
   data() {
-    return {
-      showMobileMenu: false,
-      user: this.$store ? this.$store.state.auth.currentUser : {} || {},
-    }
+    return {};
+  },
+  computed: {
+    ...layoutComputed,
   },
   created: () => {
-    document.body.classList.remove('authentication-bg')
-    document.body.classList.remove('authentication-bg-pattern')
-    document.body.setAttribute('data-layout', 'topnav')
-    document.body.classList.remove('right-bar-enabled')
-    document.body.classList.remove('left-side-menu-condensed')
-    document.body.classList.remove('boxed-layout')
+    document.body.setAttribute("data-layout", "horizontal");
+    document.body.setAttribute("data-topbar", "dark");
+    document.body.removeAttribute("data-sidebar");
+    document.body.removeAttribute("data-layout-size");
+    document.body.classList.remove("auth-body-bg");
   },
   methods: {
-    toggleMenu() {
-      this.showMobileMenu = !this.showMobileMenu
-    },
     toggleRightSidebar() {
-      document.body.classList.toggle('right-bar-enabled')
+      document.body.classList.toggle("right-bar-enabled");
+    },
+    hideRightSidebar() {
+      document.body.classList.remove("right-bar-enabled");
     },
   },
-}
+  mounted() {
+    if (this.loader === true) {
+      document.getElementById("preloader").style.display = "block";
+      document.getElementById("status").style.display = "block";
+
+      setTimeout(function () {
+        document.getElementById("preloader").style.display = "none";
+        document.getElementById("status").style.display = "none";
+      }, 2500);
+    } else {
+      document.getElementById("preloader").style.display = "none";
+      document.getElementById("status").style.display = "none";
+    }
+  },
+};
 </script>
 
 <template>
   <div>
-    <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
-    <Topbar :user="user" :is-menu-opened="showMobileMenu" />
-    <div class="topnav shadow-sm">
-      <div class="container-fluid">
-        <nav class="navbar navbar-light navbar-expand-lg topbar-nav">
-          <b-collapse
-            id="topnav-menu-content"
-            v-model="showMobileMenu"
-            class="navbar-collapse"
-          >
-            <AppMenu mode="horizontal" />
-          </b-collapse>
-        </nav>
-      </div>
-    </div>
-    <div class="content-page">
-      <div class="content">
-        <div class="container-fluid">
-          <slot />
+    <div id="preloader">
+      <div id="status">
+        <div class="spinner-chase">
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
+          <div class="chase-dot"></div>
         </div>
       </div>
     </div>
-    <RightSidebar />
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+      <HorizontalTopbar :type="topbar" :width="layoutWidth" />
+      <HorizontalNav />
+      <!-- ============================================================== -->
+      <!-- Start right Content here -->
+      <!-- ============================================================== -->
+      <div class="main-content">
+        <div class="page-content">
+          <div class="container-fluid">
+            <slot />
+          </div>
+          <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        <Footer />
+      </div>
+      <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+    <RightBar />
   </div>
 </template>

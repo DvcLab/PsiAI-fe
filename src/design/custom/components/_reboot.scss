@@ -1,80 +1,51 @@
-//
-// reboot.scss
-//
+/* =============
+   General
+============= */
 
-// a
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.h1,.h2,.h3,.h4,.h5,.h6,
+h1,h2,h3,h4,h5,h6 {
+  color: $gray-700;
+}
 
 a {
   text-decoration: none !important;
-
-  &:focus {
-    outline: none;
-  }
 }
 
-// Forms
 label {
-  font-weight: $font-weight-semibold;
-}
-
-// Buttons
-button:focus {
-  outline: none;
+  font-weight: 500;
+  margin-bottom: $form-label-margin-bottom;
 }
 
 // blockquote
 
-.blockquote{
+.blockquote {
   padding: 10px 20px;
-  margin-bottom: 20px;
-  border-left: 4px solid $gray-200;
-  
-  &.blockquote-reverse{
-    border-left: 0;
-    border-right: 4px solid $gray-200;
-    text-align: right;
+  border-left: 4px solid $gray-300;
+}
+
+.blockquote-reverse {
+  border-left: 0;
+  border-right: 4px solid $gray-300;
+  text-align: right;
+}
+
+// container
+
+.container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl{
+  @media (min-width: 1200px){
+      max-width: 1140px;
   }
 }
 
-// Icons
-.icon-dual .feather {
-  color: $gray-600;
-  fill: rgba($gray-600, 0.12);
-}
+// row
 
-@each $color, $value in $theme-colors {
-  .icon-dual-#{$color} {
-    .feather {
-      color: $value;
-      fill: rgba($value, 0.16);
-    }
-  }
-}
-
-.icon-xs {
-  > svg {
-    width: 16px !important;
-    height: 16px !important;
-  }
-}
-
-.icon-lg {
-  > svg {
-    width: 32px !important;
-    height: 32px !important;
-  }
-}
-
-.icon-xl {
-  > svg {
-    width: 48px !important;
-    height: 48px !important;
-  }
-}
-
-.icon-xxl {
-  > svg {
-    width: 72px !important;
-    height: 72px !important;
+.row{
+  > * {
+      position: relative;
   }
 }

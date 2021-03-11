@@ -1,66 +1,68 @@
-//
-// nav.scss
-//
+// 
+// _nav.scss
+// 
 
-// Bootstrap override - turn nav tab with broder
+.nav-tabs,.nav-pills {
+  > li {
+      > a {
+          color: $gray-700;
+          font-weight: $fw-medium;
+      }
+  }
+}
 
-.nav-tabs {
-  border-bottom: 2px solid rgba($gray-600, 0.2);
+.nav-pills {
+  > a {
+      color: $gray-700;  
+      font-weight: $fw-medium;
+  }
+}
+
+
+.nav-tabs-custom {
+  border-bottom: 2px solid $gray-300;
 
   .nav-item {
-    margin-bottom: -2px;
-  }
+    position: relative;
+    color: $dark;
+    .nav-link {
+      border: none;
 
-  li {
-    a {
-      padding: 0.625rem 1.25rem;
-      border-color: transparent !important;
-    }
-    a.active {
-      border-bottom: 2px solid $primary !important;
-    }
-  }
-}
+      &::after {
+        content: "";
+        background: $primary;
+        height: 2px;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: -1px;
+        transition: all 250ms ease 0s;
+        transform: scale(0);
+      }
 
-// pills
-.nav-tabs,
-.nav-pills {
-  > li {
-    > a {
-      font-weight: $font-weight-bold;
-      color: $gray-700;
-    }
-  }
-}
+      &.active{
+        color: $primary;
+        &:after{
+          transform: scale(1);
+        }
+      }
 
-.nav-pills {
-  padding: 6px 2px;
-  background: $body-bg;
-  border-radius: $border-radius;
-
-  .nav-link {
-    color: $body-color;
-    background-color: transparent;
-  }
-
-  .nav-link.active,
-  .show > .nav-link {
-    color: $body-color;
-    background-color: $card-bg;
-    box-shadow: $box-shadow-sm;
-  }
-}
-
-//Navtab custom
-.navtab-bg {
-  li {
-    > a {
-      margin: 0 5px;
-      background-color: $gray-300;
     }
   }
 }
 
-.tab-content {
-  padding: 20px 0 0 0;
+
+// vertical nav
+
+.vertical-nav{
+  .nav{
+      .nav-link{
+          padding: 24px 16px;
+          text-align: center;
+          margin-bottom: 8px;
+          .nav-icon{
+              font-size: 24px;
+          }
+      }
+  }
 }

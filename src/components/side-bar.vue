@@ -1,196 +1,145 @@
 <script>
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import { authComputed } from '@state/helpers'
-import Appmenu from './app-menu'
+import simplebar from "simplebar-vue";
 
+import SideNav from "./side-nav";
+import { layoutComputed } from "@/state/helpers";
 /**
- * Left sidebar component - contains mainly the application menu
+ * Sidebar component
  */
 export default {
-	components: { VuePerfectScrollbar, Appmenu },
-	props: {
-		isCondensed: {
-			type: Boolean,
-			default: false,
-		},
-		theme: {
-			type: String,
-			required: true,
-		},
-		type: {
-			type: String,
-			required: true,
-		},
-		width: { type: String, required: true },
-		user: {
-			type: Object,
-			required: false,
-			default: () => ({}),
-		},
-	},
-	data() {
-		return {
-			settings: {
-				minScrollbarLength: 60,
-			},
-		}
-	},
-	computed: {
-		...authComputed,
-	},
-	watch: {
-		theme: function(newVal, oldVal) {
-			if (newVal !== oldVal) {
-				switch (newVal) {
-					case 'dark':
-						document.body.classList.add('left-side-menu-dark')
-						document.body.classList.remove('left-side-menu-condensed')
-						document.body.classList.remove('boxed-layout')
-						break
-					default:
-						document.body.classList.remove('left-side-menu-dark')
-						break
-				}
-			}
-		},
-		type: function(newVal, oldVal) {
-			if (newVal !== oldVal) {
-				switch (newVal) {
-					case 'condensed':
-						document.body.classList.add('left-side-menu-condensed')
-						document.body.classList.remove('left-side-menu-dark')
-						document.body.classList.remove('boxed-layout')
-						break
-					default:
-						document.body.classList.remove('left-side-menu-condensed')
-						break
-				}
-			}
-		},
-		width: function(newVal, oldVal) {
-			if (newVal !== oldVal) {
-				switch (newVal) {
-					case 'boxed':
-						document.body.classList.add('left-side-menu-condensed')
-						document.body.classList.remove('left-side-menu-dark')
-						document.body.classList.add('boxed-layout')
-						break
-					default:
-						document.body.classList.remove('left-side-menu-condensed')
-						document.body.classList.remove('boxed-layout')
-						break
-				}
-			}
-		},
-	},
-}
+  components: { simplebar, SideNav },
+  props: {
+    isCondensed: {
+      type: Boolean,
+      default: false,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+    width: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    ...layoutComputed,
+  },
+  data() {
+    return {
+      settings: {
+        minScrollbarLength: 60,
+      },
+      widthss: this.$store ? this.$store.state.layout.layoutWidth : {} || {},
+    };
+  },
+  methods: {
+    onRoutechange() {
+      setTimeout(() => {
+        if(document.getElementsByClassName("mm-active").length > 0) {
+        const currentPosition = document.getElementsByClassName("mm-active")[0].offsetTop;
+        if (currentPosition > 500)
+          this.$refs.currentMenu.SimpleBar.getScrollElement().scrollTop =
+            currentPosition + 300;
+        }
+      }, 300);
+    },
+  },
+  mounted() {},
+  watch: {
+    $route: {
+      handler: "onRoutechange",
+      immediate: true,
+      deep: true,
+    },
+    type: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          switch (newVal) {
+            case "dark":
+              document.body.setAttribute("data-sidebar", "dark");
+              document.body.removeAttribute("data-topbar");
+              document.body.removeAttribute("data-sidebar-size");
+              break;
+            case "light":
+              document.body.setAttribute("data-topbar", "dark");
+              document.body.removeAttribute("data-sidebar");
+              document.body.removeAttribute("data-sidebar-size");
+              document.body.classList.remove("vertical-collpsed");
+              break;
+            case "compact":
+              document.body.setAttribute("data-sidebar-size", "small");
+              document.body.setAttribute("data-sidebar", "dark");
+              document.body.classList.remove("vertical-collpsed");
+              document.body.removeAttribute("data-topbar", "dark");
+              break;
+            case "icon":
+              document.body.setAttribute("data-keep-enlarged", "true");
+              document.body.classList.add("vertical-collpsed");
+              document.body.setAttribute("data-sidebar", "dark");
+              document.body.removeAttribute("data-topbar", "dark");
+              break;
+            case "colored":
+              document.body.setAttribute("data-sidebar", "colored");
+              document.body.removeAttribute("data-keep-enlarged");
+              document.body.classList.remove("vertical-collpsed");
+              document.body.removeAttribute("data-sidebar-size");
+              break;
+            default:
+              document.body.setAttribute("data-sidebar", "dark");
+              break;
+          }
+        }
+      },
+    },
+    width: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          switch (newVal) {
+            case "boxed":
+              document.body.setAttribute("data-layout-size", "boxed");
+              document.body.removeAttribute("data-layout-scrollable");
+              break;
+            case "fluid":
+              document.body.setAttribute("data-layout-mode", "fluid");
+              document.body.removeAttribute("data-layout-size");
+              document.body.removeAttribute("data-layout-scrollable");
+              break;
+            case "scrollable":
+              document.body.setAttribute("data-layout-scrollable", "true");
+              document.body.removeAttribute("data-layout-mode");
+              document.body.removeAttribute("data-layout-size")
+              break;
+            default:
+              document.body.setAttribute("data-layout-mode", "fluid");
+              break;
+          }
+        }
+      },
+    },
+  },
+};
 </script>
 
 <template>
-	<!-- ========== Left Sidebar Start ========== -->
-	<div class="left-side-menu">
-		<!-- <div class="media user-profile mt-2 mb-2">
-			<img
-				src="@assets/images/users/avatar-7.jpg"
-				class="avatar-sm rounded-circle mr-2"
-				alt="Shreyu"
-			/>
-			<img
-				src="@assets/images/users/avatar-7.jpg"
-				class="avatar-xs rounded-circle mr-2"
-				alt="Shreyu"
-			/>
+  <!-- ========== Left Sidebar Start ========== -->
+  <div class="vertical-menu">
+    <simplebar
+      v-if="!isCondensed"
+      :settings="settings"
+      class="h-100"
+      ref="currentMenu"
+      id="my-element"
+    >
+      <SideNav />
+    </simplebar>
 
-			<div class="media-body">
-				<h6 class="pro-user-name mt-0 mb-0">{{ user.name }}</h6>
-				<span class="pro-user-desc">Administrator</span>
-				<h6 class="pro-user-name mt-0 mb-0" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ currentUser.username }}</h6>
-				<span class="pro-user-desc" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-transform: none;">{{ currentUser.email }}</span>
-			</div>
-			<b-dropdown variant="black" class="align-self-center" toggle-class="p-0">
-				<template v-slot:button-content>
-					<feather type="chevron-down" class="align-middle"></feather>
-				</template>
-
-				<b-dropdown-item href="/pages/profile" class="notify-item">
-					<feather
-						type="user"
-						class="icon-dual icon-xs mr-2 align-middle"
-					></feather>
-					<span>My Account</span>
-				</b-dropdown-item>
-
-				<b-dropdown-item href="javascript:void(0);" class="notify-item">
-					<feather
-						type="settings"
-						class="icon-dual icon-xs mr-2 align-middle"
-					></feather>
-					<span>Settings</span>
-				</b-dropdown-item>
-
-				<b-dropdown-item href="javascript:void(0);" class="notify-item">
-					<feather
-						type="help-circle"
-						class="icon-dual icon-xs mr-2 align-middle"
-					></feather>
-					<span>Support</span>
-				</b-dropdown-item>
-
-				<b-dropdown-item href="javascript: void(0);" class="notify-item">
-					<feather
-						type="lock"
-						class="icon-dual icon-xs mr-2 align-middle"
-					></feather>
-					<span>Lock Screen</span>
-				</b-dropdown-item>
-
-				<b-dropdown-divider></b-dropdown-divider>
-
-				<b-dropdown-item href="/logout" class="notify-item">
-					<feather
-						type="log-out"
-						class="icon-dual icon-xs mr-2 align-middle"
-					></feather>
-					<span>Logout</span>
-				</b-dropdown-item>
-			</b-dropdown>
-		</div> -->
-
-		<div class="sidebar-content">
-			<VuePerfectScrollbar
-				v-if="!isCondensed"
-				v-once
-				class="slimscroll-menu"
-				:settings="settings"
-			>
-				<div id="sidebar-menu">
-					<Appmenu />
-				</div>
-			</VuePerfectScrollbar>
-			<div v-else id="sidebar-menu">
-				<Appmenu />
-			</div>
-		</div>
-		<!-- Sidebar -left -->
-	</div>
-	<!-- Left Sidebar End -->
+    <simplebar v-else class="h-100">
+      <SideNav />
+    </simplebar>
+  </div>
+  <!-- Left Sidebar End -->
 </template>
 
-<style lang="scss">
-.slimscroll-menu {
-	height: 100%;
-}
-.ps > .ps__scrollbar-y-rail {
-	width: 8px !important;
-	background-color: transparent !important;
-}
-.ps > .ps__scrollbar-y-rail > .ps__scrollbar-y,
-.ps.ps--in-scrolling.ps--y > .ps__scrollbar-y-rail > .ps__scrollbar-y,
-.ps > .ps__scrollbar-y-rail:active > .ps__scrollbar-y,
-.ps > .ps__scrollbar-y-rail:hover > .ps__scrollbar-y {
-	width: 6px !important;
-}
-.left-side-menu-condensed .left-side-menu {
-	position: fixed;
-}
-</style>

@@ -1,118 +1,60 @@
-//
-// datatable.scss
-//
 
-.dataTables_wrapper.container-fluid {
-  padding: 0;
-}
 
-table.dataTable {
-  margin-bottom: 15px !important;
-  border-collapse: collapse !important;
+/* 
+Datatable
+*/
 
-  tbody {
-    // Multi select table
+// datatable
 
-    > tr.selected,
-    > tr > .selected {
-      background-color: $primary;
+div.dataTables_wrapper {
+  div.dataTables_filter{
+    text-align: right;
 
-      td {
-        border-color: $primary;
-      }
-    }
-    td {
-      &:focus {
-        outline: none !important;
-      }
-    }
-    // Key Tables
-    th,
-    td {
-      &.focus {
-        color: $primary;
-        background-color: rgba($primary, 0.15);
-        outline: 2px solid $primary !important;
-        outline-offset: -1px;
-      }
+    input{
+      margin-left: 0.5em;
+      margin-right: 0;
     }
   }
 }
 
-.dataTables_info {
-  font-weight: $font-weight-medium;
-}
 
-// Responsive data table
-table.dataTable.dtr-inline.collapsed {
-  > tbody {
-    > tr[role='row'] {
-      > td,
-      > th {
-        &:first-child {
-          &::before {
-            top: $table-cell-padding;
-            background-color: $success;
-            box-shadow: $box-shadow-lg;
-          }
+// data table
+
+.datatables {
+  thead {
+    tr {
+      th {
+        position: relative;
+        &:before {
+          content: "\F0143";
+          position: absolute;
+          right: 0;
+          top: 7px;
+          font: normal normal normal 24px/1 "Material Design Icons";
+          opacity: 0.3;
+        }
+
+        &:after {
+          content: "\F0140";
+          position: absolute;
+          right: 0;
+          top: 14px;
+          opacity: 0.3;
+          font: normal normal normal 24px/1 "Material Design Icons";
+        }
+      }
+
+      .asc {
+        &:before {
+          opacity: 1;
+        }
+      }
+
+      .desc {
+        &:after {
+          opacity: 1;
         }
       }
     }
-    > tr.parent {
-      > td,
-      > th {
-        &:first-child {
-          &::before {
-            top: $table-cell-padding;
-            background-color: $danger;
-          }
-        }
-      }
-    }
-  }
-}
-
-// Data Table copy button
-div.dt-button-info {
-  z-index: 21;
-  color: $white;
-  text-align: center;
-  background-color: $primary;
-  border: none;
-  border-radius: 3px;
-  box-shadow: none;
-
-  h2 {
-    color: $white;
-    background-color: rgba($white, 0.2);
-    border-bottom: none;
-  }
-}
-
-@include media-breakpoint-down(sm) {
-  li.paginate_button.previous,
-  li.paginate_button.next {
-    display: inline-block;
-    font-size: 1.5rem;
-  }
-
-  li.paginate_button {
-    display: none;
-  }
-  .dataTables_paginate {
-    ul {
-      margin: $spacer 0 0 !important;
-      text-align: center;
-    }
-  }
-  div.dt-buttons {
-    display: inline-table;
-    margin-bottom: $spacer;
-  }
-}
-
-.activate-select {
-  .sorting_1 {
-    background-color: $gray-100;
   }
 }

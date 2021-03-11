@@ -1,22 +1,18 @@
-//
-// page-title.scss
-//
+// 
+// Page-title
+// 
 
-.page-title-topbar {
-  margin: 0;
-  font-size: 20px;
-  line-height: $topbar-height;
-}
+.page-title-box {
+    padding-bottom: $grid-gutter-width;
 
-.page-title {
-    padding: 20px 0;
     .breadcrumb {
         background-color: transparent;
         padding: 0;
-        margin-bottom: 0;
     }
 
     h4 {
-        font-size: 19px;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 16px !important;
     }
 }
