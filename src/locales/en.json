@@ -91,6 +91,12 @@
     }
   },
   "menuitems": {
+    "psiai":{
+      "projects": "Projects",
+      "datasets": "Datasets",
+      "images": "Images",
+      "containers": "Containers"
+    },
     "menu": {
       "text": "Menu"
     },

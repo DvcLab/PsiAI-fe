@@ -1,25 +1,25 @@
 export const menuItems = [
     {
         id: 1,
-        label: "项目",
+        label: "menuitems.psiai.projects",
         icon: "bx-briefcase-alt-2",
         link: "/"
     },
     {
         id: 2,
-        label: "数据集",
+        label: "menuitems.psiai.datasets",
         icon: "bx-data",
         link: "/datasets"
     },
     {
         id: 3,
-        label: "镜像",
+        label: "menuitems.psiai.images",
         icon: "bx-layer",
         link: "/images"
     },
     {
         id: 4,
-        label: "容器",
+        label: "menuitems.psiai.containers",
         icon: "bx-code-block",
         link: "/containers"
     }
