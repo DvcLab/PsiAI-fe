@@ -92,10 +92,10 @@
   },
   "menuitems": {
     "psiai":{
-      "projects": "项目",
-      "datasets": "数据集",
-      "images": "镜像",
-      "containers": "容器"
+      "projects": "项目列表",
+      "datasets": "数据集列表",
+      "images": "镜像列表",
+      "containers": "容器列表"
     },
     "menu": {
       "text": "菜单"

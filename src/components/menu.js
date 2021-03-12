@@ -8,7 +8,7 @@ export const menuItems = [
     {
         id: 2,
         label: "menuitems.psiai.datasets",
-        icon: "bx-data",
+        icon: "bx-cube",
         link: "/datasets"
     },
     {

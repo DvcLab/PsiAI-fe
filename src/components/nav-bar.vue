@@ -3,7 +3,7 @@ import axios from "axios";
 
 import i18n from "../i18n";
 
-import simplebar from "simplebar-vue";
+// import simplebar from "simplebar-vue";
 
 /**
  * Nav-bar Component
@@ -44,7 +44,7 @@ export default {
       value: null,
     };
   },
-  components: { simplebar },
+  // components: { simplebar },
   mounted() {
     this.value = this.languages.find((x) => x.language === i18n.locale);
     this.text = this.value.title;
@@ -136,8 +136,8 @@ export default {
           <i class="fa fa-fw fa-bars"></i>
         </button>
 
-        <!-- App Search-->
-        <form class="app-search d-none d-lg-block">
+        <!-- App Search 注释-->
+        <!-- <form class="app-search d-none d-lg-block">
           <div class="position-relative">
             <input
               type="text"
@@ -146,9 +146,9 @@ export default {
             />
             <span class="bx bx-search-alt"></span>
           </div>
-        </form>
-
-        <b-dropdown
+        </form> -->
+        <!-- 超级菜单 注释 -->
+        <!-- <b-dropdown
           variant="black"
           class="dropdown-mega d-none d-lg-block ms-2"
           toggle-class="header-item"
@@ -360,11 +360,12 @@ export default {
               </div>
             </div>
           </div>
-        </b-dropdown>
+        </b-dropdown> -->
       </div>
 
       <div class="d-flex">
-        <b-dropdown
+        <!-- 小屏搜索框 注释 -->
+        <!-- <b-dropdown
           class="d-inline-block d-lg-none ms-2"
           variant="black"
           menu-class="dropdown-menu-lg p-0"
@@ -392,9 +393,10 @@ export default {
               </div>
             </div>
           </form>
-        </b-dropdown>
+        </b-dropdown> -->
 
-        <b-dropdown variant="white" right toggle-class="header-item">
+        <!-- 语言选择 注释 -->
+        <!-- <b-dropdown variant="white" right toggle-class="header-item">
           <template v-slot:button-content>
             <img class :src="flag" alt="Header Language" height="16" />
             {{ text }}
@@ -415,9 +417,10 @@ export default {
             />
             <span class="align-middle">{{ entry.title }}</span>
           </b-dropdown-item>
-        </b-dropdown>
+        </b-dropdown> -->
 
-        <b-dropdown
+        <!-- 社交媒体选择 注释 -->
+        <!-- <b-dropdown
           class="d-none d-lg-inline-block noti-icon"
           menu-class="dropdown-menu-lg dropdown-menu-end"
           right
@@ -480,8 +483,9 @@ export default {
               </div>
             </div>
           </div>
-        </b-dropdown>
+        </b-dropdown> -->
 
+        <!-- 全屏按钮 -->
         <div class="dropdown d-none d-lg-inline-block ms-1">
           <button
             type="button"
@@ -492,7 +496,8 @@ export default {
           </button>
         </div>
 
-        <b-dropdown
+        <!-- 通知 注释 -->
+        <!-- <b-dropdown
           right
           menu-class="dropdown-menu-lg p-0 dropdown-menu-end"
           toggle-class="header-item noti-icon"
@@ -626,8 +631,9 @@ export default {
               {{ $t("navbar.dropdown.notification.button") }}
             </a>
           </div>
-        </b-dropdown>
+        </b-dropdown> -->
 
+        <!-- 用户头像 -->
         <b-dropdown right variant="black" toggle-class="header-item" menu-class="dropdown-menu-end">
           <template v-slot:button-content>
             <img
@@ -640,27 +646,36 @@ export default {
             }}</span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
-          <!-- item-->
-          <b-dropdown-item>
+
+          <!-- 用户profile 注释 -->
+          <!-- <b-dropdown-item>
             <router-link tag="span" to="/contacts/profile">
               <i class="bx bx-user font-size-16 align-middle me-1"></i>
               {{ $t("navbar.dropdown.henry.list.profile") }}
             </router-link>
-          </b-dropdown-item>
-          <b-dropdown-item href="javascript: void(0);">
+          </b-dropdown-item> -->
+          
+          <!-- 我的钱包 注释 -->
+          <!-- <b-dropdown-item href="javascript: void(0);">
             <i class="bx bx-wallet font-size-16 align-middle me-1"></i>
             {{ $t("navbar.dropdown.henry.list.mywallet") }}
-          </b-dropdown-item>
-          <b-dropdown-item class="d-block" href="javascript: void(0);">
+          </b-dropdown-item> -->
+          
+          <!-- 设定值 注释 -->
+          <!-- <b-dropdown-item class="d-block" href="javascript: void(0);">
             <span class="badge bg-success float-end">11</span>
             <i class="bx bx-wrench font-size-16 align-middle me-1"></i>
             {{ $t("navbar.dropdown.henry.list.settings") }}
-          </b-dropdown-item>
-          <b-dropdown-item href="javascript: void(0);">
+          </b-dropdown-item> -->
+          
+          <!-- 锁屏 注释 -->
+          <!-- <b-dropdown-item href="javascript: void(0);">
             <i class="bx bx-lock-open font-size-16 align-middle me-1"></i>
             {{ $t("navbar.dropdown.henry.list.lockscreen") }}
-          </b-dropdown-item>
-          <b-dropdown-divider></b-dropdown-divider>
+          </b-dropdown-item> -->
+          
+          <!-- 分割线 注释 -->
+          <!-- <b-dropdown-divider></b-dropdown-divider> -->
           <a
             href="/logout"
            
@@ -673,7 +688,8 @@ export default {
           </a>
         </b-dropdown>
 
-        <div class="dropdown d-inline-block">
+        <!-- 右上角设置 注释 -->
+        <!-- <div class="dropdown d-inline-block">
           <button
             type="button"
             class="btn header-item noti-icon right-bar-toggle toggle-right"
@@ -681,7 +697,7 @@ export default {
           >
             <i class="bx bx-cog bx-spin toggle-right"></i>
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </header>
