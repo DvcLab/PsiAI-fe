@@ -9,8 +9,9 @@ import vco from "v-click-outside"
 import router from './router/index'
 import Scrollspy from 'vue2-scrollspy';
 import VueSweetalert2 from 'vue-sweetalert2';
+import VueKeyCloak from '@dsb-norge/vue-keycloak-js';
 
-import VueKeyCloak from '@dsb-norge/vue-keycloak-js'
+import request from '@/utils/request';
 
 import "../src/design/app.scss";
 
@@ -24,6 +25,9 @@ import i18n from './i18n'
 // import { configureFakeBackend } from './helpers/fake-backend';
 
 import tinymce from 'vue-tinymce-editor'
+
+// 全局注册
+Vue.prototype.$request = request
 
 // const firebaseConfig = {
 //   apiKey: process.env.VUE_APP_APIKEY,

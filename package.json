@@ -6,7 +6,8 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
+    "json-server": "json-server __json_server_mock__/db.json --watch"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^22.0.0",

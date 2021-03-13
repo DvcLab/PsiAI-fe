@@ -1,6 +1,6 @@
 <script>
 import Layout from "../../../layouts/main";
-// import PageHeader from "@/components/page-header";
+import ProjItem from "@/components/psiai/proj-item";
 import appConfig from "@/app.config";
 
 /**
@@ -11,21 +11,27 @@ export default {
     title: "Starter Page",
     meta: [{ name: "description", content: appConfig.description }]
   },
-  components: { Layout },
+  components: { Layout, ProjItem },
   data() {
     return {
-      title: "Starter Page",
-      items: [
-        {
-          text: "Utility",
-          href: "/"
-        },
-        {
-          text: "Starter Page",
-          active: true
-        }
-      ]
+      projects: []
     };
+  },
+  mounted() {
+    this.fetchProjData();
+  },
+  methods: {
+    fetchProjData() {
+      const vm = this;
+      this.$request.get('projects')
+      .then((res) => {
+        console.log(res)
+        vm.projects = res.data;
+      })
+      .catch((err) => {
+        console.err(err)
+      })
+    }
   }
 };
 </script>
@@ -47,7 +53,9 @@ export default {
 
       </div>
       <div class="col-12">
-        
+        <!-- <div class="row"> -->
+          <ProjItem v-for="item in projects" :key="item.uid" :proj="item" />
+        <!-- </div> -->
       </div>
     </div>
   </Layout>
