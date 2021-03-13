@@ -18,14 +18,13 @@ export default {
     };
   },
   mounted() {
-    this.fetchProjData();
+    this.getProjData();
   },
   methods: {
-    fetchProjData() {
+    getProjData() {
       const vm = this;
       this.$request.get('projects')
       .then((res) => {
-        console.log(res)
         vm.projects = res.data;
       })
       .catch((err) => {

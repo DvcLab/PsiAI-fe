@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, 
@@ -8,7 +9,8 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // 此处可以设置请求头等信息
+    const token = Vue.prototype.$keycloak.token
+    token && (config.headers['Authorization'] = 'Bearer ' + token)
     console.log(config)
     return config
   },
