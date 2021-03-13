@@ -10,6 +10,9 @@ import router from './router/index'
 import Scrollspy from 'vue2-scrollspy';
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueKeyCloak from '@dsb-norge/vue-keycloak-js';
+import VueMoment from 'vue-moment'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 
 import request from '@/utils/request';
 
@@ -66,6 +69,9 @@ Vue.use(VueGoogleMaps, {
   installComponents: true
 })
 Vue.component('apexchart', VueApexCharts)
+Vue.use(VueMoment, {
+  moment
+})
 
 // new Vue({
 //   router,

@@ -37,8 +37,7 @@ export default {
 <template>
   <Layout>
     <div class="row">
-      <div class="col-12">
-
+      <div class="col-12 p-0 search-con">
         <div class="search-box me-2 d-inline-block">
           <div class="position-relative">
             <input type="text" class="form-control" placeholder="搜索项目..." />
@@ -46,31 +45,34 @@ export default {
           </div>
         </div>
 
-        <button type="button" class="btn btn-success btn-rounded me-2 d-inline-block">
+        <!-- <button type="button" class="btn btn-success me-2 d-inline-block">
           <i class="mdi mdi-plus me-1"></i>添加
-        </button>
-
+        </button> -->
       </div>
       <div class="col-12">
         <div class="row">
           <div class="col-12">
-            <div class="row bg-white head-text">
-              <span class="col-2">#</span>
-              <span class="col-4">项目名称</span>
-              <span class="col-3">分支</span>
+            <div class="row align-items-center bg-white head-text">
+              <span class="col-1 d-none d-md-block">#</span>
+              <span class="col-3">项目名称</span>
+              <span class="col-2">分支</span>
               <span class="col-3">数据集</span>
+              <span class="col-1">用户</span>
+              <span class="col-2">创建时间</span>
             </div>
           </div>
-          <ProjItem v-for="item in projects" :key="item.uid" :proj="item" class="col-12"/>
+          <ProjItem v-for="item in projects" :key="item.id" :proj="item" class="col-12"/>
         </div>
       </div>
     </div>
   </Layout>
 </template>
 <style scoped>
+.search-con {
+  margin-bottom: 24px;
+}
 .head-text {
   font-weight: 600;
   padding: 0.75rem;
-  margin-top: 0.75rem;
 }
 </style>
