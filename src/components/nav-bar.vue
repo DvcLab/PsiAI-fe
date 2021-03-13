@@ -657,7 +657,7 @@ export default {
             <!-- <span class="d-none d-xl-inline-block ms-1">{{
               $t("navbar.dropdown.henry.text")
             }}</span> -->
-            <span class="d-none d-xl-inline-block ms-1">{{ currentUser.username | ellipsis }}</span>
+            <span v-if="currentUser" class="d-none d-xl-inline-block ms-1">{{ currentUser.username | ellipsis }}</span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
 

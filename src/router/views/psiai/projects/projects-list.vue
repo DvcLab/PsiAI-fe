@@ -52,10 +52,23 @@ export default {
 
       </div>
       <div class="col-12">
-        <!-- <div class="row"> -->
-          <ProjItem v-for="item in projects" :key="item.uid" :proj="item" />
-        <!-- </div> -->
+        <div class="row">
+          <div class="col-12">
+            <div class="row bg-white head-text">
+              <span class="col-1">#</span>
+              <span class="col-4">项目名称</span>
+            </div>
+          </div>
+          <ProjItem v-for="item in projects" :key="item.uid" :proj="item" class="col-12"/>
+        </div>
       </div>
     </div>
   </Layout>
 </template>
+<style scoped>
+.head-text {
+  font-weight: 600;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+}
+</style>

@@ -12,15 +12,22 @@ export default {
 </script>
 
 <template>
-    <div class="proj-item-con row">
-        <div class="col-2">
+    <div>
+        <div class="proj-item-con row">
+            <div class="col-1">
             <img :src="proj.cover_img_url" alt="项目" class="avatar-sm">
-        </div>
-        <div class="col-4 d-flex flex-column justify-content-center">
-            <h5 class="text-truncate mb-0">
-                <a :href="proj.url" class="text-dark proj-name">{{ proj.name }}</a>
-            </h5>
-            <p class="text-muted mb-0">{{ proj.desc }}</p>
+            </div>
+            <div class="col-4 d-flex flex-column justify-content-center">
+                <h5 class="text-truncate mb-0">
+                    <a :href="proj.url" class="text-dark proj-name">{{ proj.name }}</a>
+                </h5>
+                <p class="text-muted mb-0">{{ proj.desc }}</p>
+            </div>
+            <div class="col-4">
+                <span v-for="item in proj.branches" :key="item" class="badge bg-success">
+                    {{ item }}
+                </span>
+            </div>
         </div>
     </div>
 </template>
