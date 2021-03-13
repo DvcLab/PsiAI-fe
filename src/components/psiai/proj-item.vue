@@ -48,7 +48,7 @@ export default {
                     <b-dropdown
                         class="card-drop"
                         variant="white"
-                        
+                        menu-class="dropdown-menu-end"
                         right
                         toggle-class="p-0"
                         >
@@ -63,31 +63,6 @@ export default {
                         </b-dropdown-item>
                     </b-dropdown>
                 </div>
-
-
-                <!-- <popper trigger="hover" :options="{ placement: 'top' }">
-                    <div slot="reference">
-                        <span v-for="item in branches" :key="item" class="badge me-2"
-                            :class="{
-                                'bg-primary': `${item}` === 'master',
-                                'bg-light': `${item}` !== 'master',
-                                }"
-                            >
-                            {{ item }}
-                        </span>
-                    </div>
-                    <div class="popper text-left">
-                        <span v-for="item in proj.branches" :key="item" class="badge me-2"
-                            :class="{
-                                'bg-primary': `${item}` === 'master',
-                                'bg-light': `${item}` !== 'master',
-                                }"
-                            >
-                            {{ item }}
-                        </span>
-                    </div>
-                </popper> -->
-
             </div>
 
             <div class="col-3">
