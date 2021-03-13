@@ -11,7 +11,7 @@
           "name": "DvcLAB/PsiAI-fe",
           "url": "https://github.com/DvcLAB/PsiAI-fe",
           "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
-          "branches": ["master"],
+          "branches": ["master", "dev", "gh-page"],
           "desc": "开源AI社区前端部分",
           "dataset_ids": []
       }

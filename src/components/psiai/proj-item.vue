@@ -6,6 +6,16 @@ export default {
             default: () => {}
         },
     },
+    computed:{
+        branches(){
+            let branchList = this.proj.branches;
+            if (!branchList) return [];
+            if (branchList.length > 6) {
+                return branchList.slice(0,6);
+            }
+            return branchList;
+        }
+    },
     methods: {
     }
 }
@@ -14,7 +24,7 @@ export default {
 <template>
     <div>
         <div class="proj-item-con row">
-            <div class="col-1">
+            <div class="col-2">
             <img :src="proj.cover_img_url" alt="项目" class="avatar-sm">
             </div>
             <div class="col-4 d-flex flex-column justify-content-center">
@@ -23,10 +33,18 @@ export default {
                 </h5>
                 <p class="text-muted mb-0">{{ proj.desc }}</p>
             </div>
-            <div class="col-4">
-                <span v-for="item in proj.branches" :key="item" class="badge bg-success">
+            <div class="col-3 d-flex flex-wrap align-items-center">
+                <span v-for="item in branches" :key="item" class="badge me-2"
+                    :class="{
+                        'bg-primary': `${item}` === 'master',
+                        'bg-light': `${item}` !== 'master',
+                        }"
+                    >
                     {{ item }}
                 </span>
+            </div>
+            <div class="col-3 d-flex align-items-center">
+                <span>{{ proj.dataset_ids.length || 0 }}</span>
             </div>
         </div>
     </div>

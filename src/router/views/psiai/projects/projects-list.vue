@@ -55,8 +55,10 @@ export default {
         <div class="row">
           <div class="col-12">
             <div class="row bg-white head-text">
-              <span class="col-1">#</span>
+              <span class="col-2">#</span>
               <span class="col-4">项目名称</span>
+              <span class="col-3">分支</span>
+              <span class="col-3">数据集</span>
             </div>
           </div>
           <ProjItem v-for="item in projects" :key="item.uid" :proj="item" class="col-12"/>
