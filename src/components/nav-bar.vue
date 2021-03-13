@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import { authComputed } from '@/state/helpers';
 
 import i18n from "../i18n";
 
@@ -43,6 +44,18 @@ export default {
       flag: null,
       value: null,
     };
+  },
+  filters:{
+    ellipsis(value){
+        if (!value) return '';
+        if (value.length > 20) {
+            return value.slice(0,20) + '...'
+        }
+        return value
+    }
+  },
+  computed: {
+    ...authComputed,
   },
   // components: { simplebar },
   mounted() {
@@ -641,9 +654,10 @@ export default {
               src="@/assets/images/users/avatar-1.jpg"
               alt="Header Avatar"
             />
-            <span class="d-none d-xl-inline-block ms-1">{{
+            <!-- <span class="d-none d-xl-inline-block ms-1">{{
               $t("navbar.dropdown.henry.text")
-            }}</span>
+            }}</span> -->
+            <span class="d-none d-xl-inline-block ms-1">{{ currentUser.username | ellipsis }}</span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
 
