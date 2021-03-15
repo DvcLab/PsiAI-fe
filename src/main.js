@@ -9,10 +9,12 @@ import vco from "v-click-outside"
 import router from './router/index'
 import Scrollspy from 'vue2-scrollspy';
 import VueSweetalert2 from 'vue-sweetalert2';
+// 登录
 import VueKeyCloak from '@dsb-norge/vue-keycloak-js';
-import VueMoment from 'vue-moment'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
+// 时间显示
+import VueMoment from 'vue-moment';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 
 import request from '@/utils/request';
 

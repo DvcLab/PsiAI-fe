@@ -20,6 +20,7 @@
     "@fullcalendar/list": "^5.3.1",
     "@fullcalendar/timegrid": "^5.3.1",
     "@fullcalendar/vue": "^5.3.1",
+    "@trevoreyre/autocomplete-vue": "^2.2.0",
     "@voerro/vue-tagsinput": "^2.4.3",
     "apexcharts": "^3.22.2",
     "bootstrap": "^5.0.0-beta2",

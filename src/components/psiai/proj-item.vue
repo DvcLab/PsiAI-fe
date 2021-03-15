@@ -41,7 +41,7 @@ export default {
 
             <div class="col-2 flex-wrap">
                 <div v-if="proj.branches.length > 1">
-                    <i class="bx bx-cube me-1"></i>
+                    <i class="bx bx-git-branch me-1"></i>
                     <span class="badge bg-primary me-2">
                         {{ proj.branches[0] }}
                     </span>
@@ -109,8 +109,5 @@ export default {
     background-color: #fff;
     padding: 0.75rem;
     margin-top: 0.75rem;
-}
-.proj-name {
-    font-size: 0.9rem;
 }
 </style>

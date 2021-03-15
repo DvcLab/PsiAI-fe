@@ -1,0 +1,13 @@
+.proj-name {
+    font-size: 0.9rem;
+    text-decoration: none;
+    position: relative;
+}
+.proj-name:hover:after  {
+    content: "";
+    border-bottom: 2px solid $dark;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1px;
+}

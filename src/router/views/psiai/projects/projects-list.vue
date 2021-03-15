@@ -2,16 +2,21 @@
 import Layout from "../../../layouts/main";
 import ProjItem from "@/components/psiai/proj-item";
 import appConfig from "@/app.config";
+import Autocomplete from '@trevoreyre/autocomplete-vue'
+
+// import '@trevoreyre/autocomplete-vue/dist/style.css'
+const wikiUrl = 'https://en.wikipedia.org'
+const wikiParams = 'action=query&list=search&format=json&origin=*'
 
 /**
- * Starter component
+ * 项目列表
  */
 export default {
   page: {
-    title: "Starter Page",
-    meta: [{ name: "description", content: appConfig.description }]
+    title: "项目列表",
+    meta: [{ name: "项目列表", content: appConfig.description }]
   },
-  components: { Layout, ProjItem },
+  components: { Layout, ProjItem, Autocomplete },
   data() {
     return {
       projects: []
@@ -30,6 +35,42 @@ export default {
       .catch((err) => {
         console.err(err)
       })
+    },
+    search(input) {
+      const vm = this;
+      return new Promise(resolve => {
+        console.log(encodeURI(input))
+        if (input.length < 3) {
+          return resolve([])
+        }
+        if(vm.isUrl(input)) { // 用户输入网址，则添加项目
+
+        } else { // 用户搜索项目
+          
+        }
+        const url = `${wikiUrl}/w/api.php?${wikiParams}&srsearch=${encodeURI(
+          input
+        )}`
+
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            resolve(data.query.search)
+          })
+      })
+    },
+    
+    getResultValue(result) {
+      console.log(result)
+      return result.title
+    },
+    
+    handleSubmit(result) {
+      window.open(`${wikiUrl}/wiki/${encodeURI(result.title)}`)
+    },
+
+    isUrl(url) {
+      return /^https?:\/\/.+/.test(url)
     }
   }
 };
@@ -37,13 +78,34 @@ export default {
 <template>
   <Layout>
     <div class="row">
-      <div class="col-12 p-0 search-con">
-        <div class="search-box me-2 d-inline-block">
+      <div class="col-12 p-0 search-con text-center">
+        <autocomplete
+          aria-label="搜索添加项目..."
+          placeholder="搜索添加项目..."
+          :search="search"
+          :get-result-value="getResultValue"
+          :debounce-time="500"
+          @submit="handleSubmit"
+          >
+          <template #result="{ result, props }">
+            <li
+              v-bind="props"
+              class="autocomplete-result wiki-result"
+            >
+              <div class="wiki-title">
+                {{ result.title }}
+              </div>
+              <div class="wiki-snippet" v-html="result.snippet" />
+            </li>
+          </template>
+        </autocomplete>
+          
+        <!-- <div class="search-box me-2 d-inline-block">
           <div class="position-relative">
-            <input type="text" class="form-control" placeholder="搜索项目..." />
+            <input type="text" class="form-control border-0" placeholder="搜索项目..." />
             <i class="bx bx-search-alt search-icon"></i>
           </div>
-        </div>
+        </div> -->
 
         <!-- <button type="button" class="btn btn-success me-2 d-inline-block">
           <i class="mdi mdi-plus me-1"></i>添加
