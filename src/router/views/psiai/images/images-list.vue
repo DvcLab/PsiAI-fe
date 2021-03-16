@@ -1,49 +1,49 @@
 <script>
 import Layout from "../../../layouts/main";
-import DatasetItem from "@/components/psiai/dataset-item";
+import ImageItem from "@/components/psiai/image-item";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 
 /**
- * 数据集列表
+ * 镜像列表
  */
 export default {
   page: {
     title: "镜像列表",
     meta: [{ name: "镜像列表", content: appConfig.description }]
   },
-  components: { Layout, DatasetItem, Autocomplete },
+  components: { Layout, ImageItem, Autocomplete },
   data() {
     return {
-      datasets: [],
+      images: [],
       isSearch: false
     };
   },
   mounted() {
-    this.getDatasetsList();
+    this.getImagesList();
   },
   methods: {
-    getDatasetsList() {
+    getImagesList() {
       const vm = this;
-      this.$request.get('datasets')
+      this.$request.get('images')
       .then((res) => {
-        vm.datasets = res.data;
+        vm.images = res.data;
       })
       .catch((err) => {
         console.err(err)
       })
     },
-    getNewDatasetInfo(url) {
-      return this.$request.get('datasets_info/' + url)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        console.err(err)
-      })
-    },
+    // getNewDatasetInfo(url) {
+    //   return this.$request.get('datasets_info/' + url)
+    //   .then((res) => {
+    //     return res.data;
+    //   })
+    //   .catch((err) => {
+    //     console.err(err)
+    //   })
+    // },
     searchDataset(q) {
-      return this.$request.get('datasets/' + q)
+      return this.$request.get('images/' + q)
       .then((res) => {
         return res.data;
       })
@@ -51,15 +51,15 @@ export default {
         console.err(err)
       })
     },
-    createDataset(q) {
-      return this.$request.put('datasets', q)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        console.err(err)
-      })
-    },
+    // createDataset(q) {
+    //   return this.$request.put('datasets', q)
+    //   .then((res) => {
+    //     return res.data;
+    //   })
+    //   .catch((err) => {
+    //     console.err(err)
+    //   })
+    // },
     search(input) {
       const vm = this;
       return new Promise(resolve => {
@@ -67,44 +67,21 @@ export default {
         // if (!input || input.length < 1) {
         //   return resolve([])
         // }
-        if(vm.isUrl(input)) { // 用户输入网址，则添加项目
-          vm.isSearch = false;
-          console.log('添加项目');
-          vm.getNewDatasetInfo(input).then((res) => {
-            if(Array.isArray(res)) {
-              resolve(res);
-            } else {
-              resolve([res]);
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
-        } else { // 用户搜索项目
-          vm.isSearch = true;
-          console.log('搜索项目');
-          vm.searchDataset(input).then((res) => {
-            if(Array.isArray(res)) {
-              this.datasets = res;
-              resolve(res);
-            } else {
-              this.datasets = [res];
-              resolve([res]);
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-        }
-        // const url = `${wikiUrl}/w/api.php?${wikiParams}&srsearch=${encodeURI(
-        //   input
-        // )}`
-
-        // fetch(url)
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     resolve(data.query.search)
-        //   })
+        vm.isSearch = true;
+        console.log('搜索镜像');
+        vm.searchDataset(input).then((res) => {
+          if(Array.isArray(res)) {
+            this.images = res;
+            resolve(res);
+          } else {
+            this.images = [res];
+            resolve([res]);
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+        
       })
     },
     
@@ -117,13 +94,13 @@ export default {
       console.log(result)
       // window.open(`${wikiUrl}/wiki/${encodeURI(result.title)}`)
     },
-    handleAddDataset(res) {
-      console.log(res)
-      this.createDataset(res)
-    },
-    isUrl(url) {
-      return /^https?:\/\/.+/.test(url)
-    }
+    // handleAddDataset(res) {
+    //   console.log(res)
+    //   this.createDataset(res)
+    // },
+    // isUrl(url) {
+    //   return /^https?:\/\/.+/.test(url)
+    // }
   }
 };
 </script>
@@ -144,22 +121,8 @@ export default {
               v-bind="props"
               class="search-result"
             >
-              <div v-if="isSearch" class="text-start">
-                <h6><i class="bx bx-book-bookmark me-1"></i>{{ result.name }}</h6>
-              </div>
-              <div v-else class="row align-items-center">
-                <div class="col-4 text-sm-start">
-                  <h6 class="d-inline-block">
-                    <i class="bx bx-package me-1"></i>
-                    {{ result.name }}
-                  </h6>
-                </div>
-                <div class="col-8 text-sm-end">
-                  <button type="button" class="btn btn-outline-primary btn-sm" @click="handleAddDataset(result)">
-                    <i class="mdi mdi-plus me-1"></i>
-                    添加
-                  </button>
-                </div>
+              <div class="text-start">
+                <h6><i class="bx bx-layer me-1"></i>{{ result.name }}</h6>
               </div>
             </li>
           </template>
@@ -171,12 +134,14 @@ export default {
           <div class="col-12">
             <div class="row align-items-center bg-white head-text">
               <span class="col-md-1 d-none d-md-block">#</span>
-              <span class="col-7 col-md-8">数据集名称</span>
+              <span class="col-6 col-md-5">镜像名称</span>
+              <span class="col-2 col-md-2">类型</span>
+              <span class="col-2 col-md-2">标签</span>
               <span class="col-2 col-md-1">用户</span>
-              <span class="col-3 col-md-1">创建时间</span>
+              <span class="col-md-1 d-none d-md-block">创建时间</span>
             </div>
           </div>
-          <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item" class="col-12"/>
+          <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>
         </div>
       </div>
     </div>

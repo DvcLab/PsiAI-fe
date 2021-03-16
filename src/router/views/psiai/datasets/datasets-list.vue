@@ -149,7 +149,7 @@ export default {
               class="search-result"
             >
               <div v-if="isSearch" class="text-start">
-                <h6><i class="bx bx-book-bookmark me-1"></i>{{ result.name }}</h6>
+                <h6><i class="bx bx-cube me-1"></i>{{ result.name }}</h6>
               </div>
               <div v-else class="row align-items-center">
                 <div class="col-4 text-sm-start">

@@ -90,8 +90,8 @@
     {
       "id": "1f4428ED-2DE7-aa02-2cd4-cAb6CCAE07D3",
       "name": "DvcLAB/PsiAI-fe",
-      "tag": ["Python", "DeepLearning"],
-      "types": "CPU",
+      "tags": ["Python", "DeepLearning"],
+      "type": "GPU",
       "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
       "desc": "开源AI社区前端部分",
       "user": {
