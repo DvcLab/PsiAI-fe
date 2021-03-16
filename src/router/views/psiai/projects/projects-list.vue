@@ -5,8 +5,8 @@ import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 
 // import '@trevoreyre/autocomplete-vue/dist/style.css'
-const wikiUrl = 'https://en.wikipedia.org'
-const wikiParams = 'action=query&list=search&format=json&origin=*'
+// const wikiUrl = 'https://en.wikipedia.org'
+// const wikiParams = 'action=query&list=search&format=json&origin=*'
 
 /**
  * 项目列表
@@ -19,7 +19,8 @@ export default {
   components: { Layout, ProjItem, Autocomplete },
   data() {
     return {
-      projects: []
+      projects: [],
+      isSearch: false
     };
   },
   mounted() {
@@ -36,39 +37,94 @@ export default {
         console.err(err)
       })
     },
+    getNewProjInfo(url) {
+      return this.$request.get('projects_info/' + url)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.err(err)
+      })
+    },
+    searchProjData(q) {
+      return this.$request.get('projects/' + q)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.err(err)
+      })
+    },
+    createProj(q) {
+      return this.$request.put('projects', q)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        console.err(err)
+      })
+    },
     search(input) {
       const vm = this;
       return new Promise(resolve => {
         console.log(encodeURI(input))
-        if (input.length < 3) {
-          return resolve([])
-        }
+        // if (!input || input.length < 1) {
+        //   return resolve([])
+        // }
         if(vm.isUrl(input)) { // 用户输入网址，则添加项目
-
-        } else { // 用户搜索项目
-          
-        }
-        const url = `${wikiUrl}/w/api.php?${wikiParams}&srsearch=${encodeURI(
-          input
-        )}`
-
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            resolve(data.query.search)
+          vm.isSearch = false;
+          console.log('添加项目');
+          vm.getNewProjData(input).then((res) => {
+            if(Array.isArray(res)) {
+              resolve(res);
+            } else {
+              resolve([res]);
+            }
           })
+          .catch(err => {
+            console.log(err)
+          })
+        } else { // 用户搜索项目
+          vm.isSearch = true;
+          console.log('搜索项目');
+          vm.searchProjData(input).then((res) => {
+            if(Array.isArray(res)) {
+              this.projects = res;
+              resolve(res);
+            } else {
+              this.projects = [res];
+              resolve([res]);
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        }
+        // const url = `${wikiUrl}/w/api.php?${wikiParams}&srsearch=${encodeURI(
+        //   input
+        // )}`
+
+        // fetch(url)
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     resolve(data.query.search)
+        //   })
       })
     },
     
     getResultValue(result) {
       console.log(result)
-      return result.title
+      return result.name
     },
     
     handleSubmit(result) {
-      window.open(`${wikiUrl}/wiki/${encodeURI(result.title)}`)
+      console.log(result)
+      // window.open(`${wikiUrl}/wiki/${encodeURI(result.title)}`)
     },
-
+    handleAddProj(res) {
+      console.log(res)
+      this.createProj(res)
+    },
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
     }
@@ -90,12 +146,31 @@ export default {
           <template #result="{ result, props }">
             <li
               v-bind="props"
-              class="autocomplete-result wiki-result"
+              class="search-result"
             >
-              <div class="wiki-title">
-                {{ result.title }}
+              <div v-if="isSearch" class="text-start">
+                <h6><i class="bx bx-book-bookmark me-1"></i>{{ result.name }}</h6>
               </div>
-              <div class="wiki-snippet" v-html="result.snippet" />
+              <div v-else class="row align-items-center">
+                <div class="col-4 text-sm-start">
+                  <h6 class="d-inline-block">
+                    <i class="bx bx-package me-1"></i>
+                    {{ result.name }}
+                  </h6>
+                </div>
+                <div class="col-8 text-sm-end">
+                  <button type="button" class="btn btn-outline-primary btn-sm" @click="handleAddProj(result)">
+                    <i class="mdi mdi-plus me-1"></i>
+                    添加
+                  </button>
+                </div>
+                <!-- <div class="d-inline-block ">
+                  <button type="button" class="btn btn-outline-primary btn-sm">
+                    <i class="mdi mdi-plus me-1"></i>
+                    添加
+                  </button>
+                </div> -->
+              </div>
             </li>
           </template>
         </autocomplete>

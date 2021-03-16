@@ -40,7 +40,7 @@ export default {
             </div>
 
             <div class="col-2 flex-wrap">
-                <div v-if="proj.branches.length > 1">
+                <div v-if="proj.branches && proj.branches.length > 0">
                     <i class="bx bx-git-branch me-1"></i>
                     <span class="badge bg-primary me-2">
                         {{ proj.branches[0] }}
@@ -66,7 +66,7 @@ export default {
             </div>
 
             <div class="col-3">
-                <div v-if="proj.datasets.length > 0">
+                <div v-if="proj.datasets && proj.datasets.length > 0">
                     <i class="bx bx-cube me-1"></i>
                     <span class="text-dark">
                         {{ proj.datasets[0].name }}

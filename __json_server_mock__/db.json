@@ -7,7 +7,7 @@
   ],
   "projects": [
       {
-          "id": "1",
+          "id": "1f4428ED-2DE7-aa02-2cd4-cAb6CCAE07D3",
           "name": "DvcLAB/PsiAI-fe",
           "url": "https://github.com/DvcLAB/PsiAI-fe",
           "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
@@ -36,12 +36,12 @@
           "update_time": 1615644575223
       },
       {
-        "id": "2",
-        "name": "DvcLAB/PsiAI-fe",
-        "url": "https://github.com/DvcLAB/PsiAI-fe",
+        "id": "FbF3107E-dCB3-e468-C3EE-BA4D75dB2F1E",
+        "name": "DvcLAB/dockerhub",
+        "url": "https://github.com/DvcLAB/dockerhub",
         "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
-        "branches": ["master", "dev", "gh-page"],
-        "desc": "开源AI社区前端部分",
+        "branches": ["master"],
+        "desc": "容器管理后台服务",
         "datasets": [
             {
               "id": "6E41aEFb-eA13-D1Ca-c8bc-3772818cE736",
@@ -61,8 +61,8 @@
             "max_container_num": 10,
             "container_num": 2
         },
-        "create_time": 1615644575223,
-        "update_time": 1615644575223
+        "create_time": 1615644575323,
+        "update_time": 1615644575323
     }
   ]
 }
