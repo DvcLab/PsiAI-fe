@@ -53,7 +53,7 @@ export default {
                         toggle-class="p-0"
                         >
                         <template v-slot:button-content>
-                            <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                            <i class="mdi bx bx-code-alt font-size-18"></i>
                         </template>
                         <b-dropdown-item
                             v-for="item in image.tags"

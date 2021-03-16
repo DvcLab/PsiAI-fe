@@ -107,5 +107,35 @@
       "create_time": 1615644575223,
       "update_time": 1615644575223
     }
+  ],
+  "containers": [
+    {
+      "id": "1f4428ED-2DE7-aa02-2cd4-cAb6CCAE07D3",
+      "host_id": "1f4428ED-2DE7-aa02-2cd4-cAb6CCAE037D",
+      "user_host": false,
+      "cpus": 2,
+      "mem": 4,
+      "gpu_devices": "368eAEFe-c4Db-1637-096E-FDb3e1e1A3Fd",
+      "gpu_devices_product_names": ["寒武纪", "Intel"],
+      "jupyter_url": "ssh://root@fengyun.aixidian.cn:54001",
+      "tunnel_id": "30",
+      "tunnel_port": 60088,
+      "docker_compose_config": "",
+      "status": "new",
+      "cpu_usage": 20,
+      "mem_usage": 15,
+      "user": {
+        "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
+        "username": "goodnight",
+        "email": "goodnightlilanhui@gmail.com",
+        "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
+        "roles": [],
+        "enabled": true,
+        "max_container_num": 10,
+        "container_num": 2
+      },
+      "create_time": 1615644575223,
+      "update_time": 1615644575223
+    }
   ]
 }

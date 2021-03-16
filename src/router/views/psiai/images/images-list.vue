@@ -42,7 +42,7 @@ export default {
     //     console.err(err)
     //   })
     // },
-    searchDataset(q) {
+    searchImage(q) {
       return this.$request.get('images/' + q)
       .then((res) => {
         return res.data;
@@ -69,7 +69,7 @@ export default {
         // }
         vm.isSearch = true;
         console.log('搜索镜像');
-        vm.searchDataset(input).then((res) => {
+        vm.searchImage(input).then((res) => {
           if(Array.isArray(res)) {
             this.images = res;
             resolve(res);
