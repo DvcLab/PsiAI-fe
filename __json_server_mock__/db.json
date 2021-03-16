@@ -64,5 +64,26 @@
         "create_time": 1615644575323,
         "update_time": 1615644575323
     }
+  ],
+  "datasets": [
+    {
+      "id": "1f4428ED-2DE7-aa02-2cd4-cAb6CCAE07D3",
+      "name": "DvcLAB/PsiAI-fe",
+      "url": "https://github.com/DvcLAB/PsiAI-fe",
+      "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
+      "desc": "开源AI社区前端部分",
+      "user": {
+          "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
+          "username": "goodnight",
+          "email": "goodnightlilanhui@gmail.com",
+          "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
+          "roles": [],
+          "enabled": true,
+          "max_container_num": 10,
+          "container_num": 2
+      },
+      "create_time": 1615644575223,
+      "update_time": 1615644575223
+    }
   ]
 }

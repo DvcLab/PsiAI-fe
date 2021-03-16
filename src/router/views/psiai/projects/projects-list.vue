@@ -74,7 +74,7 @@ export default {
         if(vm.isUrl(input)) { // 用户输入网址，则添加项目
           vm.isSearch = false;
           console.log('添加项目');
-          vm.getNewProjData(input).then((res) => {
+          vm.getNewProjInfo(input).then((res) => {
             if(Array.isArray(res)) {
               resolve(res);
             } else {
@@ -190,12 +190,12 @@ export default {
         <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white head-text">
-              <span class="col-1 d-none d-md-block">#</span>
-              <span class="col-3">项目名称</span>
-              <span class="col-2">分支</span>
-              <span class="col-3">数据集</span>
-              <span class="col-1">用户</span>
-              <span class="col-2">创建时间</span>
+              <span class="col-md-1 d-none d-md-block">#</span>
+              <span class="col-4 col-md-3">项目名称</span>
+              <span class="col-3 col-md-2">分支</span>
+              <span class="col-3 col-md-3">数据集</span>
+              <span class="col-2 col-md-1">用户</span>
+              <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
             </div>
           </div>
           <ProjItem v-for="item in projects" :key="item.id" :proj="item" class="col-12"/>
