@@ -138,7 +138,7 @@ export default {
               <span class="col-2 col-md-2">类型</span>
               <span class="col-2 col-md-2">标签</span>
               <span class="col-2 col-md-1">用户</span>
-              <span class="col-md-1 d-none d-md-block">创建时间</span>
+              <span class="col-md-1 text-end d-none d-md-block">创建时间</span>
             </div>
           </div>
           <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>

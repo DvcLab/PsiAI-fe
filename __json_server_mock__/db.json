@@ -45,7 +45,7 @@
           "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
           "enabled": true,
           "roles": [
-              "DOCKHUB_USER"
+            "DOCKHUB_USER"
           ],
           "max_container_num": 10,
           "container_num": 0,

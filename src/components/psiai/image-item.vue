@@ -69,7 +69,7 @@ export default {
                 <img class="rounded-circle avatar-xs" :src="image.user.avatar_url" :alt="image.user.username" />
             </div>
 
-            <div class="col-md-1 d-none d-md-block">
+            <div class="col-md-1 text-end d-none d-md-block">
                 <i class="bx bx-calendar me-1"></i>
                 <span>{{ image.update_time | moment("from", "now") }}</span>
             </div>

@@ -9,14 +9,7 @@ export default {
         },
     },
     computed:{
-        branches(){
-            let branchList = this.dataset.branches;
-            if (!branchList) return [];
-            if (branchList.length > 3) {
-                return branchList.slice(0,3);
-            }
-            return branchList;
-        }
+
     },
     methods: {
     }
@@ -28,7 +21,8 @@ export default {
         <div class="proj-item-con row align-items-center">
 
             <div class="col-md-1 d-none d-md-block">
-                <img class="avatar-sm" :src="dataset.cover_img_url" alt="项目" />
+                <!-- <img class="avatar-sm" :src="dataset.cover_img_url" alt="数据集" /> -->
+                <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="dataset.cover_img_url" alt="数据集" />
             </div>
 
             <div class="col-7 col-md-8">
@@ -39,10 +33,14 @@ export default {
             </div>
 
             <div class="col-2 col-md-1">
+                <span class="badge bg-secondary">暂无</span>
+            </div>
+
+            <div class="col-2 col-md-1">
                 <img class="rounded-circle avatar-xs" :src="dataset.user.avatar_url" :alt="dataset.user.username" />
             </div>
 
-            <div class="col-3 col-md-1">
+            <div class="col-3 col-md-1 text-end">
                 <i class="bx bx-calendar me-1"></i>
                 <span>{{ dataset.update_time | moment("from", "now") }}</span>
             </div>

@@ -29,7 +29,8 @@ export default {
         <div class="proj-item-con row align-items-center">
 
             <div class="col-1 col-md-1 d-none d-md-block">
-                <img class="avatar-sm" :src="proj.cover_img_url" alt="项目" />
+                <!-- <img class="avatar-sm" :src="proj.cover_img_url" alt="项目" /> -->
+                <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="proj.cover_img_url" alt="项目" />
             </div>
 
             <div class="col-4 col-md-3">

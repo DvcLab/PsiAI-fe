@@ -182,8 +182,9 @@ export default {
             <div class="row align-items-center bg-white head-text">
               <span class="col-md-1 d-none d-md-block">#</span>
               <span class="col-7 col-md-8">数据集名称</span>
+              <span class="col-2 col-md-1">标签</span>
               <span class="col-2 col-md-1">用户</span>
-              <span class="col-3 col-md-1">创建时间</span>
+              <span class="col-3 col-md-1 text-end">创建时间</span>
             </div>
           </div>
           <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item" class="col-12"/>
