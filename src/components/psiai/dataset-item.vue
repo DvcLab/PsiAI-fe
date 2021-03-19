@@ -9,7 +9,16 @@ export default {
         },
     },
     computed:{
-
+        tags() {
+            let tagList = this.dataset.tags;
+            if (!tagList) return [];
+            if (tagList.length > 3) {
+                let temp = tagList.slice(0,3);
+                temp.push('...');
+                return temp;
+            }
+            return tagList;
+        }
     },
     methods: {
     }
@@ -25,15 +34,19 @@ export default {
                 <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="dataset.cover_img_url" alt="数据集" />
             </div>
 
-            <div class="col-7 col-md-8">
+            <div class="col-7 col-md-9">
                 <h5 class="text-truncate mb-0 list-item-name">
                     <a :href="dataset.url" class="text-dark">{{ dataset.name }}</a>
                 </h5>
                 <p class="text-muted text-truncate mb-0">{{ dataset.desc }}</p>
-            </div>
-
-            <div class="col-2 col-md-1">
-                <span class="badge bg-secondary">暂无</span>
+                <p v-if="dataset.tags && dataset.tags.length > 0" class="text-muted text-truncate mb-0">
+                    <span v-for="item in tags"
+                        class="badge bg-primary me-1"
+                        :key="item"
+                        >
+                        {{ item }}
+                    </span>
+                </p>
             </div>
 
             <div class="col-2 col-md-1">
