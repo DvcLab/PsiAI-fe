@@ -33,6 +33,14 @@ export default [
     },
     component: () => import('./views/psiai/containers/containers-list.vue'),
   },
+  {
+    path: '/createContainers',
+    name: '创建容器',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('./views/psiai/containers/create.vue'),
+  },
   // {
   //   path: '/',
   //   name: 'default',

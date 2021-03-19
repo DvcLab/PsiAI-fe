@@ -92,22 +92,17 @@ export default {
     
     handleSubmit(result) {
       console.log(result)
-      // window.open(`${wikiUrl}/wiki/${encodeURI(result.title)}`)
     },
-    // handleAddDataset(res) {
-    //   console.log(res)
-    //   this.createDataset(res)
-    // },
-    // isUrl(url) {
-    //   return /^https?:\/\/.+/.test(url)
-    // }
+    toCreateContainerPage() {
+      this.$router.push({path: '/createContainers'})
+    }
   }
 };
 </script>
 <template>
   <Layout>
-    <div class="row">
-      <div class="col-12 p-0 search-con text-center">
+    <div class="row align-items-center">
+      <div class="col-6 p-0">
         <autocomplete
           aria-label="搜索容器..."
           placeholder="搜索容器..."
@@ -122,12 +117,20 @@ export default {
               class="search-result"
             >
               <div class="text-start">
-                <h6><i class="bx bx-layer me-1"></i>{{ result.name }}</h6>
+                <h6><i class="bx bx-code-block me-1"></i>{{ result.id }}</h6>
               </div>
             </li>
           </template>
         </autocomplete>
-
+      </div>
+      <div class="col-6 align-self-center">
+        <button
+          type="button"
+          class="btn btn-success btn-rounded mb-2 me-2 float-end"
+          @click="toCreateContainerPage"
+        >
+          <i class="mdi mdi-plus me-1"></i> 创建容器
+        </button>
       </div>
       <div class="col-12">
         <div class="row">

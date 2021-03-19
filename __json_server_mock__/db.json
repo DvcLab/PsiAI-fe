@@ -11,7 +11,7 @@
       "user": {
           "username": "test",
           "email": "877369610@qq.com",
-          "avatar_url": "https://hostname",
+          "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
           "enabled": true,
           "roles": [
               "DOCKHUB_USER"
@@ -38,23 +38,29 @@
   ],
   "datasets": [
     {
-      "id": "1f4428ED-2DE7-aa02-2cd4-cAb6CCAE07D3",
-      "name": "DvcLAB/PsiAI-fe",
-      "url": "https://github.com/DvcLAB/PsiAI-fe",
-      "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
-      "desc": "开源AI社区前端部分",
+      "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
       "user": {
-        "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
-        "username": "goodnight",
-        "email": "goodnightlilanhui@gmail.com",
-        "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
-        "roles": [],
-        "enabled": true,
-        "max_container_num": 10,
-        "container_num": 2
+          "username": "test",
+          "email": "877369610@qq.com",
+          "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
+          "enabled": true,
+          "roles": [
+              "DOCKHUB_USER"
+          ],
+          "max_container_num": 10,
+          "container_num": 0,
+          "id": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
+          "create_time": 1616070795000,
+          "update_time": 1616070795000
       },
-      "create_time": 1615644575223,
-      "update_time": 1615644575223
+      "name": "mnist",
+      "url": "https://s3.dvclab.com/mnist",
+      "cover_img_url": "https://s3.dvclab.com/mnist/.cover_img.png",
+      "desc": "# 数据集说明\n## 数据集结构\n```\nmnist\n├─ train-images-idx1-ubyte.gz (训练数据图片)\n├─ train-labels-idx3-ubyte.gz (训练数据标签)\n├─ test-images-idx3-ubyte.gz (测试集图片)\n└─ test-labels-idx1-ubyte.gz (测试集标签)\n```\n## 内容\n1. 本数据集是下载的fasion_mnist官方数据集文件，格式为.gz的压缩包。\n2. Fashion-MNIST数据集包含了10个类别的图像，分别是：t-shirt（T恤），trouser（牛仔裤），pullover（套衫），dress（裙子），coat（外套），sandal（凉鞋），shirt（衬衫），sneaker（运动鞋），bag（包），ankle boot（短靴）。\n3. 训练数据集每个类别含有6000个样本，测试数据集每个类别含有1000个样本，一共有10个类别，故而训练数据集共60000个样本，测试数据集共10000个样本。\n4. 每幅图像是一个28*28的像素数组，每个像素的值为0~255之间的8位无符号整数（uint8），使用三维NDArray存储，最后一维表示通道个数。由于为灰度图像，故通道数为1。\n## 预览<img src=\"https://i.ibb.co/vPp4pxJ/fashion-mnist-3-0-1.png\" alt=\"fashion_mnist-3.0.1\" style=\"zoom:50%;\" />## 关联的项目\n项目名称：CNN\n项目地址：https://github.com/DvcLAB/CNN.git\n",
+      "tags": [],
+      "id": "b43f01598c9e4038c03ee61aeb50398b",
+      "create_time": 1616141876000,
+      "update_time": 1616141909000
     }
   ],
   "images": [
