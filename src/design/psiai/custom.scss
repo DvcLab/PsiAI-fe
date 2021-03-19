@@ -1,3 +1,19 @@
 .main-content {
     overflow: visible;
 }
+// 列表项的名称样式
+.list-item-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    position: relative;
+}
+.list-item-name a:hover:after  {
+    content: "";
+    border-bottom: 2px solid $dark;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1px;
+}

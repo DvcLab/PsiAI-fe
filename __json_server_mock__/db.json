@@ -6,63 +6,34 @@
     }
   ],
   "projects": [
-      {
-          "id": "1f4428ED-2DE7-aa02-2cd4-cAb6CCAE07D3",
-          "name": "DvcLAB/PsiAI-fe",
-          "url": "https://github.com/DvcLAB/PsiAI-fe",
-          "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
-          "branches": ["master", "dev", "gh-page"],
-          "desc": "开源AI社区前端部分",
-          "datasets": [
-              {
-                "id": "6E41aEFb-eA13-D1Ca-c8bc-3772818cE736",
-                "name": "MINIST",
-                "url": "https://github.com/DvcLAB/PsiAI-fe",
-                "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
-                "desc": "开源AI社区前端部分"
-              }
+    {
+      "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
+      "user": {
+          "username": "test",
+          "email": "877369610@qq.com",
+          "avatar_url": "https://hostname",
+          "enabled": true,
+          "roles": [
+              "DOCKHUB_USER"
           ],
-          "user": {
-              "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
-              "username": "goodnight",
-              "email": "goodnightlilanhui@gmail.com",
-              "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
-              "roles": [],
-              "enabled": true,
-              "max_container_num": 10,
-              "container_num": 2
-          },
-          "create_time": 1615644575223,
-          "update_time": 1615644575223
+          "max_container_num": 10,
+          "container_num": 0,
+          "id": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
+          "create_time": 1616070795000,
+          "update_time": 1616070795000
       },
-      {
-        "id": "FbF3107E-dCB3-e468-C3EE-BA4D75dB2F1E",
-        "name": "DvcLAB/dockerhub",
-        "url": "https://github.com/DvcLAB/dockerhub",
-        "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
-        "branches": ["master"],
-        "desc": "容器管理后台服务",
-        "datasets": [
-            {
-              "id": "6E41aEFb-eA13-D1Ca-c8bc-3772818cE736",
-              "name": "MINIST",
-              "url": "https://github.com/DvcLAB/PsiAI-fe",
-              "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
-              "desc": "开源AI社区前端部分"
-            }
+      "name": "dockerhub",
+      "url": "https://github.com/DvcLAB/dockerhub",
+      "branches": [
+          "main",
+          "gh-page",
+          "dev"
         ],
-        "user": {
-            "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
-            "username": "goodnight",
-            "email": "goodnightlilanhui@gmail.com",
-            "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
-            "roles": [],
-            "enabled": true,
-            "max_container_num": 10,
-            "container_num": 2
-        },
-        "create_time": 1615644575323,
-        "update_time": 1615644575323
+      "desc": "容器管理后台服务. Contribute to DvcLAB/dockerhub development by creating an account on GitHub.",
+      "dataset_ids": [],
+      "id": "080f199ca6fcb145e480b22b2487bd7f",
+      "create_time": 1616068502000,
+      "update_time": 1616070795000
     }
   ],
   "datasets": [
@@ -73,14 +44,14 @@
       "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
       "desc": "开源AI社区前端部分",
       "user": {
-          "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
-          "username": "goodnight",
-          "email": "goodnightlilanhui@gmail.com",
-          "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
-          "roles": [],
-          "enabled": true,
-          "max_container_num": 10,
-          "container_num": 2
+        "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
+        "username": "goodnight",
+        "email": "goodnightlilanhui@gmail.com",
+        "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
+        "roles": [],
+        "enabled": true,
+        "max_container_num": 10,
+        "container_num": 2
       },
       "create_time": 1615644575223,
       "update_time": 1615644575223
@@ -90,19 +61,22 @@
     {
       "id": "1f4428ED-2DE7-aa02-2cd4-cAb6CCAE07D3",
       "name": "DvcLAB/PsiAI-fe",
-      "tags": ["Python", "DeepLearning"],
+      "tags": [
+        "Python",
+        "DeepLearning"
+      ],
       "type": "GPU",
       "cover_img_url": "http://skote.vuejs-light.themesbrand.com/img/img-1.cd1a7cd0.png",
       "desc": "开源AI社区前端部分",
       "user": {
-          "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
-          "username": "goodnight",
-          "email": "goodnightlilanhui@gmail.com",
-          "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
-          "roles": [],
-          "enabled": true,
-          "max_container_num": 10,
-          "container_num": 2
+        "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",
+        "username": "goodnight",
+        "email": "goodnightlilanhui@gmail.com",
+        "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
+        "roles": [],
+        "enabled": true,
+        "max_container_num": 10,
+        "container_num": 2
       },
       "create_time": 1615644575223,
       "update_time": 1615644575223
@@ -117,12 +91,12 @@
       "mem": 4,
       "gpu_devices": "368eAEFe-c4Db-1637-096E-FDb3e1e1A3Fd",
       "gpu_devices_product_names": ["寒武纪", "Intel"],
-      "jupyter_url": "ssh://root@fengyun.aixidian.cn:54001",
+      "jupyter_url": "https://github.com/DvcLAB/PsiAI-fe",
       "tunnel_id": "30",
       "tunnel_port": 60088,
-      "docker_compose_config": "",
-      "status": "new",
-      "cpu_usage": 20,
+      "docker_compose_config": "version: '3' services:",
+      "status": "Deleted",
+      "cpu_usage": 35,
       "mem_usage": 15,
       "user": {
         "uid": "3d8eAEFe-c4Db-1637-096E-FDb3e1e1A3F6",

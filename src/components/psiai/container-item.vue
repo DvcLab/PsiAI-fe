@@ -8,20 +8,106 @@ export default {
             default: () => {}
         },
     },
+    data(){
+        return {
+            delLoading: false
+        }
+    },
     computed:{
-        // branches(){
-        //     let branchList = this.dataset.branches;
-        //     if (!branchList) return [];
-        //     if (branchList.length > 3) {
-        //         return branchList.slice(0,3);
-        //     }
-        //     return branchList;
-        // }
+        status() {
+            const status = this.container.status;
+            switch(status){
+                case 'New':
+                    return {
+                        text: 'New',
+                        theme: 'bg-primary'
+                    };
+                case 'Init':
+                    return {
+                        text: 'Init',
+                        theme: 'bg-info'
+                    };
+                case 'Repo_Clone_Success':
+                    return {
+                        text: 'Repo_Clone_Success',
+                        theme: 'bg-success'
+                    };
+                case 'Pip_Install_Success':
+                    return {
+                        text: 'Pip_Install_Success',
+                        theme: 'bg-success'
+                    };
+                case 'Dataset_Load_Success':
+                    return {
+                        text: 'Dataset_Load_Success',
+                        theme: 'bg-success'
+                    };
+                case 'Jupyterlab_Start_Success':
+                    return {
+                        text: 'Jupyterlab_Start_Success',
+                        theme: 'bg-success'
+                    };
+                case 'Failure':
+                    return {
+                        text: 'Failure',
+                        theme: 'bg-danger'
+                    };
+                case 'Deleted':
+                    return {
+                        text: 'Deleted',
+                        theme: 'bg-secondary'
+                    };
+                default:
+                    return {
+                        text: 'NULL',
+                        theme: 'bg-secondary'
+                    }
+            }
+        },
+        cpuProgress() {
+            let cpuUsage = this.container.cpu_usage;
+            if(cpuUsage >= 30 && cpuUsage < 60) {
+                return 'warning'
+            } else if (cpuUsage >= 60) {
+                return 'danger'
+            } else {
+                return 'success'
+            }
+        },
+        memProgress() {
+            let memUsage = this.container.mem_usage;
+            if(memUsage >= 30 && memUsage < 60) {
+                return 'warning'
+            } else if (memUsage >= 60) {
+                return 'danger'
+            } else {
+                return 'success'
+            }
+        },
+        configFile(){
+            let config = this.container.docker_compose_config
+            let blob = new Blob([config], {type : 'application/x-yaml'});
+            return URL.createObjectURL(blob);
+        },
     },
     methods: {
         // 打开JupyterLab页面
         openLab(href) {
             window.open(href, "_blank")
+        },
+        // 删除容器 
+        delContainer() {
+            const _this = this;
+            this.delLoading = true;
+            let q = this.container.id;
+            this.$request.delete('containers/' + q)
+            .then(() => {
+                _this.delLoading = false;
+            })
+            .catch((err) => {
+                _this.delLoading = false;
+                console.err(err)
+            })
         }
     }
 }
@@ -29,48 +115,93 @@ export default {
 
 <template>
     <div class="proj-item-con">
-        <div class="row align-items-center mb-2">
-            <div class="col-md-12">
-                <span>{{ container.id }}</span>
-                <span>{{ container.user.username }}</span>
-                <div class="float-end">
-                    <span class="badge bg-primary me-2">
-                        {{ container.status }}
+        <div class="row align-items-center">
+            <div class="col-12 col-md-4 mb-2">
+                <span class="d-block text-truncate mb-0 list-item-name">{{ container.id }}</span>
+            </div>
+            <div class="col-12 col-md-4 mb-2">
+                <span class="d-block text-truncate">
+                    <i class="bx bx-user me-1"></i>
+                    {{ container.user.username }}
+                </span>
+            </div>
+            <div class="col-12 col-md-4 mb-2">
+                <div class="float-end d-none d-md-block">
+                    <span class="badge me-2"
+                        :class="status.theme"
+                    >
+                        {{ status.text }}
+                    </span>
+                    <span class="text-success">{{ container.update_time | moment('YYYY-MM-DD HH:mm:ss') }}</span>
+                </div>
+                <div class="float-start d-md-none">
+                    <span class="badge me-2"
+                        :class="status.theme"
+                    >
+                        {{ status.text }}
                     </span>
                     <span class="text-success">{{ container.update_time | moment('YYYY-MM-DD HH:mm:ss') }}</span>
                 </div>
             </div>
         </div>
-        <div class="row mb-2">
-            <div class="col-6 col-md-2">
-                <span class="badge rounded-pill bg-primary me-2">
+        <div class="row">
+            <div class="col-6 col-md-2 mb-2">
+                <span class="badge rounded-pill bg-info me-2">
                     {{ container.gpu_devices_product_names[0] }}
                 </span>
             </div>
-            <div class="col-6 col-md-2">
+            <div class="col-6 col-md-2 mb-2">
                 <span class="badge rounded-pill bg-primary me-2">
                     <i class="bx bx-chip me-1"></i>内核
                 </span> {{ container.cpus }}
             </div>
-            <div class="col-6 col-md-2">
+            <div class="col-6 col-md-2 mb-2">
                 <span class="badge rounded-pill bg-primary me-2">
                     <i class="bx bx-grid-alt me-1"></i>内存
                 </span> {{ container.mem }}GB
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-4 mb-2">
                 <p class="mb-0">CPU使用</p>
-                <b-progress :value="container.cpu_usage" :max="100" variant="success"></b-progress>
+                <b-progress :value="container.cpu_usage" :max="100" :variant="cpuProgress"></b-progress>
             </div>
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-4 mb-2">
                 <p class="mb-0">内存使用</p>
-                <b-progress :value="container.mem_usage" :max="100" variant="success"></b-progress>
+                <b-progress :value="container.mem_usage" :max="100" :variant="memProgress"></b-progress>
             </div>
             <div class="col-12 col-md-4">
                 <div class="float-end">
-                    <button type="button" class="btn btn-outline-success btn-sm me-2" @click="openLab(container.jupyter_url)">docker-compose.yml</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" @click="openLab(container.jupyter_url)">JupyterLAB</button>
+                    <!-- <button type="button" class="btn btn-outline-success btn-sm me-2" @click="openLab(container.jupyter_url)">docker-compose.yml</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" @click="openLab(container.jupyter_url)">JupyterLAB</button> -->
+                    <ul class="list-inline mb-0 font-size-20">
+                        <li class="list-inline-item">
+                            <a
+                                :href="configFile"
+                                class="text-primary p-1"
+                                download="docker-compose-config"
+                            >
+                                <i class="bx bx-cloud-download"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a
+                                :href="container.jupyter_url"
+                                class="text-primary p-1"
+                            >
+                                <i class="bx bx-code-block"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a
+                                class="text-danger p-1"
+                                href="javascript:void(0)" 
+                                @click="delContainer"
+                            >
+                                <i class="bx bxs-trash"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -82,5 +213,8 @@ export default {
     background-color: #fff;
     padding: 0.75rem;
     margin-top: 0.75rem;
+}
+.container-btn {
+    font-size: 1.2rem;
 }
 </style>
