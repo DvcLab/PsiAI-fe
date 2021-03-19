@@ -117,10 +117,10 @@ export default {
     <div class="proj-item-con">
         <div class="row align-items-center">
             <div class="col-12 col-md-4 mb-2">
-                <span class="d-block text-truncate mb-0 list-item-name">{{ container.id }}</span>
+                <h5 class="d-block text-truncate text-dark mb-0 list-item-name">{{ container.id }}</h5>
             </div>
             <div class="col-12 col-md-4 mb-2">
-                <span class="d-block text-truncate">
+                <span class="d-inline-block text-truncate">
                     <i class="bx bx-user me-1"></i>
                     {{ container.user.username }}
                 </span>

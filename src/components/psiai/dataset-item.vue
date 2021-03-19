@@ -32,10 +32,10 @@ export default {
             </div>
 
             <div class="col-7 col-md-8">
-                <h5 class="text-truncate mb-0">
-                    <a :href="dataset.url" class="text-dark proj-name">{{ dataset.name }}</a>
+                <h5 class="text-truncate mb-0 list-item-name">
+                    <a :href="dataset.url" class="text-dark">{{ dataset.name }}</a>
                 </h5>
-                <p class="text-muted mb-0">{{ dataset.desc }}</p>
+                <p class="text-muted text-truncate mb-0">{{ dataset.desc }}</p>
             </div>
 
             <div class="col-2 col-md-1">

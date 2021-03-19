@@ -23,10 +23,10 @@ export default {
             </div>
 
             <div class="col-6 col-md-5">
-                <h5 class="text-truncate mb-0">
-                    <span class="text-dark proj-name">{{ image.name }}</span>
+                <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
+                    {{ image.name }}
                 </h5>
-                <p class="text-muted mb-0">{{ image.desc }}</p>
+                <p class="text-muted text-truncate mb-0">{{ image.desc }}</p>
             </div>
 
             <div class="col-2 col-md-2">

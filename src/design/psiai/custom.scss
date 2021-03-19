@@ -8,6 +8,8 @@
     line-height: 1.2;
     text-decoration: none;
     position: relative;
+    display: inline-block;
+    max-width:100%;
 }
 .list-item-name a:hover:after  {
     content: "";

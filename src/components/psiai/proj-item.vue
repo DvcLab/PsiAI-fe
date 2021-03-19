@@ -33,8 +33,8 @@ export default {
             </div>
 
             <div class="col-4 col-md-3">
-                <h5 class="text-truncate mb-0">
-                    <a :href="proj.url" class="text-dark proj-name">{{ proj.name }}</a>
+                <h5 class="text-truncate mb-0 list-item-name">
+                    <a :href="proj.url" class="text-dark">{{ proj.name }}</a>
                 </h5>
                 <p class="text-muted text-truncate mb-0">{{ proj.desc }}</p>
             </div>
@@ -90,7 +90,7 @@ export default {
                         </b-dropdown-item>
                     </b-dropdown>
                 </div>
-                <span v-else class="badge badge-secondary">暂无</span>
+                <span v-else class="badge bg-secondary">暂无</span>
             </div>
             <div class="col-2 col-md-1">
                 <img class="rounded-circle avatar-xs" :src="proj.user.avatar_url" :alt="proj.user.username" />
