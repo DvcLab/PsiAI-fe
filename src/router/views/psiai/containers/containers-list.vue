@@ -102,7 +102,7 @@ export default {
 <template>
   <Layout>
     <div class="row align-items-center">
-      <div class="col-6 p-0">
+      <div class="col-6 p-0 mb-4">
         <autocomplete
           aria-label="搜索容器..."
           placeholder="搜索容器..."
@@ -123,10 +123,10 @@ export default {
           </template>
         </autocomplete>
       </div>
-      <div class="col-6 align-self-center">
+      <div class="col-6 align-self-center mb-4">
         <button
           type="button"
-          class="btn btn-success btn-rounded mb-2 me-2 float-end"
+          class="btn btn-success btn-rounded float-end"
           @click="toCreateContainerPage"
         >
           <i class="mdi mdi-plus me-1"></i> 创建容器
@@ -150,12 +150,3 @@ export default {
     </div>
   </Layout>
 </template>
-<style scoped>
-.search-con {
-  margin-bottom: 24px;
-}
-.head-text {
-  font-weight: 600;
-  padding: 0.75rem;
-}
-</style>

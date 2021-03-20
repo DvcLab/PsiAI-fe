@@ -28,7 +28,7 @@ export default {
             <h4 class="card-title mb-4">创建容器</h4>
             <form>
               <div class="mb-2">
-                <label>Currency :</label>
+                <label>项目:</label>
                 <div class="row">
                   <div class="col-xl-2 col-sm-4">
                     <div class="mb-3">
@@ -115,7 +115,7 @@ export default {
               </div>
 
               <div class="mb-2">
-                <label>Payment method :</label>
+                <label>镜像:</label>
 
                 <div class="row">
                   <div class="col-xl-2 col-sm-4">
@@ -153,7 +153,7 @@ export default {
                 </div>
               </div>
               <div class="mb-3">
-                <label>Add value :</label>
+                <label>数据集:</label>
 
                 <div class="row">
                   <div class="col-sm-6">
@@ -176,13 +176,8 @@ export default {
                   </div>
                 </div>
               </div>
-
-              <div class="mb-3">
-                <label>Wallet Address :</label>
-                <input type="text" class="form-control" />
-              </div>
               <div class="text-center mt-4">
-                <button type="button" class="btn btn-success">Buy Crypto currency</button>
+                <button type="button" class="btn btn-success">创建容器</button>
               </div>
             </form>
           </div>

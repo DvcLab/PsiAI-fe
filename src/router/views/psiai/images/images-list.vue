@@ -107,7 +107,7 @@ export default {
 <template>
   <Layout>
     <div class="row">
-      <div class="col-12 p-0 search-con text-center">
+      <div class="col-12 p-0 mb-4 text-center">
         <autocomplete
           aria-label="搜索镜像..."
           placeholder="搜索镜像..."
@@ -132,7 +132,7 @@ export default {
       <div class="col-12">
         <div class="row">
           <div class="col-12">
-            <div class="row align-items-center bg-white head-text">
+            <div class="row align-items-center bg-white list-head-text">
               <span class="col-md-1 d-none d-md-block">#</span>
               <span class="col-6 col-md-5">镜像名称</span>
               <span class="col-2 col-md-2">类型</span>
@@ -147,12 +147,3 @@ export default {
     </div>
   </Layout>
 </template>
-<style scoped>
-.search-con {
-  margin-bottom: 24px;
-}
-.head-text {
-  font-weight: 600;
-  padding: 0.75rem;
-}
-</style>
