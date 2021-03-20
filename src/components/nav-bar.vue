@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import { authComputed } from '@/state/helpers';
+import { mapState } from 'vuex';
 
 import i18n from "../i18n";
 
@@ -55,7 +55,23 @@ export default {
     }
   },
   computed: {
-    ...authComputed,
+    ...mapState({
+      userInfo(state){
+        if(state.auth.currentUser) {
+          return state.auth.currentUser
+        } else {
+          return {
+            attributes: {
+              headimgurl: [],
+            },
+            username: ''
+          }
+        }
+      } 
+    }),
+    avatarUrl() {
+      return this.userInfo.attributes.headimgurl[0] ? this.userInfo.attributes.headimgurl[0] : require('@/assets/images/users/avatar-1.jpg')
+    }
   },
   // components: { simplebar },
   mounted() {
@@ -649,15 +665,21 @@ export default {
         <!-- 用户头像 -->
         <b-dropdown right variant="black" toggle-class="header-item" menu-class="dropdown-menu-end">
           <template v-slot:button-content>
-            <img
+            <!-- <img
               class="rounded-circle header-profile-user"
               src="@/assets/images/users/avatar-1.jpg"
               alt="Header Avatar"
+            /> -->
+            <img 
+              v-show="userInfo && userInfo.attributes"
+              class="rounded-circle header-profile-user"
+              :src="avatarUrl"
+              :alt="userInfo.username"
             />
             <!-- <span class="d-none d-xl-inline-block ms-1">{{
               $t("navbar.dropdown.henry.text")
             }}</span> -->
-            <span v-if="currentUser" class="d-none d-xl-inline-block ms-1">{{ currentUser.username | ellipsis }}</span>
+            <span v-if="userInfo" class="d-none d-xl-inline-block ms-1">{{ userInfo.username | ellipsis }}</span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
 
