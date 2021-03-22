@@ -31,7 +31,8 @@ export default {
         _this.images = res.data;
       })
       .catch((err) => {
-        console.err(err)
+        _this.images = [];
+        console.log(err)
       })
     },
     // 搜索镜像
@@ -41,17 +42,20 @@ export default {
         return res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
+        return []
       })
     },
     // autocomplete 搜索函数
     search(input) {
       const _this = this;
       if(!input) {
-        this.searchId = ''
+        this.searchId = '';
+      } else {
+        this.searchId = input;
       }
       let id = this.searchId;
-      return new Promise(resolve => {
+      return new Promise((resolve, reject) => {
         _this.searchImage(id).then((res) => {
           if(Array.isArray(res)) {
             this.images = res;
@@ -62,30 +66,37 @@ export default {
           }
         })
         .catch((err) => {
+          this.images = [];
+          reject([])
           console.log(err)
         })
-        
       })
     },
     // 选择搜索内容，input显示内容
     getResultValue(result) {
       this.searchId = result.id ? result.id : '';
-      return result.name;
+      return result ? result.name : '';
     },
     // 选择搜索内容触发事件
     handleSubmit(result) {
-      this.searchId = result.id ? result.id : '';
-      let id = this.searchId;
-      this.searchImage(id).then((res) => {
-          if(Array.isArray(res)) {
-            this.images = res;
-          } else {
-            this.images = [res];
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      if(!result) {
+        this.images = []; 
+      } else {
+        this.searchId = result.id ? result.id : '';
+        let id = this.searchId;
+        this.searchImage(id).then((res) => {
+            if(Array.isArray(res)) {
+              this.images = res;
+            } else {
+              this.images = [res];
+            }
+          })
+          .catch((err) => {
+            this.images = [];
+            console.log(err)
+          })
+      }
+      
     },
   }
 };
@@ -129,7 +140,9 @@ export default {
               <span class="col-4 col-md-2 text-end">更新时间</span>
             </div>
           </div>
-          <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>
+          <div v-if="images.length > 0">
+            <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>
+          </div>
         </div>
       </div>
     </div>
