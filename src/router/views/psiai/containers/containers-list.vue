@@ -16,60 +16,48 @@ export default {
   data() {
     return {
       containers: [],
-      isSearch: false
+      searchId: ''
     };
   },
   mounted() {
     this.getContainersList();
   },
   methods: {
+    // 初始化获取容器列表
     getContainersList() {
-      const vm = this;
+      const _this = this;
       this.$request.get('containers')
       .then((res) => {
-        vm.containers = res.data;
+        _this.containers = res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.error(err)
       })
     },
-    // getNewDatasetInfo(url) {
-    //   return this.$request.get('datasets_info/' + url)
-    //   .then((res) => {
-    //     return res.data;
-    //   })
-    //   .catch((err) => {
-    //     console.err(err)
-    //   })
-    // },
+    // 搜索镜像
     searchContainer(q) {
       return this.$request.get('containers/' + q)
       .then((res) => {
+        console.log(res)
         return res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.error(err);
+        return [];
       })
     },
-    // createDataset(q) {
-    //   return this.$request.put('datasets', q)
-    //   .then((res) => {
-    //     return res.data;
-    //   })
-    //   .catch((err) => {
-    //     console.err(err)
-    //   })
-    // },
+    // autocomplete 搜索函数
     search(input) {
-      const vm = this;
-      return new Promise(resolve => {
-        console.log(encodeURI(input))
-        // if (!input || input.length < 1) {
-        //   return resolve([])
-        // }
-        vm.isSearch = true;
-        console.log('搜索镜像');
-        vm.searchContainer(input).then((res) => {
+      const _this = this;
+      if(!input) {
+        this.searchId = '';
+      } else {
+        this.searchId = input;
+      }
+      let id = this.searchId;
+      return new Promise((resolve, reject) => {
+        console.log('搜索容器');
+        _this.searchContainer(id).then((res) => {
           if(Array.isArray(res)) {
             this.containers = res;
             resolve(res);
@@ -79,20 +67,37 @@ export default {
           }
         })
         .catch((err) => {
+          reject([])
           console.log(err)
         })
-        
       })
     },
-    
+    // 选择搜索内容，input显示内容
     getResultValue(result) {
       console.log(result)
-      return result.name
+      this.searchId = result ? result.id : '';
+      return result ? result.id : ''
     },
-    
+    // 选择搜索内容触发事件
     handleSubmit(result) {
-      console.log(result)
+      if(!result) {
+        this.containers = [];
+      } else {
+        this.searchId = result.id ? result.id : '';
+        let id = this.searchId;
+        this.searchContainer(id).then((res) => {
+            if(Array.isArray(res)) {
+              this.containers = res;
+            } else {
+              this.containers = [res];
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
     },
+    // 跳转创建容器页面
     toCreateContainerPage() {
       this.$router.push({path: '/createContainers'})
     }
@@ -102,7 +107,7 @@ export default {
 <template>
   <Layout>
     <div class="row align-items-center">
-      <div class="col-6 p-0 mb-4">
+      <div class="col-6 p-0 mb-3">
         <autocomplete
           aria-label="搜索容器..."
           placeholder="搜索容器..."
@@ -123,7 +128,7 @@ export default {
           </template>
         </autocomplete>
       </div>
-      <div class="col-6 align-self-center mb-4">
+      <div class="col-6 align-self-center mb-3">
         <button
           type="button"
           class="btn btn-success btn-rounded float-end"
@@ -144,7 +149,10 @@ export default {
               <span class="col-md-1 d-none d-md-block">创建时间</span>
             </div>
           </div> -->
-          <ContainerItem v-for="item in containers" :key="item.id" :container="item" class="col-12"/>
+          <div v-if="containers.length > 0">
+            <ContainerItem v-for="item in containers" :key="item.id" :container="item" class="col-12"/>
+          </div>
+          
         </div>
       </div>
     </div>

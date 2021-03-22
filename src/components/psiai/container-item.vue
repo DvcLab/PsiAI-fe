@@ -145,11 +145,11 @@ export default {
             </div>
         </div>
         <div class="row">
-            <div class="col-6 col-md-2 mb-2">
+            <!-- <div class="col-6 col-md-2 mb-2">
                 <span class="badge rounded-pill bg-info me-2">
                     {{ container.gpu_devices_product_names[0] }}
                 </span>
-            </div>
+            </div> -->
             <div class="col-6 col-md-2 mb-2">
                 <span class="badge rounded-pill bg-primary me-2">
                     <i class="bx bx-chip me-1"></i>内核
