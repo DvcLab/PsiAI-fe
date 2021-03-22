@@ -11,7 +11,34 @@
       "user": {
           "username": "test",
           "email": "877369610@qq.com",
-          "avatar_url": "http://skote.vuejs-light.themesbrand.com/img/avatar-1.67e2b9d7.jpg",
+          "avatar_url": "https://hostname",
+          "enabled": true,
+          "roles": [
+              "DOCKHUB_USER"
+          ],
+          "max_container_num": 10,
+          "container_num": 0,
+          "id": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
+          "create_time": 1616070795000,
+          "update_time": 1616070795000
+      },
+      "name": "CNN",
+      "url": "https://github.com/DvcLAB/CNN",
+      "branches": [
+          "master"
+      ],
+      "desc": "CNN test. Contribute to DvcLAB/CNN development by creating an account on GitHub.",
+      "dataset_ids": [],
+      "id": "b061edbc81a7d2809685762b1daf3685",
+      "create_time": 1616152308000,
+      "update_time": 1616152342000
+    },
+    {
+      "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
+      "user": {
+          "username": "test",
+          "email": "877369610@qq.com",
+          "avatar_url": "https://hostname",
           "enabled": true,
           "roles": [
               "DOCKHUB_USER"
@@ -23,17 +50,16 @@
           "update_time": 1616070795000
       },
       "name": "dockerhub",
+      "framework": "tensorflow",
       "url": "https://github.com/DvcLAB/dockerhub",
       "branches": [
-          "main",
-          "gh-page",
-          "dev"
-        ],
+          "main"
+      ],
       "desc": "容器管理后台服务. Contribute to DvcLAB/dockerhub development by creating an account on GitHub.",
       "dataset_ids": [],
       "id": "080f199ca6fcb145e480b22b2487bd7f",
-      "create_time": 1616068502000,
-      "update_time": 1616070795000
+      "create_time": 1616142905000,
+      "update_time": 1616142905000
     }
   ],
   "datasets": [
