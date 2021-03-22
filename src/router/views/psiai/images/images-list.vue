@@ -16,32 +16,25 @@ export default {
   data() {
     return {
       images: [],
-      isSearch: false
+      searchId: ''
     };
   },
   mounted() {
     this.getImagesList();
   },
   methods: {
+    // 初始化获取镜像列表
     getImagesList() {
-      const vm = this;
+      const _this = this;
       this.$request.get('images')
       .then((res) => {
-        vm.images = res.data;
+        _this.images = res.data;
       })
       .catch((err) => {
         console.err(err)
       })
     },
-    // getNewDatasetInfo(url) {
-    //   return this.$request.get('datasets_info/' + url)
-    //   .then((res) => {
-    //     return res.data;
-    //   })
-    //   .catch((err) => {
-    //     console.err(err)
-    //   })
-    // },
+    // 搜索镜像
     searchImage(q) {
       return this.$request.get('images/' + q)
       .then((res) => {
@@ -51,25 +44,15 @@ export default {
         console.err(err)
       })
     },
-    // createDataset(q) {
-    //   return this.$request.put('datasets', q)
-    //   .then((res) => {
-    //     return res.data;
-    //   })
-    //   .catch((err) => {
-    //     console.err(err)
-    //   })
-    // },
+    // autocomplete 搜索函数
     search(input) {
-      const vm = this;
+      const _this = this;
+      if(!input) {
+        this.searchId = ''
+      }
+      let id = this.searchId;
       return new Promise(resolve => {
-        console.log(encodeURI(input))
-        // if (!input || input.length < 1) {
-        //   return resolve([])
-        // }
-        vm.isSearch = true;
-        console.log('搜索镜像');
-        vm.searchImage(input).then((res) => {
+        _this.searchImage(id).then((res) => {
           if(Array.isArray(res)) {
             this.images = res;
             resolve(res);
@@ -84,23 +67,26 @@ export default {
         
       })
     },
-    
+    // 选择搜索内容，input显示内容
     getResultValue(result) {
-      console.log(result)
-      return result.name
+      this.searchId = result.id ? result.id : '';
+      return result.name;
     },
-    
+    // 选择搜索内容触发事件
     handleSubmit(result) {
-      console.log(result)
-      // window.open(`${wikiUrl}/wiki/${encodeURI(result.title)}`)
+      this.searchId = result.id ? result.id : '';
+      let id = this.searchId;
+      this.searchImage(id).then((res) => {
+          if(Array.isArray(res)) {
+            this.images = res;
+          } else {
+            this.images = [res];
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
-    // handleAddDataset(res) {
-    //   console.log(res)
-    //   this.createDataset(res)
-    // },
-    // isUrl(url) {
-    //   return /^https?:\/\/.+/.test(url)
-    // }
   }
 };
 </script>
@@ -115,6 +101,7 @@ export default {
           :get-result-value="getResultValue"
           :debounce-time="500"
           @submit="handleSubmit"
+          auto-select
           >
           <template #result="{ result, props }">
             <li
@@ -133,12 +120,13 @@ export default {
         <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
-              <span class="col-md-1 d-none d-md-block">#</span>
-              <span class="col-6 col-md-5">镜像名称</span>
+              <!-- <span class="col-md-1 d-none d-md-block">#</span> -->
+              <span class="col-6 col-md-6">镜像名称</span>
               <span class="col-2 col-md-2">类型</span>
-              <span class="col-2 col-md-2">标签</span>
-              <span class="col-2 col-md-1">用户</span>
-              <span class="col-md-1 text-end d-none d-md-block">创建时间</span>
+              <!-- <span class="col-2 col-md-2">标签</span> -->
+              <!-- <span class="col-2 col-md-1">用户</span> -->
+              <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
+              <span class="col-4 col-md-2 text-end">更新时间</span>
             </div>
           </div>
           <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>

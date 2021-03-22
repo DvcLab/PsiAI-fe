@@ -9,6 +9,18 @@ export default {
             default: () => {}
         },
     },
+    computed:{
+        tags() {
+            let tagList = this.image.tags;
+            if (!tagList) return [];
+            if (tagList.length > 3) {
+                let temp = tagList.slice(0,3);
+                temp.push('...');
+                return temp;
+            }
+            return tagList;
+        }
+    },
     methods: {
     }
 }
@@ -18,28 +30,36 @@ export default {
     <div>
         <div class="proj-item-con row align-items-center">
 
-            <div class="col-md-1 d-none d-md-block">
+            <!-- <div class="col-md-1 d-none d-md-block">
                 <img class="avatar-sm" :src="image.cover_img_url" alt="镜像" />
-            </div>
+            </div> -->
 
-            <div class="col-6 col-md-5">
+            <div class="col-6 col-md-6">
                 <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
                     {{ image.name }}
                 </h5>
                 <p class="text-muted text-truncate mb-0">{{ image.desc }}</p>
+                <p v-if="image.tags && image.tags.length > 0" class="text-muted text-truncate mb-0">
+                    <span v-for="item in tags"
+                        class="badge bg-primary me-1"
+                        :key="item"
+                        >
+                        {{ item }}
+                    </span>
+                </p>
             </div>
 
             <div class="col-2 col-md-2">
-                <span class="badge bg-primary me-2"
+                <span v-if="image.types.length > 0" class="badge bg-primary me-2"
                     :class="{
-                        'bg-info': `${image.type}` === 'GPU'
+                        'bg-info': `${image.types[0]}` === 'GPU'
                     }"
                 >
-                    {{ image.type }}
+                    {{ image.types[0] }}
                 </span>
             </div>
 
-            <div class="col-2 col-md-2 flex-wrap">
+            <!-- <div class="col-2 col-md-2 flex-wrap">
                 <div v-if="image.tags && image.tags.length > 0">
                     <i class="bx bx-git-branch me-1"></i>
                     <span class="badge bg-primary me-2">
@@ -63,13 +83,17 @@ export default {
                         </b-dropdown-item>
                     </b-dropdown>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="col-2 col-md-1">
+            <!-- <div class="col-2 col-md-1">
                 <img class="rounded-circle avatar-xs" :src="image.user.avatar_url" :alt="image.user.username" />
-            </div>
+            </div> -->
 
-            <div class="col-md-1 text-end d-none d-md-block">
+            <div class="col-2 col-md-2 text-end d-none d-md-block">
+                <i class="bx bx-calendar me-1"></i>
+                <span>{{ image.create_time | moment("from", "now") }}</span>
+            </div>
+            <div class="col-4 col-md-2 text-end">
                 <i class="bx bx-calendar me-1"></i>
                 <span>{{ image.update_time | moment("from", "now") }}</span>
             </div>
