@@ -70,7 +70,7 @@ export default {
       } 
     }),
     avatarUrl() {
-      return this.userInfo.attributes.headimgurl[0] ? this.userInfo.attributes.headimgurl[0] : require('@/assets/images/users/avatar-1.jpg')
+      return this.userInfo.attributes.headimgurl ? this.userInfo.attributes.headimgurl[0] : require('@/assets/images/users/avatar-1.jpg')
     }
   },
   // components: { simplebar },
