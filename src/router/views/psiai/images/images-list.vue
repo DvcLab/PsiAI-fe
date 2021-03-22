@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       images: [],
-      searchId: ''
+      searchContent: ''
     };
   },
   mounted() {
@@ -50,13 +50,13 @@ export default {
     search(input) {
       const _this = this;
       if(!input) {
-        this.searchId = '';
+        this.searchContent = '';
       } else {
-        this.searchId = input;
+        this.searchContent = input;
       }
-      let id = this.searchId;
+      let content = this.searchContent;
       return new Promise((resolve, reject) => {
-        _this.searchImage(id).then((res) => {
+        _this.searchImage(content).then((res) => {
           if(Array.isArray(res)) {
             this.images = res;
             resolve(res);
@@ -74,7 +74,7 @@ export default {
     },
     // 选择搜索内容，input显示内容
     getResultValue(result) {
-      this.searchId = result.id ? result.id : '';
+      this.searchContent = result.id ? result.id : '';
       return result ? result.name : '';
     },
     // 选择搜索内容触发事件
@@ -82,9 +82,9 @@ export default {
       if(!result) {
         this.images = []; 
       } else {
-        this.searchId = result.id ? result.id : '';
-        let id = this.searchId;
-        this.searchImage(id).then((res) => {
+        this.searchContent = result.id ? result.id : '';
+        let content = this.searchContent;
+        this.searchImage(content).then((res) => {
             if(Array.isArray(res)) {
               this.images = res;
             } else {

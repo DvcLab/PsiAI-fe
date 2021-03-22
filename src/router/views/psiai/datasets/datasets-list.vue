@@ -20,61 +20,71 @@ export default {
   data() {
     return {
       datasets: [],
-      isSearch: false
+      isSearch: false,
+      searchContent: ''
     };
   },
   mounted() {
     this.getDatasetsList();
   },
   methods: {
+    // 初始化获取数据集列表
     getDatasetsList() {
-      const vm = this;
+      const _this = this;
       this.$request.get('datasets')
       .then((res) => {
-        vm.datasets = res.data;
+        _this.datasets = res.data;
       })
       .catch((err) => {
-        console.err(err)
+        _this.datasets = [];
+        console.log(err)
       })
     },
+    // 获取新的数据集信息
     getNewDatasetInfo(url) {
       return this.$request.get('datasets_info/' + url)
       .then((res) => {
         return res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
       })
     },
+    // 搜索数据集
     searchDataset(q) {
       return this.$request.get('datasets/' + q)
       .then((res) => {
         return res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
+        return [];
       })
     },
+    // 创建数据集
     createDataset(q) {
       return this.$request.put('datasets', q)
       .then((res) => {
         return res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
       })
     },
+    // 搜索
     search(input) {
-      const vm = this;
+      const _this = this;
+      if(!input) {
+        this.searchContent = '';
+      } else {
+        this.searchContent = input;
+      }
+      let content = this.searchContent;
       return new Promise(resolve => {
-        console.log(encodeURI(input))
-        // if (!input || input.length < 1) {
-        //   return resolve([])
-        // }
-        if(vm.isUrl(input)) { // 用户输入网址，则添加项目
-          vm.isSearch = false;
+        if(_this.isUrl(content)) { // 用户输入网址，则添加项目
+          _this.isSearch = false;
           console.log('添加项目');
-          vm.getNewDatasetInfo(input).then((res) => {
+          _this.getNewDatasetInfo(content).then((res) => {
             if(Array.isArray(res)) {
               resolve(res);
             } else {
@@ -85,9 +95,9 @@ export default {
             console.log(err)
           })
         } else { // 用户搜索项目
-          vm.isSearch = true;
+          _this.isSearch = true;
           console.log('搜索项目');
-          vm.searchDataset(input).then((res) => {
+          _this.searchDataset(content).then((res) => {
             if(Array.isArray(res)) {
               this.datasets = res;
               resolve(res);
@@ -97,29 +107,36 @@ export default {
             }
           })
           .catch((err) => {
+            this.datasets = [];
             console.log(err)
           })
         }
-        // const url = `${wikiUrl}/w/api.php?${wikiParams}&srsearch=${encodeURI(
-        //   input
-        // )}`
-
-        // fetch(url)
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     resolve(data.query.search)
-        //   })
       })
     },
-    
+    // 选择搜索内容，input显示内容
     getResultValue(result) {
-      console.log(result)
-      return result.name
+      this.searchContent = result.id ? result.id : '';
+      return result ? result.name : '';
     },
-    
+    // 选择搜索内容触发事件
     handleSubmit(result) {
-      console.log(result)
-      // window.open(`${wikiUrl}/wiki/${encodeURI(result.title)}`)
+      if(!result) {
+        this.datasets = []; 
+      } else {
+        this.searchContent = result.id ? result.id : '';
+        let content = this.searchContent;
+        this.searchDataset(content).then((res) => {
+            if(Array.isArray(res)) {
+              this.datasets = res;
+            } else {
+              this.datasets = [res];
+            }
+          })
+          .catch((err) => {
+            this.datasets = [];
+            console.log(err)
+          })
+      }
     },
     handleAddDataset(res) {
       console.log(res)

@@ -20,61 +20,71 @@ export default {
   data() {
     return {
       projects: [],
-      isSearch: false
+      isSearch: false,
+      searchContent: ''
     };
   },
   mounted() {
     this.getProjData();
   },
   methods: {
+    // 初始化获取项目列表
     getProjData() {
-      const vm = this;
+      const _this = this;
       this.$request.get('projects')
       .then((res) => {
-        vm.projects = res.data;
+        _this.projects = res.data;
       })
       .catch((err) => {
-        console.err(err)
+        _this.projects = [];
+        console.log(err)
       })
     },
+    // 获取新项目信息
     getNewProjInfo(url) {
       return this.$request.get('projects_info/' + url)
       .then((res) => {
         return res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
       })
     },
-    searchProjData(q) {
+    // 搜索项目
+    searchProject(q) {
       return this.$request.get('projects/' + q)
       .then((res) => {
         return res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
+        return [];
       })
     },
+    // 创建项目
     createProj(q) {
       return this.$request.put('projects', q)
       .then((res) => {
         return res.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
       })
     },
+    // 搜索
     search(input) {
-      const vm = this;
+      const _this = this;
+      if(!input) {
+        this.searchContent = '';
+      } else {
+        this.searchContent = input;
+      }
+      let content = this.searchContent;
       return new Promise(resolve => {
-        console.log(encodeURI(input))
-        // if (!input || input.length < 1) {
-        //   return resolve([])
-        // }
-        if(vm.isUrl(input)) { // 用户输入网址，则添加项目
-          vm.isSearch = false;
+        if(_this.isUrl(content)) { // 用户输入网址，则添加项目
+          _this.isSearch = false;
           console.log('添加项目');
-          vm.getNewProjInfo(input).then((res) => {
+          _this.getNewProjInfo(content).then((res) => {
             if(Array.isArray(res)) {
               resolve(res);
             } else {
@@ -85,9 +95,9 @@ export default {
             console.log(err)
           })
         } else { // 用户搜索项目
-          vm.isSearch = true;
+          _this.isSearch = true;
           console.log('搜索项目');
-          vm.searchProjData(input).then((res) => {
+          _this.searchProject(input).then((res) => {
             if(Array.isArray(res)) {
               this.projects = res;
               resolve(res);
@@ -97,29 +107,36 @@ export default {
             }
           })
           .catch((err) => {
+            this.projects = [];
             console.log(err)
           })
         }
-        // const url = `${wikiUrl}/w/api.php?${wikiParams}&srsearch=${encodeURI(
-        //   input
-        // )}`
-
-        // fetch(url)
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     resolve(data.query.search)
-        //   })
       })
     },
     
     getResultValue(result) {
-      console.log(result)
-      return result.name
+      this.searchContent = result.id ? result.id : '';
+      return result ? result.name : '';
     },
     
     handleSubmit(result) {
-      console.log(result)
-      // window.open(`${wikiUrl}/wiki/${encodeURI(result.title)}`)
+      if(!result) {
+        this.projects = []; 
+      } else {
+        this.searchContent = result.id ? result.id : '';
+        let content = this.searchContent;
+        this.searchProject(content).then((res) => {
+            if(Array.isArray(res)) {
+              this.projects = res;
+            } else {
+              this.projects = [res];
+            }
+          })
+          .catch((err) => {
+            this.projects = [];
+            console.log(err)
+          })
+      }
     },
     handleAddProj(res) {
       console.log(res)

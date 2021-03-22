@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       containers: [],
-      searchId: ''
+      searchContent: ''
     };
   },
   mounted() {
@@ -51,14 +51,14 @@ export default {
     search(input) {
       const _this = this;
       if(!input) {
-        this.searchId = '';
+        this.searchContent = '';
       } else {
-        this.searchId = input;
+        this.searchContent = input;
       }
-      let id = this.searchId;
+      let content = this.searchContent;
       return new Promise((resolve, reject) => {
         console.log('搜索容器');
-        _this.searchContainer(id).then((res) => {
+        _this.searchContainer(content).then((res) => {
           if(Array.isArray(res)) {
             this.containers = res;
             resolve(res);
@@ -77,7 +77,7 @@ export default {
     // 选择搜索内容，input显示内容
     getResultValue(result) {
       console.log(result)
-      this.searchId = result ? result.id : '';
+      this.searchContent = result ? result.id : '';
       return result ? result.id : ''
     },
     // 选择搜索内容触发事件
@@ -85,9 +85,9 @@ export default {
       if(!result) {
         this.containers = [];
       } else {
-        this.searchId = result.id ? result.id : '';
-        let id = this.searchId;
-        this.searchContainer(id).then((res) => {
+        this.searchContent = result.id ? result.id : '';
+        let content = this.searchContent;
+        this.searchContainer(content).then((res) => {
             if(Array.isArray(res)) {
               this.containers = res;
             } else {
