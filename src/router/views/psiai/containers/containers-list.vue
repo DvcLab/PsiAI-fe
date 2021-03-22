@@ -31,7 +31,8 @@ export default {
         _this.containers = res.data;
       })
       .catch((err) => {
-        console.error(err)
+        _this.containers = [];
+        console.log(err)
       })
     },
     // 搜索镜像
@@ -42,7 +43,7 @@ export default {
         return res.data;
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
         return [];
       })
     },
@@ -67,6 +68,7 @@ export default {
           }
         })
         .catch((err) => {
+          this.containers = [];
           reject([])
           console.log(err)
         })
