@@ -50,7 +50,9 @@ export default {
             </div>
 
             <div class="col-2 col-md-1">
-                <img class="rounded-circle avatar-xs" :src="dataset.user.avatar_url" :alt="dataset.user.username" />
+                <!-- <img class="rounded-circle avatar-xs" :src="dataset.user.avatar_url" :alt="dataset.user.username" /> -->
+                <img class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="dataset.cover_img_url" :alt="dataset.user.username" />
+                <!-- <img class="rounded-circle avatar-xs" :src="dataset.user.avatar_url" :alt="dataset.user.username" /> -->
             </div>
 
             <div class="col-3 col-md-1 text-end">
