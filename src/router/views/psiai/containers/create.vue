@@ -3,6 +3,13 @@ import Layout from "../../../layouts/main";
 import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
 import Multiselect from "vue-multiselect";
+import {
+  required,
+  // minValue,
+  // maxValue,
+  // numeric,
+  // url,
+} from "vuelidate/lib/validators";
 
 /**
  * Starter component
@@ -15,6 +22,7 @@ export default {
   components: { Layout, VueSlideBar, Multiselect },
   data() {
     return {
+      cpus: 1,
       cpuData: {
         value: 1,
         data: [1, 2, 4, 8, 16],
@@ -36,8 +44,9 @@ export default {
           }
         ]
       },
+      mem: 4,
       memData: {
-        value: 1,
+        value: 4,
         data: [1, 2, 4, 8, 16, 32],
         range: [
           {
@@ -60,7 +69,7 @@ export default {
           }
         ]
       },
-      needGPU: false,
+      gpu: false,
       projsList: [],
       proj: null,
       branch: '',
@@ -68,7 +77,26 @@ export default {
       dataset: null,
       imagesList: [],
       image: null,
+      submitted: false,
+      // form: {
+      //   'image_id': '',
+      //   'project_id': '',
+      //   'project_branch': '',
+      //   'dataset_url': '',
+      //   'cpus': 2,
+      //   'mem': 4,
+      //   'gpu': false
+      // }
     };
+  },
+  validations: {
+    proj: { required },
+    branch: { required },
+    dataset: { required },
+    image: { required },
+    cpus: { required },
+    mem: { required },
+    gpu: { required }
   },
   mounted() {
     this.getProjsList();
@@ -115,7 +143,13 @@ export default {
         descTmp += '...'
       }
       return `${name} [${descTmp}]`
-    }
+    },
+    formSubmit(e) {
+      console.log(e)
+      this.submitted = true;
+      // stop here if form is invalid
+      this.$v.$touch();
+    },
   }
 };
 </script>
@@ -127,20 +161,33 @@ export default {
           <div class="card-body">
             
             <h4 class="card-title mb-4">创建容器</h4>
-            <form>
+            <form @submit.prevent="formSubmit">
               <div class="mb-2">
                 <label>项目</label>
-                  <multiselect v-model="proj" :options="projsList" :custom-label="nameWithDesc" :searchable="true" placeholder="选择项目" label="name" track-by="name"></multiselect>
+                  <!-- <multiselect v-model="proj" :options="projsList" :custom-label="nameWithDesc" :searchable="true" placeholder="选择项目" label="name" track-by="name"></multiselect> -->
+                  <multiselect 
+                    v-model="$v.proj.$model" 
+                    :options="projsList" 
+                    :custom-label="nameWithDesc" 
+                    :searchable="true" 
+                    placeholder="选择项目" 
+                    label="name" 
+                    track-by="name"
+                    >
+                  </multiselect>
+                  <div class="error" v-if="submitted && !$v.proj.required">必选项</div>
               </div>
 
               <div v-if="proj" class="mb-2">
                 <label>项目分支</label>
-                  <multiselect v-model="branch" :options="proj.branches" placeholder="选择项目分支" ></multiselect>
+                  <multiselect v-model="$v.branch.$model" :options="proj.branches" placeholder="选择项目分支" ></multiselect>
+                  <div class="error" v-if="submitted && !$v.branch.required">必选项</div>
               </div>
 
               <div class="mb-2">
                 <label>镜像</label>
-                <multiselect v-model="image" :options="imagesList" :custom-label="nameWithDesc" placeholder="选择镜像" label="name" track-by="name"></multiselect>
+                <multiselect v-model="$v.image.$model" :options="imagesList" :custom-label="nameWithDesc" placeholder="选择镜像" label="name" track-by="name"></multiselect>
+                <div class="error" v-if="submitted && !$v.image.required">必选项</div>
               </div>
 
               <div class="mb-3">
@@ -150,12 +197,12 @@ export default {
 
               <div class="mb-2">
                 <label>CPU</label>
-                <vue-slide-bar class="mx-3" :data="cpuData.data" :range="cpuData.range" />
+                <vue-slide-bar class="mx-3" v-model="cpus" :data="cpuData.data" :range="cpuData.range" />
               </div>
 
               <div class="mb-2">
                 <label>MEM</label>
-                <vue-slide-bar class="mx-3" :data="memData.data" :range="memData.range" />
+                <vue-slide-bar class="mx-3" v-model="mem" :data="memData.data" :range="memData.range" />
               </div>
 
               <div class="mb-2">
@@ -164,7 +211,7 @@ export default {
                   <div class="col-xl-2 col-sm-4">
                     <label class="card-radio-label mb-3">
                       <input
-                        v-model="needGPU"
+                        v-model="gpu"
                         type="checkbox"
                         name="pay-method"
                         id="pay-methodoption1"
@@ -181,7 +228,7 @@ export default {
                 </div>
               </div>
               <div class="text-center mt-4">
-                <button type="button" class="btn btn-success">创建容器</button>
+                <button type="submit" class="btn btn-success">创建容器</button>
               </div>
             </form>
           </div>
