@@ -165,7 +165,8 @@ export default {
               <div class="mb-2">
                 <label>项目</label>
                   <!-- <multiselect v-model="proj" :options="projsList" :custom-label="nameWithDesc" :searchable="true" placeholder="选择项目" label="name" track-by="name"></multiselect> -->
-                  <multiselect 
+                  <div class="row mb-2">
+                    <multiselect 
                     v-model="$v.proj.$model" 
                     :options="projsList" 
                     :custom-label="nameWithDesc" 
@@ -174,8 +175,34 @@ export default {
                     label="name" 
                     track-by="name"
                     >
-                  </multiselect>
-                  <div class="error" v-if="submitted && !$v.proj.required">必选项</div>
+                    </multiselect>
+                    <div class="error" v-if="submitted && !$v.proj.required">必选项</div>
+                  </div>
+
+                  <div v-if="proj" class="row">
+                    <div class="col-xl-2 col-sm-4">
+                      <div class="mb-3">
+                        <label class="card-radio-label mb-2">
+                          <input
+                            type="radio"
+                            name="currency"
+                            class="card-radio-input"
+                            checked
+                          />
+
+                          <div class="card-radio">
+                            <div>
+                              <i
+                                class="mdi mdi-bitcoin font-size-24 text-warning align-middle me-2"
+                              ></i>
+                              <span>{{ proj.name }}</span>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
               </div>
 
               <div v-if="proj" class="mb-2">

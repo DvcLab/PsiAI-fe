@@ -33,7 +33,7 @@ export default {
       const _this = this;
       this.$request.get('datasets')
       .then((res) => {
-        _this.datasets = res.data;
+        _this.datasets = res.data.data;
       })
       .catch((err) => {
         _this.datasets = [];

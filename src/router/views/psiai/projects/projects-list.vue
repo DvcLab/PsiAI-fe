@@ -4,10 +4,6 @@ import ProjItem from "@/components/psiai/proj-item";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 
-// import '@trevoreyre/autocomplete-vue/dist/style.css'
-// const wikiUrl = 'https://en.wikipedia.org'
-// const wikiParams = 'action=query&list=search&format=json&origin=*'
-
 /**
  * 项目列表
  */
@@ -33,7 +29,7 @@ export default {
       const _this = this;
       this.$request.get('projects')
       .then((res) => {
-        _this.projects = res.data;
+        _this.projects = res.data.data;
       })
       .catch((err) => {
         _this.projects = [];

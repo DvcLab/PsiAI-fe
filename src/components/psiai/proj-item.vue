@@ -95,7 +95,7 @@ export default {
             </div>
             <div class="col-2 col-md-1">
                 <!-- <img class="rounded-circle avatar-xs" :src="proj.user.avatar_url" :alt="proj.user.username" /> -->
-                <img class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="proj.user.avatar_url" :alt="proj.user.username" />
+                <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="proj.user.avatar_url" :alt="proj.user.username" />
             </div>
             <div class="col-2 col-md-2 text-end d-none d-md-block">
                 <i class="bx bx-calendar me-1"></i>

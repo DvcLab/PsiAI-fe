@@ -28,7 +28,7 @@ export default {
       const _this = this;
       this.$request.get('images')
       .then((res) => {
-        _this.images = res.data;
+        _this.images = res.data.data;
       })
       .catch((err) => {
         _this.images = [];
