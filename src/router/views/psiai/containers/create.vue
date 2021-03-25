@@ -12,7 +12,7 @@ import {
 } from "vuelidate/lib/validators";
 
 /**
- * Starter component
+ * Create Container component
  */
 export default {
   page: {
@@ -73,26 +73,19 @@ export default {
       projsList: [],
       proj: null,
       branch: '',
-      datasetsList: [],
-      dataset: null,
+      datasetsList: new Map(),
+      datasetUrl: null,
+      datasetsUrls: new Set(),
+      selectedDatasets: [],
       imagesList: [],
       image: null,
       submitted: false,
-      // form: {
-      //   'image_id': '',
-      //   'project_id': '',
-      //   'project_branch': '',
-      //   'dataset_url': '',
-      //   'cpus': 2,
-      //   'mem': 4,
-      //   'gpu': false
-      // }
     };
   },
   validations: {
     proj: { required },
     branch: { required },
-    dataset: { required },
+    datasets: { required },
     image: { required },
     cpus: { required },
     mem: { required },
@@ -108,21 +101,34 @@ export default {
       const vm = this;
       this.$request.get('projects')
       .then((res) => {
-        vm.projsList = res.data;
+        vm.projsList = res.data.data;
       })
       .catch((err) => {
         console.err(err)
       })
     },
-    // 获取数据集列表
-    getDatasetsList() {
+    // 获取数据集信息
+    getDatasetByUrl() {
+      console.log('获取数据集信息')
       const vm = this;
-      this.$request.get('datasets')
+      const url = vm.datasetUrl;
+      if(url.length < 10) {
+        return;
+      }
+      this.$request.get('datasets_info?url=' + url)
       .then((res) => {
-        vm.datasetsList = res.data;
+        console.log(res)
+        if(res.data.code && res.data.code === 0) {
+          // 请求失败
+          return;
+        }
+        // 请求成功
+        // vm.datasetsUrls.add(url);
+        vm.datasetsList.set(res.data.url, res.data);
+        vm.$forceUpdate()
       })
       .catch((err) => {
-        console.err(err)
+        console.error(err)
       })
     },
     // 获取镜像列表
@@ -130,7 +136,7 @@ export default {
       const vm = this;
       this.$request.get('images')
       .then((res) => {
-        vm.imagesList = res.data;
+        vm.imagesList = res.data.data;
       })
       .catch((err) => {
         console.err(err)
@@ -150,6 +156,19 @@ export default {
       // stop here if form is invalid
       this.$v.$touch();
     },
+    // 防抖
+    debounce(fn, delay=2000) {
+      let timer = null;
+      return function () {
+        if(timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          fn.apply(this, arguments);
+          timer = null;
+        }, delay)
+      }
+    }
   }
 };
 </script>
@@ -165,7 +184,7 @@ export default {
               <div class="mb-2">
                 <label>项目</label>
                   <!-- <multiselect v-model="proj" :options="projsList" :custom-label="nameWithDesc" :searchable="true" placeholder="选择项目" label="name" track-by="name"></multiselect> -->
-                  <div class="row mb-2">
+                  <div class="mb-2">
                     <multiselect 
                     v-model="$v.proj.$model" 
                     :options="projsList" 
@@ -180,22 +199,25 @@ export default {
                   </div>
 
                   <div v-if="proj" class="row">
-                    <div class="col-xl-2 col-sm-4">
+                    <div class="col-xl-3 col-sm-4">
                       <div class="mb-3">
                         <label class="card-radio-label mb-2">
                           <input
                             type="radio"
-                            name="currency"
+                            name="project"
                             class="card-radio-input"
                             checked
                           />
-
                           <div class="card-radio">
-                            <div>
-                              <i
-                                class="mdi mdi-bitcoin font-size-24 text-warning align-middle me-2"
-                              ></i>
-                              <span>{{ proj.name }}</span>
+                            <div class="row">
+                              <div class="col-2">
+                                <i class="mdi mdi-archive-outline font-size-24 text-primary align-middle me-2"></i>
+                              </div>
+                              <div class="col-10">
+                                <span>{{ proj.name }}</span>
+                                <p class="text-muted text-truncate mb-0">{{ proj.desc }}</p>
+                              </div>
+                              
                             </div>
                           </div>
                         </label>
@@ -207,19 +229,90 @@ export default {
 
               <div v-if="proj" class="mb-2">
                 <label>项目分支</label>
-                  <multiselect v-model="$v.branch.$model" :options="proj.branches" placeholder="选择项目分支" ></multiselect>
-                  <div class="error" v-if="submitted && !$v.branch.required">必选项</div>
+                <!-- <multiselect v-model="$v.branch.$model" :options="proj.branches" placeholder="选择项目分支" ></multiselect> -->
+                <div class="error" v-if="submitted && !$v.branch.required">必选项</div>
+                <div v-if="proj.branches" class="row">
+                  <div v-for="item in proj.branches" :key="item" class="col-xl-3 col-sm-4">
+                    <div class="mb-3">
+                      <label class="card-radio-label mb-2">
+                        <input
+                          type="radio"
+                          name="branch"
+                          class="card-radio-input"
+                          checked
+                        />
+                        <div class="card-radio">
+                          <div>
+                            <i class="mdi mdi-source-branch font-size-24 text-primary align-middle me-2"></i>
+                            <span>{{ item }}</span>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="mb-2">
                 <label>镜像</label>
-                <multiselect v-model="$v.image.$model" :options="imagesList" :custom-label="nameWithDesc" placeholder="选择镜像" label="name" track-by="name"></multiselect>
+                <!-- <multiselect v-model="$v.image.$model" :options="imagesList" :custom-label="nameWithDesc" placeholder="选择镜像" label="name" track-by="name"></multiselect> -->
                 <div class="error" v-if="submitted && !$v.image.required">必选项</div>
+                <div v-if="imagesList" class="row">
+                  <div v-for="item in imagesList" :key="item.name" class="col-xl-3 col-sm-4">
+                    <div class="mb-3">
+                      <label class="card-radio-label mb-2">
+                        <input
+                          type="radio"
+                          name="image"
+                          class="card-radio-input"
+                        />
+                        <div class="card-radio">
+                          <div>
+                            <i class="mdi mdi-layers-triple-outline font-size-24 text-primary align-middle me-2"></i>
+                            <span>{{ item.name }}</span>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="mb-3">
                 <label>数据集</label>
-                <input type="text" class="form-control" />
+                <div class="mb-2">
+                  <input 
+                    type="text"
+                    class="form-control"
+                    v-model="datasetUrl"
+                    @change="getDatasetByUrl"
+                  />
+                </div>
+                <div class="row">
+                  <div v-for="(item, key) in datasetsList" :key="key" class="col-xl-3 col-sm-4">
+                    <div class="mb-3">
+                      <label class="card-radio-label mb-2">
+                        <input
+                          type="checkbox"
+                          name="datasets"
+                          class="card-radio-input"
+                          v-model="selectedDatasets"
+                        />
+                        <div class="card-radio">
+                          <div class="row">
+                            <div class="col-2">
+                              <i class="mdi mdi-cube-outline font-size-24 text-primary align-middle me-2"></i>
+                            </div>
+                            <div class="col-10">
+                              <span>{{ item[1].name }}</span>
+                              <p class="text-muted text-truncate mb-0">{{ item[1].desc }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="mb-2">

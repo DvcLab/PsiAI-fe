@@ -81,9 +81,9 @@ export default {
       }
       let content = this.searchContent;
       return new Promise(resolve => {
-        if(_this.isUrl(content)) { // 用户输入网址，则添加项目
+        if(_this.isUrl(content)) { // 用户输入网址，则添加数据集
           _this.isSearch = false;
-          console.log('添加项目');
+          console.log('添加数据集');
           _this.getNewDatasetInfo(content).then((res) => {
             if(Array.isArray(res)) {
               resolve(res);
@@ -94,9 +94,9 @@ export default {
           .catch(err => {
             console.log(err)
           })
-        } else { // 用户搜索项目
+        } else { // 用户搜索数据集
           _this.isSearch = true;
-          console.log('搜索项目');
+          console.log('搜索数据集');
           _this.searchDataset(content).then((res) => {
             if(Array.isArray(res)) {
               this.datasets = res;
