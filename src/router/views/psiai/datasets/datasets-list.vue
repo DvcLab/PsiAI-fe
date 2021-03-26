@@ -2,11 +2,8 @@
 import Layout from "../../../layouts/main";
 import DatasetItem from "@/components/psiai/dataset-item";
 import appConfig from "@/app.config";
-import Autocomplete from '@trevoreyre/autocomplete-vue'
-
-// import '@trevoreyre/autocomplete-vue/dist/style.css'
-// const wikiUrl = 'https://en.wikipedia.org'
-// const wikiParams = 'action=query&list=search&format=json&origin=*'
+import Autocomplete from '@trevoreyre/autocomplete-vue';
+import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 
 /**
  * 数据集列表
@@ -21,25 +18,67 @@ export default {
     return {
       datasets: [],
       isSearch: false,
-      searchContent: ''
+      searchContent: '',
+      curPage: 1,
+      curTotal: 0,
+      meta: {}
     };
   },
   mounted() {
-    this.getDatasetsList();
+    window.addEventListener('scroll', this.load);
+    this.getDatasetList('', 1);
+  },
+  destroyed(){
+    window.removeEventListener('scroll', this.load, false);
   },
   methods: {
-    // 初始化获取数据集列表
-    getDatasetsList() {
-      const _this = this;
-      this.$request.get('datasets')
+    // 获取数据集
+    getDatasets(q) {
+      return this.$request.get('datasets', q)
       .then((res) => {
-        _this.datasets = res.data.data;
+        return res.data;
       })
       .catch((err) => {
-        _this.datasets = [];
+        console.log(err)
+        return [];
+      })
+    },
+    // 搜索获取数据集列表
+    getDatasetList(q, page) {
+      const _this = this;
+      this.getDatasets({
+        params: {
+          q: q,
+          page: page
+        }
+      })
+      .then((res) => {
+        console.log(res)
+        if(res.code === 1) {
+          _this.datasets.splice(_this.curTotal, 0, ...res.data);
+          _this.meta = res._meta;
+          _this.curPage = res._meta.page;
+          _this.curTotal += res._meta.size;
+        }
+      })
+      .catch((err) => {
+        // _this.datasets = [];
+        // _this.meta = {};
         console.log(err)
       })
     },
+    // // 初始化获取数据集列表
+    // getDatasetsList() {
+    //   const _this = this;
+    //   this.$request.get('datasets')
+    //   .then((res) => {
+    //     _this.datasets = res.data.data;
+    //   })
+    //   .catch((err) => {
+    //     _this.datasets = [];
+    //     console.log(err)
+    //   })
+    // },
     // 获取新的数据集信息
     getNewDatasetInfo(url) {
       return this.$request.get('datasets_info/' + url)
@@ -50,17 +89,7 @@ export default {
         console.log(err)
       })
     },
-    // 搜索数据集
-    searchDataset(q) {
-      return this.$request.get('datasets/' + q)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        console.log(err)
-        return [];
-      })
-    },
+    
     // 创建数据集
     createDataset(q) {
       return this.$request.put('datasets', q)
@@ -95,21 +124,25 @@ export default {
             console.log(err)
           })
         } else { // 用户搜索数据集
-          _this.isSearch = true;
           console.log('搜索数据集');
-          _this.searchDataset(content).then((res) => {
-            if(Array.isArray(res)) {
-              this.datasets = res;
-              resolve(res);
-            } else {
-              this.datasets = [res];
-              resolve([res]);
-            }
-          })
-          .catch((err) => {
-            this.datasets = [];
-            console.log(err)
-          })
+          _this.isSearch = true;
+          _this.datasets = [];
+          _this.curPage = 1;
+          _this.curTotal = 0;
+          _this.getDatasetList(content, _this.curPage)
+          // _this.getDatasets(content).then((res) => {
+          //   if(Array.isArray(res)) {
+          //     this.datasets = res;
+          //     resolve(res);
+          //   } else {
+          //     this.datasets = [res];
+          //     resolve([res]);
+          //   }
+          // })
+          // .catch((err) => {
+          //   this.datasets = [];
+          //   console.log(err)
+          // })
         }
       })
     },
@@ -125,17 +158,21 @@ export default {
       } else {
         this.searchContent = result.id ? result.id : '';
         let content = this.searchContent;
-        this.searchDataset(content).then((res) => {
-            if(Array.isArray(res)) {
-              this.datasets = res;
-            } else {
-              this.datasets = [res];
-            }
-          })
-          .catch((err) => {
-            this.datasets = [];
-            console.log(err)
-          })
+        this.datasets = [];
+        this.curPage = 1;
+        this.curTotal = 0;
+        this.getDatasetList(content, this.curPage);
+        // this.getDatasets(content).then((res) => {
+        //     if(Array.isArray(res)) {
+        //       this.datasets = res;
+        //     } else {
+        //       this.datasets = [res];
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     this.datasets = [];
+        //     console.log(err)
+        //   })
       }
     },
     handleAddDataset(res) {
@@ -144,7 +181,21 @@ export default {
     },
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
-    }
+    },
+    // 滑动至底部，加载剩余项目
+    load() {
+      const _this = this;
+      if(getScrollTop() + getWindowHeight() >= getScrollHeight()){
+        let totalPage = _this.meta.total_page;
+        let page = _this.curPage;
+        if(page < totalPage) {                                       //先判断下一页是否有数据  
+          _this.curPage++;                                           //查询条件的页码+1
+          _this.getDatasetList(_this.searchContent, _this.meta.page);   //拉取接口数据
+        } else {
+          console.log('全部数据集加载完')
+        }
+      }
+    },
   }
 };
 </script>
