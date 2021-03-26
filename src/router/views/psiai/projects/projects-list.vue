@@ -3,6 +3,7 @@ import Layout from "../../../layouts/main";
 import ProjItem from "@/components/psiai/proj-item";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue'
+import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 
 /**
  * 项目列表
@@ -17,38 +18,23 @@ export default {
     return {
       projects: [],
       isSearch: false,
-      searchContent: ''
+      searchContent: '',
+      curPage: 1,
+      curTotal: 0,
+      meta: {}
     };
   },
   mounted() {
-    this.getProjData();
+    window.addEventListener('scroll', this.load);
+    this.getProjList('', 1);
+  },
+  destroyed(){
+    window.removeEventListener('scroll', this.load, false);
   },
   methods: {
-    // 初始化获取项目列表
-    getProjData() {
-      const _this = this;
-      this.$request.get('projects')
-      .then((res) => {
-        _this.projects = res.data.data;
-      })
-      .catch((err) => {
-        _this.projects = [];
-        console.log(err)
-      })
-    },
-    // 获取新项目信息
-    getNewProjInfo(url) {
-      return this.$request.get('projects_info/' + url)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    },
-    // 搜索项目
-    searchProject(q) {
-      return this.$request.get('projects/' + q)
+    // 获取项目
+    getProjects(q) {
+      return this.$request.get('projects', q)
       .then((res) => {
         return res.data;
       })
@@ -57,6 +43,46 @@ export default {
         return [];
       })
     },
+    // 搜索获取项目列表
+    getProjList(q, page) {
+      const _this = this;
+      this.getProjects({
+        params: {
+          q: q,
+          page: page
+        }
+      })
+      .then((res) => {
+        console.log(res)
+        if(res.code === 1) {
+          _this.projects.splice(_this.curTotal, 0, ...res.data);
+          _this.meta = res._meta;
+          _this.curPage = res._meta.page;
+          _this.curTotal += res._meta.size;
+        }
+      })
+      .catch((err) => {
+        // _this.projects = [];
+        // _this.meta = {};
+        console.log(err)
+      })
+    },
+    // 获取新项目信息
+    getNewProjInfo(url) {
+      return this.$request.get('projects_info',{
+        params: {
+          url: url
+        }
+      })
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    
     // 创建项目
     createProj(q) {
       return this.$request.put('projects', q)
@@ -76,36 +102,34 @@ export default {
         this.searchContent = input;
       }
       let content = this.searchContent;
+
       return new Promise(resolve => {
         if(_this.isUrl(content)) { // 用户输入网址，则添加项目
           _this.isSearch = false;
           console.log('添加项目');
           _this.getNewProjInfo(content).then((res) => {
-            if(Array.isArray(res)) {
-              resolve(res);
-            } else {
-              resolve([res]);
+            if(res.code === 1) {
+              // 查询成功
+            } else if (res.code === 0) {
+              // 查询失败
             }
+            resolve(res);
+            // if(Array.isArray(res)) {
+            //   resolve(res);
+            // } else {
+            //   resolve([res]);
+            // }
           })
           .catch(err => {
             console.log(err)
           })
         } else { // 用户搜索项目
-          _this.isSearch = true;
           console.log('搜索项目');
-          _this.searchProject(input).then((res) => {
-            if(Array.isArray(res)) {
-              this.projects = res;
-              resolve(res);
-            } else {
-              this.projects = [res];
-              resolve([res]);
-            }
-          })
-          .catch((err) => {
-            this.projects = [];
-            console.log(err)
-          })
+          _this.isSearch = true;
+          _this.projects = [];
+          _this.curPage = 1;
+          _this.curTotal = 0;
+          _this.getProjList(input, _this.curPage)
         }
       })
     },
@@ -121,26 +145,34 @@ export default {
       } else {
         this.searchContent = result.id ? result.id : '';
         let content = this.searchContent;
-        this.searchProject(content).then((res) => {
-            if(Array.isArray(res)) {
-              this.projects = res;
-            } else {
-              this.projects = [res];
-            }
-          })
-          .catch((err) => {
-            this.projects = [];
-            console.log(err)
-          })
+        this.projects = [];
+        this.curPage = 1;
+        this.curTotal = 0;
+        this.getProjList(content, this.curPage);
       }
     },
     handleAddProj(res) {
       console.log(res)
       this.createProj(res)
     },
+    // 判断正则判断是否是url
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
-    }
+    },
+    // 滑动至底部，加载剩余项目
+    load() {
+      const _this = this;
+      if(getScrollTop() + getWindowHeight() >= getScrollHeight()){
+        let totalPage = _this.meta.total_page;
+        let page = _this.curPage;
+        if(page < totalPage) {                                       //先判断下一页是否有数据  
+          _this.curPage++;                                           //查询条件的页码+1
+          _this.getProjList(_this.searchContent, _this.meta.page);   //拉取接口数据
+        } else {
+          console.log('全部项目加载完')
+        }
+      }
+    },
   }
 };
 </script>
