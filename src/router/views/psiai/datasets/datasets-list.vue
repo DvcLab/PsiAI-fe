@@ -67,22 +67,16 @@ export default {
         console.log(err)
       })
     },
-    // // 初始化获取数据集列表
-    // getDatasetsList() {
-    //   const _this = this;
-    //   this.$request.get('datasets')
-    //   .then((res) => {
-    //     _this.datasets = res.data.data;
-    //   })
-    //   .catch((err) => {
-    //     _this.datasets = [];
-    //     console.log(err)
-    //   })
-    // },
+
     // 获取新的数据集信息
     getNewDatasetInfo(url) {
-      return this.$request.get('datasets_info/' + url)
+      return this.$request.get('datasets_info', {
+        params: {
+          url: url
+        }
+      })
       .then((res) => {
+        console.log(res);
         return res.data;
       })
       .catch((err) => {
