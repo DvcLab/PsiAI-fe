@@ -10,6 +10,7 @@ import {
   // numeric,
   // url,
 } from "vuelidate/lib/validators";
+import Swal from "sweetalert2";
 
 /**
  * Create Container component
@@ -72,21 +73,22 @@ export default {
       gpu: false,
       projsList: [],
       proj: null,
-      branch: '',
       datasetsList: new Map(),
       datasetUrl: null,
       datasetsUrls: new Set(),
-      selectedDatasets: [],
       imagesList: [],
-      image: null,
+      selectedProj: '',
+      selectedBranch: '',
+      selectedDatasets: [],
+      selectedImage: null,
       submitted: false,
     };
   },
   validations: {
     proj: { required },
-    branch: { required },
-    datasets: { required },
-    image: { required },
+    selectedBranch: { required },
+    selectedDatasets: { required },
+    selectedImage: { required },
     cpus: { required },
     mem: { required },
     gpu: { required }
@@ -144,17 +146,48 @@ export default {
     },
     nameWithDesc ({ name, desc }) {
       let descTmp = desc
-      if(desc.length > 10) {
-        descTmp = desc.slice(0,10);
+      if(desc.length > 15) {
+        descTmp = desc.slice(0,15);
         descTmp += '...'
       }
       return `${name} [${descTmp}]`
     },
+    // 提交表单
     formSubmit(e) {
       console.log(e)
+      const _this = this;
       this.submitted = true;
       // stop here if form is invalid
       this.$v.$touch();
+      if (this.$v.$invalid) {
+        // 存在未填项
+      } else {
+        // 填写内容无误提交远程
+
+        _this.$request.put('containers', {
+          params: {
+            project_id: _this.selectedProj,
+            branch: _this.selectedBranch,
+            image_id: _this.selectedImage,
+            dataset_urls: _this.selectedDatasets,
+            cpus: _this.cpus,
+            mem: _this.mem,
+            gpu: _this.gpu
+          }
+        })
+        .then((res) => {
+          if(res.code === 1) {
+            console.log('创建成功')
+            _this.successMsg()
+          } else {
+            console.log('创建失败')
+          }
+          
+        })
+        .catch((err) => {
+          console.err(err)
+        })
+      }
     },
     // 防抖
     debounce(fn, delay=2000) {
@@ -168,7 +201,31 @@ export default {
           timer = null;
         }, delay)
       }
-    }
+    },
+    // 容器创建成功提醒
+    successMsg() {
+      Swal.fire(
+        "容器创建成功!",
+        "点击按钮返回容器列表",
+        "success"
+      ).then((res) => {
+        if(res.isConfirmed) {
+          this.$router.push({path: '/containers'})
+        }
+      })
+    },
+    // 容器创建失败提醒
+    errorMsg() {
+      Swal.fire(
+        "容器创建失败!",
+        "点击按钮返回容器列表",
+        "error"
+      ).then((res) => {
+        if(res.isConfirmed) {
+          this.$router.push({path: '/containers'})
+        }
+      })
+    },
   }
 };
 </script>
@@ -207,6 +264,8 @@ export default {
                             name="project"
                             class="card-radio-input"
                             checked
+                            v-model="selectedProj"
+                            :value="proj.id"
                           />
                           <div class="card-radio">
                             <div class="row">
@@ -240,6 +299,8 @@ export default {
                           name="branch"
                           class="card-radio-input"
                           checked
+                          v-model="selectedBranch"
+                          :value="item"
                         />
                         <div class="card-radio">
                           <div>
@@ -265,6 +326,8 @@ export default {
                           type="radio"
                           name="image"
                           class="card-radio-input"
+                          v-model="selectedImage"
+                          :value="item.id"
                         />
                         <div class="card-radio">
                           <div>
@@ -284,7 +347,7 @@ export default {
                   <input 
                     type="text"
                     class="form-control"
-                    v-model="datasetUrl"
+                    v-model.trim="datasetUrl"
                     @change="getDatasetByUrl"
                   />
                 </div>
@@ -297,6 +360,7 @@ export default {
                           name="datasets"
                           class="card-radio-input"
                           v-model="selectedDatasets"
+                          :value="item[1].url"
                         />
                         <div class="card-radio">
                           <div class="row">
@@ -328,7 +392,7 @@ export default {
               <div class="mb-2">
                 <label>GPU</label>
                 <div class="row">
-                  <div class="col-xl-2 col-sm-4">
+                  <div class="col-xl-3 col-sm-4">
                     <label class="card-radio-label mb-3">
                       <input
                         v-model="gpu"
