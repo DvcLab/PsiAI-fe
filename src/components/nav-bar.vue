@@ -1,6 +1,7 @@
 <script>
 import axios from "axios";
 import { mapState } from 'vuex';
+import { authMethods } from '@/state/helpers'
 
 import i18n from "../i18n";
 
@@ -80,6 +81,7 @@ export default {
     this.flag = this.value.flag;
   },
   methods: {
+    ...authMethods,
     toggleMenu() {
       this.$parent.toggleMenu();
     },
@@ -127,6 +129,10 @@ export default {
         });
       });
     },
+    logout() {
+      this.logOut() // auth/logOut
+      // this.$keycloak.logoutFn()
+    }
   },
 };
 </script>
@@ -670,7 +676,14 @@ export default {
               src="@/assets/images/users/avatar-1.jpg"
               alt="Header Avatar"
             /> -->
-            <img v-show="userInfo && userInfo.attributes" class="rounded-circle header-profile-user" src="@/assets/images/users/avatar-1.jpg" :v-real-img="avatarUrl" :alt="userInfo.username" />
+            <img
+              v-show="userInfo && userInfo.attributes"
+              class="rounded-circle header-profile-user"
+              :src="avatarUrl"
+              :v-real-img="userInfo.attributes.headimgurl[0]"
+              :alt="userInfo.username"
+            />
+            <!-- <img v-show="userInfo && userInfo.attributes" class="rounded-circle header-profile-user" src="@/assets/images/users/avatar-1.jpg" :v-real-img="userInfo.attributes.headimgurl[0]" :alt="userInfo.username" /> -->
             <!-- <span class="d-none d-xl-inline-block ms-1">{{
               $t("navbar.dropdown.henry.text")
             }}</span> -->
@@ -707,10 +720,20 @@ export default {
           
           <!-- 分割线 注释 -->
           <!-- <b-dropdown-divider></b-dropdown-divider> -->
-          <a
+          <!-- <a
             href="/logout"
            
             class="dropdown-item text-danger"
+          >
+            <i
+              class="bx bx-power-off font-size-16 align-middle me-1 text-danger"
+            ></i>
+            {{ $t("navbar.dropdown.henry.list.logout") }}
+          </a> -->
+          <a
+            href=""
+            class="dropdown-item text-danger"
+            @click="logout"
           >
             <i
               class="bx bx-power-off font-size-16 align-middle me-1 text-danger"

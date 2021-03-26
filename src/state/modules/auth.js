@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { getFirebaseBackend } from '../../authUtils.js'
 
 export const state = {
@@ -41,14 +42,15 @@ export const actions = {
     logOut({ commit }) {
         // eslint-disable-next-line no-unused-vars
         commit('SET_CURRENT_USER', null)
-        return new Promise((resolve, reject) => {
-            // eslint-disable-next-line no-unused-vars
-            getFirebaseBackend().logout().then((response) => {
-                resolve(true);
-            }).catch((error) => {
-                reject(this._handleError(error));
-            })
-        });
+        // return new Promise((resolve, reject) => {
+        //     // eslint-disable-next-line no-unused-vars
+        //     getFirebaseBackend().logout().then((response) => {
+        //         resolve(true);
+        //     }).catch((error) => {
+        //         reject(this._handleError(error));
+        //     })
+        // });
+        Vue.prototype.$keycloak.logoutFn();
     },
 
     // register the user

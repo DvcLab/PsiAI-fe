@@ -90,7 +90,7 @@ Vue.use(VueKeyCloak, {
   config: {
     url: process.env.VUE_APP_AUTH_URL,
     realm: process.env.VUE_APP_AUTH_REALM,
-    clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
+    clientId: process.env.VUE_APP_AUTH_CLIENT_ID
   },
   onReady: kc => {
     kc.loadUserProfile().success((data) => {
