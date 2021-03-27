@@ -171,15 +171,15 @@ export default {
         return;
       }
       this.$request.get('datasets_info?url=' + url)
+      .then(res => res.data)
       .then((res) => {
         console.log(res)
-        if(res.data.code && res.data.code === 0) {
-          // 请求失败
-          return;
+        if(res.code === 1) {
+          // 请求成功
+          vm.datasetsList.set(res.data.url, res.data);
         }
         // 请求成功
         // vm.datasetsUrls.add(url);
-        vm.datasetsList.set(res.data.url, res.data);
         vm.$forceUpdate()
       })
       .catch((err) => {
@@ -188,10 +188,13 @@ export default {
     },
     // 获取镜像列表
     getImagesList() {
-      const vm = this;
+      const _this = this;
       this.$request.get('images')
+      .then((res) => res.data)
       .then((res) => {
-        vm.imagesList = res.data.data;
+        if(res.code === 1) {
+          _this.imagesList = res.data;
+        }
       })
       .catch((err) => {
         console.err(err)
@@ -299,6 +302,11 @@ export default {
         _this.projsList = [];
       })
     },
+    delDataset(key) {
+      if(this.datasetsList.has(key)){
+        this.datasetsList.delete(key)
+      }
+    }
   }
 };
 </script>
@@ -449,13 +457,14 @@ export default {
                   <div v-for="(item, key) in datasetsList" :key="key" class="col-xl-3 col-sm-4">
                     <div class="mb-3">
                       <label class="card-radio-label mb-2">
-                        <input
+                        <!-- <input
                           type="checkbox"
                           name="datasets"
                           class="card-radio-input"
+                          checked
                           v-model="selectedDatasets"
                           :value="item[1].url"
-                        />
+                        /> -->
                         <div class="card-radio">
                           <div class="row">
                             <div class="col-2">
@@ -466,6 +475,7 @@ export default {
                               <p class="text-muted text-truncate mb-0">{{ item[1].desc }}</p>
                             </div>
                           </div>
+                          <i class="bx bx-x me-1 x" @click="delDataset(key)"></i>
                         </div>
                       </label>
                     </div>
@@ -515,3 +525,12 @@ export default {
     </div>
   </Layout>
 </template>
+<style scoped>
+.x {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.8rem;
+  font-size: 1rem;
+  color: #ccc;
+}
+</style>
