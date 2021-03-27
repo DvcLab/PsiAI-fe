@@ -41,10 +41,10 @@ export default {
                 <h5 class="text-truncate mb-0 list-item-name">
                     {{ proj.name }}
                 </h5>
-                <p class="text-muted text-truncate mb-0">
+                <p class="text-truncate mb-0">
                     {{ proj.desc }}
                 </p>
-                <p class="text-muted text-truncate mb-0">
+                <p class="text-truncate mb-0">
                     <span v-if="datasets.length > 0">
                         <span
                             class="badge bg-primary me-2"
@@ -56,7 +56,7 @@ export default {
                     </span>
                     <span v-else class="badge bg-secondary me-2">无绑定数据集</span>
                     <span
-                        class="badge bg-primary me-2"
+                        class="badge bg-success me-2"
                         v-for="item in branches"
                         :key="item"
                     >
@@ -74,6 +74,8 @@ export default {
 <style scoped>
 .proj-item-con {
     padding: 0.5rem;
-    /* margin-top: 0.75rem; */
+}
+h5 {
+    color: inherit;
 }
 </style>

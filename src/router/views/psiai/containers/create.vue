@@ -79,15 +79,17 @@ export default {
       datasetUrl: null,
       datasetsUrls: new Set(),
       imagesList: [],
-      selectedProj: '',
       selectedBranch: '',
       selectedDatasets: [],
       selectedImage: null,
       submitted: false,
-
-      searchContent: '',
-
     };
+  },
+  computed: {
+    selectedProj() {
+      if(!this.proj) return '';
+      return this.proj.id;
+    }
   },
   validations: {
     proj: { required },
@@ -213,7 +215,6 @@ export default {
         // 存在未填项
       } else {
         // 填写内容无误提交远程
-
         _this.$request.put('containers', {
           params: {
             project_id: _this.selectedProj,
@@ -276,6 +277,27 @@ export default {
         }
       })
     },
+    // 监听proj里input的内容
+    changeProjValueAction(value) {
+      console.log(value)
+      const _this = this;
+      this.$request.get('projects', {
+        params: {
+          q: value
+        }
+      })
+      .then((res) => res.data)
+      .then((res) => {
+        _this.projsList = [];
+        if(res.code === 1) {
+          _this.projsList.splice(0, 0, ...res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        _this.projsList = [];
+      })
+    },
   }
 };
 </script>
@@ -288,92 +310,96 @@ export default {
             
             <h4 class="card-title mb-4">创建容器</h4>
             <form @submit.prevent="formSubmit">
-              <div class="mb-2">
-                <label>项目</label>
-                <div class="mb-2">
-                  <multiselect 
-                  v-model="$v.proj.$model" 
-                  :options="projsList" 
-                  :custom-label="nameWithDesc" 
-                  :searchable="true" 
-                  placeholder="选择项目"
-                  select-label="选择一个项目"
-                  label="name" 
-                  track-by="name"
-                  >
-                  <template slot="option" slot-scope="props">
-                    <div class="row">
-                      <ProjSelectItem class="col-12" :proj="props.option"/>
-                    </div>
-                  </template>
-                  </multiselect>
-                  <div class="error" v-if="submitted && !$v.proj.required">必选项</div>
-                </div>
-
-                <div v-if="proj" class="row">
-                  <div class="col-xl-3 col-sm-4">
-                    <div class="mb-3">
-                      <label class="card-radio-label mb-2">
-                        <input
-                          type="radio"
-                          name="project"
-                          class="card-radio-input"
-                          checked
-                          v-model="selectedProj"
-                          :value="proj.id"
-                        />
-                        <div class="card-radio">
-                          <div class="row">
-                            <div class="col-2">
-                              <i class="mdi mdi-archive-outline font-size-24 text-primary align-middle me-2"></i>
-                            </div>
-                            <div class="col-10">
-                              <span>{{ proj.name }}</span>
-                              <p class="text-muted text-truncate mb-0">{{ proj.desc }}</p>
-                            </div>
-                            
-                          </div>
-                        </div>
-                      </label>
-                    </div>
+              <div class="row">
+                <div class="col-12 col-md-6 mb-2">
+                  <label>项目</label>
+                  <div class="mb-2">
+                    <multiselect 
+                      v-model="proj" 
+                      :options="projsList" 
+                      :searchable="true"
+                      @search-change="changeProjValueAction"
+                      placeholder="选择项目"
+                      select-label="选择一个项目"
+                      selectedLabel="已选项目"
+                      deselectLabel="点击取消选择"
+                      label="name" 
+                      track-by="name"
+                    >
+                    <template slot="singleLabel" slot-scope="{ option }">
+                      <i class="bx bx-book-bookmark me-1"></i>
+                      <span>{{ option.name }}</span>
+                    </template>
+                    <template slot="option" slot-scope="{ option }">
+                      <div class="row">
+                        <ProjSelectItem class="col-12" :proj="option"/>
+                      </div>
+                    </template>
+                    <span slot="noResult">未查询到该项目</span>
+                    <span slot="noOptions">暂无项目可用</span>
+                    </multiselect>
+                    <div class="error" v-if="submitted && !$v.proj.required">必选项</div>
                   </div>
                 </div>
-
-              </div>
-
-              <div v-if="proj" class="mb-2">
-                <label>项目分支</label>
-                <!-- <multiselect v-model="$v.branch.$model" :options="proj.branches" placeholder="选择项目分支" ></multiselect> -->
-                <div class="error" v-if="submitted && !$v.branch.required">必选项</div>
-                <div v-if="proj.branches" class="row">
-                  <div v-for="item in proj.branches" :key="item" class="col-xl-3 col-sm-4">
-                    <div class="mb-3">
-                      <label class="card-radio-label mb-2">
-                        <input
-                          type="radio"
-                          name="branch"
-                          class="card-radio-input"
-                          checked
-                          v-model="selectedBranch"
-                          :value="item"
-                        />
-                        <div class="card-radio">
-                          <div>
-                            <i class="mdi mdi-source-branch font-size-24 text-primary align-middle me-2"></i>
-                            <span>{{ item }}</span>
+                <div v-if="proj" class="col-12 col-md-6 mb-2">
+                  <label>项目分支</label>
+                  <multiselect
+                    v-model="selectedBranch"
+                    :options="proj.branches"
+                    :searchable="false"
+                    placeholder="选择项目分支"
+                    select-label="选择一个分支"
+                    selectedLabel="已选分支"
+                    deselectLabel="点击取消选择"
+                    >
+                    <template slot="singleLabel" slot-scope="{ option }">
+                      <i class="bx bx-git-branch me-1"></i>
+                      <span>{{ option }}</span>
+                    </template>
+                    <span slot="noResult">未查询到该分支</span>
+                    <span slot="noOptions">暂无分支可用</span>
+                    </multiselect>
+                  <div class="error" v-if="submitted && !$v.selectedBranch.required">必选项</div>
+                  <!-- <div v-if="proj.branches" class="row">
+                    <div v-for="item in proj.branches" :key="item" class="col-xl-3 col-sm-4">
+                      <div class="mb-3">
+                        <label class="card-radio-label mb-2">
+                          <input
+                            type="radio"
+                            name="branch"
+                            class="card-radio-input"
+                            checked
+                            v-model="selectedBranch"
+                            :value="item"
+                          />
+                          <div class="card-radio">
+                            <div>
+                              <i class="mdi mdi-source-branch font-size-24 text-primary align-middle me-2"></i>
+                              <span>{{ item }}</span>
+                            </div>
                           </div>
-                        </div>
-                      </label>
+                        </label>
+                      </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
               <div class="mb-2">
                 <label>镜像</label>
-                <!-- <multiselect v-model="$v.image.$model" :options="imagesList" :custom-label="nameWithDesc" placeholder="选择镜像" label="name" track-by="name"></multiselect> -->
-                <div class="error" v-if="submitted && !$v.image.required">必选项</div>
-                <div v-if="imagesList" class="row">
+                <multiselect
+                  v-model="$v.selectedImage.$model"
+                  :options="imagesList"
+                  :custom-label="nameWithDesc"
+                  placeholder="选择镜像"
+                  label="name"
+                  track-by="name"
+                >
+                  <span slot="noResult">未查询到该镜像</span>
+                  <span slot="noOptions">暂无镜像可用</span>
+                </multiselect>
+                <div class="error" v-if="submitted && !$v.selectedImage.required">必选项</div>
+                <!-- <div v-if="imagesList" class="row">
                   <div v-for="item in imagesList" :key="item.name" class="col-xl-3 col-sm-4">
                     <div class="mb-3">
                       <label class="card-radio-label mb-2">
@@ -393,7 +419,7 @@ export default {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
 
               <div class="mb-3">
