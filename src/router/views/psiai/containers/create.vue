@@ -5,6 +5,7 @@ import VueSlideBar from "vue-slide-bar";
 // import Autocomplete from '@trevoreyre/autocomplete-vue';
 import Multiselect from "vue-multiselect";
 import ProjSelectItem from "@/components/psiai/proj-select-item";
+import ImageSelectItem from "@/components/psiai/image-select-item";
 import {
   required,
   // minValue,
@@ -22,7 +23,7 @@ export default {
     title: "创建容器",
     meta: [{ name: "创建容器", content: appConfig.description }]
   },
-  components: { Layout, VueSlideBar, Multiselect, ProjSelectItem },
+  components: { Layout, VueSlideBar, Multiselect, ProjSelectItem, ImageSelectItem },
   data() {
     return {
       cpus: 1,
@@ -390,11 +391,23 @@ export default {
                 <multiselect
                   v-model="$v.selectedImage.$model"
                   :options="imagesList"
-                  :custom-label="nameWithDesc"
                   placeholder="选择镜像"
+                  select-label="选择一个镜像"
+                  selectedLabel="已选镜像"
+                  deselectLabel="点击取消选择"
                   label="name"
                   track-by="name"
                 >
+                  <template slot="singleLabel" slot-scope="{ option }">
+                    <i class="bx bx-layer me-1"></i>
+                    <span>{{ option.name }}</span>
+                  </template>
+                  <template slot="option" slot-scope="{ option }">
+                    <!-- {{option}} -->
+                    <div class="row">
+                      <ImageSelectItem class="col-12" :image="option"/>
+                    </div>
+                  </template>
                   <span slot="noResult">未查询到该镜像</span>
                   <span slot="noOptions">暂无镜像可用</span>
                 </multiselect>
