@@ -2,7 +2,7 @@
 import Layout from "../../../layouts/main";
 import ProjItem from "@/components/psiai/proj-item";
 import appConfig from "@/app.config";
-import Autocomplete from '@trevoreyre/autocomplete-vue'
+import Autocomplete from '@trevoreyre/autocomplete-vue';
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 
 /**
@@ -129,7 +129,8 @@ export default {
           _this.projects = [];
           _this.curPage = 1;
           _this.curTotal = 0;
-          _this.getProjList(input, _this.curPage)
+          _this.getProjList(input, _this.curPage);
+          resolve(_this.projects)
         }
       })
     },
@@ -220,17 +221,6 @@ export default {
             </li>
           </template>
         </autocomplete>
-          
-        <!-- <div class="search-box me-2 d-inline-block">
-          <div class="position-relative">
-            <input type="text" class="form-control border-0" placeholder="搜索项目..." />
-            <i class="bx bx-search-alt search-icon"></i>
-          </div>
-        </div> -->
-
-        <!-- <button type="button" class="btn btn-success me-2 d-inline-block">
-          <i class="mdi mdi-plus me-1"></i>添加
-        </button> -->
       </div>
       <div class="col-12">
         <div class="row">

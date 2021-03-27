@@ -2,7 +2,9 @@
 import Layout from "../../../layouts/main";
 import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
+// import Autocomplete from '@trevoreyre/autocomplete-vue';
 import Multiselect from "vue-multiselect";
+import ProjSelectItem from "@/components/psiai/proj-select-item";
 import {
   required,
   // minValue,
@@ -20,7 +22,7 @@ export default {
     title: "创建容器",
     meta: [{ name: "创建容器", content: appConfig.description }]
   },
-  components: { Layout, VueSlideBar, Multiselect },
+  components: { Layout, VueSlideBar, Multiselect, ProjSelectItem },
   data() {
     return {
       cpus: 1,
@@ -82,6 +84,9 @@ export default {
       selectedDatasets: [],
       selectedImage: null,
       submitted: false,
+
+      searchContent: '',
+
     };
   },
   validations: {
@@ -98,6 +103,51 @@ export default {
     this.getImagesList();
   },
   methods: {
+    // search(input) {
+    //   return new Promise((resolve, reject) => {
+    //     return this.$request.get('projects', {
+    //       params: {
+    //         q: input
+    //       }
+    //     })
+    //     .then((res) => res.data)
+    //     .then((res) => {
+    //       if(res.code === 1) {
+    //         resolve(res.data)
+    //       } else {
+    //         resolve([])
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //       reject([]);
+    //     })
+    //     // fetch(url)
+    //     //   .then(response => response.json())
+    //     //   .then(data => {
+    //     //     resolve(data.query.search)
+    //     //   })
+    //   })
+    // },
+    // getResultValue(result) {
+    //   console.log('getResultValue', result)
+    //   this.searchContent = result.id ? result.id : '';
+    //   return result ? result.name : '';
+    // },
+    
+    // handleSubmit(result) {
+    //   console.log('handleSubmit', result)
+    //   if(!result) {
+    //     // this.projects = []; 
+    //   } else {
+    //     // this.searchContent = result.id ? result.id : '';
+    //     // let content = this.searchContent;
+    //     // this.projects = [];
+    //     // this.curPage = 1;
+    //     // this.curTotal = 0;
+    //     // this.getProjList(content, this.curPage);
+    //   }
+    // },
     // 获取项目列表
     getProjsList() {
       const vm = this;
@@ -240,49 +290,54 @@ export default {
             <form @submit.prevent="formSubmit">
               <div class="mb-2">
                 <label>项目</label>
-                  <!-- <multiselect v-model="proj" :options="projsList" :custom-label="nameWithDesc" :searchable="true" placeholder="选择项目" label="name" track-by="name"></multiselect> -->
-                  <div class="mb-2">
-                    <multiselect 
-                    v-model="$v.proj.$model" 
-                    :options="projsList" 
-                    :custom-label="nameWithDesc" 
-                    :searchable="true" 
-                    placeholder="选择项目" 
-                    label="name" 
-                    track-by="name"
-                    >
-                    </multiselect>
-                    <div class="error" v-if="submitted && !$v.proj.required">必选项</div>
-                  </div>
+                <div class="mb-2">
+                  <multiselect 
+                  v-model="$v.proj.$model" 
+                  :options="projsList" 
+                  :custom-label="nameWithDesc" 
+                  :searchable="true" 
+                  placeholder="选择项目"
+                  select-label="选择一个项目"
+                  label="name" 
+                  track-by="name"
+                  >
+                  <template slot="option" slot-scope="props">
+                    <div class="row">
+                      <ProjSelectItem class="col-12" :proj="props.option"/>
+                    </div>
+                  </template>
+                  </multiselect>
+                  <div class="error" v-if="submitted && !$v.proj.required">必选项</div>
+                </div>
 
-                  <div v-if="proj" class="row">
-                    <div class="col-xl-3 col-sm-4">
-                      <div class="mb-3">
-                        <label class="card-radio-label mb-2">
-                          <input
-                            type="radio"
-                            name="project"
-                            class="card-radio-input"
-                            checked
-                            v-model="selectedProj"
-                            :value="proj.id"
-                          />
-                          <div class="card-radio">
-                            <div class="row">
-                              <div class="col-2">
-                                <i class="mdi mdi-archive-outline font-size-24 text-primary align-middle me-2"></i>
-                              </div>
-                              <div class="col-10">
-                                <span>{{ proj.name }}</span>
-                                <p class="text-muted text-truncate mb-0">{{ proj.desc }}</p>
-                              </div>
-                              
+                <div v-if="proj" class="row">
+                  <div class="col-xl-3 col-sm-4">
+                    <div class="mb-3">
+                      <label class="card-radio-label mb-2">
+                        <input
+                          type="radio"
+                          name="project"
+                          class="card-radio-input"
+                          checked
+                          v-model="selectedProj"
+                          :value="proj.id"
+                        />
+                        <div class="card-radio">
+                          <div class="row">
+                            <div class="col-2">
+                              <i class="mdi mdi-archive-outline font-size-24 text-primary align-middle me-2"></i>
                             </div>
+                            <div class="col-10">
+                              <span>{{ proj.name }}</span>
+                              <p class="text-muted text-truncate mb-0">{{ proj.desc }}</p>
+                            </div>
+                            
                           </div>
-                        </label>
-                      </div>
+                        </div>
+                      </label>
                     </div>
                   </div>
+                </div>
 
               </div>
 
