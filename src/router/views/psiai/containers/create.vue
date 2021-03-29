@@ -6,6 +6,7 @@ import VueSlideBar from "vue-slide-bar";
 import Multiselect from "vue-multiselect";
 import ProjSelectItem from "@/components/psiai/proj-select-item";
 import ImageSelectItem from "@/components/psiai/image-select-item";
+import SelectCard from "@/components/psiai/select-card";
 import {
   required,
   // minValue,
@@ -23,7 +24,7 @@ export default {
     title: "创建容器",
     meta: [{ name: "创建容器", content: appConfig.description }]
   },
-  components: { Layout, VueSlideBar, Multiselect, ProjSelectItem, ImageSelectItem },
+  components: { Layout, VueSlideBar, Multiselect, ProjSelectItem, ImageSelectItem, SelectCard },
   data() {
     return {
       cpus: 1,
@@ -305,6 +306,7 @@ export default {
     delDataset(key) {
       if(this.datasetsList.has(key)){
         this.datasetsList.delete(key)
+        this.$forceUpdate()
       }
     }
   }
@@ -456,15 +458,28 @@ export default {
                 <div class="row">
                   <div v-for="(item, key) in datasetsList" :key="key" class="col-xl-3 col-sm-4">
                     <div class="mb-3">
-                      <label class="card-radio-label mb-2">
-                        <!-- <input
+                      <SelectCard :item="item[1]" @del="delDataset">
+                        <template slot="content">
+                          <div class="row">
+                            <div class="col-2">
+                              <i class="mdi mdi-cube-outline font-size-24 text-primary align-middle me-2"></i>
+                            </div>
+                            <div class="col-10">
+                              <span>{{ item[1].name }}</span>
+                              <p class="text-muted text-truncate mb-0">{{ item[1].desc }}</p>
+                            </div>
+                          </div>
+                        </template>
+                      </SelectCard>
+                      <!-- <label class="card-radio-label mb-2">
+                        <input
                           type="checkbox"
                           name="datasets"
                           class="card-radio-input"
                           checked
                           v-model="selectedDatasets"
                           :value="item[1].url"
-                        /> -->
+                        />
                         <div class="card-radio">
                           <div class="row">
                             <div class="col-2">
@@ -477,7 +492,7 @@ export default {
                           </div>
                           <i class="bx bx-x me-1 x" @click="delDataset(key)"></i>
                         </div>
-                      </label>
+                      </label> -->
                     </div>
                   </div>
                 </div>

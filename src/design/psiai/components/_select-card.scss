@@ -1,0 +1,17 @@
+.select-card {
+    background-color: #fff;
+    border: 2px solid $blue;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.x {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.8rem;
+    font-size: 1.2rem;
+    color: $blue;
+    cursor: pointer;
+}
