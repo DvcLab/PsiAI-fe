@@ -18,8 +18,6 @@ export default {
             return tagList;
         }
     },
-    methods: {
-    }
 }
 </script>
 
@@ -31,7 +29,7 @@ export default {
                 <img class="avatar-sm" :src="image.cover_img_url" alt="镜像" />
             </div> -->
 
-            <div class="col-6 col-md-6">
+            <div class="col-6 col-md-5">
                 <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
                     {{ image.name }}
                 </h5>
@@ -82,15 +80,16 @@ export default {
                 </div>
             </div> -->
 
-            <!-- <div class="col-2 col-md-1">
-                <img class="rounded-circle avatar-xs" :src="image.user.avatar_url" :alt="image.user.username" />
-            </div> -->
+            <div class="col-2 col-md-1">
+                <!-- <img class="rounded-circle avatar-xs" :src="image.user.avatar_url" :alt="image.user.username" /> -->
+                <img v-if="image.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="image.user.avatar_url" :alt="image.user.username" />
+            </div>
 
-            <div class="col-2 col-md-2 text-end d-none d-md-block">
+            <div class="col-md-2 text-end d-none d-md-block">
                 <i class="bx bx-calendar me-1"></i>
                 <span>{{ image.create_time | moment("from", "now") }}</span>
             </div>
-            <div class="col-4 col-md-2 text-end">
+            <div class="col-2 col-md-2 text-end">
                 <i class="bx bx-calendar me-1"></i>
                 <span>{{ image.update_time | moment("from", "now") }}</span>
             </div>

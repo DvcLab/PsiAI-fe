@@ -132,12 +132,12 @@ export default {
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
               <!-- <span class="col-md-1 d-none d-md-block">#</span> -->
-              <span class="col-6 col-md-6">镜像名称</span>
+              <span class="col-6 col-md-5">镜像名称</span>
               <span class="col-2 col-md-2">类型</span>
               <!-- <span class="col-2 col-md-2">标签</span> -->
-              <!-- <span class="col-2 col-md-1">用户</span> -->
+              <span class="col-2 col-md-1">用户</span>
               <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
-              <span class="col-4 col-md-2 text-end">更新时间</span>
+              <span class="col-2 col-md-2 text-end">更新时间</span>
             </div>
           </div>
           <div v-if="images.length > 0">
