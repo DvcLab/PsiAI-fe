@@ -74,33 +74,50 @@ export default {
           }
         ]
       },
-      gpu: false,
       projsList: [],
-      proj: null,
       datasetsList: new Map(),
       datasetUrl: null,
       datasetsUrls: new Set(),
       imagesList: [],
+      selectProj: null,
       selectedBranch: '',
-      selectedDatasets: [],
       selectedImage: null,
-      submitted: false,
+      submitted: false
     };
   },
   computed: {
-    selectedProj() {
-      if(!this.proj) return '';
-      return this.proj.id;
+    // 选择项目的id
+    selectedProjId() {
+      if(!this.selectProj) return '';
+      return this.selectProj.id;
+    },
+    // 选择镜像的id
+    selectedImageId() {
+      if(!this.selectedImage) return '';
+      return this.selectedImage.id;
+    },
+    // 是否需要gpu
+    isGPU() {
+      if(!this.selectedImage) return false;
+      let types = this.selectedImage.types;
+      let hasGPU = types.includes('GPU');
+      return hasGPU;
+    },
+    // gpu的选项是否可选
+    isDisabledGpu() {
+      if(!this.selectedImage) return true;
+      let types = this.selectedImage.types;
+      let hasCPU = types.includes('CPU');
+      let hasGPU = types.includes('GPU');
+      return !(hasCPU && hasGPU)
     }
   },
   validations: {
-    proj: { required },
+    selectProj: { required },
     selectedBranch: { required },
-    selectedDatasets: { required },
     selectedImage: { required },
     cpus: { required },
     mem: { required },
-    gpu: { required }
   },
   mounted() {
     this.getProjsList();
@@ -163,28 +180,25 @@ export default {
         console.err(err)
       })
     },
-    // 获取数据集信息
-    getDatasetByUrl() {
-      console.log('获取数据集信息')
-      const vm = this;
-      const url = vm.datasetUrl;
-      if(url.length < 10) {
-        return;
-      }
-      this.$request.get('datasets_info?url=' + url)
-      .then(res => res.data)
-      .then((res) => {
-        console.log(res)
-        if(res.code === 1) {
-          // 请求成功
-          vm.datasetsList.set(res.data.url, res.data);
+    // 监听proj里input的内容
+    changeProjValueAction(value) {
+      console.log(value)
+      const _this = this;
+      this.$request.get('projects', {
+        params: {
+          q: value
         }
-        // 请求成功
-        // vm.datasetsUrls.add(url);
-        vm.$forceUpdate()
+      })
+      .then((res) => res.data)
+      .then((res) => {
+        _this.projsList = [];
+        if(res.code === 1) {
+          _this.projsList.splice(0, 0, ...res.data);
+        }
       })
       .catch((err) => {
-        console.error(err)
+        console.log(err)
+        _this.projsList = [];
       })
     },
     // 获取镜像列表
@@ -201,47 +215,65 @@ export default {
         console.err(err)
       })
     },
-    nameWithDesc ({ name, desc }) {
-      let descTmp = desc
-      if(desc.length > 15) {
-        descTmp = desc.slice(0,15);
-        descTmp += '...'
+    // 获取数据集信息
+    getDatasetByUrl() {
+      if(!this.datasetUrl || this.datasetUrl.length < 10 || this.isUrl(url)) {
+        return;
       }
-      return `${name} [${descTmp}]`
+      const url = this.datasetUrl;
+      this.$request.get('datasets_info?url=' + url)
+      .then(res => res.data)
+      .then((res) => {
+        console.log(res)
+        if(res.code === 1) {
+          // 请求成功
+          this.datasetsList.set(res.data.url, res.data);
+          this.$forceUpdate();
+          this.datasetUrl = '';
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+    },
+    // 删除数据集
+    delDataset(key) {
+      if(this.datasetsList.has(key)){
+        this.datasetsList.delete(key)
+        this.$forceUpdate()
+      }
     },
     // 提交表单
     formSubmit(e) {
       console.log(e)
       const _this = this;
       this.submitted = true;
-      // stop here if form is invalid
       this.$v.$touch();
-      if (this.$v.$invalid) {
-        // 存在未填项
-      } else {
+      if (!this.$v.$invalid) {
+        let datasetUrls = _this.selectedDatasetsUrls();
         // 填写内容无误提交远程
         _this.$request.put('containers', {
           params: {
-            project_id: _this.selectedProj,
+            project_id: _this.selectedProjId,
             branch: _this.selectedBranch,
-            image_id: _this.selectedImage,
-            dataset_urls: _this.selectedDatasets,
+            image_id: _this.selectedImageId,
+            dataset_urls: datasetUrls,
             cpus: _this.cpus,
             mem: _this.mem,
-            gpu: _this.gpu
+            gpu: _this.isGPU
           }
         })
         .then((res) => {
           if(res.code === 1) {
-            console.log('创建成功')
-            _this.successMsg()
+            this.successMsg();
           } else {
-            console.log('创建失败')
+            this.errorMsg();
           }
           
         })
         .catch((err) => {
-          console.err(err)
+          console.log(err);
+          this.errorMsg();
         })
       }
     },
@@ -282,33 +314,15 @@ export default {
         }
       })
     },
-    // 监听proj里input的内容
-    changeProjValueAction(value) {
-      console.log(value)
-      const _this = this;
-      this.$request.get('projects', {
-        params: {
-          q: value
-        }
-      })
-      .then((res) => res.data)
-      .then((res) => {
-        _this.projsList = [];
-        if(res.code === 1) {
-          _this.projsList.splice(0, 0, ...res.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-        _this.projsList = [];
-      })
+    // 选择数据集url数组，因computed不能立即监听修改，所以改为了方法
+    selectedDatasetsUrls() {
+      if(!this.datasetsList || this.datasetsList.size < 1) return [];
+      return Array.from(this.datasetsList.keys());
     },
-    delDataset(key) {
-      if(this.datasetsList.has(key)){
-        this.datasetsList.delete(key)
-        this.$forceUpdate()
-      }
-    }
+    // 判断正则判断是否是url
+    isUrl(url) {
+      return /^https?:\/\/.+/.test(url)
+    },
   }
 };
 </script>
@@ -323,10 +337,11 @@ export default {
             <form @submit.prevent="formSubmit">
               <div class="row">
                 <div class="col-12 col-md-6 mb-2">
-                  <label>项目</label>
+                  <label class="xrequired me-1">项目</label>
+                  <span class="error" v-if="submitted && !$v.selectProj.required">（必选项）</span>
                   <div class="mb-2">
                     <multiselect 
-                      v-model="proj" 
+                      v-model="selectProj" 
                       :options="projsList" 
                       :searchable="true"
                       @search-change="changeProjValueAction"
@@ -349,14 +364,14 @@ export default {
                     <span slot="noResult">未查询到该项目</span>
                     <span slot="noOptions">暂无项目可用</span>
                     </multiselect>
-                    <div class="error" v-if="submitted && !$v.proj.required">必选项</div>
                   </div>
                 </div>
-                <div v-if="proj" class="col-12 col-md-6 mb-2">
-                  <label>项目分支</label>
+                <div v-if="selectProj" class="col-12 col-md-6 mb-2">
+                  <label class="xrequired me-1">项目分支</label>
+                  <span class="error" v-if="submitted && !$v.selectedBranch.required">（必选项）</span>
                   <multiselect
                     v-model="selectedBranch"
-                    :options="proj.branches"
+                    :options="selectProj.branches"
                     :searchable="false"
                     placeholder="选择项目分支"
                     select-label="选择一个分支"
@@ -370,7 +385,7 @@ export default {
                     <span slot="noResult">未查询到该分支</span>
                     <span slot="noOptions">暂无分支可用</span>
                     </multiselect>
-                  <div class="error" v-if="submitted && !$v.selectedBranch.required">必选项</div>
+                  
                   <!-- <div v-if="proj.branches" class="row">
                     <div v-for="item in proj.branches" :key="item" class="col-xl-3 col-sm-4">
                       <div class="mb-3">
@@ -397,7 +412,8 @@ export default {
               </div>
 
               <div class="mb-2">
-                <label>镜像</label>
+                <label class="xrequired me-1">镜像</label>
+                <span class="error" v-if="submitted && !$v.selectedImage.required">（必选项）</span>
                 <multiselect
                   v-model="$v.selectedImage.$model"
                   :options="imagesList"
@@ -413,7 +429,6 @@ export default {
                     <span>{{ option.name }}</span>
                   </template>
                   <template slot="option" slot-scope="{ option }">
-                    <!-- {{option}} -->
                     <div class="row">
                       <ImageSelectItem class="col-12" :image="option"/>
                     </div>
@@ -421,7 +436,7 @@ export default {
                   <span slot="noResult">未查询到该镜像</span>
                   <span slot="noOptions">暂无镜像可用</span>
                 </multiselect>
-                <div class="error" v-if="submitted && !$v.selectedImage.required">必选项</div>
+                
                 <!-- <div v-if="imagesList" class="row">
                   <div v-for="item in imagesList" :key="item.name" class="col-xl-3 col-sm-4">
                     <div class="mb-3">
@@ -450,9 +465,10 @@ export default {
                 <div class="mb-2">
                   <input 
                     type="text"
-                    class="form-control"
+                    class="form-control input-placeholder-text"
+                    placeholder="https://"
                     v-model.trim="datasetUrl"
-                    @change="getDatasetByUrl"
+                    @input="getDatasetByUrl"
                   />
                 </div>
                 <div class="row">
@@ -499,40 +515,36 @@ export default {
               </div>
 
               <div class="mb-2">
-                <label>CPU</label>
+                <label class="xrequired me-1">CPU</label>
+                <span class="error" v-if="submitted && !$v.cpus.required">（必选项）</span>
                 <vue-slide-bar class="mx-3" v-model="cpus" :data="cpuData.data" :range="cpuData.range" />
               </div>
 
               <div class="mb-2">
-                <label>MEM</label>
+                <label class="xrequired me-1">MEM</label>
+                <span class="error" v-if="submitted && !$v.mem.required">（必选项）</span>
                 <vue-slide-bar class="mx-3" v-model="mem" :data="memData.data" :range="memData.range" />
               </div>
 
               <div class="mb-2">
                 <label>GPU</label>
-                <div class="row">
-                  <div class="col-xl-3 col-sm-4">
-                    <label class="card-radio-label mb-3">
-                      <input
-                        v-model="gpu"
-                        type="checkbox"
-                        name="pay-method"
-                        id="pay-methodoption1"
-                        class="card-radio-input"
-                      />
-                      <div class="card-radio">
-                        <i
-                          class="bx bx-chip font-size-24 text-primary align-middle me-2"
-                        ></i>
-                        <span>Default GPU</span>
-                      </div>
-                    </label>
-                  </div>
+                <div class="form-check form-switch mb-3">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    v-model="isGPU"
+                    :disabled="isDisabledGpu"
+                  />
+                  <span :class="{'checkbox-disabled-text': isDisabledGpu }">
+                    {{ isGPU ? '需要GPU' : '无需GPU' }}
+                  </span>
                 </div>
               </div>
+
               <div class="text-center mt-4">
                 <button type="submit" class="btn btn-success">创建容器</button>
               </div>
+
             </form>
           </div>
         </div>
@@ -540,12 +552,3 @@ export default {
     </div>
   </Layout>
 </template>
-<style scoped>
-.x {
-  position: absolute;
-  top: 0.3rem;
-  right: 0.8rem;
-  font-size: 1rem;
-  color: #ccc;
-}
-</style>

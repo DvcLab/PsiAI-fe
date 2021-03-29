@@ -1,0 +1,10 @@
+label.xrequired:after {
+    content: ' *';
+    color: $red;
+}
+.input-placeholder-text::placeholder {
+    color: $gray-400;
+}
+.checkbox-disabled-text {
+    color: $gray-400;
+}
