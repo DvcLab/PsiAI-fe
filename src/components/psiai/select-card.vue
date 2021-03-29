@@ -17,6 +17,6 @@ export default {
 <template>
     <div class="select-card">
         <slot name="content"></slot>
-        <i class="bx bx-x me-1 x" @click="del(item.url)"></i>
+        <i class="bx bx-x me-1 x" @click="del(item.id)"></i>
     </div>
 </template>

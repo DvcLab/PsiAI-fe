@@ -4,8 +4,10 @@ import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
 // import Autocomplete from '@trevoreyre/autocomplete-vue';
 import Multiselect from "vue-multiselect";
+import queryString from 'query-string';
 import ProjSelectItem from "@/components/psiai/proj-select-item";
 import ImageSelectItem from "@/components/psiai/image-select-item";
+// import DatasetSelectItem from "@/components/psiai/dataset-select-item";
 import SelectCard from "@/components/psiai/select-card";
 import {
   required,
@@ -75,26 +77,39 @@ export default {
         ]
       },
       projsList: [],
-      datasetsList: new Map(),
-      datasetUrl: null,
-      datasetsUrls: new Set(),
+      datasetsList: [],
       imagesList: [],
-      selectProj: null,
+      selectedProj: null,
       selectedBranch: '',
       selectedImage: null,
+      selectedDatasetsList: [],
       submitted: false
     };
   },
   computed: {
+    // 项目分支
+    branches() {
+      if(!this.selectedProj) return [];
+      return this.selectedProj.branches;
+    },
     // 选择项目的id
     selectedProjId() {
-      if(!this.selectProj) return '';
-      return this.selectProj.id;
+      if(!this.selectedProj) return '';
+      return this.selectedProj.id;
     },
     // 选择镜像的id
     selectedImageId() {
       if(!this.selectedImage) return '';
       return this.selectedImage.id;
+    },
+    // 选择的数据集url数组
+    selectedDatasetsUrls() {
+      if(!this.selectedDatasetsList || this.selectedDatasetsList.length <= 0) return [];
+      const res = [];
+      this.selectedDatasetsList.forEach((item) => {
+        res.push(item.url);
+      })
+      return res;
     },
     // 是否需要gpu
     isGPU() {
@@ -113,7 +128,7 @@ export default {
     }
   },
   validations: {
-    selectProj: { required },
+    selectedProj: { required },
     selectedBranch: { required },
     selectedImage: { required },
     cpus: { required },
@@ -122,6 +137,7 @@ export default {
   mounted() {
     this.getProjsList();
     this.getImagesList();
+    this.getDatasetsList();
   },
   methods: {
     // search(input) {
@@ -180,6 +196,11 @@ export default {
         console.err(err)
       })
     },
+    // 监听proj里select的选择
+    changeProjSelectAction(){
+      // 切换项目，分支对应清空
+      this.selectedBranch = '';
+    },
     // 监听proj里input的内容
     changeProjValueAction(value) {
       console.log(value)
@@ -215,33 +236,67 @@ export default {
         console.err(err)
       })
     },
-    // 获取数据集信息
-    getDatasetByUrl() {
-      if(!this.datasetUrl || this.datasetUrl.length < 10 || this.isUrl(url)) {
-        return;
-      }
-      const url = this.datasetUrl;
-      this.$request.get('datasets_info?url=' + url)
-      .then(res => res.data)
+    // 获取数据集列表
+    getDatasetsList() {
+      this.$request.get('datasets')
+      .then((res) => res.data)
       .then((res) => {
-        console.log(res)
         if(res.code === 1) {
-          // 请求成功
-          this.datasetsList.set(res.data.url, res.data);
-          this.$forceUpdate();
-          this.datasetUrl = '';
+          this.datasetsList = res.data;
         }
       })
       .catch((err) => {
-        console.error(err)
+        console.err(err)
       })
     },
+    // 监听dataset里input的内容搜索
+    changeDatasetValueAction(value) {
+      console.log(value)
+      this.$request.get('datasets', {
+        params: {
+          q: value
+        }
+      })
+      .then((res) => res.data)
+      .then((res) => {
+        this.datasetsList = [];
+        if(res.code === 1) {
+          this.datasetsList.splice(0, 0, ...res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        this.datasetsList = [];
+      })
+    },
+    // // 获取数据集信息
+    // getDatasetByUrl() {
+    //   if(!this.datasetUrl || this.datasetUrl.length < 10 || this.isUrl(url)) {
+    //     return;
+    //   }
+    //   const url = this.datasetUrl;
+    //   this.$request.get('datasets_info?url=' + url)
+    //   .then(res => res.data)
+    //   .then((res) => {
+    //     console.log(res)
+    //     if(res.code === 1) {
+    //       // 请求成功
+    //       this.datasetList.set(res.data.url, res.data);
+    //       this.$forceUpdate();
+    //       this.datasetUrl = '';
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error(err)
+    //   })
+    // },
     // 删除数据集
-    delDataset(key) {
-      if(this.datasetsList.has(key)){
-        this.datasetsList.delete(key)
-        this.$forceUpdate()
-      }
+    delDataset(id) {
+      this.selectedDatasetsList = this.selectedDatasetsList.filter((item) => id!== item.id);
+      // if(this.datasetList.has(key)){
+      //   this.datasetList.delete(key)
+      //   this.$forceUpdate()
+      // }
     },
     // 提交表单
     formSubmit(e) {
@@ -250,17 +305,19 @@ export default {
       this.submitted = true;
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        let datasetUrls = _this.selectedDatasetsUrls();
         // 填写内容无误提交远程
-        _this.$request.put('containers', {
+        _this.$request.put('containers?', {
           params: {
             project_id: _this.selectedProjId,
             branch: _this.selectedBranch,
             image_id: _this.selectedImageId,
-            dataset_urls: datasetUrls,
+            dataset_urls: _this.selectedDatasetsUrls,
             cpus: _this.cpus,
             mem: _this.mem,
             gpu: _this.isGPU
+          },
+          paramsSerializer: params => {
+            return queryString.stringify(params)
           }
         })
         .then((res) => {
@@ -315,10 +372,10 @@ export default {
       })
     },
     // 选择数据集url数组，因computed不能立即监听修改，所以改为了方法
-    selectedDatasetsUrls() {
-      if(!this.datasetsList || this.datasetsList.size < 1) return [];
-      return Array.from(this.datasetsList.keys());
-    },
+    // selectedDatasetsUrls() {
+    //   if(!this.datasetList || this.datasetList.size < 1) return [];
+    //   return Array.from(this.datasetList.keys());
+    // },
     // 判断正则判断是否是url
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
@@ -338,12 +395,13 @@ export default {
               <div class="row">
                 <div class="col-12 col-md-6 mb-2">
                   <label class="xrequired me-1">项目</label>
-                  <span class="error" v-if="submitted && !$v.selectProj.required">（必选项）</span>
+                  <span class="error" v-if="submitted && !$v.selectedProj.required">（必选项）</span>
                   <div class="mb-2">
                     <multiselect 
-                      v-model="selectProj" 
+                      v-model="selectedProj" 
                       :options="projsList" 
                       :searchable="true"
+                      @select="changeProjSelectAction"
                       @search-change="changeProjValueAction"
                       placeholder="选择项目"
                       select-label="选择一个项目"
@@ -366,13 +424,14 @@ export default {
                     </multiselect>
                   </div>
                 </div>
-                <div v-if="selectProj" class="col-12 col-md-6 mb-2">
+                <div class="col-12 col-md-6 mb-2">
                   <label class="xrequired me-1">项目分支</label>
                   <span class="error" v-if="submitted && !$v.selectedBranch.required">（必选项）</span>
                   <multiselect
                     v-model="selectedBranch"
-                    :options="selectProj.branches"
+                    :options="branches"
                     :searchable="false"
+                    :disabled="!selectedProj"
                     placeholder="选择项目分支"
                     select-label="选择一个分支"
                     selectedLabel="已选分支"
@@ -385,29 +444,6 @@ export default {
                     <span slot="noResult">未查询到该分支</span>
                     <span slot="noOptions">暂无分支可用</span>
                     </multiselect>
-                  
-                  <!-- <div v-if="proj.branches" class="row">
-                    <div v-for="item in proj.branches" :key="item" class="col-xl-3 col-sm-4">
-                      <div class="mb-3">
-                        <label class="card-radio-label mb-2">
-                          <input
-                            type="radio"
-                            name="branch"
-                            class="card-radio-input"
-                            checked
-                            v-model="selectedBranch"
-                            :value="item"
-                          />
-                          <div class="card-radio">
-                            <div>
-                              <i class="mdi mdi-source-branch font-size-24 text-primary align-middle me-2"></i>
-                              <span>{{ item }}</span>
-                            </div>
-                          </div>
-                        </label>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
               </div>
 
@@ -415,7 +451,7 @@ export default {
                 <label class="xrequired me-1">镜像</label>
                 <span class="error" v-if="submitted && !$v.selectedImage.required">（必选项）</span>
                 <multiselect
-                  v-model="$v.selectedImage.$model"
+                  v-model="selectedImage"
                   :options="imagesList"
                   placeholder="选择镜像"
                   select-label="选择一个镜像"
@@ -436,33 +472,41 @@ export default {
                   <span slot="noResult">未查询到该镜像</span>
                   <span slot="noOptions">暂无镜像可用</span>
                 </multiselect>
-                
-                <!-- <div v-if="imagesList" class="row">
-                  <div v-for="item in imagesList" :key="item.name" class="col-xl-3 col-sm-4">
-                    <div class="mb-3">
-                      <label class="card-radio-label mb-2">
-                        <input
-                          type="radio"
-                          name="image"
-                          class="card-radio-input"
-                          v-model="selectedImage"
-                          :value="item.id"
-                        />
-                        <div class="card-radio">
-                          <div>
-                            <i class="mdi mdi-layers-triple-outline font-size-24 text-primary align-middle me-2"></i>
-                            <span>{{ item.name }}</span>
-                          </div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                </div> -->
               </div>
 
               <div class="mb-3">
                 <label>数据集</label>
-                <div class="mb-2">
+                <multiselect
+                  v-model="selectedDatasetsList"
+                  :options="datasetsList"
+                  :multiple="true"
+                  @search-change="changeDatasetValueAction"
+                  placeholder="选择数据集"
+                  select-label="选择一个数据集"
+                  selectedLabel="已选数据集"
+                  deselectLabel="点击取消选择"
+                  label="name"
+                  track-by="name"
+                >
+                  <template slot="singleLabel" slot-scope="{ option }">
+                    <i class="bx bx-layer me-1"></i>
+                    <span>{{ option.name }}</span>
+                  </template>
+                  <template slot="option" slot-scope="{ option }">
+                    <!-- <div class="row"> -->
+                      <!-- <DatasetSelectItem class="col-12" :dataset="option"/> -->
+                    <!-- </div> -->
+                    {{ option }}
+                  </template>
+                  <!-- <template slot="selection" slot-scope="{ values, isOpen }">
+                    <span class="multiselect__single" v-if="values.length && !isOpen">
+                      已选 {{ values.length }} 个数据集
+                    </span>
+                  </template> -->
+                  <span slot="noResult">未查询到该数据集</span>
+                  <span slot="noOptions">暂无数据集可用</span>
+                </multiselect>
+                <!-- <div class="mb-2">
                   <input 
                     type="text"
                     class="form-control input-placeholder-text"
@@ -470,45 +514,23 @@ export default {
                     v-model.trim="datasetUrl"
                     @input="getDatasetByUrl"
                   />
-                </div>
-                <div class="row">
-                  <div v-for="(item, key) in datasetsList" :key="key" class="col-xl-3 col-sm-4">
+                </div> -->
+                <div class="row mt-2">
+                  <div v-for="item in selectedDatasetsList" :key="item.id" class="col-xl-3 col-sm-4">
                     <div class="mb-3">
-                      <SelectCard :item="item[1]" @del="delDataset">
+                      <SelectCard :item="item" @del="delDataset">
                         <template slot="content">
                           <div class="row">
                             <div class="col-2">
                               <i class="mdi mdi-cube-outline font-size-24 text-primary align-middle me-2"></i>
                             </div>
                             <div class="col-10">
-                              <span>{{ item[1].name }}</span>
-                              <p class="text-muted text-truncate mb-0">{{ item[1].desc }}</p>
+                              <span>{{ item.name }}</span>
+                              <p class="text-muted text-truncate mb-0">{{ item.desc }}</p>
                             </div>
                           </div>
                         </template>
                       </SelectCard>
-                      <!-- <label class="card-radio-label mb-2">
-                        <input
-                          type="checkbox"
-                          name="datasets"
-                          class="card-radio-input"
-                          checked
-                          v-model="selectedDatasets"
-                          :value="item[1].url"
-                        />
-                        <div class="card-radio">
-                          <div class="row">
-                            <div class="col-2">
-                              <i class="mdi mdi-cube-outline font-size-24 text-primary align-middle me-2"></i>
-                            </div>
-                            <div class="col-10">
-                              <span>{{ item[1].name }}</span>
-                              <p class="text-muted text-truncate mb-0">{{ item[1].desc }}</p>
-                            </div>
-                          </div>
-                          <i class="bx bx-x me-1 x" @click="delDataset(key)"></i>
-                        </div>
-                      </label> -->
                     </div>
                   </div>
                 </div>
