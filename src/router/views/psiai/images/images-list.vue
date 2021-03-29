@@ -2,7 +2,7 @@
 import Layout from "../../../layouts/main";
 import ImageItem from "@/components/psiai/image-item";
 import appConfig from "@/app.config";
-import Autocomplete from '@trevoreyre/autocomplete-vue'
+import Autocomplete from '@trevoreyre/autocomplete-vue';
 
 /**
  * 镜像列表

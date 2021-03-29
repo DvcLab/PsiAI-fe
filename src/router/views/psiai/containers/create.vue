@@ -493,10 +493,9 @@ export default {
                     <span>{{ option.name }}</span>
                   </template>
                   <template slot="option" slot-scope="{ option }">
-                    <!-- <div class="row"> -->
-                      <!-- <DatasetSelectItem class="col-12" :dataset="option"/> -->
-                    <!-- </div> -->
-                    {{ option }}
+                    <div class="row">
+                      <DatasetSelectItem class="col-12" :dataset="option"/>
+                    </div>
                   </template>
                   <!-- <template slot="selection" slot-scope="{ values, isOpen }">
                     <span class="multiselect__single" v-if="values.length && !isOpen">
@@ -506,15 +505,6 @@ export default {
                   <span slot="noResult">未查询到该数据集</span>
                   <span slot="noOptions">暂无数据集可用</span>
                 </multiselect>
-                <!-- <div class="mb-2">
-                  <input 
-                    type="text"
-                    class="form-control input-placeholder-text"
-                    placeholder="https://"
-                    v-model.trim="datasetUrl"
-                    @input="getDatasetByUrl"
-                  />
-                </div> -->
                 <div class="row mt-2">
                   <div v-for="item in selectedDatasetsList" :key="item.id" class="col-xl-3 col-sm-4">
                     <div class="mb-3">
