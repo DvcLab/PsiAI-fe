@@ -157,10 +157,7 @@ export default {
       console.log(res)
       this.createProj(res)
     },
-    // 判断正则判断是否是url
-    isUrl(url) {
-      return /^https?:\/\/.+/.test(url)
-    },
+    
     // 滑动至底部，加载剩余项目
     load() {
       const _this = this;
@@ -174,6 +171,10 @@ export default {
           console.log('全部项目加载完')
         }
       }
+    },
+    // 判断正则判断是否是url
+    isUrl(url) {
+      return /^https?:\/\/.+/.test(url)
     },
   }
 };
@@ -211,12 +212,6 @@ export default {
                     添加
                   </button>
                 </div>
-                <!-- <div class="d-inline-block ">
-                  <button type="button" class="btn btn-outline-primary btn-sm">
-                    <i class="mdi mdi-plus me-1"></i>
-                    添加
-                  </button>
-                </div> -->
               </div>
             </li>
           </template>
