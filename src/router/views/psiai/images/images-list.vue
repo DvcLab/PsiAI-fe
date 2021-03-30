@@ -111,7 +111,7 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-            return resolve([])
+            return resolve([]);
           })
         }
       })

@@ -16,19 +16,44 @@ export default {
   data() {
     return {
       containers: [],
-      searchContent: ''
+      searchContent: '',
+      curPage: 1,
+      curTotal: 0,
+      meta: {}
     };
   },
   mounted() {
-    this.getContainersList();
+    this.getContainersList('', 1);
   },
   methods: {
-    // 初始化获取容器列表
-    getContainersList() {
-      const _this = this;
-      this.$request.get('containers')
+    getContainers(q) {
+      return this.$request.get('containers', q)
       .then((res) => {
-        _this.containers = res.data;
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+        return [];
+      })
+    },
+    // 初始化获取容器列表
+    getContainersList(q, page) {
+      const _this = this;
+      this.getContainers({
+        params: {
+          q: q,
+          page: page
+        }
+      })
+      .then((res) => {
+        // _this.containers = res.data;
+        console.log(res)
+        if(res.code === 1) {
+          _this.containers.splice(_this.curTotal, 0, ...res.data);
+          _this.meta = res._meta;
+          _this.curPage = res._meta.page;
+          _this.curTotal += res._meta.size;
+        }
       })
       .catch((err) => {
         _this.containers = [];
@@ -36,8 +61,8 @@ export default {
       })
     },
     // 搜索镜像
-    searchContainer(q) {
-      return this.$request.get('containers/' + q)
+    getContainerById(id) {
+      return this.$request.get('containers/' + id)
       .then((res) => {
         console.log(res)
         return res.data;
@@ -49,54 +74,63 @@ export default {
     },
     // autocomplete 搜索函数
     search(input) {
-      const _this = this;
-      if(!input) {
-        this.searchContent = '';
-      } else {
-        this.searchContent = input;
-      }
-      let content = this.searchContent;
-      return new Promise((resolve, reject) => {
-        console.log('搜索容器');
-        _this.searchContainer(content).then((res) => {
-          if(Array.isArray(res)) {
-            this.containers = res;
-            resolve(res);
+      console.log(input)
+      return new Promise((resolve) => {
+        this.getContainers({
+          params: {
+            q: input,
+            page: 1
+          }
+        })
+        .then((res) => {
+          console.log('搜索结果', res);
+          if(res.code === 1) {
+            this.containers = res.data;
+            this.meta = res._meta;
+            this.curPage = res._meta.page;
+            this.curTotal = this.containers.length;
+            return resolve(res.data)
           } else {
-            this.containers = [res];
-            resolve([res]);
+            return resolve([])
           }
         })
         .catch((err) => {
-          this.containers = [];
-          reject([])
           console.log(err)
+          return resolve([])
         })
       })
     },
     // 选择搜索内容，input显示内容
     getResultValue(result) {
-      console.log(result)
-      this.searchContent = result ? result.id : '';
-      return result ? result.id : ''
+      return result.name;
+      // console.log(result)
+      // this.searchContent = result ? result.id : '';
+      // return result ? result.id : ''
     },
     // 选择搜索内容触发事件
     handleSubmit(result) {
       if(!result) {
         this.containers = [];
       } else {
-        this.searchContent = result.id ? result.id : '';
-        let content = this.searchContent;
-        this.searchContainer(content).then((res) => {
-            if(Array.isArray(res)) {
-              this.containers = res;
+        // this.searchContent = result.id ? result.id : '';
+        // let content = this.searchContent;
+        this.getContainerById(result.id)
+        .then((res) => {
+            if(res.code === 1) {
+              let data = res.data;
+              if(Array.isArray(data)) {
+                this.containers = data;
+              } else {
+                this.containers = [data];
+              }
             } else {
-              this.containers = [res];
+              this.containers = [];
             }
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+        })
+        .catch((err) => {
+          console.log(err);
+          this.containers = [];
+        })
       }
     },
     // 跳转创建容器页面

@@ -123,20 +123,7 @@ export default {
           _this.datasets = [];
           _this.curPage = 1;
           _this.curTotal = 0;
-          _this.getDatasetList(content, _this.curPage)
-          // _this.getDatasets(content).then((res) => {
-          //   if(Array.isArray(res)) {
-          //     this.datasets = res;
-          //     resolve(res);
-          //   } else {
-          //     this.datasets = [res];
-          //     resolve([res]);
-          //   }
-          // })
-          // .catch((err) => {
-          //   this.datasets = [];
-          //   console.log(err)
-          // })
+          _this.getDatasetList(content, _this.curPage);
         }
       })
     },
