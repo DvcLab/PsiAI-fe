@@ -45,7 +45,7 @@ export default {
             </div>
 
             <div class="col-2 col-md-2">
-                <span v-if="image.types.length > 0" class="badge bg-primary me-2"
+                <span v-if="image.types && image.types.length > 0" class="badge bg-primary me-2"
                     :class="{
                         'bg-info': `${image.types[0]}` === 'GPU'
                     }"
