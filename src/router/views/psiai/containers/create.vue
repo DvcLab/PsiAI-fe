@@ -2,7 +2,6 @@
 import Layout from "../../../layouts/main";
 import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
-// import Autocomplete from '@trevoreyre/autocomplete-vue';
 import Multiselect from "vue-multiselect";
 import queryString from 'query-string';
 import ProjSelectItem from "@/components/psiai/proj-select-item";
@@ -140,51 +139,6 @@ export default {
     this.getDatasetsList();
   },
   methods: {
-    // search(input) {
-    //   return new Promise((resolve, reject) => {
-    //     return this.$request.get('projects', {
-    //       params: {
-    //         q: input
-    //       }
-    //     })
-    //     .then((res) => res.data)
-    //     .then((res) => {
-    //       if(res.code === 1) {
-    //         resolve(res.data)
-    //       } else {
-    //         resolve([])
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //       reject([]);
-    //     })
-    //     // fetch(url)
-    //     //   .then(response => response.json())
-    //     //   .then(data => {
-    //     //     resolve(data.query.search)
-    //     //   })
-    //   })
-    // },
-    // getResultValue(result) {
-    //   console.log('getResultValue', result)
-    //   this.searchContent = result.id ? result.id : '';
-    //   return result ? result.name : '';
-    // },
-    
-    // handleSubmit(result) {
-    //   console.log('handleSubmit', result)
-    //   if(!result) {
-    //     // this.projects = []; 
-    //   } else {
-    //     // this.searchContent = result.id ? result.id : '';
-    //     // let content = this.searchContent;
-    //     // this.projects = [];
-    //     // this.curPage = 1;
-    //     // this.curTotal = 0;
-    //     // this.getProjList(content, this.curPage);
-    //   }
-    // },
     // 获取项目列表
     getProjsList() {
       const vm = this;
@@ -193,7 +147,7 @@ export default {
         vm.projsList = res.data.data;
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
       })
     },
     // 监听proj里select的选择
@@ -233,7 +187,7 @@ export default {
         }
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
       })
     },
     // 获取数据集列表
@@ -246,7 +200,7 @@ export default {
         }
       })
       .catch((err) => {
-        console.err(err)
+        console.log(err)
       })
     },
     // 监听dataset里input的内容搜索
@@ -269,27 +223,6 @@ export default {
         this.datasetsList = [];
       })
     },
-    // // 获取数据集信息
-    // getDatasetByUrl() {
-    //   if(!this.datasetUrl || this.datasetUrl.length < 10 || this.isUrl(url)) {
-    //     return;
-    //   }
-    //   const url = this.datasetUrl;
-    //   this.$request.get('datasets_info?url=' + url)
-    //   .then(res => res.data)
-    //   .then((res) => {
-    //     console.log(res)
-    //     if(res.code === 1) {
-    //       // 请求成功
-    //       this.datasetList.set(res.data.url, res.data);
-    //       this.$forceUpdate();
-    //       this.datasetUrl = '';
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error(err)
-    //   })
-    // },
     // 删除数据集
     delDataset(id) {
       this.selectedDatasetsList = this.selectedDatasetsList.filter((item) => id!== item.id);
@@ -306,27 +239,23 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         // 填写内容无误提交远程
-        _this.$request.put('containers?', {
-          params: {
+        let query = queryString.stringify({
             project_id: _this.selectedProjId,
-            branch: _this.selectedBranch,
+            project_branch: _this.selectedBranch,
             image_id: _this.selectedImageId,
-            dataset_urls: _this.selectedDatasetsUrls,
+            dataset_url: _this.selectedDatasetsUrls,
             cpus: _this.cpus,
             mem: _this.mem,
             gpu: _this.isGPU
-          },
-          paramsSerializer: params => {
-            return queryString.stringify(params)
-          }
-        })
+          })
+        _this.$request.put('containers?'+query)
+        .then((res) => res.data)
         .then((res) => {
           if(res.code === 1) {
             this.successMsg();
           } else {
             this.errorMsg();
           }
-          
         })
         .catch((err) => {
           console.log(err);
@@ -371,11 +300,6 @@ export default {
         }
       })
     },
-    // 选择数据集url数组，因computed不能立即监听修改，所以改为了方法
-    // selectedDatasetsUrls() {
-    //   if(!this.datasetList || this.datasetList.size < 1) return [];
-    //   return Array.from(this.datasetList.keys());
-    // },
     // 判断正则判断是否是url
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
@@ -475,7 +399,7 @@ export default {
               </div>
 
               <div class="mb-3">
-                <label>数据集</label>
+                <label>数据集</label> 
                 <multiselect
                   v-model="selectedDatasetsList"
                   :options="datasetsList"
@@ -505,6 +429,7 @@ export default {
                   <span slot="noResult">未查询到该数据集</span>
                   <span slot="noOptions">暂无数据集可用</span>
                 </multiselect>
+
                 <div class="row mt-2">
                   <div v-for="item in selectedDatasetsList" :key="item.id" class="col-xl-3 col-sm-4">
                     <div class="mb-3">

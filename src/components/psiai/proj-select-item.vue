@@ -33,11 +33,11 @@ export default {
     <div>
         <div class="proj-item-con row align-items-center">
 
-            <div class="col-1 col-md-1 d-none d-md-block">
+            <div class="col-md-2 d-none d-md-block">
                 <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="proj.cover_img_url" alt="项目" />
             </div>
 
-            <div class="col-4 col-md-10">
+            <div class="col-10 col-md-9">
                 <h5 class="text-truncate mb-0 list-item-name">
                     {{ proj.name }}
                 </h5>

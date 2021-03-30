@@ -17,8 +17,6 @@ export default {
             }
             return tagList;
         },
-    },
-    methods: {
     }
 }
 </script>
@@ -64,7 +62,8 @@ export default {
                     {{ image.types[0] }}
                 </span>
             </div>
-            <div class="col-2 col-md-2 text-end">
+
+            <div class="col-md-2 text-end d-none d-md-block">
                 <i class="bx bx-calendar me-1"></i>
                 <span>{{ image.update_time | moment("from", "now") }} 更新</span>
             </div>

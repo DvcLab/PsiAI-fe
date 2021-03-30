@@ -8,3 +8,7 @@ label.xrequired:after {
 .checkbox-disabled-text {
     color: $gray-400;
 }
+
+.multiselect__content {
+    display: block!important;
+}

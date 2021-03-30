@@ -5,167 +5,179 @@
       "id": 1
     }
   ],
-  "projects": [
-    {
-      "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
-      "user": {
+  "projects": {
+    "code": 1,
+    "msg": "SUCCESS",
+    "data": [
+      {
+        "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
+        "user": {
           "username": "test",
           "email": "877369610@qq.com",
           "avatar_url": "https://hostname",
           "enabled": true,
           "roles": [
-              "DOCKHUB_USER"
+            "DOCKHUB_USER"
           ],
           "max_container_num": 10,
           "container_num": 0,
           "id": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
           "create_time": 1616070795000,
           "update_time": 1616070795000
-      },
-      "name": "CNN",
-      "url": "https://github.com/DvcLAB/CNN",
-      "branches": [
-          "master"
-      ],
-      "desc": "CNN test. Contribute to DvcLAB/CNN development by creating an account on GitHub.",
-      "dataset_ids": [],
-      "id": "b061edbc81a7d2809685762b1daf3685",
-      "create_time": 1616152308000,
-      "update_time": 1616152342000
-    },
-    {
-      "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
-      "user": {
-          "username": "test",
-          "email": "877369610@qq.com",
-          "avatar_url": "https://hostname",
-          "enabled": true,
-          "roles": [
-              "DOCKHUB_USER"
-          ],
-          "max_container_num": 10,
-          "container_num": 0,
-          "id": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
-          "create_time": 1616070795000,
-          "update_time": 1616070795000
-      },
-      "name": "dockerhub",
-      "framework": "tensorflow",
-      "url": "https://github.com/DvcLAB/dockerhub",
-      "branches": [
+        },
+        "name": "dockerhub",
+        "url": "https://github.com/DvcLAB/dockerhub",
+        "branches": [
           "main"
-      ],
-      "desc": "容器管理后台服务. Contribute to DvcLAB/dockerhub development by creating an account on GitHub.",
-      "dataset_ids": [],
-      "id": "080f199ca6fcb145e480b22b2487bd7f",
-      "create_time": 1616142905000,
-      "update_time": 1616142905000
+        ],
+        "desc": "容器管理后台服务. Contribute to DvcLAB/dockerhub development by creating an account on GitHub.",
+        "dataset_ids": [],
+        "id": "080f199ca6fcb145e480b22b2487bd7f",
+        "create_time": 1616068502000,
+        "update_time": 1616070795000
+      }
+    ],
+    "_meta": {
+      "page": 1,
+      "size": 10,
+      "total": 1,
+      "total_page": 1
     }
-  ],
-  "datasets": [
-    {
-      "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
-      "user": {
+  },
+  "datasets": {
+    "code": 1,
+    "msg": "SUCCESS",
+    "data": [
+      {
+        "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
+        "user": {
           "username": "test",
           "email": "877369610@qq.com",
           "avatar_url": "https://hostname",
           "enabled": true,
           "roles": [
-              "DOCKHUB_USER"
+            "DOCKHUB_USER"
           ],
           "max_container_num": 10,
           "container_num": 0,
           "id": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
           "create_time": 1616070795000,
           "update_time": 1616070795000
+        },
+        "name": "mnist",
+        "url": "https://s3.dvclab.com/mnist",
+        "cover_img_url": "https://s3.dvclab.com/mnist/.cover_img.png",
+        "desc": "# 数据集说明\n## 数据集结构\n```\nmnist\n├─ train-images-idx1-ubyte.gz (训练数据图片)\n├─ train-labels-idx3-ubyte.gz (训练数据标签)\n├─ test-images-idx3-ubyte.gz (测试集图片)\n└─ test-labels-idx1-ubyte.gz (测试集标签)\n```\n## 内容\n1. 本数据集是下载的fasion_mnist官方数据集文件，格式为.gz的压缩包。\n2. Fashion-MNIST数据集包含了10个类别的图像，分别是：t-shirt（T恤），trouser（牛仔裤），pullover（套衫），dress（裙子），coat（外套），sandal（凉鞋），shirt（衬衫），sneaker（运动鞋），bag（包），ankle boot（短靴）。\n3. 训练数据集每个类别含有6000个样本，测试数据集每个类别含有1000个样本，一共有10个类别，故而训练数据集共60000个样本，测试数据集共10000个样本。\n4. 每幅图像是一个28*28的像素数组，每个像素的值为0~255之间的8位无符号整数（uint8），使用三维NDArray存储，最后一维表示通道个数。由于为灰度图像，故通道数为1。\n## 预览<img src=\"https://i.ibb.co/vPp4pxJ/fashion-mnist-3-0-1.png\" alt=\"fashion_mnist-3.0.1\" style=\"zoom:50%;\" />## 关联的项目\n项目名称：CNN\n项目地址：https://github.com/DvcLAB/CNN.git\n",
+        "tags": [],
+        "id": "b43f01598c9e4038c03ee61aeb50398b",
+        "create_time": 1616141876000,
+        "update_time": 1616141909000
+      }
+    ],
+    "_meta": {
+      "page": 1,
+      "size": 10,
+      "total": 1,
+      "total_page": 1
+    }
+  },
+  "images": {
+    "code": 1,
+    "msg": "SUCCESS",
+    "data": [
+      {
+        "name": "mattermost-web",
+        "tags": [],
+        "types": [],
+        "desc": "",
+        "id": "696dc5c7b67f00b31ff5a8f8be102abd",
+        "create_time": 1616142999777,
+        "update_time": 1616142999777
       },
-      "name": "mnist",
-      "url": "https://s3.dvclab.com/mnist",
-      "cover_img_url": "https://s3.dvclab.com/mnist/.cover_img.png",
-      "desc": "# 数据集说明\n## 数据集结构\n```\nmnist\n├─ train-images-idx1-ubyte.gz (训练数据图片)\n├─ train-labels-idx3-ubyte.gz (训练数据标签)\n├─ test-images-idx3-ubyte.gz (测试集图片)\n└─ test-labels-idx1-ubyte.gz (测试集标签)\n```\n## 内容\n1. 本数据集是下载的fasion_mnist官方数据集文件，格式为.gz的压缩包。\n2. Fashion-MNIST数据集包含了10个类别的图像，分别是：t-shirt（T恤），trouser（牛仔裤），pullover（套衫），dress（裙子），coat（外套），sandal（凉鞋），shirt（衬衫），sneaker（运动鞋），bag（包），ankle boot（短靴）。\n3. 训练数据集每个类别含有6000个样本，测试数据集每个类别含有1000个样本，一共有10个类别，故而训练数据集共60000个样本，测试数据集共10000个样本。\n4. 每幅图像是一个28*28的像素数组，每个像素的值为0~255之间的8位无符号整数（uint8），使用三维NDArray存储，最后一维表示通道个数。由于为灰度图像，故通道数为1。\n## 预览<img src=\"https://i.ibb.co/vPp4pxJ/fashion-mnist-3-0-1.png\" alt=\"fashion_mnist-3.0.1\" style=\"zoom:50%;\" />## 关联的项目\n项目名称：CNN\n项目地址：https://github.com/DvcLAB/CNN.git\n",
-      "tags": [],
-      "id": "b43f01598c9e4038c03ee61aeb50398b",
-      "create_time": 1616141876000,
-      "update_time": 1616141909000
+      {
+        "name": "nvidia",
+        "tags": [],
+        "types": [],
+        "desc": "",
+        "id": "540df7f83845146f0287ff6d2da77900",
+        "create_time": 1616142999777,
+        "update_time": 1616142999777
+      },
+      {
+        "name": "pytorch1.6",
+        "tags": [],
+        "types": [],
+        "desc": "",
+        "id": "00674d2768e6e782b2b4ce59698c49da",
+        "create_time": 1616142999777,
+        "update_time": 1616142999777
+      },
+      {
+        "name": "tensorflow2.2",
+        "tags": [],
+        "types": [],
+        "desc": "",
+        "id": "be26f60e9b605b07e3dcb02dddbd6b09",
+        "create_time": 1616142999777,
+        "update_time": 1616142999777
+      },
+      {
+        "name": "tf2.2",
+        "tags": [],
+        "types": [],
+        "desc": "",
+        "id": "7d43dac42adadc367d54fa83a8017589",
+        "create_time": 1616142999777,
+        "update_time": 1616142999777
+      }
+    ],
+    "_meta": {
+      "page": 1,
+      "size": 10,
+      "total": 0,
+      "total_page": 0
     }
-  ],
-  "images": [
-    {
-      "name": "mattermost-web",
-      "tags": [],
-      "types": [],
-      "desc": "",
-      "id": "696dc5c7b67f00b31ff5a8f8be102abd",
-      "create_time": 1616147295000,
-      "update_time": 1616392859000
-    },
-    {
-      "name": "nvidia",
-      "tags": [],
-      "types": [],
-      "desc": "",
-      "id": "540df7f83845146f0287ff6d2da77900",
-      "create_time": 1616147295000,
-      "update_time": 1616392859000
-    },
-    {
-      "name": "pytorch1.6",
-      "tags": [],
-      "types": [],
-      "desc": "",
-      "id": "00674d2768e6e782b2b4ce59698c49da",
-      "create_time": 1616147295000,
-      "update_time": 1616392859000
-    },
-    {
-      "name": "tensorflow2.2",
-      "tags": [],
-      "types": [],
-      "desc": "",
-      "id": "be26f60e9b605b07e3dcb02dddbd6b09",
-      "create_time": 1616147295000,
-      "update_time": 1616392859000
-    },
-    {
-      "name": "tf2.2",
-      "tags": [],
-      "types": [],
-      "desc": "",
-      "id": "7d43dac42adadc367d54fa83a8017589",
-      "create_time": 1616147295000,
-      "update_time": 1616392859000
-    }
-  ],
-  "containers": [
-    {
-      "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
-      "user": {
+  },
+  "containers": {
+    "code": 1,
+    "msg": "SUCCESS",
+    "data": [
+      {
+        "uid": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
+        "user": {
           "username": "test",
           "email": "877369610@qq.com",
           "avatar_url": "https://hostname",
           "enabled": true,
           "roles": [
-              "DOCKHUB_USER"
+            "DOCKHUB_USER"
           ],
           "max_container_num": 10,
           "container_num": 0,
           "id": "d60cfe21-5498-4d4c-a25b-5d03c82bedde",
           "create_time": 1616070795000,
           "update_time": 1616070795000
-      },
-      "cpus": 2.0,
-      "mem": 4.0,
-      "user_host": true,
-      "jupyter_url": "https://j.dvclab.com/users/d60cfe21-5498-4d4c-a25b-5d03c82bedde/containers/5ef662237ae5d5831a203cb9ac1d5feb",
-      "tunnel_id": "9a3fae99bfcf93f63ab82fc5ae67672b",
-      "tunnel_port": 978,
-      "docker_compose_config": "version: \"3.8\"\nservices:\n  jupyterlab:\n    image:\n      tf2.2\n    container_name: 5ef662237ae5d5831a203cb9ac1d5feb\n    privileged: true\n    tty: true\n    environment:\n      - NVIDIA_VISIBLE_DEVICES=all\n      - NVIDIA_DRIVER_CAPABILITIES=all\n      - container_id=5ef662237ae5d5831a203cb9ac1d5feb\n\n      - project_git_url=https://github.com/DvcLAB/CNN\n      - project_branch=master\n      - project_name=CNN\n\n      - datasets=https://s3.dvclab.com/mnist\n\n      - pypi_repo=https://pypi.tuna.tsinghua.edu.cn/simple\n\n      - uid=d60cfe21-5498-4d4c-a25b-5d03c82bedde\n      - keycloak_server_addr=https://auth.dvclab.com\n      - keycloak_realm=psiai\n      - client_id=psiai_server\n      - client_secret=061ff973-994c-4097-a1ee-b64414ebf422\n      - scope=openid+email\n      - redirect_url=https://j.dvclab.com/users/d60cfe21-5498-4d4c-a25b-5d03c82bedde/containers/5ef662237ae5d5831a203cb9ac1d5feb/login\n\n      - kafka_server=dvclab.com:61205\n      - kafka_topic=Container_Events\n\n      - frp_type = tcp\n      - frp_local_ip = 127.0.0.1\n      - frp_local_port = 8988\n      - frp_server_addr = j.dvclab.com\n      - frp_server_port = 57001\n      - frp_remote_port = 978\n\n      - CPU=2.0\n      - MEM=4.0\n    entrypoint: /opt/init_container.sh\n    \n    deploy:\n      resources:\n        limits:\n          cpus: \"2.0\"\n          memory: \"4.0G\"\n",
-      "status": "New",
-      "cpu_usage": 0.0,
-      "mem_usage": 0.0,
-      "id": "5ef662237ae5d5831a203cb9ac1d5feb",
-      "create_time": 1616244414000,
-      "update_time": 1616244414000
+        },
+        "user_host": false,
+        "cpus": 2,
+        "mem": 4,
+        "jupyter_url": "https://39.102.50.25/users/d60cfe21-5498-4d4c-a25b-5d03c82bedde/containers/b32c8e09c5502fae6c61773843c7fa74",
+        "tunnel_id": "9a3fae99bfcf93f63ab82fc5ae67672b",
+        "tunnel_port": 267,
+        "docker_compose_config": "version: \"3.8\"\nservices:\n  jupyterlab:\n    image:\n      tf2.2\n    container_name: b32c8e09c5502fae6c61773843c7fa74\n    privileged: true\n    tty: true\n    environment:\n      - NVIDIA_VISIBLE_DEVICES=all\n      - NVIDIA_DRIVER_CAPABILITIES=all\n      - container_id=b32c8e09c5502fae6c61773843c7fa74\n\n      - project_git_url=https://github.com/DvcLAB/CNN\n      - project_branch=master\n      - project_name=CNN\n\n      ${datasets}\n\n      - pypi_repo=https://pypi.tuna.tsinghua.edu.cn/simple\n\n      - uid=d60cfe21-5498-4d4c-a25b-5d03c82bedde\n      - keycloak_server_addr=https://auth.dvclab.com\n      - keycloak_realm=psiai\n      - client_id=psiai_server\n      - client_secret=061ff973-994c-4097-a1ee-b64414ebf422\n      - scope=openid+email\n      - redirect_url=https://39.102.50.25/users/d60cfe21-5498-4d4c-a25b-5d03c82bedde/containers/b32c8e09c5502fae6c61773843c7fa74/login\n\n      - kafka_server=dvclab.com:61205\n      - kafka_topic=Container_Events\n\n      - frp_type = tcp\n      - frp_local_ip = 127.0.0.1\n      - frp_local_port = ${jupyter_port}\n      - frp_server_addr = 39.102.50.25\n      - frp_server_port = 57001\n      - frp_remote_port = 267\n\n      - CPU=2.0\n      - MEM=4.0\n    entrypoint: /opt/init_container.sh\n    ${runtime}\n    deploy:\n      resources:\n        limits:\n          cpus: \"2.0\"\n          memory: \"4.0G\"\n",
+        "status": "New",
+        "cpu_usage": 0,
+        "mem_usage": 0,
+        "id": "b32c8e09c5502fae6c61773843c7fa74",
+        "create_time": 1616152470000,
+        "update_time": 1616152470000
+      }
+    ],
+    "_meta": {
+      "page": 1,
+      "size": 10,
+      "total": 1,
+      "total_page": 1
     }
-  ]
+  }
 }

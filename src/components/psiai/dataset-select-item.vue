@@ -38,7 +38,7 @@ export default {
                     {{ dataset.name }}
                 </h5>
                 <p class="text-truncate mb-0">{{ dataset.desc }}</p>
-                <p v-if="dataset.tags && dataset.tags.length > 0" class="text-muted text-truncate mb-0">
+                <p v-if="dataset.tags && dataset.tags.length > 0" class="text-truncate mb-0">
                     <span v-for="item in tags"
                         class="badge bg-primary me-1"
                         :key="item"
@@ -59,5 +59,8 @@ export default {
 <style scoped>
 .dataset-item-con {
     padding: 0.5rem;
+}
+h5 {
+    color: inherit;
 }
 </style>
