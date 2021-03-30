@@ -114,7 +114,7 @@ export default {
 </script>
 
 <template>
-    <div class="proj-item-con">
+    <div class="list-item-con">
         <div class="row align-items-center">
             <div class="col-12 col-md-4 mb-2">
                 <h5 class="d-block text-truncate text-dark mb-0 list-item-name">{{ container.id }}</h5>
@@ -145,11 +145,6 @@ export default {
             </div>
         </div>
         <div class="row">
-            <!-- <div class="col-6 col-md-2 mb-2">
-                <span class="badge rounded-pill bg-info me-2">
-                    {{ container.gpu_devices_product_names[0] }}
-                </span>
-            </div> -->
             <div class="col-6 col-md-2 mb-2">
                 <span class="badge rounded-pill bg-primary me-2">
                     <i class="bx bx-chip me-1"></i>内核
@@ -172,8 +167,6 @@ export default {
             </div>
             <div class="col-12 col-md-4">
                 <div class="float-end">
-                    <!-- <button type="button" class="btn btn-outline-success btn-sm me-2" @click="openLab(container.jupyter_url)">docker-compose.yml</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" @click="openLab(container.jupyter_url)">JupyterLAB</button> -->
                     <ul class="list-inline mb-0 font-size-20">
                         <li class="list-inline-item">
                             <a
@@ -209,11 +202,6 @@ export default {
 </template>
 
 <style scoped>
-.proj-item-con {
-    background-color: #fff;
-    padding: 0.75rem;
-    margin-top: 0.75rem;
-}
 .container-btn {
     font-size: 1.2rem;
 }

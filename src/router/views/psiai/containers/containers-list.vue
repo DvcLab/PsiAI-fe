@@ -2,7 +2,8 @@
 import Layout from "../../../layouts/main";
 import ContainerItem from "@/components/psiai/container-item";
 import appConfig from "@/app.config";
-import Autocomplete from '@trevoreyre/autocomplete-vue'
+import Autocomplete from '@trevoreyre/autocomplete-vue';
+import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 
 /**
  * 容器列表
@@ -23,7 +24,11 @@ export default {
     };
   },
   mounted() {
+    window.addEventListener('scroll', this.load);
     this.getContainersList('', 1);
+  },
+  destroyed(){
+    window.removeEventListener('scroll', this.load, false);
   },
   methods: {
     getContainers(q) {
@@ -46,8 +51,6 @@ export default {
         }
       })
       .then((res) => {
-        // _this.containers = res.data;
-        console.log(res)
         if(res.code === 1) {
           _this.containers.splice(_this.curTotal, 0, ...res.data);
           _this.meta = res._meta;
@@ -74,7 +77,6 @@ export default {
     },
     // autocomplete 搜索函数
     search(input) {
-      console.log(input)
       return new Promise((resolve) => {
         this.getContainers({
           params: {
@@ -83,7 +85,6 @@ export default {
           }
         })
         .then((res) => {
-          console.log('搜索结果', res);
           if(res.code === 1) {
             this.containers = res.data;
             this.meta = res._meta;
@@ -131,6 +132,20 @@ export default {
           console.log(err);
           this.containers = [];
         })
+      }
+    },
+    // 滑动至底部，加载剩余镜像
+    load() {
+      const _this = this;
+      if(getScrollTop() + getWindowHeight() >= getScrollHeight()) {
+        let totalPage = _this.meta.total_page;
+        let page = _this.curPage;
+        if(page < totalPage) {                                       //先判断下一页是否有数据  
+          _this.curPage++;                                           //查询条件的页码+1
+          _this.getContainersList('', _this.curPage);   //拉取接口数据
+        } else {
+          console.log('全部容器加载完')
+        }
       }
     },
     // 跳转创建容器页面

@@ -5,9 +5,6 @@ import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 
-// const wikiUrl = 'https://en.wikipedia.org'
-// const params = 'action=query&list=search&format=json&origin=*'
-
 /**
  * 镜像列表
  */

@@ -1,5 +1,14 @@
+// 修改主题滚动视图bug
 .main-content {
     overflow: visible;
+}
+.list-item-con {
+    background-color: #fff;
+    padding: 0.75rem;
+    margin-top: 0.75rem;
+}
+.list-item-con:last-child {
+    margin-bottom: 0.75rem;
 }
 .list-head-text {
     font-weight: 600;
