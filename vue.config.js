@@ -6,5 +6,9 @@ module.exports = {
       localeDir: 'locales',
       enableInSFC: false
     }
+  },
+  devServer: {
+    sockHost: 'http://localhost:8081/',
+    disableHostCheck: true,
   }
 }

@@ -7,7 +7,7 @@ import Multiselect from "vue-multiselect";
 import queryString from 'query-string';
 import ProjSelectItem from "@/components/psiai/proj-select-item";
 import ImageSelectItem from "@/components/psiai/image-select-item";
-// import DatasetSelectItem from "@/components/psiai/dataset-select-item";
+import DatasetSelectItem from "@/components/psiai/dataset-select-item";
 import SelectCard from "@/components/psiai/select-card";
 import {
   required,
@@ -26,7 +26,7 @@ export default {
     title: "创建容器",
     meta: [{ name: "创建容器", content: appConfig.description }]
   },
-  components: { Layout, VueSlideBar, Multiselect, ProjSelectItem, ImageSelectItem, SelectCard },
+  components: { Layout, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
   data() {
     return {
       cpus: 1,
