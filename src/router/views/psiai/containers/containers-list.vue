@@ -20,7 +20,7 @@ export default {
       searchContent: '',
       curPage: 1,
       curTotal: 0,
-      meta: {}
+      meta: {},
     };
   },
   mounted() {
