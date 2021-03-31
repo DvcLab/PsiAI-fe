@@ -97,6 +97,10 @@ export default {
               return resolve([])
             }
           })
+          .catch((err) => {
+            console.log(err);
+            return resolve([]);
+          })
         } else {
           this.getImageById(input)
           .then((res) => {

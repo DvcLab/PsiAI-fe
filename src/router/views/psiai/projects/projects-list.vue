@@ -79,7 +79,8 @@ export default {
         return res.data;
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
+        return [];
       })
     },
     
@@ -108,6 +109,7 @@ export default {
           _this.isSearch = false;
           console.log('添加项目');
           _this.getNewProjInfo(content).then((res) => {
+            console.log(res)
             if(res.code === 1) {
               // 查询成功
             } else if (res.code === 0) {
@@ -122,15 +124,33 @@ export default {
           })
           .catch(err => {
             console.log(err)
+            return resolve([])
           })
         } else { // 用户搜索项目
           console.log('搜索项目');
           _this.isSearch = true;
-          _this.projects = [];
-          _this.curPage = 1;
-          _this.curTotal = 0;
-          _this.getProjList(input, _this.curPage);
-          resolve(_this.projects)
+          this.getProjects({
+            params: {
+              q: input,
+              page: 1
+            }
+          })
+          .then((res) => {
+            console.log(res)
+            if(res.code === 1) {
+              this.projects = res.data;
+              this.meta = res._meta;
+              this.curPage = res._meta.page;
+              this.curTotal = this.projects.length;
+              return resolve(res.data)
+            } else {
+              return resolve([])
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            return resolve([]);
+          })
         }
       })
     },
