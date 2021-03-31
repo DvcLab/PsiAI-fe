@@ -1,10 +1,14 @@
 <script>
 import Layout from "../../../layouts/main";
 import ProjItem from "@/components/psiai/proj-item";
+// import ProjList from "@/components/psiai/proj-list";
+import Loader from "@/components/psiai/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import Swal from "sweetalert2";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
+// import Loading from 'vue-loading-overlay';
+// import 'vue-loading-overlay/dist/vue-loading.css';
 
 /**
  * 项目列表
@@ -14,7 +18,7 @@ export default {
     title: "项目列表",
     meta: [{ name: "项目列表", content: appConfig.description }]
   },
-  components: { Layout, ProjItem, Autocomplete },
+  components: { Layout, Loader, ProjItem, Autocomplete },
   data() {
     return {
       projects: [],
@@ -22,7 +26,10 @@ export default {
       searchContent: '',
       curPage: 1,
       curTotal: 0,
-      meta: {}
+      meta: {},
+      loadingState: true,
+      // loadingTest: false,
+      // fullPage: false
     };
   },
   mounted() {
@@ -46,7 +53,8 @@ export default {
     },
     // 搜索获取项目列表
     getProjList(q, page) {
-      const _this = this;
+      // const _this = this;
+      this.loadingState = true;
       this.getProjects({
         params: {
           q: q,
@@ -56,16 +64,18 @@ export default {
       .then((res) => {
         console.log(res)
         if(res.code === 1) {
-          _this.projects.splice(_this.curTotal, 0, ...res.data);
-          _this.meta = res._meta;
-          _this.curPage = res._meta.page;
-          _this.curTotal += res._meta.size;
+          this.projects.splice(this.curTotal, 0, ...res.data);
+          this.meta = res._meta;
+          this.curPage = res._meta.page;
+          this.curTotal += res._meta.size;
         }
+        this.loadingState = false;
       })
       .catch((err) => {
         // _this.projects = [];
         // _this.meta = {};
-        console.log(err)
+        console.log(err);
+        this.loadingState = false;
       })
     },
     // 获取新项目信息
@@ -95,9 +105,11 @@ export default {
         console.log(err)
       })
     },
+
     // 搜索
     search(input) {
       const _this = this;
+      this.loadingState = true;
       if(!input) {
         this.searchContent = '';
       } else {
@@ -113,14 +125,18 @@ export default {
             _this.isSearch = false;
             if(res.code === 1) {
               // 查询成功
+              this.loadingState = false;
               return resolve([res.data]);
             } else if (res.code === 0) {
               // 查询失败
+              this.loadingState = false;
               return resolve([]);
             }
+            
           })
           .catch(err => {
             console.log(err)
+            this.loadingState = false;
             return resolve([])
           })
         } else { // 用户搜索项目
@@ -139,25 +155,32 @@ export default {
               this.meta = res._meta;
               this.curPage = res._meta.page;
               this.curTotal = this.projects.length;
+              this.loadingState = false;
               return resolve(res.data)
             } else {
+              this.loadingState = false;
               return resolve([])
             }
           })
           .catch((err) => {
             console.log(err);
+            this.loadingState = false;
             return resolve([]);
           })
         }
       })
     },
-    
+
+    // 选择搜索内容，input显示内容
     getResultValue(result) {
-      // this.searchContent = result.id ? result.id : '';
-      // return result ? result.name : '';
-      return result.name;
+      if(this.isSearch) {
+        return result ? result.name : ''
+      } else {
+        return ''
+      }
     },
-    
+
+    // 选择搜索内容触发事件
     handleSubmit(result) {
       if(!result) {
         this.projects = []; 
@@ -171,9 +194,10 @@ export default {
       }
     },
 
-    // 添加新项目按钮
+    // 添加新项目按钮触发函数
     handleAddProj(res) {
       console.log(res)
+      this.loadingState = true;
       this.createProj(res)
       .then((res)=> {
         console.log(res)
@@ -217,10 +241,11 @@ export default {
         "success"
       ).then((res) => {
         if(res.isConfirmed) {
-          // this.$router.push({path: '/containers'})
+          this.loadingState = false;
         }
       })
     },
+
     // 项目创建失败提醒
     errorMsg() {
       Swal.fire(
@@ -229,10 +254,13 @@ export default {
         "error"
       ).then((res) => {
         if(res.isConfirmed) {
-          // this.$router.push({path: '/containers'})
+          this.loadingState = false;
         }
       })
     },
+    onCancel() {
+      console.log('User cancelled the loader.')
+    }
   }
 };
 </script>
@@ -274,7 +302,23 @@ export default {
           </template>
         </autocomplete>
       </div>
-      <div class="col-12">
+      <!-- <loading
+          color="#556ee6"
+          :active.sync="loadingState" 
+          :can-cancel="false" 
+          :is-full-page="fullPage"
+          ></loading> -->
+      <!-- <div v-if="loadingState" class="col-12 mt-4">
+        <Loader :loading="loadingState"/>
+      </div> -->
+      <!-- <div v-else class="col-12"> -->
+      <div v-if="projects && projects.length > 0" class="col-12">
+        <!-- <loading
+          color="#556ee6"
+          :active.sync="loadingState" 
+          :can-cancel="false" 
+          :is-full-page="fullPage"
+          ></loading> -->
         <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
@@ -287,9 +331,13 @@ export default {
             </div>
           </div>
         </div>
-        <div v-if="projects && projects.length > 0" class="row">
+        <!-- <ProjList class="row" :projects="projects" :updating="loadingState"/> -->
+        <div class="row">
           <ProjItem v-for="item in projects" :key="item.id" :proj="item" class="col-12"/>
         </div>
+      </div>
+      <div class="col-12 mt-4">
+        <Loader :loading="loadingState"/>
       </div>
     </div>
   </Layout>

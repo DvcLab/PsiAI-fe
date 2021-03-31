@@ -1,6 +1,7 @@
 <script>
 import Layout from "../../../layouts/main";
 import DatasetItem from "@/components/psiai/dataset-item";
+import Loader from "@/components/psiai/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import Swal from "sweetalert2";
@@ -14,7 +15,7 @@ export default {
     title: "数据集列表",
     meta: [{ name: "数据集列表", content: appConfig.description }]
   },
-  components: { Layout, DatasetItem, Autocomplete },
+  components: { Layout, Loader ,DatasetItem, Autocomplete },
   data() {
     return {
       datasets: [],
@@ -22,7 +23,8 @@ export default {
       searchContent: '',
       curPage: 1,
       curTotal: 0,
-      meta: {}
+      meta: {},
+      loadingState: true,
     };
   },
   mounted() {
@@ -47,6 +49,7 @@ export default {
     // 搜索获取数据集列表
     getDatasetList(q, page) {
       const _this = this;
+      this.loadingState = true;
       this.getDatasets({
         params: {
           q: q,
@@ -61,11 +64,13 @@ export default {
           _this.curPage = res._meta.page;
           _this.curTotal += res._meta.size;
         }
+        this.loadingState = false;
       })
       .catch((err) => {
         // _this.datasets = [];
         // _this.meta = {};
-        console.log(err)
+        console.log(err);
+        this.loadingState = false;
       })
     },
 
@@ -98,6 +103,7 @@ export default {
     // 搜索
     search(input) {
       const _this = this;
+      this.loadingState = true;
       if(!input) {
         this.searchContent = '';
       } else {
@@ -111,15 +117,18 @@ export default {
             _this.isSearch = false;
             if(res.code === 1) {
               // 查询成功
+              this.loadingState = false;
               return resolve([res.data]);
             } else if (res.code === 0) {
               // 查询失败
+              this.loadingState = false;
               return resolve([]);
             }
           })
           .catch(err => {
-            console.log(err)
-            return resolve([])
+            console.log(err);
+            this.loadingState = false;
+            return resolve([]);
           })
         } else { // 用户搜索数据集
           console.log('搜索数据集');
@@ -138,13 +147,16 @@ export default {
               this.meta = res._meta;
               this.curPage = res._meta.page;
               this.curTotal = this.datasets.length;
+              this.loadingState = false;
               return resolve(res.data);
             } else {
+              this.loadingState = false;
               return resolve([]);
             }
           })
           .catch((err) => {
             console.log(err);
+            this.loadingState = false;
             return resolve([]);
           })
         }
@@ -172,9 +184,11 @@ export default {
         this.getDatasetList(content, this.curPage);
       }
     },
+
     // 添加数据集按钮触发函数
     handleAddDataset(res) {
       console.log(res)
+      this.loadingState = true;
       this.createDataset(res)
       .then((res)=> {
         console.log(res)
@@ -216,7 +230,11 @@ export default {
         "数据集添加成功!",
         "",
         "success"
-      )
+      ).then((res) => {
+        if(res.isConfirmed) {
+          this.loadingState = false;
+        }
+      })
     },
 
     // 数据集添加失败提醒
@@ -225,7 +243,11 @@ export default {
         "数据集添加失败!",
         "",
         "error"
-      )
+      ).then((res) => {
+        if(res.isConfirmed) {
+          this.loadingState = false;
+        }
+      })
     },
   }
 };
@@ -270,7 +292,7 @@ export default {
         </autocomplete>
       </div>
 
-      <div class="col-12">
+      <div v-if="datasets && datasets.length > 0" class="col-12">
         <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
@@ -281,11 +303,13 @@ export default {
             </div>
           </div>
         </div>
-        <div v-if="datasets && datasets.length > 0" class="row">
+        <div class="row">
           <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item" class="col-12"/>
         </div>
       </div>
-
+      <div class="col-12 mt-4">
+        <Loader :loading="loadingState"/>
+      </div>
     </div>
   </Layout>
 </template>

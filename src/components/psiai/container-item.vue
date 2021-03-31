@@ -13,6 +13,7 @@ export default {
     data(){
         return {
             delLoading: false,
+            websock: null,
             stompClient: '',
             timer: '',
         }
@@ -98,13 +99,19 @@ export default {
             return false;
         }
     },
-    mounted() {
+    created() {
         // this.initWebSocket();
+    },
+    mounted() {
+        // this.initWebSocket2();
     },
     beforeDestroy() {
         // 页面离开时断开连接,清除定时器
         // this.disconnect();
         // clearInterval(this.timer);
+    },
+    destroyed() {
+        // this.websock.close();
     },
     methods: {
         // 打开JupyterLab页面
@@ -131,7 +138,50 @@ export default {
                 console.err(err)
             })
         },
+        // 初始化websocket
         initWebSocket() {
+
+            const wsuri = "ws://" + this.$keycloak.token + "@j.dvclab.com:50000/_containers?host_id=" + this.container.id;
+            // const wsuri = "ws://j.dvclab.com:50000/_containers?host_id=" + this.container.id;
+            // this.websock = new WebSocket(wsuri);
+            this.websock = new WebSocket(wsuri, ["protocol1", "protocol2"]);
+            this.websock.onmessage = this.websocketonmessage;
+            this.websock.onopen = this.websocketonopen;
+            this.websock.onerror = this.websocketonerror;
+            this.websock.onclose = this.websocketclose;
+
+        },
+
+        // 连接建立之后执行send方法发送数据
+        websocketonopen() { 
+        
+        },
+
+        // 连接建立失败重连
+        websocketonerror() {
+            this.initWebSocket()
+        },
+
+        // 数据接收
+        websocketonmessage(res) {
+            const message = JSON.parse(res.data)
+            this.isLoading = false
+            if(message.code === 1) {
+                this.taskData = message.data
+            }
+        },
+
+        // 数据发送
+        websocketsend(data) {
+            this.websock.send(data)
+        },
+
+        // 关闭
+        websocketclose(e) {
+            console.log('websocket error, ',e)
+        },
+        // ws初始化
+        initWebSocket2() {
             this.connection();
             let that= this;
             // 断开重连机制,尝试发送消息,捕获异常发生时重连
@@ -143,12 +193,14 @@ export default {
                     that.connection();
                 }
             }, 5000);
-        },  
+        },
+        //连接ws后台 
         connection() {
             const token = this.$keycloak.token;
-            const wsurl = process.env.VUE_APP_WS_URL;
+            const wsurl = process.env.VUE_APP_WS_API;
             // 建立连接对象
             let socket = new SockJS(wsurl);
+            // let socket = new SockJS('ws://j.dvclab.com:50000/', null, {transports: ['xhr-streaming'], headers: {'Authorization': 'Bearer ' + token}});
             // 获取STOMP子协议的客户端对象
             this.stompClient = Stomp.over(socket);
             // 定义客户端的认证信息,按需求配置
@@ -170,12 +222,13 @@ export default {
                 console.log('失败')
                 console.log(err);
             });
-        },    //连接 后台
+        },
+        // 断开ws连接
         disconnect() {
             if (this.stompClient) {
                 this.stompClient.disconnect();
             }
-        },  // 断开连接
+        },
         // 容器创建成功提醒
         successMsg() {
             Swal.fire(
