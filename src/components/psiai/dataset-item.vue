@@ -26,8 +26,8 @@ export default {
 </script>
 
 <template>
-    <div>
-        <div class="list-item-con row align-items-center">
+    <div class="list-item-con">
+        <div class="row align-items-center">
 
             <div class="col-md-1 d-none d-md-block">
                 <!-- <img class="avatar-sm" :src="dataset.cover_img_url" alt="数据集" /> -->

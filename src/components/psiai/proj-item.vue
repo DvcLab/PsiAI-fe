@@ -25,8 +25,8 @@ export default {
 </script>
 
 <template>
-    <div>
-        <div class="proj-item-con row align-items-center">
+    <div class="list-item-con">
+        <div class="row align-items-center">
 
             <div class="col-1 col-md-1 d-none d-md-block">
                 <!-- <img class="avatar-sm" :src="proj.cover_img_url" alt="项目" /> -->
@@ -105,11 +105,3 @@ export default {
         </div>
     </div>
 </template>
-
-<style scoped>
-.proj-item-con {
-    background-color: #fff;
-    padding: 0.75rem;
-    margin-top: 0.75rem;
-}
-</style>

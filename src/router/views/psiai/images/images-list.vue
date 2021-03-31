@@ -219,9 +219,10 @@ export default {
               <span class="col-2 col-md-2 text-end">更新时间</span>
             </div>
           </div>
-          <div v-if="images.length > 0">
-            <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>
-          </div>
+          
+        </div>
+        <div v-if="images && images.length > 0" class="row">
+          <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>
         </div>
       </div>
     </div>

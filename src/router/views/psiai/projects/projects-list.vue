@@ -286,6 +286,8 @@ export default {
               <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
             </div>
           </div>
+        </div>
+        <div v-if="projects && projects.length > 0" class="row">
           <ProjItem v-for="item in projects" :key="item.id" :proj="item" class="col-12"/>
         </div>
       </div>

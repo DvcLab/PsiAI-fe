@@ -1,6 +1,7 @@
 <script>
 import SockJS from  'sockjs-client';
 import Stomp from 'stompjs';
+import Swal from "sweetalert2";
 
 export default {
     props: {
@@ -87,11 +88,15 @@ export default {
                 return 'success'
             }
         },
-        configFile(){
+        configFile() {
             let config = this.container.docker_compose_config
             let blob = new Blob([config], {type : 'application/x-yaml'});
             return URL.createObjectURL(blob);
         },
+        isDel() {
+            if(this.container.status === 'Deleted') return true;
+            return false;
+        }
     },
     mounted() {
         // this.initWebSocket();
@@ -110,9 +115,15 @@ export default {
         delContainer() {
             const _this = this;
             this.delLoading = true;
-            let q = this.container.id;
-            this.$request.delete('containers/' + q)
-            .then(() => {
+            let id = this.container.id;
+            this.$request.delete('containers/' + id)
+            .then((res) => res.data)
+            .then((res) => {
+                if(res.code === 1) {
+                    this.successMsg();
+                } else {
+                    this.errorMsg();
+                }
                 _this.delLoading = false;
             })
             .catch((err) => {
@@ -165,6 +176,30 @@ export default {
                 this.stompClient.disconnect();
             }
         },  // 断开连接
+        // 容器创建成功提醒
+        successMsg() {
+            Swal.fire(
+                "容器删除成功!",
+                "",
+                "success"
+            ).then((res) => {
+                if(res.isConfirmed) {
+                    this.$router.push({path: '/containers'})
+                }
+            })
+        },
+        // 容器创建失败提醒
+        errorMsg() {
+            Swal.fire(
+                "容器删除失败!",
+                "",
+                "error"
+            ).then((res) => {
+                if(res.isConfirmed) {
+                    this.$router.push({path: '/containers'})
+                }
+            })
+        },
     }
 }
 </script>
@@ -223,7 +258,7 @@ export default {
             </div>
             <div class="col-12 col-md-4">
                 <div class="float-end">
-                    <ul class="list-inline mb-0 font-size-20">
+                    <ul v-if="!isDel" class="list-inline mb-0 font-size-20">
                         <li class="list-inline-item">
                             <a
                                 :href="configFile"

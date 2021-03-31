@@ -280,6 +280,8 @@ export default {
               <span class="col-4 col-md-2 text-end">创建时间</span>
             </div>
           </div>
+        </div>
+        <div v-if="datasets && datasets.length > 0" class="row">
           <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item" class="col-12"/>
         </div>
       </div>

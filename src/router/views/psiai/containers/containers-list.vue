@@ -157,55 +157,45 @@ export default {
 </script>
 <template>
   <Layout>
-    <div class="row align-items-center">
-      <div class="col-6 p-0 mb-3">
-        <autocomplete
-          aria-label="搜索容器..."
-          placeholder="搜索容器..."
-          :search="search"
-          :get-result-value="getResultValue"
-          :debounce-time="500"
-          @submit="handleSubmit"
-          >
-          <template #result="{ result, props }">
-            <li
-              v-bind="props"
-              class="search-result"
+    <div>
+      
+      <div class="row align-items-center">
+        <div class="col-6 p-0 mb-3">
+          <autocomplete
+            aria-label="搜索容器..."
+            placeholder="搜索容器..."
+            :search="search"
+            :get-result-value="getResultValue"
+            :debounce-time="500"
+            @submit="handleSubmit"
             >
-              <div class="text-start">
-                <h6><i class="bx bx-code-block me-1"></i>{{ result.id }}</h6>
-              </div>
-            </li>
-          </template>
-        </autocomplete>
-      </div>
-      <div class="col-6 align-self-center mb-3">
-        <button
-          type="button"
-          class="btn btn-success btn-rounded float-end"
-          @click="toCreateContainerPage"
-        >
-          <i class="mdi mdi-plus me-1"></i> 创建容器
-        </button>
-      </div>
-      <div class="col-12">
-        <div class="row">
-          <!-- <div class="col-12">
-            <div class="row align-items-center bg-white head-text">
-              <span class="col-md-1 d-none d-md-block">#</span>
-              <span class="col-6 col-md-5">镜像名称</span>
-              <span class="col-2 col-md-2">类型</span>
-              <span class="col-2 col-md-2">标签</span>
-              <span class="col-2 col-md-1">用户</span>
-              <span class="col-md-1 d-none d-md-block">创建时间</span>
-            </div>
-          </div> -->
-          <div v-if="containers.length > 0">
-            <ContainerItem v-for="item in containers" :key="item.id" :container="item" class="col-12"/>
-          </div>
-          
+            <template #result="{ result, props }">
+              <li
+                v-bind="props"
+                class="search-result"
+              >
+                <div class="text-start">
+                  <h6><i class="bx bx-code-block me-1"></i>{{ result.id }}</h6>
+                </div>
+              </li>
+            </template>
+          </autocomplete>
+        </div>
+        <div class="col-6 align-self-center mb-3">
+          <button
+            type="button"
+            class="btn btn-success btn-rounded float-end"
+            @click="toCreateContainerPage"
+          >
+            <i class="mdi mdi-plus me-1"></i> 创建容器
+          </button>
         </div>
       </div>
+
+      <div v-if="containers && containers.length > 0" class="row">
+        <ContainerItem v-for="item in containers" :key="item.id" :container="item" class="col-12"/>
+      </div>
     </div>
+    
   </Layout>
 </template>
