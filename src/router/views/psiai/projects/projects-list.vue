@@ -3,6 +3,7 @@ import Layout from "../../../layouts/main";
 import ProjItem from "@/components/psiai/proj-item";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
+import Swal from "sweetalert2";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 
 /**
@@ -106,21 +107,17 @@ export default {
 
       return new Promise(resolve => {
         if(_this.isUrl(content)) { // 用户输入网址，则添加项目
-          _this.isSearch = false;
           console.log('添加项目');
           _this.getNewProjInfo(content).then((res) => {
-            console.log(res)
+            console.log(res);
+            _this.isSearch = false;
             if(res.code === 1) {
               // 查询成功
+              return resolve([res.data]);
             } else if (res.code === 0) {
               // 查询失败
+              return resolve([]);
             }
-            resolve(res);
-            // if(Array.isArray(res)) {
-            //   resolve(res);
-            // } else {
-            //   resolve([res]);
-            // }
           })
           .catch(err => {
             console.log(err)
@@ -156,8 +153,9 @@ export default {
     },
     
     getResultValue(result) {
-      this.searchContent = result.id ? result.id : '';
-      return result ? result.name : '';
+      // this.searchContent = result.id ? result.id : '';
+      // return result ? result.name : '';
+      return result.name;
     },
     
     handleSubmit(result) {
@@ -172,10 +170,23 @@ export default {
         this.getProjList(content, this.curPage);
       }
     },
+
     // 添加新项目按钮
     handleAddProj(res) {
       console.log(res)
       this.createProj(res)
+      .then((res)=> {
+        console.log(res)
+        if(res.code === 1) {
+          this.successMsg();
+        } else {
+          this.errorMsg();
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        this.errorMsg();
+      })
     },
     
     // 滑动至底部，加载剩余项目
@@ -192,9 +203,35 @@ export default {
         }
       }
     },
+
     // 判断正则判断是否是url
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
+    },
+
+    // 项目添加成功提醒
+    successMsg() {
+      Swal.fire(
+        "项目添加成功!",
+        "",
+        "success"
+      ).then((res) => {
+        if(res.isConfirmed) {
+          // this.$router.push({path: '/containers'})
+        }
+      })
+    },
+    // 项目创建失败提醒
+    errorMsg() {
+      Swal.fire(
+        "项目添加失败!",
+        "",
+        "error"
+      ).then((res) => {
+        if(res.isConfirmed) {
+          // this.$router.push({path: '/containers'})
+        }
+      })
     },
   }
 };

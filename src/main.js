@@ -106,46 +106,13 @@ Vue.use(VueKeyCloak, {
   }
 })
 
-
-// Vue.use(VueKeyCloak, {
-//   init: {
-//     onLoad: 'login-required',
-//   },
-//   config: {
-//     url: process.env.VUE_APP_AUTH_URL,
-//     realm: process.env.VUE_APP_AUTH_REALM,
-//     clientId: process.env.VUE_APP_AUTH_CLIENT_ID,
-//   },
-//   onReady: kc => {
-//     // 判断用户是否登录
-//     if(kc.authenticated){
-//       kc.loadUserProfile().success((data) => {
-//         console.log(data)
-//         store.commit('auth/SET_CURRENT_USER', data)
-//       })
-//     }
-    
-//     new Vue({
-//       router,
-//       store,
-//       i18n,
-//       render: h => h(App)
-//     }).$mount('#app')
-
-//   }
-// })
-
-
-
-
-
-//全局注册自定义指令，用于判断当前图片是否能够加载成功，可以加载成功则赋值为img的src属性，否则使用默认图片
+// 全局注册自定义指令，用于判断当前图片是否能够加载成功，可以加载成功则赋值为img的src属性，否则使用默认图片
 Vue.directive('real-img', async function (el, binding) {//指令名称为：real-img
   let imgURL = binding.value;//获取图片地址
   if (imgURL) {
       let exist = await imageIsExist(imgURL);
       if (exist) {
-          el.setAttribute('src', imgURL);
+        el.setAttribute('src', imgURL);
       } 
   }
 })
@@ -156,16 +123,16 @@ Vue.directive('real-img', async function (el, binding) {//指令名称为：real
 */
 let imageIsExist = function(url) {
   return new Promise((resolve) => {
-      var img = new Image();
+      let img = new Image();
       img.onload = function () {
-          if (this.complete == true){
-              resolve(true);
-              img = null;
-          }
+        if (this.complete == true){
+          resolve(true);
+          img = null;
+        }
       }
       img.onerror = function () {
-          resolve(false);
-          img = null;
+        resolve(false);
+        img = null;
       }
       img.src = url;
   })
