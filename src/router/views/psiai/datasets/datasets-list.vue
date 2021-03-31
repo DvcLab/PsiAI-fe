@@ -3,6 +3,7 @@ import Layout from "../../../layouts/main";
 import DatasetItem from "@/components/psiai/dataset-item";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
+import Swal from "sweetalert2";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 
 /**
@@ -76,11 +77,11 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res);
         return res.data;
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
+        return [];
       })
     },
     
@@ -105,33 +106,59 @@ export default {
       let content = this.searchContent;
       return new Promise(resolve => {
         if(_this.isUrl(content)) { // 用户输入网址，则添加数据集
-          _this.isSearch = false;
           console.log('添加数据集');
           _this.getNewDatasetInfo(content).then((res) => {
-            if(Array.isArray(res)) {
-              resolve(res);
-            } else {
-              resolve([res]);
+            _this.isSearch = false;
+            if(res.code === 1) {
+              // 查询成功
+              return resolve([res.data]);
+            } else if (res.code === 0) {
+              // 查询失败
+              return resolve([]);
             }
           })
           .catch(err => {
             console.log(err)
+            return resolve([])
           })
         } else { // 用户搜索数据集
           console.log('搜索数据集');
           _this.isSearch = true;
-          _this.datasets = [];
-          _this.curPage = 1;
-          _this.curTotal = 0;
-          _this.getDatasetList(content, _this.curPage);
+
+          this.getDatasets({
+            params: {
+              q: input,
+              page: 1
+            }
+          })
+          .then((res) => {
+            console.log(res)
+            if(res.code === 1) {
+              this.datasets = res.data;
+              this.meta = res._meta;
+              this.curPage = res._meta.page;
+              this.curTotal = this.datasets.length;
+              return resolve(res.data);
+            } else {
+              return resolve([]);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            return resolve([]);
+          })
         }
       })
     },
     // 选择搜索内容，input显示内容
     getResultValue(result) {
-      this.searchContent = result.id ? result.id : '';
-      return result ? result.name : '';
+      if(this.isSearch) {
+        return result ? result.name : ''
+      } else {
+        return ''
+      }
     },
+
     // 选择搜索内容触发事件
     handleSubmit(result) {
       if(!result) {
@@ -143,26 +170,26 @@ export default {
         this.curPage = 1;
         this.curTotal = 0;
         this.getDatasetList(content, this.curPage);
-        // this.getDatasets(content).then((res) => {
-        //     if(Array.isArray(res)) {
-        //       this.datasets = res;
-        //     } else {
-        //       this.datasets = [res];
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     this.datasets = [];
-        //     console.log(err)
-        //   })
       }
     },
+    // 添加数据集按钮触发函数
     handleAddDataset(res) {
       console.log(res)
       this.createDataset(res)
+      .then((res)=> {
+        console.log(res)
+        if(res.code === 1) {
+          this.successMsg();
+        } else {
+          this.errorMsg();
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        this.errorMsg();
+      })
     },
-    isUrl(url) {
-      return /^https?:\/\/.+/.test(url)
-    },
+    
     // 滑动至底部，加载剩余项目
     load() {
       const _this = this;
@@ -177,12 +204,36 @@ export default {
         }
       }
     },
+
+    // 判断是否是url
+    isUrl(url) {
+      return /^https?:\/\/.+/.test(url)
+    },
+
+    // 数据集添加成功提醒
+    successMsg() {
+      Swal.fire(
+        "数据集添加成功!",
+        "",
+        "success"
+      )
+    },
+
+    // 数据集添加失败提醒
+    errorMsg() {
+      Swal.fire(
+        "数据集添加失败!",
+        "",
+        "error"
+      )
+    },
   }
 };
 </script>
 <template>
   <Layout>
     <div class="row">
+
       <div class="col-12 p-0 mb-4 text-center">
         <autocomplete
           aria-label="搜索添加数据集..."
@@ -213,31 +264,26 @@ export default {
                     添加
                   </button>
                 </div>
-                <!-- <div class="d-inline-block ">
-                  <button type="button" class="btn btn-outline-primary btn-sm">
-                    <i class="mdi mdi-plus me-1"></i>
-                    添加
-                  </button>
-                </div> -->
               </div>
             </li>
           </template>
         </autocomplete>
-
       </div>
+
       <div class="col-12">
         <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
               <span class="col-md-1 d-none d-md-block">#</span>
-              <span class="col-7 col-md-9">数据集名称</span>
-              <span class="col-2 col-md-1">用户</span>
-              <span class="col-3 col-md-1 text-end">创建时间</span>
+              <span class="col-6 col-md-8">数据集名称</span>
+              <span class="col-2 col-md-1 text-end">用户</span>
+              <span class="col-4 col-md-2 text-end">创建时间</span>
             </div>
           </div>
           <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item" class="col-12"/>
         </div>
       </div>
+
     </div>
   </Layout>
 </template>

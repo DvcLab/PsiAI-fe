@@ -27,15 +27,16 @@ export default {
 
 <template>
     <div>
-        <div class="proj-item-con row align-items-center">
+        <div class="list-item-con row align-items-center">
 
             <div class="col-md-1 d-none d-md-block">
                 <!-- <img class="avatar-sm" :src="dataset.cover_img_url" alt="数据集" /> -->
                 <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="dataset.cover_img_url" alt="数据集" />
             </div>
 
-            <div class="col-7 col-md-9">
+            <div class="col-6 col-md-8">
                 <h5 class="text-truncate mb-0 list-item-name">
+                    <i class="bx bx-layer me-1 d-md-none"></i>
                     <a :href="dataset.url" class="text-dark">{{ dataset.name }}</a>
                 </h5>
                 <p class="text-muted text-truncate mb-0">{{ dataset.desc }}</p>
@@ -49,13 +50,13 @@ export default {
                 </p>
             </div>
 
-            <div class="col-2 col-md-1">
+            <div class="col-2 col-md-1 text-end">
                 <!-- <img class="rounded-circle avatar-xs" :src="dataset.user.avatar_url" :alt="dataset.user.username" /> -->
                 <img v-if="dataset.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="dataset.user.avatar_url" :alt="dataset.user.username" />
                 <!-- <img class="rounded-circle avatar-xs" :src="dataset.user.avatar_url" :alt="dataset.user.username" /> -->
             </div>
 
-            <div class="col-3 col-md-1 text-end">
+            <div class="col-4 col-md-2 text-end">
                 <i class="bx bx-calendar me-1"></i>
                 <span>{{ dataset.update_time | moment("from", "now") }}</span>
             </div>
@@ -63,11 +64,3 @@ export default {
         </div>
     </div>
 </template>
-
-<style scoped>
-.proj-item-con {
-    background-color: #fff;
-    padding: 0.75rem;
-    margin-top: 0.75rem;
-}
-</style>
