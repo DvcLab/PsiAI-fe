@@ -31,7 +31,7 @@ export default {
 
             <div class="col-6 col-md-5">
                 <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
-                    <i class="bx bx-layer me-1 d-md-none"></i>
+                    <i class="bx bx-layer me-1"></i>
                     {{ image.name }}
                 </h5>
                 <p class="text-muted text-truncate mb-0">{{ image.desc }}</p>
