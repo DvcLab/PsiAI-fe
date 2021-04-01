@@ -164,8 +164,8 @@ export default {
 
             // const wsuri = "ws://" + this.$keycloak.token + "@j.dvclab.com:50000/_containers?host_id=" + this.container.id;
             // document.cookie = 'X-Authorization=' + this.$keycloak.token + '; path=/';
-            // document.cookie = 'X-Authorization=' + 'Bearer ' + this.$keycloak.token;
-            const wsuri = "ws://j.dvclab.com:50000/_containers?id=" + this.container.id;
+            document.cookie = 'X-Authorization=' + 'Bearer ' + this.$keycloak.token;
+            const wsuri = "wss://j.dvclab.com:50000/_containers?id=" + this.container.id;
             this.websock = new WebSocket(wsuri);
             // this.websock = new WebSocket(wsuri, this.$keycloak.token);
             this.websock.onmessage = this.websocketonmessage;
@@ -187,9 +187,7 @@ export default {
 
         // 数据接收
         websocketonmessage(res) {
-            console.log(res)
             const message = JSON.parse(res.data);
-            console.log(message)
             this.newInfo = message;
         },
 

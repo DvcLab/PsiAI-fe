@@ -128,13 +128,10 @@ let imageIsExist = function(url) {
       img.onload = function () {
         if (this.complete == true){
           resolve(true);
-          // img = null;
         }
       }
       img.onerror = function () {
         resolve(false);
-        // img = null;
       }
-      // img.src = url;
   })
 }

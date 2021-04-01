@@ -679,11 +679,10 @@ export default {
             <img
               v-show="userInfo && userInfo.attributes"
               class="rounded-circle header-profile-user"
-              :src="avatarUrl"
-              :v-real-img="userInfo.attributes.headimgurl[0]"
+              src="@/assets/images/users/avatar-1.jpg"
+              v-real-img="avatarUrl"
               :alt="userInfo.username"
             />
-            <!-- <img v-show="userInfo && userInfo.attributes" class="rounded-circle header-profile-user" src="@/assets/images/users/avatar-1.jpg" :v-real-img="userInfo.attributes.headimgurl[0]" :alt="userInfo.username" /> -->
             <!-- <span class="d-none d-xl-inline-block ms-1">{{
               $t("navbar.dropdown.henry.text")
             }}</span> -->

@@ -19,16 +19,6 @@ export default {
             return branchList;
         }
     },
-    methods: {
-    },
-    // directives: {
-    //     test: {
-    //     // 指令的定义
-    //     inserted: function (el, binding) {
-    //         el.focus()
-    //         }
-    //     }
-    // }
 }
 </script>
 
@@ -38,7 +28,7 @@ export default {
 
             <div class="col-1 col-md-1 d-none d-md-block">
                 <!-- <img class="avatar-sm" :src="proj.cover_img_url" alt="项目" /> -->
-                <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="proj.cover_img_url" alt="项目" />
+                <img class="avatar-sm" src="@/assets/images/companies/img-1.png" v-real-img="proj.cover_img_url" alt="项目" />
             </div>
 
             <div class="col-4 col-md-3">
@@ -103,8 +93,7 @@ export default {
                 <span v-else class="badge bg-secondary">暂无</span>
             </div>
             <div class="col-2 col-md-1">
-                <!-- <img v-if="proj.user" class="rounded-circle avatar-xs" :src="proj.user.avatar_url" :alt="proj.user.username" /> -->
-                <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="proj.user.avatar_url" :alt="proj.user.username" />
+                <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" v-real-img="proj.user.avatar_url" :alt="proj.user.username" />
             </div>
             <div class="col-2 col-md-2 text-end d-none d-md-block">
                 <i class="bx bx-calendar me-1"></i>

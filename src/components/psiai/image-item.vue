@@ -12,7 +12,7 @@ export default {
             if (!tagList) return [];
             if (tagList.length > 3) {
                 let temp = tagList.slice(0,3);
-                temp.push('...');
+                // temp.push('...');
                 return temp;
             }
             return tagList;
@@ -82,8 +82,7 @@ export default {
             </div> -->
 
             <div class="col-2 col-md-1">
-                <!-- <img class="rounded-circle avatar-xs" :src="image.user.avatar_url" :alt="image.user.username" /> -->
-                <img v-if="image.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="image.user.avatar_url" :alt="image.user.username" />
+                <img v-if="image.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" v-real-img="image.user.avatar_url" :alt="image.user.username" />
             </div>
 
             <div class="col-md-2 text-end d-none d-md-block">

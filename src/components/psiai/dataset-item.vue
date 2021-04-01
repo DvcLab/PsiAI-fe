@@ -30,8 +30,7 @@ export default {
         <div class="row align-items-center">
 
             <div class="col-md-1 d-none d-md-block">
-                <!-- <img class="avatar-sm" :src="dataset.cover_img_url" alt="数据集" /> -->
-                <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="dataset.cover_img_url" alt="数据集" />
+                <img class="avatar-sm" src="@/assets/images/companies/img-1.png" v-real-img="dataset.cover_img_url" alt="数据集" />
             </div>
 
             <div class="col-6 col-md-8">
@@ -51,9 +50,7 @@ export default {
             </div>
 
             <div class="col-2 col-md-1 text-end">
-                <!-- <img class="rounded-circle avatar-xs" :src="dataset.user.avatar_url" :alt="dataset.user.username" /> -->
-                <img v-if="dataset.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="dataset.user.avatar_url" :alt="dataset.user.username" />
-                <!-- <img class="rounded-circle avatar-xs" :src="dataset.user.avatar_url" :alt="dataset.user.username" /> -->
+                <img v-if="dataset.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" v-real-img="dataset.user.avatar_url" :alt="dataset.user.username" />
             </div>
 
             <div class="col-4 col-md-2 text-end">
