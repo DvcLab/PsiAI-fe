@@ -2,7 +2,7 @@
 // import axios from "axios";
 
 /**
- * Preloader component
+ * loader-container component
  */
 export default {
   data() {

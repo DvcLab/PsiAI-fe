@@ -37,7 +37,7 @@ export default {
                 <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="proj.cover_img_url" alt="项目" />
             </div>
 
-            <div class="col-10 col-md-9">
+            <div class="col-10 col-md-8">
                 <h5 class="text-truncate mb-0 list-item-name">
                     {{ proj.name }}
                 </h5>
@@ -64,7 +64,7 @@ export default {
                     </span>
                 </p>
             </div>
-            <div class="col-2 col-md-1">
+            <div class="col-2 col-md-2 text-end">
                 <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="proj.user.avatar_url" :alt="proj.user.username" />
             </div>
         </div>

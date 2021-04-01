@@ -2,7 +2,7 @@
 import SockJS from  'sockjs-client';
 import Stomp from 'stompjs';
 import Swal from "sweetalert2";
-import Loader from "@/components/psiai/loader2";
+import LoaderContainer from "@/components/psiai/loader-container";
 
 export default {
     props: {
@@ -11,7 +11,7 @@ export default {
             default: () => {}
         },
     },
-    components: { Loader },
+    components: { LoaderContainer },
     data(){
         return {
             websock: null,
@@ -110,6 +110,7 @@ export default {
         // this.initWebSocket();
     },
     mounted() {
+        this.initWebSocket();
         // this.initWebSocket2();
     },
     beforeDestroy() {
@@ -118,7 +119,8 @@ export default {
         // clearInterval(this.timer);
     },
     destroyed() {
-        // this.websock.close();
+        this.websock.close();
+        // this.websocketclose();
     },
     methods: {
         // 打开JupyterLab页面
@@ -147,10 +149,12 @@ export default {
         // 初始化websocket
         initWebSocket() {
 
-            const wsuri = "ws://" + this.$keycloak.token + "@j.dvclab.com:50000/_containers?host_id=" + this.container.id;
-            // const wsuri = "ws://j.dvclab.com:50000/_containers?host_id=" + this.container.id;
-            // this.websock = new WebSocket(wsuri);
-            this.websock = new WebSocket(wsuri, ["protocol1", "protocol2"]);
+            // const wsuri = "ws://" + this.$keycloak.token + "@j.dvclab.com:50000/_containers?host_id=" + this.container.id;
+            // document.cookie = 'X-Authorization=' + this.$keycloak.token + '; path=/';
+            document.cookie = 'X-Authorization=' + 'Bearer ' + this.$keycloak.token;
+            const wsuri = "ws://j.dvclab.com:50000/_containers?id=" + this.container.id;
+            this.websock = new WebSocket(wsuri);
+            // this.websock = new WebSocket(wsuri, this.$keycloak.token);
             this.websock.onmessage = this.websocketonmessage;
             this.websock.onopen = this.websocketonopen;
             this.websock.onerror = this.websocketonerror;
@@ -184,7 +188,8 @@ export default {
 
         // 关闭
         websocketclose(e) {
-            console.log('websocket error, ',e)
+            console.log('websocket error', e)
+            // this.websock.close();
         },
         // ws初始化
         initWebSocket2() {
@@ -261,7 +266,7 @@ export default {
 </script>
 
 <template>
-<Loader :loading="loadingState">
+<LoaderContainer :loading="loadingState">
     <div class="list-item-con">
         <div class="row align-items-center">
             <div class="col-12 col-md-4 mb-2">
@@ -347,7 +352,7 @@ export default {
             </div>
         </div>
     </div>
-</Loader>
+</LoaderContainer>
 </template>
 
 <style scoped>

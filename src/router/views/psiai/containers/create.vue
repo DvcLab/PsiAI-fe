@@ -8,6 +8,7 @@ import ProjSelectItem from "@/components/psiai/proj-select-item";
 import ImageSelectItem from "@/components/psiai/image-select-item";
 import DatasetSelectItem from "@/components/psiai/dataset-select-item";
 import SelectCard from "@/components/psiai/select-card";
+import LoaderContainer from "@/components/psiai/loader-container";
 import {
   required,
   // minValue,
@@ -25,7 +26,7 @@ export default {
     title: "创建容器",
     meta: [{ name: "创建容器", content: appConfig.description }]
   },
-  components: { Layout, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
+  components: { Layout, LoaderContainer, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
   data() {
     return {
       cpus: 1,
@@ -82,7 +83,8 @@ export default {
       selectedBranch: '',
       selectedImage: null,
       selectedDatasetsList: [],
-      submitted: false
+      submitted: false,
+      loadingState: false
     };
   },
   computed: {
@@ -235,6 +237,7 @@ export default {
     formSubmit(e) {
       console.log(e)
       const _this = this;
+      this.loadingState = true;
       this.submitted = true;
       this.$v.$touch();
       if (!this.$v.$invalid) {
@@ -284,6 +287,7 @@ export default {
         "success"
       ).then((res) => {
         if(res.isConfirmed) {
+          this.loadingState = false;
           this.$router.push({path: '/containers'})
         }
       })
@@ -296,6 +300,7 @@ export default {
         "error"
       ).then((res) => {
         if(res.isConfirmed) {
+          this.loadingState = false;
           this.$router.push({path: '/containers'})
         }
       })
@@ -309,6 +314,7 @@ export default {
 </script>
 <template>
   <Layout>
+    <LoaderContainer :loading="loadingState">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
@@ -487,5 +493,6 @@ export default {
         </div>
       </div>
     </div>
+    </LoaderContainer>
   </Layout>
 </template>
