@@ -1,6 +1,7 @@
 <script>
 import Layout from "../../../layouts/main";
 import ImageItem from "@/components/psiai/image-item";
+import Loader from "@/components/psiai/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
@@ -13,14 +14,15 @@ export default {
     title: "镜像列表",
     meta: [{ name: "镜像列表", content: appConfig.description }]
   },
-  components: { Layout, ImageItem, Autocomplete },
+  components: { Layout, Loader, ImageItem, Autocomplete },
   data() {
     return {
       images: [],
       // searchContent: '',
       curPage: 1,
       curTotal: 0,
-      meta: {}
+      meta: {},
+      loadingState: true
     };
   },
   mounted() {
@@ -47,6 +49,7 @@ export default {
     // 获取镜像列表
     getImagesList(q) {
       const _this = this;
+      this.loadingState = true;
       this.getImages({
         params: q
       })
@@ -56,12 +59,14 @@ export default {
           _this.meta = res._meta;
           _this.curPage = res._meta.page;
           _this.curTotal += res._meta.size;
-          return res.data;
+          // return res.data;
         }
+        this.loadingState = false;
       })
       .catch((err) => {
         // _this.images = [];
-        console.log(err)
+        console.log(err);
+        this.loadingState = false;
         return [];
       })
     },
@@ -79,6 +84,7 @@ export default {
     // autocomplete 搜索函数
     // search(input) {
     search(input) {
+      this.loadingState = true;
       return new Promise(resolve => {
         if (input.length === 0) {
           this.getImages({
@@ -92,26 +98,32 @@ export default {
               this.meta = res._meta;
               this.curPage = res._meta.page;
               this.curTotal = this.images.length;
+              this.loadingState = false;
               return resolve(res.data)
             } else {
+              this.loadingState = false;
               return resolve([])
             }
           })
           .catch((err) => {
             console.log(err);
+            this.loadingState = false;
             return resolve([]);
           })
         } else {
           this.getImageById(input)
           .then((res) => {
             if(res.code === 1) {
+              this.loadingState = false;
               return resolve([res.data]);
             } else {
+              this.loadingState = false;
               return resolve([]);
             }
           })
           .catch((err) => {
             console.log(err);
+            this.loadingState = false;
             return resolve([]);
           })
         }
@@ -206,7 +218,7 @@ export default {
         </autocomplete>
 
       </div>
-      <div class="col-12">
+      <div v-if="images && images.length > 0" class="col-12">
         <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
@@ -221,9 +233,12 @@ export default {
           </div>
           
         </div>
-        <div v-if="images && images.length > 0" class="row">
+        <div class="row">
           <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>
         </div>
+      </div>
+      <div class="col-12 mt-4">
+        <Loader :loading="loadingState"/>
       </div>
     </div>
   </Layout>

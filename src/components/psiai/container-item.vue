@@ -2,6 +2,7 @@
 import SockJS from  'sockjs-client';
 import Stomp from 'stompjs';
 import Swal from "sweetalert2";
+import Loader from "@/components/psiai/loader2";
 
 export default {
     props: {
@@ -10,12 +11,13 @@ export default {
             default: () => {}
         },
     },
+    components: { Loader },
     data(){
         return {
-            delLoading: false,
             websock: null,
             stompClient: '',
             timer: '',
+            loadingState: false
         }
     },
     computed:{
@@ -61,6 +63,11 @@ export default {
                     return {
                         text: 'Deleted',
                         theme: 'bg-secondary'
+                    };
+                case 'Running':
+                    return {
+                        text: 'Running',
+                        theme: 'bg-success'
                     };
                 default:
                     return {
@@ -120,8 +127,7 @@ export default {
         },
         // 删除容器 
         delContainer() {
-            const _this = this;
-            this.delLoading = true;
+            this.loadingState = true;
             let id = this.container.id;
             this.$request.delete('containers/' + id)
             .then((res) => res.data)
@@ -131,10 +137,10 @@ export default {
                 } else {
                     this.errorMsg();
                 }
-                _this.delLoading = false;
+                this.loadingState = false;
             })
             .catch((err) => {
-                _this.delLoading = false;
+                this.loadingState = false;
                 console.err(err)
             })
         },
@@ -237,7 +243,8 @@ export default {
                 "success"
             ).then((res) => {
                 if(res.isConfirmed) {
-                    this.$router.push({path: '/containers'})
+                    console.log('触发刷新列表函数')
+                    this.$emit('update');
                 }
             })
         },
@@ -247,17 +254,14 @@ export default {
                 "容器删除失败!",
                 "",
                 "error"
-            ).then((res) => {
-                if(res.isConfirmed) {
-                    this.$router.push({path: '/containers'})
-                }
-            })
+            )
         },
     }
 }
 </script>
 
 <template>
+<Loader :loading="loadingState">
     <div class="list-item-con">
         <div class="row align-items-center">
             <div class="col-12 col-md-4 mb-2">
@@ -343,6 +347,7 @@ export default {
             </div>
         </div>
     </div>
+</Loader>
 </template>
 
 <style scoped>

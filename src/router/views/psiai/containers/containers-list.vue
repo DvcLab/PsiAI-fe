@@ -1,6 +1,7 @@
 <script>
 import Layout from "../../../layouts/main";
 import ContainerItem from "@/components/psiai/container-item";
+import Loader from "@/components/psiai/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
@@ -9,11 +10,12 @@ import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
  * 容器列表
  */
 export default {
+  inject:['reload'],
   page: {
     title: "容器列表",
     meta: [{ name: "容器列表", content: appConfig.description }]
   },
-  components: { Layout, ContainerItem, Autocomplete },
+  components: { Layout, Loader, ContainerItem, Autocomplete },
   data() {
     return {
       containers: [],
@@ -21,6 +23,7 @@ export default {
       curPage: 1,
       curTotal: 0,
       meta: {},
+      loadingState: true
     };
   },
   mounted() {
@@ -41,9 +44,19 @@ export default {
         return [];
       })
     },
-    // 初始化获取容器列表
+    // initContainersList(){
+    //   console.log('页面初始化')
+    //   this.loadingState = true;
+    //   this.containers.splice(0);
+    //   this.meta = {};
+    //   this.curPage = 1;
+    //   this.curTotal = 0;
+    //   this.getContainersList('', 1);
+    // },
+    // 获取容器列表
     getContainersList(q, page) {
       const _this = this;
+      this.loadingState = true;
       this.getContainers({
         params: {
           q: q,
@@ -57,10 +70,12 @@ export default {
           _this.curPage = res._meta.page;
           _this.curTotal += res._meta.size;
         }
+        this.loadingState = false;
       })
       .catch((err) => {
         _this.containers = [];
-        console.log(err)
+        console.log(err);
+        this.loadingState = false;
       })
     },
     // 搜索镜像
@@ -77,6 +92,7 @@ export default {
     },
     // autocomplete 搜索函数
     search(input) {
+      this.loadingState = true;
       return new Promise((resolve) => {
         this.getContainers({
           params: {
@@ -90,13 +106,16 @@ export default {
             this.meta = res._meta;
             this.curPage = res._meta.page;
             this.curTotal = this.containers.length;
-            return resolve(res.data)
+            this.loadingState = false;
+            return resolve(res.data);
           } else {
-            return resolve([])
+            this.loadingState = false;
+            return resolve([]);
           }
         })
         .catch((err) => {
           console.log(err)
+          this.loadingState = false;
           return resolve([])
         })
       })
@@ -157,45 +176,52 @@ export default {
 </script>
 <template>
   <Layout>
-    <div>
+
+    <div class="row">
       
-      <div class="row align-items-center">
-        <div class="col-6 p-0 mb-3">
-          <autocomplete
-            aria-label="搜索容器..."
-            placeholder="搜索容器..."
-            :search="search"
-            :get-result-value="getResultValue"
-            :debounce-time="500"
-            @submit="handleSubmit"
-            >
-            <template #result="{ result, props }">
-              <li
-                v-bind="props"
-                class="search-result"
+      <div class="col-12 align-items-center">
+        <div class="row">
+          <div class="col-6 p-0 mb-3">
+            <autocomplete
+              aria-label="搜索容器..."
+              placeholder="搜索容器..."
+              :search="search"
+              :get-result-value="getResultValue"
+              :debounce-time="500"
+              @submit="handleSubmit"
               >
-                <div class="text-start">
-                  <h6><i class="bx bx-code-block me-1"></i>{{ result.id }}</h6>
-                </div>
-              </li>
-            </template>
-          </autocomplete>
-        </div>
-        <div class="col-6 align-self-center mb-3">
-          <button
-            type="button"
-            class="btn btn-success btn-rounded float-end"
-            @click="toCreateContainerPage"
-          >
-            <i class="mdi mdi-plus me-1"></i> 创建容器
-          </button>
+              <template #result="{ result, props }">
+                <li
+                  v-bind="props"
+                  class="search-result"
+                >
+                  <div class="text-start">
+                    <h6><i class="bx bx-code-block me-1"></i>{{ result.id }}</h6>
+                  </div>
+                </li>
+              </template>
+            </autocomplete>
+          </div>
+          <div class="col-6 align-self-center mb-3 p-0">
+            <button
+              type="button"
+              class="btn btn-success btn-rounded float-end"
+              @click="toCreateContainerPage"
+            >
+              <i class="mdi mdi-plus me-1"></i> 创建容器
+            </button>
+          </div>
         </div>
       </div>
 
-      <div v-if="containers && containers.length > 0" class="row">
-        <ContainerItem v-for="item in containers" :key="item.id" :container="item" class="col-12"/>
+      <div v-if="containers && containers.length > 0" class="col-12 p-0">
+        <ContainerItem v-for="item in containers" :key="item.id" :container="item" @update="reload"/>
       </div>
+
+      <div class="col-12 mt-4">
+        <Loader :loading="loadingState"/>
+      </div>
+
     </div>
-    
   </Layout>
 </template>

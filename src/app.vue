@@ -5,12 +5,22 @@ import { notificationMethods } from "@/state/helpers";
 
 export default {
   name: "app",
+  provide () {                                           
+    return {
+      reload: this.reload                                              
+    }
+  },
   page: {
     // All subcomponent titles will be injected into this template.
     titleTemplate(title) {
       title = typeof title === "function" ? title(this.$store) : title;
       return title ? `${title} | ${appConfig.title}` : appConfig.title;
     },
+  },
+  data(){
+    return {
+      isRouterAlive: true
+    }
   },
   mounted() {
     // document.querySelector("html").setAttribute('dir', 'rtl')
@@ -27,12 +37,18 @@ export default {
   },
   methods: {
     clearNotification: notificationMethods.clear,
+    reload () {
+      this.isRouterAlive = false;            //先关闭，
+      this.$nextTick(function () {
+        this.isRouterAlive = true;         //再打开
+      }) 
+    }
   },
 };
 </script>
 
 <template>
   <div id="app">
-    <RouterView />
+    <RouterView v-if="isRouterAlive" />
   </div>
 </template>
