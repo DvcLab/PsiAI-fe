@@ -36,7 +36,7 @@ export default {
 
             <div class="col-6 col-md-8">
                 <h5 class="text-truncate mb-0 list-item-name">
-                    <i class="bx bx-layer me-1 d-md-none"></i>
+                    <i class="bx bx-cube me-1 d-md-none"></i>
                     <a :href="dataset.url" class="text-dark">{{ dataset.name }}</a>
                 </h5>
                 <p class="text-muted text-truncate mb-0">{{ dataset.desc }}</p>

@@ -14,6 +14,7 @@ export default {
     components: { LoaderContainer },
     data(){
         return {
+            newInfo: null,
             websock: null,
             stompClient: '',
             timer: '',
@@ -22,7 +23,7 @@ export default {
     },
     computed:{
         status() {
-            const status = this.container.status;
+            const status = this.newInfo && this.newInfo.status ? this.newInfo.status : this.container.status;
             switch(status){
                 case 'New':
                     return {
@@ -76,6 +77,10 @@ export default {
                     }
             }
         },
+        cpuUsage() {
+            if(this.newInfo && this.newInfo.cpu_usage) return this.newInfo.cpu_usage;
+            return this.container.cpu_usage;
+        },
         cpuProgress() {
             let cpuUsage = this.container.cpu_usage;
             if(cpuUsage >= 30 && cpuUsage < 60) {
@@ -86,6 +91,10 @@ export default {
                 return 'success'
             }
         },
+        memUsage() {
+            if(this.newInfo && this.newInfo.mem_usage) return this.newInfo.mem_usage;
+            return this.container.mem_usage;
+        },
         memProgress() {
             let memUsage = this.container.mem_usage;
             if(memUsage >= 30 && memUsage < 60) {
@@ -95,6 +104,10 @@ export default {
             } else {
                 return 'success'
             }
+        },
+        updateTime() {
+            if(this.newInfo && this.newInfo.update_time) return this.newInfo.update_time;
+            return this.container.update_time;
         },
         configFile() {
             let config = this.container.docker_compose_config
@@ -151,7 +164,7 @@ export default {
 
             // const wsuri = "ws://" + this.$keycloak.token + "@j.dvclab.com:50000/_containers?host_id=" + this.container.id;
             // document.cookie = 'X-Authorization=' + this.$keycloak.token + '; path=/';
-            document.cookie = 'X-Authorization=' + 'Bearer ' + this.$keycloak.token;
+            // document.cookie = 'X-Authorization=' + 'Bearer ' + this.$keycloak.token;
             const wsuri = "ws://j.dvclab.com:50000/_containers?id=" + this.container.id;
             this.websock = new WebSocket(wsuri);
             // this.websock = new WebSocket(wsuri, this.$keycloak.token);
@@ -174,11 +187,10 @@ export default {
 
         // 数据接收
         websocketonmessage(res) {
-            const message = JSON.parse(res.data)
-            this.isLoading = false
-            if(message.code === 1) {
-                this.taskData = message.data
-            }
+            console.log(res)
+            const message = JSON.parse(res.data);
+            console.log(message)
+            this.newInfo = message;
         },
 
         // 数据发送
@@ -270,7 +282,10 @@ export default {
     <div class="list-item-con">
         <div class="row align-items-center">
             <div class="col-12 col-md-4 mb-2">
-                <h5 class="d-block text-truncate text-dark mb-0 list-item-name">{{ container.id }}</h5>
+                <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
+                    <i class="bx bx-code-block me-1"></i>
+                    {{ container.id }}
+                </h5>
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <span class="d-inline-block text-truncate">
@@ -285,7 +300,7 @@ export default {
                     >
                         {{ status.text }}
                     </span>
-                    <span class="text-success">{{ container.update_time | moment('YYYY-MM-DD HH:mm:ss') }}</span>
+                    <span class="text-success">{{ updateTime | moment('YYYY-MM-DD HH:mm:ss') }}</span>
                 </div>
                 <div class="float-start d-md-none">
                     <span class="badge me-2"
@@ -293,7 +308,7 @@ export default {
                     >
                         {{ status.text }}
                     </span>
-                    <span class="text-success">{{ container.update_time | moment('YYYY-MM-DD HH:mm:ss') }}</span>
+                    <span class="text-success">{{ updateTime | moment('YYYY-MM-DD HH:mm:ss') }}</span>
                 </div>
             </div>
         </div>
@@ -312,11 +327,11 @@ export default {
         <div class="row">
             <div class="col-12 col-md-4 mb-2">
                 <p class="mb-0">CPU使用</p>
-                <b-progress :value="container.cpu_usage" :max="100" :variant="cpuProgress"></b-progress>
+                <b-progress :value="cpuUsage" :max="100" :variant="cpuProgress"></b-progress>
             </div>
             <div class="col-12 col-md-4 mb-2">
                 <p class="mb-0">内存使用</p>
-                <b-progress :value="container.mem_usage" :max="100" :variant="memProgress"></b-progress>
+                <b-progress :value="memUsage" :max="100" :variant="memProgress"></b-progress>
             </div>
             <div class="col-12 col-md-4">
                 <div class="float-end">

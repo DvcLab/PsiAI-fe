@@ -20,7 +20,15 @@ export default {
         }
     },
     methods: {
-    }
+    },
+    // directives: {
+    //     test: {
+    //     // 指令的定义
+    //     inserted: function (el, binding) {
+    //         el.focus()
+    //         }
+    //     }
+    // }
 }
 </script>
 
@@ -35,6 +43,7 @@ export default {
 
             <div class="col-4 col-md-3">
                 <h5 class="text-truncate mb-0 list-item-name">
+                    <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
                     <a :href="proj.url" class="text-dark">{{ proj.name }}</a>
                 </h5>
                 <p class="text-muted text-truncate mb-0">{{ proj.desc }}</p>
@@ -94,8 +103,8 @@ export default {
                 <span v-else class="badge bg-secondary">暂无</span>
             </div>
             <div class="col-2 col-md-1">
-                <img v-if="proj.user" class="rounded-circle avatar-xs" :src="proj.user.avatar_url" :alt="proj.user.username" />
-                <!-- <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="proj.user.avatar_url" :alt="proj.user.username" /> -->
+                <!-- <img v-if="proj.user" class="rounded-circle avatar-xs" :src="proj.user.avatar_url" :alt="proj.user.username" /> -->
+                <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="proj.user.avatar_url" :alt="proj.user.username" />
             </div>
             <div class="col-2 col-md-2 text-end d-none d-md-block">
                 <i class="bx bx-calendar me-1"></i>

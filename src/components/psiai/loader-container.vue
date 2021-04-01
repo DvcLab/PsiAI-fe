@@ -1,6 +1,4 @@
 <script>
-// import axios from "axios";
-
 /**
  * loader-container component
  */
@@ -15,7 +13,6 @@ export default {
 </script>
 
 <template>
-  <!-- <div :class="{ 'is-loading': loading }"> -->
   <div class="is-loading">
     <div class="preloader-component"
       :style="{

@@ -287,7 +287,7 @@ export default {
               <div v-else class="row align-items-center">
                 <div class="col-4 text-sm-start">
                   <h6 class="d-inline-block">
-                    <i class="bx bx-package me-1"></i>
+                    <i class="bx bx-briefcase-alt-2 me-1"></i>
                     {{ result.name }}
                   </h6>
                 </div>

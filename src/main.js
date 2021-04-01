@@ -124,16 +124,17 @@ Vue.directive('real-img', async function (el, binding) {//指令名称为：real
 let imageIsExist = function(url) {
   return new Promise((resolve) => {
       let img = new Image();
+      img.src = url;
       img.onload = function () {
         if (this.complete == true){
           resolve(true);
-          img = null;
+          // img = null;
         }
       }
       img.onerror = function () {
         resolve(false);
-        img = null;
+        // img = null;
       }
-      img.src = url;
+      // img.src = url;
   })
 }
