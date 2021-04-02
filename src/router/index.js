@@ -31,7 +31,30 @@ const router = new VueRouter({
 
 // Before each route evaluates...
 router.beforeEach((routeTo, routeFrom, next) => {
-  next()
+  console.log('to', routeTo)
+  console.log('from', routeFrom)
+
+  const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
+  // 如果该页面不需要登陆验证，则直接进入
+  if (!authRequired) return next()
+  // 如果该页面需要认证，则判断该用户是否已登录
+  if (Vue.prototype.$keycloak.authenticated) {
+    // if(routeTo.path === '/logout') {
+    //   if (routeFrom.name !== null) {
+    //     Vue.prototype.$keycloak.logoutFn()
+    //   // return next('/')
+    //   } else {
+    //     return next('/')
+    //   }
+    // }
+    next()
+  } else {
+    // 未登录则进入登录界面
+    const loginUrl = Vue.prototype.$keycloak.createLoginUrl()
+    window.location.replace(loginUrl)
+
+  }
+  
   // if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
   //   // Check if auth is required on this route
   //   // (including nested routes).

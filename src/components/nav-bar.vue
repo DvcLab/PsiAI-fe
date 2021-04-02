@@ -1,4 +1,5 @@
 <script>
+// import Vue from 'vue';
 import axios from "axios";
 import { mapState } from 'vuex';
 import { authMethods } from '@/state/helpers'
@@ -130,8 +131,7 @@ export default {
       });
     },
     logout() {
-      this.logOut() // auth/logOut
-      // this.$keycloak.logoutFn()
+      this.$keycloak.logoutFn()
     }
   },
 };
@@ -735,16 +735,27 @@ export default {
             ></i>
             {{ $t("navbar.dropdown.henry.list.logout") }}
           </a> -->
-          <a
+          <!-- <a
             href=""
             class="dropdown-item text-danger"
             @click="logout"
+          > -->
+          <!-- <a
+            href="/logout"
+            class="dropdown-item text-danger"
           >
             <i
               class="bx bx-power-off font-size-16 align-middle me-1 text-danger"
             ></i>
             {{ $t("navbar.dropdown.henry.list.logout") }}
-          </a>
+          </a> -->
+
+          <b-dropdown-item @click="logout" class="text-danger">
+            <i
+              class="bx bx-power-off font-size-16 align-middle me-1 text-danger"
+            ></i>
+            {{ $t("navbar.dropdown.henry.list.logout") }}
+          </b-dropdown-item>
         </b-dropdown>
 
         <!-- 右上角设置 注释 -->

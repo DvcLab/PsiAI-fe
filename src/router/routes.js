@@ -1,5 +1,5 @@
 // import store from '@/state/store'
-
+// import Vue from 'vue'
 export default [
   {
     path: '/',
@@ -40,6 +40,18 @@ export default [
       authRequired: true,
     },
     component: () => import('./views/psiai/containers/create.vue'),
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: require('./views/psiai/utility/404').default,
+  },
+  // Redirect any unmatched routes to the 404 page. This may
+  // require some server configuration to work in production:
+  // https://router.vuejs.org/en/essentials/history-mode.html#example-server-configurations
+  {
+    path: '*',
+    redirect: '404',
   },
   // {
   //   path: '/',
