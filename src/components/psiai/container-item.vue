@@ -164,10 +164,11 @@ export default {
 
             // const wsuri = "ws://" + this.$keycloak.token + "@j.dvclab.com:50000/_containers?host_id=" + this.container.id;
             // document.cookie = 'X-Authorization=' + this.$keycloak.token + '; path=/';
-            document.cookie = 'X-Authorization=' + 'Bearer ' + this.$keycloak.token;
+            // document.cookie = 'X-Authorization=' + 'Bearer ' + this.$keycloak.token;
             const wsuri = "wss://j.dvclab.com:50000/_containers?id=" + this.container.id;
-            this.websock = new WebSocket(wsuri);
-            // this.websock = new WebSocket(wsuri, this.$keycloak.token);
+            // const wsuri = "/ws/_containers?id=" + this.container.id;
+            // this.websock = new WebSocket(wsuri);
+            this.websock = new WebSocket(wsuri, this.$keycloak.token);
             this.websock.onmessage = this.websocketonmessage;
             this.websock.onopen = this.websocketonopen;
             this.websock.onerror = this.websocketonerror;
