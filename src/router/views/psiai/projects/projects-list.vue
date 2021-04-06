@@ -1,7 +1,8 @@
 <script>
 import Layout from "../../../layouts/main";
-import ProjItem from "@/components/psiai/proj-item";
-// import ProjList from "@/components/psiai/proj-list";
+// import ProjItem from "@/components/psiai/proj-item";
+import ProjList from "@/components/psiai/proj-list";
+import ProjGridList from "@/components/psiai/proj-grid-list";
 import Loader from "@/components/psiai/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
@@ -18,7 +19,7 @@ export default {
     title: "项目列表",
     meta: [{ name: "项目列表", content: appConfig.description }]
   },
-  components: { Layout, Loader, ProjItem, Autocomplete },
+  components: { Layout, Loader, ProjList, ProjGridList, Autocomplete },
   data() {
     return {
       projects: [],
@@ -28,6 +29,7 @@ export default {
       curTotal: 0,
       meta: {},
       loadingState: true,
+      isGrid: true,
       // loadingTest: false,
       // fullPage: false
     };
@@ -258,8 +260,13 @@ export default {
         }
       })
     },
-    onCancel() {
-      console.log('User cancelled the loader.')
+    // 改为List布局
+    toListLayout() {
+      this.isGrid = false;
+    },
+    // 改为Grid布局
+    toGridLayout() {
+      this.isGrid = true;
     }
   }
 };
@@ -267,7 +274,7 @@ export default {
 <template>
   <Layout>
     <div class="row">
-      <div class="col-11 p-0 mb-4 text-center">
+      <div class="col-9 col-md-10 p-0 mb-4 text-center">
         <autocomplete
           aria-label="搜索添加项目..."
           placeholder="搜索添加项目..."
@@ -302,37 +309,33 @@ export default {
           </template>
         </autocomplete>
       </div>
-      <div class="col-1 p-0 mb-4 text-center">
-        <ul class="nav nav-pills product-view-nav">
+      <div class="col-3 col-md-2 p-0 mb-4 text-center">
+        <ul class="nav nav-pills product-view-nav float-end">
           <li class="nav-item">
-            <a class="nav-link" href="javascript: void(0);">
+            <a
+              class="nav-link"
+              href="javascript: void(0);"
+              :class="{ 'active': !isGrid }"
+              @click="toListLayout"
+              >
               <i class="bx bx-list-ul"></i>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="javascript: void(0);">
+            <a
+              class="nav-link"
+              href="javascript: void(0);"
+              :class="{ 'active': isGrid }"
+              @click="toGridLayout">
               <i class="bx bx-grid-alt"></i>
             </a>
           </li>
         </ul>
       </div>
-      <!-- <loading
-          color="#556ee6"
-          :active.sync="loadingState" 
-          :can-cancel="false" 
-          :is-full-page="fullPage"
-          ></loading> -->
-      <!-- <div v-if="loadingState" class="col-12 mt-4">
-        <Loader :loading="loadingState"/>
-      </div> -->
-      <!-- <div v-else class="col-12"> -->
-      <div v-if="projects && projects.length > 0" class="col-12">
-        <!-- <loading
-          color="#556ee6"
-          :active.sync="loadingState" 
-          :can-cancel="false" 
-          :is-full-page="fullPage"
-          ></loading> -->
+      <ProjGridList v-if="isGrid" class="col-12" :projects="projects" :updating="loadingState"/>
+      <ProjList v-else class="col-12" :projects="projects" :updating="loadingState"/>
+      
+      <!-- <div v-if="projects && projects.length > 0" class="col-12">
         <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
@@ -345,11 +348,10 @@ export default {
             </div>
           </div>
         </div>
-        <!-- <ProjList class="row" :projects="projects" :updating="loadingState"/> -->
         <div class="row">
           <ProjItem v-for="item in projects" :key="item.id" :proj="item" class="col-12"/>
         </div>
-      </div>
+      </div> -->
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>
       </div>
