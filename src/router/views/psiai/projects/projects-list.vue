@@ -267,7 +267,7 @@ export default {
 <template>
   <Layout>
     <div class="row">
-      <div class="col-12 p-0 mb-4 text-center">
+      <div class="col-11 p-0 mb-4 text-center">
         <autocomplete
           aria-label="搜索添加项目..."
           placeholder="搜索添加项目..."
@@ -301,6 +301,20 @@ export default {
             </li>
           </template>
         </autocomplete>
+      </div>
+      <div class="col-1 p-0 mb-4 text-center">
+        <ul class="nav nav-pills product-view-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="javascript: void(0);">
+              <i class="bx bx-list-ul"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="javascript: void(0);">
+              <i class="bx bx-grid-alt"></i>
+            </a>
+          </li>
+        </ul>
       </div>
       <!-- <loading
           color="#556ee6"
