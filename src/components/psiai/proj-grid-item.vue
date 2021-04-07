@@ -15,6 +15,14 @@ export default {
             }
             return branchList;
         },
+        datasets(){
+            if (!this.proj.datasets) return [];
+            let datasetList = this.proj.datasets;
+            if (datasetList.length > 3) {
+                return datasetList.slice(0,3);
+            }
+            return datasetList;
+        },
     },
 }
 </script>
@@ -41,7 +49,7 @@ export default {
                     </span>
                 </span>
                 
-                <span v-for="item in proj.branches" :key="item">
+                <span v-for="item in datasets" :key="item">
                     <span class="badge bg-primary me-2">
                         <i class="bx bx-cube me-1"></i>
                         {{ item }}

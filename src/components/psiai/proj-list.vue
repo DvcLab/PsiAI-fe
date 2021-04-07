@@ -22,7 +22,26 @@ export default {
 </script>
 <template>
     <div v-if="projects && projects.length > 0">
-        <div class="row">
+      <div class="row">
+        <div class="col-12">
+          <div class="bg-white list-head-text">
+            <div class="row align-items-center ">
+              <div class="col-md-1 d-none d-md-block"><span>#</span></div>
+              <div class="col-4 col-md-3"><span>项目名称</span></div>
+              <div class="col-3 col-md-2">分支</div>
+              <div class="col-3 col-md-3">数据集</div>
+              <div class="col-2 col-md-1">用户</div>
+              <div class="col-md-2 text-end d-none d-md-block">创建时间</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <ProjItem v-for="item in projects" :key="item.id" :proj="item"/>
+        </div>
+      </div>
+        <!-- <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
               <span class="col-md-1 d-none d-md-block">#</span>
@@ -36,6 +55,6 @@ export default {
         </div>
         <div class="row">
           <ProjItem v-for="item in projects" :key="item.id" :proj="item" class="col-12"/>
-        </div>
+        </div> -->
     </div>
 </template>

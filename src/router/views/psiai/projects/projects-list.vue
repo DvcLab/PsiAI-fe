@@ -274,7 +274,7 @@ export default {
 <template>
   <Layout>
     <div class="row">
-      <div class="col-9 col-md-10 p-0 mb-4 text-center">
+      <div class="col-9 col-md-10 mb-4 text-center">
         <autocomplete
           aria-label="搜索添加项目..."
           placeholder="搜索添加项目..."
@@ -309,7 +309,7 @@ export default {
           </template>
         </autocomplete>
       </div>
-      <div class="col-3 col-md-2 p-0 mb-4 text-center">
+      <div class="col-3 col-md-2 mb-4 text-center">
         <ul class="nav nav-pills product-view-nav float-end">
           <li class="nav-item">
             <a
