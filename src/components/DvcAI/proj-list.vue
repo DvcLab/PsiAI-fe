@@ -12,9 +12,9 @@ export default {
                 return [];
             },
         },
-        // updating: {
-        //     type: Boolean,
-        // },
+        updating: {
+            type: Boolean,
+        },
     },
 }
 </script>
@@ -54,5 +54,8 @@ export default {
         <div class="row">
           <ProjItem v-for="item in projects" :key="item.id" :proj="item" class="col-12"/>
         </div> -->
+    </div>
+    <div v-else-if="!updating" class="text-center text-secondary">
+      暂无项目
     </div>
 </template>

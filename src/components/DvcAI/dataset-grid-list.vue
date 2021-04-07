@@ -11,7 +11,10 @@ export default {
             default: function () {
                 return [];
             },
-        }
+        },
+        updating: {
+            type: Boolean,
+        },
     },
 }
 </script>
@@ -22,5 +25,8 @@ export default {
                 <DatasetGridItem :dataset="item"/>
             </div>
         </div>
+    </div>
+    <div v-else-if="!updating" class="text-center text-secondary">
+      暂无数据集
     </div>
 </template>

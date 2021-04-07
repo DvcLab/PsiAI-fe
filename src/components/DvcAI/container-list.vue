@@ -1,12 +1,12 @@
 <script>
-import ProjGridItem from './proj-grid-item';
+import ContainerItem from './container-item';
 
 export default {
     components: {
-        ProjGridItem
+        ContainerItem
     },
     props: {
-        projects: {
+        containers: {
             type: Array,
             default: function () {
                 return [];
@@ -19,14 +19,14 @@ export default {
 }
 </script>
 <template>
-    <div v-if="projects && projects.length > 0">
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-3 col-lg-4 col-xl-3" v-for="item in projects" :key="item.id">
-                <ProjGridItem :proj="item"/>
-            </div>
+    <div v-if="containers && containers.length > 0">
+      <div class="row">
+        <div class="col-12">
+          <ContainerItem v-for="item in containers" :key="item.id" :container="item"/>
         </div>
+      </div>
     </div>
     <div v-else-if="!updating" class="text-center text-secondary">
-      暂无项目
+      暂无容器
     </div>
 </template>

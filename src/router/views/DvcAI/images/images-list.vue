@@ -1,6 +1,7 @@
 <script>
 import Layout from "../../../layouts/main";
-import ImageItem from "@/components/DvcAI/image-item";
+// import ImageItem from "@/components/DvcAI/image-item";
+import ImageList from "@/components/DvcAI/image-list";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
@@ -14,7 +15,7 @@ export default {
     title: "镜像列表",
     meta: [{ name: "镜像列表", content: appConfig.description }]
   },
-  components: { Layout, Loader, ImageItem, Autocomplete },
+  components: { Layout, Loader, ImageList, Autocomplete },
   data() {
     return {
       images: [],
@@ -186,7 +187,7 @@ export default {
 <template>
   <Layout>
     <div class="row">
-      <div class="col-12 p-0 mb-4 text-center">
+      <div class="col-12 mb-4 text-center">
         <autocomplete
           aria-label="搜索镜像..."
           placeholder="搜索镜像..."
@@ -197,15 +198,6 @@ export default {
           auto-select
           >
           <template #result="{ result, props }">
-            <!-- <ul
-              v-if="noResults"
-              class="autocomplete-result-list"
-              style="position: absolute; z-index: 1; width: 100%; top: 100%;"
-            >
-              <li class="autocomplete-result">
-                No results found
-              </li>
-            </ul> -->
             <li
               v-bind="props"
               class="search-result"
@@ -218,11 +210,11 @@ export default {
         </autocomplete>
 
       </div>
-      <div v-if="images && images.length > 0" class="col-12">
+      <ImageList class="col-12" :images="images" :updating="loadingState"/>
+      <!-- <div v-if="images && images.length > 0" class="col-12">
         <div class="row align-items-center bg-white list-head-text">
           <span class="col-6 col-md-5">镜像名称</span>
           <span class="col-2 col-md-2">类型</span>
-          <!-- <span class="col-2 col-md-2">标签</span> -->
           <span class="col-2 col-md-1">用户</span>
           <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
           <span class="col-2 col-md-2 text-end">更新时间</span>
@@ -230,7 +222,7 @@ export default {
         <div class="row">
           <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>
         </div>
-      </div>
+      </div> -->
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>
       </div>

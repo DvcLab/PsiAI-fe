@@ -330,8 +330,8 @@ export default {
           </li>
         </ul>
       </div>
-      <DatasetGridList v-if="isGrid" class="col-12" :datasets="datasets"/>
-      <DatasetList v-else class="col-12" :datasets="datasets"/>
+      <DatasetGridList v-if="isGrid" class="col-12" :datasets="datasets" :updating="loadingState"/>
+      <DatasetList v-else class="col-12" :datasets="datasets" :updating="loadingState"/>
       <!-- <div v-if="datasets && datasets.length > 0" class="col-12">
         <div class="row">
           <div class="col-12">

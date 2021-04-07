@@ -1,12 +1,12 @@
 <script>
-import DatasetItem from './dataset-item';
+import ImageItem from './image-item';
 
 export default {
     components: {
-        DatasetItem
+        ImageItem
     },
     props: {
-        datasets: {
+        images: {
             type: Array,
             default: function () {
                 return [];
@@ -19,26 +19,27 @@ export default {
 }
 </script>
 <template>
-    <div v-if="datasets && datasets.length > 0">
+    <div v-if="images && images.length > 0">
       <div class="row">
         <div class="col-12">
           <div class="bg-white list-head-text">
             <div class="row align-items-center">
-              <span class="col-md-1 d-none d-md-block">#</span>
-              <span class="col-6 col-md-8">数据集名称</span>
-              <span class="col-2 col-md-1 text-end">用户</span>
-              <span class="col-4 col-md-2 text-end">创建时间</span>
+                <span class="col-6 col-md-5">镜像名称</span>
+                <span class="col-2 col-md-2">类型</span>
+                <span class="col-2 col-md-1">用户</span>
+                <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
+                <span class="col-2 col-md-2 text-end">更新时间</span>
             </div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item"/>
+          <ImageItem v-for="item in images" :key="item.id" :image="item"/>
         </div>
       </div>
     </div>
     <div v-else-if="!updating" class="text-center text-secondary">
-      暂无数据集
+      暂无镜像
     </div>
 </template>

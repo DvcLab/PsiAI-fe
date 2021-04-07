@@ -1,6 +1,7 @@
 <script>
 import Layout from "../../../layouts/main";
-import ContainerItem from "@/components/DvcAI/container-item";
+// import ContainerItem from "@/components/DvcAI/container-item";
+import ContainerList from "@/components/DvcAI/container-list";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
@@ -15,7 +16,7 @@ export default {
     title: "容器列表",
     meta: [{ name: "容器列表", content: appConfig.description }]
   },
-  components: { Layout, Loader, ContainerItem, Autocomplete },
+  components: { Layout, Loader, ContainerList, Autocomplete },
   data() {
     return {
       containers: [],
@@ -181,7 +182,7 @@ export default {
       
       <div class="col-12 align-items-center">
         <div class="row">
-          <div class="col-6 p-0 mb-3">
+          <div class="col-6 mb-3">
             <autocomplete
               aria-label="搜索容器..."
               placeholder="搜索容器..."
@@ -202,7 +203,7 @@ export default {
               </template>
             </autocomplete>
           </div>
-          <div class="col-6 align-self-center mb-3 p-0">
+          <div class="col-6 align-self-center mb-3">
             <button
               type="button"
               class="btn btn-success btn-rounded float-end"
@@ -213,10 +214,10 @@ export default {
           </div>
         </div>
       </div>
-
-      <div v-if="containers && containers.length > 0" class="col-12 p-0">
+      <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+      <!-- <div v-if="containers && containers.length > 0" class="col-12">
         <ContainerItem v-for="item in containers" :key="item.id" :container="item" @update="reload"/>
-      </div>
+      </div> -->
 
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>
