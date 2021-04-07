@@ -7,7 +7,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/psiai/projects/projects-list.vue'),
+    component: () => import('./views/DvcAI/projects/projects-list.vue'),
   },
   {
     path: '/datasets',
@@ -15,7 +15,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/psiai/datasets/datasets-list.vue'),
+    component: () => import('./views/DvcAI/datasets/datasets-list.vue'),
   },
   {
     path: '/images',
@@ -23,7 +23,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/psiai/images/images-list.vue'),
+    component: () => import('./views/DvcAI/images/images-list.vue'),
   },
   {
     path: '/containers',
@@ -31,7 +31,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/psiai/containers/containers-list.vue'),
+    component: () => import('./views/DvcAI/containers/containers-list.vue'),
   },
   {
     path: '/createContainers',
@@ -39,12 +39,12 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/psiai/containers/create.vue'),
+    component: () => import('./views/DvcAI/containers/create.vue'),
   },
   {
     path: '/404',
     name: '404',
-    component: require('./views/psiai/utility/404').default,
+    component: require('./views/DvcAI/utility/404').default,
   },
   // Redirect any unmatched routes to the 404 page. This may
   // require some server configuration to work in production:

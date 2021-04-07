@@ -1,6 +1,4 @@
 <script>
-// import axios from "axios";
-
 /**
  * Preloader component
  */

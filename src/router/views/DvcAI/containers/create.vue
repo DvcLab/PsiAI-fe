@@ -4,11 +4,11 @@ import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
 import Multiselect from "vue-multiselect";
 import queryString from 'query-string';
-import ProjSelectItem from "@/components/psiai/proj-select-item";
-import ImageSelectItem from "@/components/psiai/image-select-item";
-import DatasetSelectItem from "@/components/psiai/dataset-select-item";
-import SelectCard from "@/components/psiai/select-card";
-import LoaderContainer from "@/components/psiai/loader-container";
+import ProjSelectItem from "@/components/DvcAI/proj-select-item";
+import ImageSelectItem from "@/components/DvcAI/image-select-item";
+import DatasetSelectItem from "@/components/DvcAI/dataset-select-item";
+import SelectCard from "@/components/DvcAI/select-card";
+import LoaderContainer from "@/components/DvcAI/loader-container";
 import {
   required,
   // minValue,

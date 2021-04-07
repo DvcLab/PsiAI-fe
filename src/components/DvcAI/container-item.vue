@@ -2,7 +2,7 @@
 import SockJS from  'sockjs-client';
 import Stomp from 'stompjs';
 import Swal from "sweetalert2";
-import LoaderContainer from "@/components/psiai/loader-container";
+import LoaderContainer from "@/components/DvcAI/loader-container";
 
 export default {
     props: {

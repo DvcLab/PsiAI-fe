@@ -1,7 +1,7 @@
 <script>
 import Layout from "../../../layouts/main";
-import ContainerItem from "@/components/psiai/container-item";
-import Loader from "@/components/psiai/loader";
+import ContainerItem from "@/components/DvcAI/container-item";
+import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";

@@ -1,6 +1,5 @@
 <script>
 import ProjItem from './proj-item';
-// import Loader from "@/components/psiai/loader";
 
 export default {
     components: {

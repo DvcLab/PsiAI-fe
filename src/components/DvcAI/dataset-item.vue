@@ -1,6 +1,4 @@
 <script>
-import 'vue-popperjs/dist/vue-popper.css';
-
 export default {
     props: {
         dataset: {
