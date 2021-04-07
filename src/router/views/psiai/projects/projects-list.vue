@@ -318,7 +318,7 @@ export default {
               :class="{ 'active': !isGrid }"
               @click="toListLayout"
               >
-              <i class="bx bx-list-ul"></i>
+              <i class="bx bx-list-ul nav-i-mt"></i>
             </a>
           </li>
           <li class="nav-item">
@@ -327,7 +327,7 @@ export default {
               href="javascript: void(0);"
               :class="{ 'active': isGrid }"
               @click="toGridLayout">
-              <i class="bx bx-grid-alt"></i>
+              <i class="bx bx-grid-alt nav-i-mt"></i>
             </a>
           </li>
         </ul>
@@ -358,3 +358,8 @@ export default {
     </div>
   </Layout>
 </template>
+<style scoped>
+.nav-i-mt {
+  margin-top: 0.6rem;
+}
+</style>

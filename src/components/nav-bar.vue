@@ -141,8 +141,28 @@ export default {
   <header id="page-topbar">
     <div class="navbar-header">
       <div class="d-flex">
-        <!-- LOGO -->
+        <!-- DvcAI LOGO -->
         <div class="navbar-brand-box">
+          <router-link tag="a" to="/" class="logo logo-dark">
+            <span class="logo-sm">
+              <img src="@/assets/images/DvcAI/logo-dark.png" alt height="22" />
+            </span>
+            <span class="logo-lg">
+              <img src="@/assets/images/DvcAI/logo-dark.png" alt height="17" />
+            </span>
+          </router-link>
+
+          <router-link tag="a" to="/" class="logo logo-light">
+            <span class="logo-sm">
+              <img src="@/assets/images/DvcAI/logo-light.png" alt height="22" />
+            </span>
+            <span class="logo-lg">
+              <img src="@/assets/images/DvcAI/logo-light.png" alt height="19" />
+            </span>
+          </router-link>
+        </div>
+        <!-- LOGO -->
+        <!-- <div class="navbar-brand-box">
           <router-link tag="a" to="/" class="logo logo-dark">
             <span class="logo-sm">
               <img src="@/assets/images/logo.svg" alt height="22" />
@@ -160,7 +180,7 @@ export default {
               <img src="@/assets/images/logo-light.png" alt height="19" />
             </span>
           </router-link>
-        </div>
+        </div> -->
 
         <button
           id="vertical-menu-btn"

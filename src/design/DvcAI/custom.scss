@@ -2,35 +2,14 @@
 .main-content {
     overflow: visible;
 }
-.list-item-con {
-    background-color: #fff;
-    padding: 0.75rem;
-    margin-top: 0.75rem;
-}
-.list-item-con:last-child {
-    margin-bottom: 0.75rem;
-}
-.list-head-text {
-    font-weight: 600;
-    padding: 0.75rem;
-}
-// 列表项的名称样式
-.list-item-name {
-    font-size: 0.9rem;
-    font-weight: 500;
-    line-height: 1.2;
-    text-decoration: none;
-    position: relative;
-    display: inline-block;
-    max-width:100%;
-}
-.list-item-name a:hover:after  {
-    content: "";
-    border-bottom: 2px solid $dark;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 1px;
+// 文本显示两行省略
+.text-truncate-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
 }
 
 .autocomplete-input {
