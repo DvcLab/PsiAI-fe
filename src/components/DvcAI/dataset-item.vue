@@ -8,18 +8,16 @@ export default {
     },
     computed:{
         tags() {
+            if (!this.dataset.tags) return [];
             let tagList = this.dataset.tags;
-            if (!tagList) return [];
             if (tagList.length > 3) {
                 let temp = tagList.slice(0,3);
-                temp.push('...');
+                // temp.push('...');
                 return temp;
             }
             return tagList;
         }
     },
-    methods: {
-    }
 }
 </script>
 

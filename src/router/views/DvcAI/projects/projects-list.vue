@@ -332,8 +332,8 @@ export default {
           </li>
         </ul>
       </div>
-      <ProjGridList v-if="isGrid" class="col-12" :projects="projects" :updating="loadingState"/>
-      <ProjList v-else class="col-12" :projects="projects" :updating="loadingState"/>
+      <ProjGridList v-if="isGrid" class="col-12" :projects="projects"/>
+      <ProjList v-else class="col-12" :projects="projects"/>
       
       <!-- <div v-if="projects && projects.length > 0" class="col-12">
         <div class="row">
@@ -358,8 +358,3 @@ export default {
     </div>
   </Layout>
 </template>
-<style scoped>
-.nav-i-mt {
-  margin-top: 0.6rem;
-}
-</style>

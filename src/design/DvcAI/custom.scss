@@ -101,7 +101,10 @@
 // .multiselect__tags__err {
 //     border: $red 1px solid!important;
 // }
-
+// 调整列表/表格布局按钮的i标签位置显示
+.nav-i-mt {
+    margin-top: 0.6rem;
+}
 @keyframes rotate{
     0%{
         transform:translateY(-50%) rotate(0deg)

@@ -3,8 +3,7 @@ import ProjItem from './proj-item';
 
 export default {
     components: {
-        ProjItem,
-        // Loader
+        ProjItem
     },
     props: {
         projects: {
@@ -13,9 +12,9 @@ export default {
                 return [];
             },
         },
-        updating: {
-            type: Boolean,
-        },
+        // updating: {
+        //     type: Boolean,
+        // },
     },
 }
 </script>
@@ -24,9 +23,9 @@ export default {
       <div class="row">
         <div class="col-12">
           <div class="bg-white list-head-text">
-            <div class="row align-items-center ">
-              <div class="col-md-1 d-none d-md-block"><span>#</span></div>
-              <div class="col-4 col-md-3"><span>项目名称</span></div>
+            <div class="row align-items-center">
+              <div class="col-md-1 d-none d-md-block">#</div>
+              <div class="col-4 col-md-3">项目名称</div>
               <div class="col-3 col-md-2">分支</div>
               <div class="col-3 col-md-3">数据集</div>
               <div class="col-2 col-md-1">用户</div>

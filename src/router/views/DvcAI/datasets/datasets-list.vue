@@ -1,6 +1,8 @@
 <script>
 import Layout from "../../../layouts/main";
-import DatasetItem from "@/components/DvcAI/dataset-item";
+import DatasetList from "@/components/DvcAI/dataset-list";
+import DatasetGridList from "@/components/DvcAI/dataset-grid-list";
+// import DatasetItem from "@/components/DvcAI/dataset-item";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
@@ -15,7 +17,12 @@ export default {
     title: "数据集列表",
     meta: [{ name: "数据集列表", content: appConfig.description }]
   },
-  components: { Layout, Loader ,DatasetItem, Autocomplete },
+  components: { 
+    Layout,
+    Loader, 
+    DatasetList, 
+    DatasetGridList,
+    Autocomplete },
   data() {
     return {
       datasets: [],
@@ -25,6 +32,7 @@ export default {
       curTotal: 0,
       meta: {},
       loadingState: true,
+      isGrid: true,
     };
   },
   mounted() {
@@ -249,6 +257,14 @@ export default {
         }
       })
     },
+    // 改为List布局
+    toListLayout() {
+      this.isGrid = false;
+    },
+    // 改为Grid布局
+    toGridLayout() {
+      this.isGrid = true;
+    }
   }
 };
 </script>
@@ -256,7 +272,7 @@ export default {
   <Layout>
     <div class="row">
 
-      <div class="col-12 p-0 mb-4 text-center">
+      <div class="col-8 col-sm-9 col-md-10 mb-4 text-center">
         <autocomplete
           aria-label="搜索添加数据集..."
           placeholder="搜索添加数据集..."
@@ -291,8 +307,32 @@ export default {
           </template>
         </autocomplete>
       </div>
-
-      <div v-if="datasets && datasets.length > 0" class="col-12">
+      <div class="col-4 col-sm-3 col-md-2 mb-4 text-center">
+        <ul class="nav nav-pills product-view-nav float-end">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="javascript: void(0);"
+              :class="{ 'active': !isGrid }"
+              @click="toListLayout"
+              >
+              <i class="bx bx-list-ul nav-i-mt"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="javascript: void(0);"
+              :class="{ 'active': isGrid }"
+              @click="toGridLayout">
+              <i class="bx bx-grid-alt nav-i-mt"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <DatasetGridList v-if="isGrid" class="col-12" :datasets="datasets"/>
+      <DatasetList v-else class="col-12" :datasets="datasets"/>
+      <!-- <div v-if="datasets && datasets.length > 0" class="col-12">
         <div class="row">
           <div class="col-12">
             <div class="row align-items-center bg-white list-head-text">
@@ -306,7 +346,7 @@ export default {
         <div class="row">
           <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item" class="col-12"/>
         </div>
-      </div>
+      </div> -->
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>
       </div>
