@@ -15,7 +15,7 @@ jobs:
       - name: set up node env
         uses: actions/setup-node@master
       - name: Installing project dependencies
-        run: npm install
+        run: yarn
       - name: Building the project
         run: npm run build
       
