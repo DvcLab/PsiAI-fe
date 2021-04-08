@@ -2,7 +2,7 @@
 import { Carousel, Slide } from "vue-carousel";
 
 /**
- * Crypto ICO-landing page
+ * DvcAI Index page
  */
 export default {
   components: { Carousel, Slide },
@@ -86,6 +86,9 @@ export default {
     },
     prevSlide() {
       this.$refs.carousel.goToPage(this.$refs.carousel.getPreviousPage());
+    },
+    login() {
+      this.$keycloak.loginFn()
     }
   }
 };
@@ -96,8 +99,10 @@ export default {
     <nav class="navbar navbar-expand-lg navigation fixed-top sticky" id="navbar">
       <div class="container">
         <a class="navbar-logo" href="/">
-          <img src="@/assets/images/logo-dark.png" alt height="19" class="logo logo-dark" />
-          <img src="@/assets/images/logo-light.png" alt height="19" class="logo logo-light" />
+          <img src="@/assets/images/DvcAI/logo-dark.png" alt height="19" class="logo logo-dark" />
+          <img src="@/assets/images/DvcAI/logo-light.png" alt height="19" class="logo logo-light" />
+          <!-- <img src="@/assets/images/logo-dark.png" alt height="19" class="logo logo-dark" />
+          <img src="@/assets/images/logo-light.png" alt height="19" class="logo logo-light" /> -->
         </a>
 
         <button
@@ -140,7 +145,7 @@ export default {
           </ul>
 
           <div class="ms-lg-2">
-            <a href="javascript: void(0);" class="btn btn-outline-success w-xs">Sign in</a>
+            <a href="javascript: void(0);" class="btn btn-outline-success w-xs" @click="login">登录</a>
           </div>
         </div>
       </div>

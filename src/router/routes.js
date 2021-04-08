@@ -3,6 +3,11 @@
 export default [
   {
     path: '/',
+    name: 'DvcAI',
+    component: () => import('./views/DvcAI/index.vue'),
+  },
+  {
+    path: '/projects',
     name: '项目',
     meta: {
       authRequired: true,

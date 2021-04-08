@@ -84,8 +84,8 @@ Vue.use(VueMoment, {
 
 Vue.use(VueKeyCloak, {
   init: {
-    onLoad: 'login-required',
-    checkLoginIframe: false
+    onLoad: 'check-sso',
+    // checkLoginIframe: false
   },
   config: {
     url: process.env.VUE_APP_AUTH_URL,
