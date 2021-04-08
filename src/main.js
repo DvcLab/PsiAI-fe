@@ -22,7 +22,7 @@ import "../src/design/app.scss";
 
 import store from '@/state/store'
 
-import App from './App.vue'
+import App from './app.vue'
 
 // import { initFirebaseBackend } from './authUtils'
 import i18n from './i18n'
