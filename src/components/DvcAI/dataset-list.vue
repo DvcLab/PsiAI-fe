@@ -19,7 +19,9 @@ export default {
 }
 </script>
 <template>
+
     <div v-if="datasets && datasets.length > 0">
+
       <div class="row">
         <div class="col-12">
           <div class="bg-white list-head-text">
@@ -32,13 +34,17 @@ export default {
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col-12">
           <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item"/>
         </div>
       </div>
+
     </div>
-    <div v-else-if="!updating" class="text-center text-secondary">
+
+    <div v-else-if="datasets.length === 0 && !updating" class="text-center text-secondary mt-4">
       暂无数据集
     </div>
+
 </template>

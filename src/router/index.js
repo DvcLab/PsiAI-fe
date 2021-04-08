@@ -31,8 +31,6 @@ const router = new VueRouter({
 
 // Before each route evaluates...
 router.beforeEach((routeTo, routeFrom, next) => {
-  console.log('to', routeTo)
-  console.log('from', routeFrom)
 
   const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
   // 如果该页面不需要登陆验证，则直接进入
@@ -52,7 +50,6 @@ router.beforeEach((routeTo, routeFrom, next) => {
     // 未登录则进入登录界面
     const loginUrl = Vue.prototype.$keycloak.createLoginUrl()
     window.location.replace(loginUrl)
-
   }
   
   // if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {

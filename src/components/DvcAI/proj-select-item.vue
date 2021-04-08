@@ -23,8 +23,6 @@ export default {
             }
             return datasetList;
         }
-    },
-    methods: {
     }
 }
 </script>
@@ -34,7 +32,7 @@ export default {
         <div class="proj-item-con row align-items-center">
 
             <div class="col-md-2 d-none d-md-block">
-                <img class="avatar-sm" :src="require('@/assets/images/companies/img-1.png')" :v-real-img="proj.cover_img_url" alt="项目" />
+                <img class="avatar-sm" src="@/assets/images/companies/img-1.png" v-real-img="proj.cover_img_url" alt="项目" />
             </div>
 
             <div class="col-10 col-md-8">
@@ -64,9 +62,11 @@ export default {
                     </span>
                 </p>
             </div>
+
             <div class="col-2 col-md-2 text-end">
-                <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" :v-real-img="proj.user.avatar_url" :alt="proj.user.username" />
+                <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" v-real-img="proj.user.avatar_url" :alt="proj.user.username" />
             </div>
+
         </div>
     </div>
 </template>

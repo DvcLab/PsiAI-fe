@@ -1,6 +1,5 @@
 <script>
 import Layout from "../../../layouts/main";
-// import ProjItem from "@/components/DvcAI/proj-item";
 import ProjList from "@/components/DvcAI/proj-list";
 import ProjGridList from "@/components/DvcAI/proj-grid-list";
 import Loader from "@/components/DvcAI/loader";
@@ -8,8 +7,6 @@ import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import Swal from "sweetalert2";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
-// import Loading from 'vue-loading-overlay';
-// import 'vue-loading-overlay/dist/vue-loading.css';
 
 /**
  * 项目列表
@@ -19,7 +16,15 @@ export default {
     title: "项目列表",
     meta: [{ name: "项目列表", content: appConfig.description }]
   },
-  components: { Layout, Loader, ProjList, ProjGridList, Autocomplete },
+
+  components: {
+    Layout,
+    Loader,
+    Autocomplete,
+    ProjList,
+    ProjGridList
+  },
+
   data() {
     return {
       projects: [],
@@ -29,19 +34,21 @@ export default {
       curTotal: 0,
       meta: {},
       loadingState: true,
-      isGrid: true,
-      // loadingTest: false,
-      // fullPage: false
+      isGrid: true
     };
   },
+
   mounted() {
     window.addEventListener('scroll', this.load);
     this.getProjList('', 1);
   },
+
   destroyed(){
     window.removeEventListener('scroll', this.load, false);
   },
+
   methods: {
+
     // 获取项目
     getProjects(q) {
       return this.$request.get('projects', q)
@@ -53,9 +60,9 @@ export default {
         return [];
       })
     },
+
     // 搜索获取项目列表
     getProjList(q, page) {
-      // const _this = this;
       this.loadingState = true;
       this.getProjects({
         params: {
@@ -64,7 +71,6 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res)
         if(res.code === 1) {
           this.projects.splice(this.curTotal, 0, ...res.data);
           this.meta = res._meta;
@@ -74,12 +80,11 @@ export default {
         this.loadingState = false;
       })
       .catch((err) => {
-        // _this.projects = [];
-        // _this.meta = {};
         console.log(err);
         this.loadingState = false;
       })
     },
+
     // 获取新项目信息
     getNewProjInfo(url) {
       return this.$request.get('projects_info',{
@@ -88,7 +93,6 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res);
         return res.data;
       })
       .catch((err) => {
@@ -110,8 +114,6 @@ export default {
 
     // 搜索
     search(input) {
-      const _this = this;
-      this.loadingState = true;
       if(!input) {
         this.searchContent = '';
       } else {
@@ -120,18 +122,14 @@ export default {
       let content = this.searchContent;
 
       return new Promise(resolve => {
-        if(_this.isUrl(content)) { // 用户输入网址，则添加项目
-          console.log('添加项目');
-          _this.getNewProjInfo(content).then((res) => {
-            console.log(res);
-            _this.isSearch = false;
+        if(this.isUrl(content)) { // 用户输入网址，则添加项目
+          this.getNewProjInfo(content).then((res) => {
+            this.isSearch = false;
             if(res.code === 1) {
               // 查询成功
-              this.loadingState = false;
               return resolve([res.data]);
             } else if (res.code === 0) {
               // 查询失败
-              this.loadingState = false;
               return resolve([]);
             }
             
@@ -142,8 +140,8 @@ export default {
             return resolve([])
           })
         } else { // 用户搜索项目
-          console.log('搜索项目');
-          _this.isSearch = true;
+          this.loadingState = true;
+          this.isSearch = true;
           this.getProjects({
             params: {
               q: input,
@@ -230,6 +228,16 @@ export default {
       }
     },
 
+    // 改为List布局
+    toListLayout() {
+      this.isGrid = false;
+    },
+
+    // 改为Grid布局
+    toGridLayout() {
+      this.isGrid = true;
+    },
+
     // 判断正则判断是否是url
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
@@ -260,20 +268,13 @@ export default {
         }
       })
     },
-    // 改为List布局
-    toListLayout() {
-      this.isGrid = false;
-    },
-    // 改为Grid布局
-    toGridLayout() {
-      this.isGrid = true;
-    }
   }
 };
 </script>
 <template>
   <Layout>
     <div class="row">
+
       <div class="col-9 col-md-10 mb-4 text-center">
         <autocomplete
           aria-label="搜索添加项目..."
@@ -289,7 +290,7 @@ export default {
               class="search-result"
             >
               <div v-if="isSearch" class="text-start">
-                <h6><i class="bx bx-book-bookmark me-1"></i>{{ result.name }}</h6>
+                <h6><i class="bx bx-briefcase-alt-2 me-1"></i>{{ result.name }}</h6>
               </div>
               <div v-else class="row align-items-center">
                 <div class="col-4 text-sm-start">
@@ -309,6 +310,7 @@ export default {
           </template>
         </autocomplete>
       </div>
+
       <div class="col-3 col-md-2 mb-4 text-center">
         <ul class="nav nav-pills product-view-nav float-end">
           <li class="nav-item">
@@ -332,29 +334,14 @@ export default {
           </li>
         </ul>
       </div>
+
       <ProjGridList v-if="isGrid" class="col-12" :projects="projects" :updating="loadingState"/>
       <ProjList v-else class="col-12" :projects="projects" :updating="loadingState"/>
-      
-      <!-- <div v-if="projects && projects.length > 0" class="col-12">
-        <div class="row">
-          <div class="col-12">
-            <div class="row align-items-center bg-white list-head-text">
-              <span class="col-md-1 d-none d-md-block">#</span>
-              <span class="col-4 col-md-3">项目名称</span>
-              <span class="col-3 col-md-2">分支</span>
-              <span class="col-3 col-md-3">数据集</span>
-              <span class="col-2 col-md-1">用户</span>
-              <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <ProjItem v-for="item in projects" :key="item.id" :proj="item" class="col-12"/>
-        </div>
-      </div> -->
+
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>
       </div>
+
     </div>
   </Layout>
 </template>

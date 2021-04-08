@@ -26,7 +26,7 @@ export default {
         </div>
       </div>
     </div>
-    <div v-else-if="!updating" class="text-center text-secondary">
+    <div v-else-if="!updating" class="text-center text-secondary mt-4">
       暂无容器
     </div>
 </template>

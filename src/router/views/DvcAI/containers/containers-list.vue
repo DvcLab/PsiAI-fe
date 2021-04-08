@@ -1,6 +1,5 @@
 <script>
 import Layout from "../../../layouts/main";
-// import ContainerItem from "@/components/DvcAI/container-item";
 import ContainerList from "@/components/DvcAI/container-list";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
@@ -35,6 +34,7 @@ export default {
     window.removeEventListener('scroll', this.load, false);
   },
   methods: {
+    // 获取容器
     getContainers(q) {
       return this.$request.get('containers', q)
       .then((res) => {
@@ -45,15 +45,7 @@ export default {
         return [];
       })
     },
-    // initContainersList(){
-    //   console.log('页面初始化')
-    //   this.loadingState = true;
-    //   this.containers.splice(0);
-    //   this.meta = {};
-    //   this.curPage = 1;
-    //   this.curTotal = 0;
-    //   this.getContainersList('', 1);
-    // },
+
     // 获取容器列表
     getContainersList(q, page) {
       const _this = this;
@@ -79,6 +71,7 @@ export default {
         this.loadingState = false;
       })
     },
+
     // 搜索镜像
     getContainerById(id) {
       return this.$request.get('containers/' + id)
@@ -91,6 +84,7 @@ export default {
         return [];
       })
     },
+
     // autocomplete 搜索函数
     search(input) {
       this.loadingState = true;
@@ -121,6 +115,7 @@ export default {
         })
       })
     },
+
     // 选择搜索内容，input显示内容
     getResultValue(result) {
       return result.name;
@@ -128,6 +123,7 @@ export default {
       // this.searchContent = result ? result.id : '';
       // return result ? result.id : ''
     },
+
     // 选择搜索内容触发事件
     handleSubmit(result) {
       if(!result) {
@@ -154,6 +150,7 @@ export default {
         })
       }
     },
+
     // 滑动至底部，加载剩余镜像
     load() {
       const _this = this;
@@ -168,6 +165,7 @@ export default {
         }
       }
     },
+
     // 跳转创建容器页面
     toCreateContainerPage() {
       this.$router.push({path: '/createContainers'})
@@ -214,10 +212,8 @@ export default {
           </div>
         </div>
       </div>
+
       <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
-      <!-- <div v-if="containers && containers.length > 0" class="col-12">
-        <ContainerItem v-for="item in containers" :key="item.id" :container="item" @update="reload"/>
-      </div> -->
 
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>

@@ -19,7 +19,9 @@ export default {
 }
 </script>
 <template>
+
     <div v-if="images && images.length > 0">
+
       <div class="row">
         <div class="col-12">
           <div class="bg-white list-head-text">
@@ -33,13 +35,17 @@ export default {
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col-12">
           <ImageItem v-for="item in images" :key="item.id" :image="item"/>
         </div>
       </div>
+
     </div>
-    <div v-else-if="!updating" class="text-center text-secondary">
+
+    <div v-else-if="images.length === 0 && !updating" class="text-center text-secondary mt-4">
       暂无镜像
     </div>
+
 </template>

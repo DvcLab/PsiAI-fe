@@ -53,6 +53,11 @@ export default {
                         text: 'Jupyterlab_Start_Success',
                         theme: 'bg-success'
                     };
+                case 'Port_Forwarding_Success':
+                    return {
+                        text: 'Port_Forwarding_Success',
+                        theme: 'bg-success'
+                    };
                 case 'Failure':
                     return {
                         text: 'Failure',

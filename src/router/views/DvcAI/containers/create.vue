@@ -9,13 +9,7 @@ import ImageSelectItem from "@/components/DvcAI/image-select-item";
 import DatasetSelectItem from "@/components/DvcAI/dataset-select-item";
 import SelectCard from "@/components/DvcAI/select-card";
 import LoaderContainer from "@/components/DvcAI/loader-container";
-import {
-  required,
-  // minValue,
-  // maxValue,
-  // numeric,
-  // url,
-} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import Swal from "sweetalert2";
 
 /**
@@ -88,21 +82,25 @@ export default {
     };
   },
   computed: {
+
     // 项目分支
     branches() {
       if(!this.selectedProj) return [];
       return this.selectedProj.branches;
     },
+
     // 选择项目的id
     selectedProjId() {
       if(!this.selectedProj) return '';
       return this.selectedProj.id;
     },
+
     // 选择镜像的id
     selectedImageId() {
       if(!this.selectedImage) return '';
       return this.selectedImage.id;
     },
+
     // 选择的数据集url数组
     selectedDatasetsUrls() {
       if(!this.selectedDatasetsList || this.selectedDatasetsList.length <= 0) return [];
@@ -112,6 +110,7 @@ export default {
       })
       return res;
     },
+
     // 是否需要gpu
     isGPU() {
       if(!this.selectedImage) return false;
@@ -119,6 +118,7 @@ export default {
       let hasGPU = types.includes('GPU');
       return hasGPU;
     },
+
     // gpu的选项是否可选
     isDisabledGpu() {
       if(!this.selectedImage) return true;
@@ -127,6 +127,7 @@ export default {
       let hasGPU = types.includes('GPU');
       return !(hasCPU && hasGPU)
     }
+
   },
   validations: {
     selectedProj: { required },
@@ -141,6 +142,7 @@ export default {
     this.getDatasetsList();
   },
   methods: {
+
     // 获取项目列表
     getProjsList() {
       const vm = this;
@@ -152,11 +154,13 @@ export default {
         console.log(err)
       })
     },
+
     // 监听proj里select的选择
     changeProjSelectAction(){
       // 切换项目，分支对应清空
       this.selectedBranch = '';
     },
+
     // 监听proj里input的内容
     changeProjValueAction(value) {
       console.log(value)
@@ -178,6 +182,7 @@ export default {
         _this.projsList = [];
       })
     },
+
     // 获取镜像列表
     getImagesList() {
       const _this = this;
@@ -192,6 +197,7 @@ export default {
         console.log(err)
       })
     },
+
     // 获取数据集列表
     getDatasetsList() {
       this.$request.get('datasets')
@@ -205,6 +211,7 @@ export default {
         console.log(err)
       })
     },
+
     // 监听dataset里input的内容搜索
     changeDatasetValueAction(value) {
       console.log(value)
@@ -225,14 +232,12 @@ export default {
         this.datasetsList = [];
       })
     },
+
     // 删除数据集
     delDataset(id) {
       this.selectedDatasetsList = this.selectedDatasetsList.filter((item) => id!== item.id);
-      // if(this.datasetList.has(key)){
-      //   this.datasetList.delete(key)
-      //   this.$forceUpdate()
-      // }
     },
+
     // 提交表单
     formSubmit(e) {
       console.log(e)
@@ -266,6 +271,7 @@ export default {
         })
       }
     },
+
     // 防抖
     debounce(fn, delay=2000) {
       let timer = null;
@@ -279,6 +285,7 @@ export default {
         }, delay)
       }
     },
+
     // 容器创建成功提醒
     successMsg() {
       Swal.fire(
@@ -292,6 +299,7 @@ export default {
         }
       })
     },
+
     // 容器创建失败提醒
     errorMsg() {
       Swal.fire(
@@ -305,6 +313,7 @@ export default {
         }
       })
     },
+
     // 判断正则判断是否是url
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
@@ -316,13 +325,16 @@ export default {
   <Layout>
     <LoaderContainer :loading="loadingState">
     <div class="row">
+
       <div class="col-lg-12">
+
         <div class="card">
           <div class="card-body">
             
             <h4 class="card-title mb-4">创建容器</h4>
             <form @submit.prevent="formSubmit">
               <div class="row">
+
                 <div class="col-12 col-md-6 mb-2">
                   <label class="xrequired me-1">项目</label>
                   <span class="error" v-if="submitted && !$v.selectedProj.required">（必选项）</span>
@@ -354,6 +366,7 @@ export default {
                     </multiselect>
                   </div>
                 </div>
+                
                 <div class="col-12 col-md-6 mb-2">
                   <label class="xrequired me-1">项目分支</label>
                   <span class="error" v-if="submitted && !$v.selectedBranch.required">（必选项）</span>

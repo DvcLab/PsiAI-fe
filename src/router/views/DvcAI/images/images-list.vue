@@ -36,6 +36,7 @@ export default {
     window.removeEventListener('scroll', this.load, false);
   },
   methods: {
+
     // GET获取镜像
     getImages(q){
       return this.$request.get('images', q)
@@ -47,30 +48,30 @@ export default {
         return [];
       })
     },
+
     // 获取镜像列表
     getImagesList(q) {
-      const _this = this;
       this.loadingState = true;
       this.getImages({
         params: q
       })
       .then((res) => {
         if(res.code === 1) {
-          _this.images.splice(_this.curTotal, 0, ...res.data);
-          _this.meta = res._meta;
-          _this.curPage = res._meta.page;
-          _this.curTotal += res._meta.size;
+          this.images.splice(this.curTotal, 0, ...res.data);
+          this.meta = res._meta;
+          this.curPage = res._meta.page;
+          this.curTotal += res._meta.size;
           // return res.data;
         }
         this.loadingState = false;
       })
       .catch((err) => {
-        // _this.images = [];
         console.log(err);
         this.loadingState = false;
         return [];
       })
     },
+
     // 搜索镜像
     getImageById(id) {
       return this.$request.get('images/' + id)
@@ -82,8 +83,8 @@ export default {
         return []
       })
     },
+
     // autocomplete 搜索函数
-    // search(input) {
     search(input) {
       this.loadingState = true;
       return new Promise(resolve => {
@@ -112,6 +113,7 @@ export default {
             return resolve([]);
           })
         } else {
+          // 镜像只支持id搜索，不支持模糊搜索
           this.getImageById(input)
           .then((res) => {
             if(res.code === 1) {
@@ -130,14 +132,15 @@ export default {
         }
       })
     },
+
     // 选择搜索内容，input显示内容
     getResultValue(result) {
       return result.name;
       // this.searchContent = result.id ? result.id : '';
       // return result ? result.name : '';
     },
+
     // 选择搜索内容触发事件
-    // handleSubmit() {
     handleSubmit(result) {
       console.log(result)
       if(!result) {
@@ -164,6 +167,7 @@ export default {
           })
       }
     },
+
     // 滑动至底部，加载剩余镜像
     load() {
       const _this = this;
@@ -172,6 +176,7 @@ export default {
         let page = _this.curPage;
         if(page < totalPage) {                                       //先判断下一页是否有数据  
           _this.curPage++;                                           //查询条件的页码+1
+          // 镜像获取列表与其他不同，需注意
           _this.getImagesList({
             last: _this.images[this.images.length - 1],
             page: _this.curPage
@@ -187,6 +192,7 @@ export default {
 <template>
   <Layout>
     <div class="row">
+
       <div class="col-12 mb-4 text-center">
         <autocomplete
           aria-label="搜索镜像..."
@@ -208,24 +214,14 @@ export default {
             </li>
           </template>
         </autocomplete>
-
       </div>
+
       <ImageList class="col-12" :images="images" :updating="loadingState"/>
-      <!-- <div v-if="images && images.length > 0" class="col-12">
-        <div class="row align-items-center bg-white list-head-text">
-          <span class="col-6 col-md-5">镜像名称</span>
-          <span class="col-2 col-md-2">类型</span>
-          <span class="col-2 col-md-1">用户</span>
-          <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
-          <span class="col-2 col-md-2 text-end">更新时间</span>
-        </div>
-        <div class="row">
-          <ImageItem v-for="item in images" :key="item.id" :image="item" class="col-12"/>
-        </div>
-      </div> -->
+
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>
       </div>
+
     </div>
   </Layout>
 </template>

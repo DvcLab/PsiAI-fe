@@ -2,7 +2,6 @@
 import Layout from "../../../layouts/main";
 import DatasetList from "@/components/DvcAI/dataset-list";
 import DatasetGridList from "@/components/DvcAI/dataset-grid-list";
-// import DatasetItem from "@/components/DvcAI/dataset-item";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
@@ -22,7 +21,8 @@ export default {
     Loader, 
     DatasetList, 
     DatasetGridList,
-    Autocomplete },
+    Autocomplete
+  },
   data() {
     return {
       datasets: [],
@@ -56,7 +56,6 @@ export default {
     },
     // 搜索获取数据集列表
     getDatasetList(q, page) {
-      const _this = this;
       this.loadingState = true;
       this.getDatasets({
         params: {
@@ -65,18 +64,15 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res)
         if(res.code === 1) {
-          _this.datasets.splice(_this.curTotal, 0, ...res.data);
-          _this.meta = res._meta;
-          _this.curPage = res._meta.page;
-          _this.curTotal += res._meta.size;
+          this.datasets.splice(this.curTotal, 0, ...res.data);
+          this.meta = res._meta;
+          this.curPage = res._meta.page;
+          this.curTotal += res._meta.size;
         }
         this.loadingState = false;
       })
       .catch((err) => {
-        // _this.datasets = [];
-        // _this.meta = {};
         console.log(err);
         this.loadingState = false;
       })
@@ -108,28 +104,29 @@ export default {
         console.log(err)
       })
     },
+
     // 搜索
     search(input) {
-      const _this = this;
-      this.loadingState = true;
+      
       if(!input) {
         this.searchContent = '';
       } else {
         this.searchContent = input;
       }
+
       let content = this.searchContent;
+
       return new Promise(resolve => {
-        if(_this.isUrl(content)) { // 用户输入网址，则添加数据集
-          console.log('添加数据集');
-          _this.getNewDatasetInfo(content).then((res) => {
-            _this.isSearch = false;
+
+        if(this.isUrl(content)) { // 用户输入网址，则添加数据集
+
+          this.getNewDatasetInfo(content).then((res) => {
+            this.isSearch = false;
             if(res.code === 1) {
               // 查询成功
-              this.loadingState = false;
               return resolve([res.data]);
             } else if (res.code === 0) {
               // 查询失败
-              this.loadingState = false;
               return resolve([]);
             }
           })
@@ -138,9 +135,11 @@ export default {
             this.loadingState = false;
             return resolve([]);
           })
+
         } else { // 用户搜索数据集
-          console.log('搜索数据集');
-          _this.isSearch = true;
+
+          this.loadingState = true;
+          this.isSearch = true;
 
           this.getDatasets({
             params: {
@@ -167,6 +166,7 @@ export default {
             this.loadingState = false;
             return resolve([]);
           })
+
         }
       })
     },
@@ -195,11 +195,9 @@ export default {
 
     // 添加数据集按钮触发函数
     handleAddDataset(res) {
-      console.log(res)
       this.loadingState = true;
       this.createDataset(res)
       .then((res)=> {
-        console.log(res)
         if(res.code === 1) {
           this.successMsg();
         } else {
@@ -225,6 +223,16 @@ export default {
           console.log('全部数据集加载完')
         }
       }
+    },
+
+    // 改为List布局
+    toListLayout() {
+      this.isGrid = false;
+    },
+
+    // 改为Grid布局
+    toGridLayout() {
+      this.isGrid = true;
     },
 
     // 判断是否是url
@@ -257,14 +265,7 @@ export default {
         }
       })
     },
-    // 改为List布局
-    toListLayout() {
-      this.isGrid = false;
-    },
-    // 改为Grid布局
-    toGridLayout() {
-      this.isGrid = true;
-    }
+    
   }
 };
 </script>
@@ -307,6 +308,7 @@ export default {
           </template>
         </autocomplete>
       </div>
+
       <div class="col-4 col-sm-3 col-md-2 mb-4 text-center">
         <ul class="nav nav-pills product-view-nav float-end">
           <li class="nav-item">
@@ -330,23 +332,10 @@ export default {
           </li>
         </ul>
       </div>
+
       <DatasetGridList v-if="isGrid" class="col-12" :datasets="datasets" :updating="loadingState"/>
       <DatasetList v-else class="col-12" :datasets="datasets" :updating="loadingState"/>
-      <!-- <div v-if="datasets && datasets.length > 0" class="col-12">
-        <div class="row">
-          <div class="col-12">
-            <div class="row align-items-center bg-white list-head-text">
-              <span class="col-md-1 d-none d-md-block">#</span>
-              <span class="col-6 col-md-8">数据集名称</span>
-              <span class="col-2 col-md-1 text-end">用户</span>
-              <span class="col-4 col-md-2 text-end">创建时间</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <DatasetItem v-for="item in datasets" :key="item.id" :dataset="item" class="col-12"/>
-        </div>
-      </div> -->
+
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>
       </div>
