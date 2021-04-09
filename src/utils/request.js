@@ -11,7 +11,7 @@ service.interceptors.request.use(
   config => {
     const token = Vue.prototype.$keycloak.token
     token && (config.headers['Authorization'] = 'Bearer ' + token)
-    console.log(config)
+    // console.log(config)
     return config
   },
   error => {
@@ -25,7 +25,7 @@ service.interceptors.response.use(
 
   response => {
     // 此处可以统一处理错误
-    console.log(response)
+    // console.log(response)
     return response
 
   },

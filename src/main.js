@@ -94,7 +94,6 @@ Vue.use(VueKeyCloak, {
   },
   onReady: kc => {
     kc.loadUserProfile().success((data) => {
-      console.log(data)
       store.commit('auth/SET_CURRENT_USER', data)
     })
     new Vue({
