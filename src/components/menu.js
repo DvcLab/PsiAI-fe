@@ -3,7 +3,7 @@ export const menuItems = [
         id: 1,
         label: "menuitems.psiai.projects",
         icon: "bx-briefcase-alt-2",
-        link: "/"
+        link: "/projects"
     },
     {
         id: 2,

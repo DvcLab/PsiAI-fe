@@ -4,7 +4,7 @@ export default [
   {
     path: '/',
     name: 'DvcAI',
-    component: () => import('./views/DvcAI/index.vue'),
+    component: () => import('./views/DvcAI/index1.vue'),
   },
   {
     path: '/projects',

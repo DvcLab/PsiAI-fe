@@ -1,11 +1,13 @@
 <script>
-import { Carousel, Slide } from "vue-carousel";
+// import { Carousel, Slide } from "vue-carousel";
+import { mapState } from 'vuex';
 
 /**
  * DvcAI Index page
  */
 export default {
-  components: { Carousel, Slide },
+  // components: { Carousel, Slide },
+  components: {  },
   data() {
     return {
       start: "",
@@ -18,6 +20,15 @@ export default {
       starttime: "Nov 5, 2020 15:37:25",
       endtime: "Dec 31, 2021 16:37:25"
     };
+  },
+  filters:{
+    ellipsis(value){
+        if (!value) return '';
+        if (value.length > 20) {
+            return value.slice(0,20) + '...'
+        }
+        return value
+    }
   },
   created() {
     window.addEventListener("scroll", this.windowScroll);
@@ -33,6 +44,26 @@ export default {
     this.interval = setInterval(() => {
       this.timerCount(this.start, this.end);
     }, 1000);
+  },
+  computed: {
+    ...mapState({
+      userInfo(state){
+        if(state.auth.currentUser) {
+          return state.auth.currentUser
+        } else {
+          return null;
+          // return {
+          //   attributes: {
+          //     headimgurl: [],
+          //   },
+          //   username: ''
+          // }
+        }
+      } 
+    }),
+    avatarUrl() {
+      return this.userInfo.attributes.headimgurl ? this.userInfo.attributes.headimgurl[0] : require('@/assets/images/users/avatar-1.jpg')
+    }
   },
   methods: {
     timerCount: function(start, end) {
@@ -89,6 +120,9 @@ export default {
     },
     login() {
       this.$keycloak.loginFn()
+    },
+    logout() {
+      this.$keycloak.logoutFn()
     }
   }
 };
@@ -98,7 +132,7 @@ export default {
   <div>
     <nav class="navbar navbar-expand-lg navigation fixed-top sticky" id="navbar">
       <div class="container">
-        <a class="navbar-logo" href="/">
+        <a class="navbar-logo me-auto" href="/">
           <img src="@/assets/images/DvcAI/logo-dark.png" alt height="19" class="logo logo-dark" />
           <img src="@/assets/images/DvcAI/logo-light.png" alt height="19" class="logo logo-light" />
           <!-- <img src="@/assets/images/logo-dark.png" alt height="19" class="logo logo-dark" />
@@ -116,24 +150,42 @@ export default {
         </button>
 
         <div class="collapse navbar-collapse" id="topnav-menu-content">
-          <ul
+          <!-- <ul
             class="navbar-nav ms-auto"
             id="topnav-menu"
             v-scroll-spy-active="{ selector: 'a.nav-link' }"
+          > -->
+          <ul
+            class="navbar-nav ms-auto"
+            id="topnav-menu"
           >
-            <li class="nav-item">
-              <a class="nav-link" v-scroll-to="'#home'" href="javascript: void(0);">Home</a>
+            <!-- <li class="nav-item">
+              <a class="nav-link" v-scroll-to="'#home'" href="javascript: void(0);">项目</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" v-scroll-to="'#about'" href="javascript: void(0);">About</a>
+              <a class="nav-link" v-scroll-to="'#about'" href="javascript: void(0);">数据集</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" v-scroll-to="'#features'" href="javascript: void(0);">Features</a>
+              <a class="nav-link" v-scroll-to="'#features'" href="javascript: void(0);">文献</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" v-scroll-to="'#roadmap'" href="javascript: void(0);">Roadmap</a>
+              <a class="nav-link" v-scroll-to="'#roadmap'" href="javascript: void(0);">开发环境</a>
+            </li> -->
+
+            <li class="nav-item">
+              <router-link class="nav-link" to="/projects">项目</router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" to="/datasets">数据集</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/projects">文献</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/projects">开发环境</router-link>
+            </li>
+
+            <!-- <li class="nav-item">
               <a class="nav-link" v-scroll-to="'#team'" href="javascript: void(0);">Team</a>
             </li>
             <li class="nav-item">
@@ -141,11 +193,30 @@ export default {
             </li>
             <li class="nav-item">
               <a class="nav-link" v-scroll-to="'#faqs'" href="javascript: void(0);">FAQs</a>
-            </li>
+            </li> -->
           </ul>
 
           <div class="ms-lg-2">
-            <a href="javascript: void(0);" class="btn btn-outline-success w-xs" @click="login">登录</a>
+            <b-dropdown v-if="userInfo && userInfo.attributes" right variant="black" toggle-class="header-item" menu-class="dropdown-menu-end">
+              <template v-slot:button-content>
+                <img
+                  class="rounded-circle header-avatar"
+                  :src="avatarUrl"
+                  :alt="userInfo.username"
+                />
+                <span v-if="userInfo" class="d-none d-xl-inline-block text-white-50 ms-1">{{ userInfo.username | ellipsis }}</span>
+                <i class="mdi mdi-chevron-down text-white-50 d-none d-xl-inline-block"></i>
+              </template>
+
+              <b-dropdown-item @click="logout" class="text-danger">
+                <i
+                  class="bx bx-power-off font-size-16 align-middle me-1 text-danger"
+                ></i>
+                {{ $t("navbar.dropdown.henry.list.logout") }}
+              </b-dropdown-item>
+            </b-dropdown>
+
+            <a v-else href="javascript: void(0);" class="btn btn-outline-success d-none d-md-block" @click="login">登录</a>
           </div>
         </div>
       </div>
@@ -160,14 +231,14 @@ export default {
               <div class="text-white-50">
                 <h1
                   class="text-white fw-semibold mb-3 hero-title"
-                >Skote - Ico Landing for a cryptocurrency business</h1>
+                >DvcAI: 云端协作实验室</h1>
                 <p
                   class="font-size-14"
-                >It will be as simple as occidental in fact to an English person, it will seem like simplified as a skeptical Cambridge</p>
+                >以开发者为中心，提供开放、协作、高效、可扩展的一站式AI产学研托管服务。无需硬件环境，通过浏览器交流学习，管理数据，协同标注，实时协作模型训练。</p>
 
                 <div class="button-items mt-4">
-                  <a href="javascript: void(0);" class="btn btn-success">Get Whitepaper</a>
-                  <a href="javascript: void(0);" class="btn btn-light">How it work</a>
+                  <a href="javascript: void(0);" class="btn btn-success">快速登录</a>
+                  <!-- <a href="javascript: void(0);" class="btn btn-light">How it work</a> -->
                 </div>
               </div>
             </div>
@@ -243,7 +314,7 @@ export default {
       </section>
       <!-- hero section end -->
       <!-- currency price section start -->
-      <section class="section bg-white p-0">
+      <!-- <section class="section bg-white p-0">
         <div class="container">
           <div class="currency-price">
             <div class="row">
@@ -317,14 +388,12 @@ export default {
                 </div>
               </div>
             </div>
-            <!-- end row -->
           </div>
         </div>
-        <!-- end container -->
-      </section>
+      </section> -->
       <!-- curreny price section end -->
       <!-- about section start -->
-      <section class="section pt-4 bg-white" id="about">
+      <!-- <section class="section pt-4 bg-white" id="about">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
@@ -398,7 +467,6 @@ export default {
               </div>
             </div>
           </div>
-          <!-- end row -->
 
           <hr class="my-5" />
 
@@ -479,10 +547,8 @@ export default {
               </carousel>
             </div>
           </div>
-          <!-- end row -->
         </div>
-        <!-- end container -->
-      </section>
+      </section> -->
 
       <!-- Features start -->
       <section class="section" id="features">
@@ -511,17 +577,23 @@ export default {
               <div class="mt-4 mt-md-auto">
                 <div class="d-flex align-items-center mb-2">
                   <div class="features-number fw-semibold display-4 me-3">01</div>
-                  <h4 class="mb-0">Lending</h4>
+                  <h4 class="mb-0">项目托管</h4>
                 </div>
-                <p
+                <!-- <p
                   class="text-muted"
-                >If several languages coalesce, the grammar of the resulting language is more simple and regular than of the individual will be more simple and regular than the existing.</p>
+                >If several languages coalesce, the grammar of the resulting language is more simple and regular than of the individual will be more simple and regular than the existing.</p> -->
                 <div class="text-muted mt-4">
                   <p class="mb-2">
-                    <i class="mdi mdi-circle-medium text-success me-1"></i>Donec pede justo vel aliquet
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>面向开源的集成Git项目托管平台
                   </p>
-                  <p>
-                    <i class="mdi mdi-circle-medium text-success me-1"></i>Aenean et nisl sagittis
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>项目免配置一键部署在线开发环境
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>交互式在线学习与分享笔记
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>快速 Fork 项目开辟自己的新天地
                   </p>
                 </div>
               </div>
@@ -534,17 +606,99 @@ export default {
               <div class="mt-4 mt-md-0">
                 <div class="d-flex align-items-center mb-2">
                   <div class="features-number fw-semibold display-4 me-3">02</div>
-                  <h4 class="mb-0">Wallet</h4>
+                  <h4 class="mb-0">数据集管理</h4>
                 </div>
-                <p
+                <!-- <p
                   class="text-muted"
-                >It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend.</p>
+                >It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend.</p> -->
                 <div class="text-muted mt-4">
                   <p class="mb-2">
-                    <i class="mdi mdi-circle-medium text-success me-1"></i>Donec pede justo vel aliquet
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>集成Git管理的协同标注任务
                   </p>
-                  <p>
-                    <i class="mdi mdi-circle-medium text-success me-1"></i>Aenean et nisl sagittis
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>多种数据类型管理
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>集成可视化数据标注工具
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>快速挂载至项目
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-8 ms-md-auto">
+              <div class="mt-4 me-md-0">
+                <img
+                  src="@/assets/images/crypto/features-img/img-2.png"
+                  alt
+                  class="img-fluid mx-auto d-block"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- end row -->
+
+          <div class="row align-items-center pt-4">
+            <div class="col-md-6 col-sm-8">
+              <div>
+                <img
+                  src="@/assets/images/crypto/features-img/img-1.png"
+                  alt
+                  class="img-fluid mx-auto d-block"
+                />
+              </div>
+            </div>
+            <div class="col-md-5 ml-auto">
+              <div class="mt-4 mt-md-auto">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="features-number fw-semibold display-4 me-3">03</div>
+                  <h4 class="mb-0">在线实验环境</h4>
+                </div>
+                <!-- <p
+                  class="text-muted"
+                >If several languages coalesce, the grammar of the resulting language is more simple and regular than of the individual will be more simple and regular than the existing.</p> -->
+                <div class="text-muted mt-4">
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>一键式部署开发
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>多人实时协同开发
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>结合 Git 版本管理
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>可视化自定义开发界面
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end row -->
+
+          <div class="row align-items-center mt-5 pt-md-5">
+            <div class="col-md-5">
+              <div class="mt-4 mt-md-0">
+                <div class="d-flex align-items-center mb-2">
+                  <div class="features-number fw-semibold display-4 me-3">04</div>
+                  <h4 class="mb-0">文献协作</h4>
+                </div>
+                <!-- <p
+                  class="text-muted"
+                >It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend.</p> -->
+                <div class="text-muted mt-4">
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>自动更新同步优质文献
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>精心打磨的文献阅读体验
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>和好友讨论思维碰撞
+                  </p>
+                  <p class="mb-2">
+                    <i class="mdi mdi-circle-medium text-success me-1"></i>读过的文献有迹可循
                   </p>
                 </div>
               </div>
@@ -566,7 +720,7 @@ export default {
       <!-- Features end -->
 
       <!-- Roadmap start -->
-      <section class="section bg-white" id="roadmap">
+      <!-- <section class="section bg-white" id="roadmap">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
@@ -576,7 +730,6 @@ export default {
               </div>
             </div>
           </div>
-          <!-- end row -->
 
           <div class="row mt-4">
             <div class="col-lg-12">
@@ -725,14 +878,12 @@ export default {
               </div>
             </div>
           </div>
-          <!-- end row -->
         </div>
-        <!-- end container -->
-      </section>
+      </section> -->
       <!-- Roadmap end -->
 
       <!-- Team start -->
-      <section class="section" id="team">
+      <!-- <section class="section" id="team">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
@@ -742,7 +893,6 @@ export default {
               </div>
             </div>
           </div>
-          <!-- end row -->
 
           <div class="col-lg-12">
                 <carousel
@@ -874,14 +1024,12 @@ export default {
                 </slide>
               </carousel>
           </div>
-          <!-- end row -->
         </div>
-        <!-- end container -->
-      </section>
+      </section> -->
       <!-- Team end -->
 
       <!-- Blog start -->
-      <section class="section bg-white" id="news">
+      <!-- <section class="section bg-white" id="news">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
@@ -891,7 +1039,6 @@ export default {
               </div>
             </div>
           </div>
-          <!-- end row -->
 
           <div class="row">
             <div class="col-xl-4 col-sm-6">
@@ -969,14 +1116,12 @@ export default {
               </div>
             </div>
           </div>
-          <!-- end row -->
         </div>
-        <!-- end container -->
-      </section>
+      </section> -->
       <!-- Blog end -->
 
       <!-- Faqs start -->
-      <section class="section" id="faqs">
+      <!-- <section class="section" id="faqs">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
@@ -986,7 +1131,6 @@ export default {
               </div>
             </div>
           </div>
-          <!-- end row -->
           <div class="row">
             <div class="col-lg-12">
               <div class="vertical-nav">
@@ -1320,7 +1464,7 @@ export default {
             </div>
           </div>
         </div>
-      </section>
+      </section> -->
       <!-- end Faqs start -->
 
       <!-- Footer start -->
@@ -1430,3 +1574,9 @@ export default {
     </div>
   </div>
 </template>
+<style scoped>
+.header-avatar {
+  width: 36px;
+  height: 36px;
+}
+</style>
