@@ -9,7 +9,7 @@ export default {
         containers: {
             type: Array,
             default: function () {
-                return [];
+              return [];
             },
         },
         updating: {

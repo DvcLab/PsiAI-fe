@@ -1,6 +1,7 @@
 <script>
 import Swal from "sweetalert2";
 import LoaderContainer from "@/components/DvcAI/loader-container";
+import { EventBus } from '@/utils/event-bus';
 
 export default {
     props: {
@@ -25,53 +26,53 @@ export default {
             switch(status){
                 case 'New':
                     return {
-                        text: 'New',
+                        text: '新创建',
                         theme: 'bg-primary'
                     };
                 case 'Init':
                     return {
-                        text: 'Init',
+                        text: '容器初始化',
                         theme: 'bg-info'
                     };
                 case 'Repo_Clone_Success':
                     return {
-                        text: 'Repo_Clone_Success',
+                        text: '项目拉取成功',
                         theme: 'bg-success'
                     };
                 case 'Pip_Install_Success':
                     return {
-                        text: 'Pip_Install_Success',
+                        text: '依赖构建成功',
                         theme: 'bg-success'
                     };
                 case 'Dataset_Load_Success':
                     return {
-                        text: 'Dataset_Load_Success',
+                        text: '数据集加载成功',
                         theme: 'bg-success'
                     };
                 case 'Jupyterlab_Start_Success':
                     return {
-                        text: 'Jupyterlab_Start_Success',
+                        text: '开发环境启动成功',
                         theme: 'bg-success'
                     };
                 case 'Port_Forwarding_Success':
                     return {
-                        text: 'Port_Forwarding_Success',
+                        text: '端口映射成功',
+                        theme: 'bg-success'
+                    };
+                case 'Running':
+                    return {
+                        text: '运行',
                         theme: 'bg-success'
                     };
                 case 'Failure':
                     return {
-                        text: 'Failure',
+                        text: '失效',
                         theme: 'bg-danger'
                     };
                 case 'Deleted':
                     return {
-                        text: 'Deleted',
+                        text: '已删除',
                         theme: 'bg-secondary'
-                    };
-                case 'Running':
-                    return {
-                        text: 'Running',
-                        theme: 'bg-success'
                     };
                 default:
                     return {
@@ -199,8 +200,8 @@ export default {
                 "success"
             ).then((res) => {
                 if(res.isConfirmed) {
-                    console.log('触发刷新列表函数')
-                    this.$emit('update');
+                    console.log('触发刷新列表函数 from container-item')
+                    EventBus.$emit('update');
                 }
             })
         },

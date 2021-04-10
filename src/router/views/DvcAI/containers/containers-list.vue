@@ -5,6 +5,7 @@ import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
+import { EventBus } from '@/utils/event-bus';
 
 /**
  * 容器列表
@@ -29,6 +30,7 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.load);
     this.getContainersList('', 1);
+    EventBus.$on('update', () => this.reload());
   },
   destroyed(){
     window.removeEventListener('scroll', this.load, false);
@@ -169,7 +171,7 @@ export default {
     // 跳转创建容器页面
     toCreateContainerPage() {
       this.$router.push({path: '/createContainers'})
-    }
+    },
   }
 };
 </script>
