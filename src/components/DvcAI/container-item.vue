@@ -21,6 +21,10 @@ export default {
         }
     },
     computed:{
+        image() {
+            if(!this.container.images.name) return null;
+            return this.container.images.name
+        },
         status() {
             const status = this.newInfo && this.newInfo.status ? this.newInfo.status : this.container.status;
             switch(status){
@@ -222,19 +226,25 @@ export default {
 <LoaderContainer :loading="loadingState">
     <div class="list-item-con">
         <div class="row align-items-center">
-            <div class="col-12 col-md-4 mb-2">
+            <div class="col-12 col-md-3 mb-2">
                 <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
                     <i class="bx bx-code-block me-1"></i>
                     {{ container.id }}
                 </h5>
             </div>
-            <div class="col-12 col-md-4 mb-2">
+            <div class="col-12 col-md-3 mb-2">
+                <h5 v-if="image" class="d-block text-truncate text-dark mb-0 list-item-name">
+                    <i class="bx bx-code-block me-1"></i>
+                    {{ image }}
+                </h5>
+            </div>
+            <div class="col-12 col-md-3 mb-2">
                 <span class="d-inline-block text-truncate">
                     <i class="bx bx-user me-1"></i>
                     {{ container.user.username }}
                 </span>
             </div>
-            <div class="col-12 col-md-4 mb-2">
+            <div class="col-12 col-md-3 mb-2">
                 <div class="float-end d-none d-md-block">
                     <span class="badge me-2"
                         :class="status.theme"
