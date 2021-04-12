@@ -105,6 +105,10 @@
 .nav-i-mt {
     margin-top: 0.6rem;
 }
+// 选择本地/远程按钮label底部为0
+#location-radios label{
+    margin-bottom: 0!important;
+}
 @keyframes rotate{
     0%{
         transform:translateY(-50%) rotate(0deg)

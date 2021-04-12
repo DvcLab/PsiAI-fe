@@ -1,322 +1,438 @@
 <script>
+// import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import LoaderContainer from "@/components/DvcAI/loader-container";
-import { EventBus } from '@/utils/event-bus';
+import { EventBus } from "@/utils/event-bus";
 
 export default {
-    props: {
-        container: {
-            type: Object,
-            default: () => {}
-        },
+  props: {
+    container: {
+      type: Object,
+      default: () => {},
     },
-    components: { LoaderContainer },
-    data(){
-        return {
-            newInfo: null,
-            websock: null,
-            stompClient: '',
-            timer: '',
-            loadingState: false
+  },
+  components: {
+    // Multiselect,
+    LoaderContainer,
+  },
+  data() {
+    return {
+      newInfo: null,
+      websock: null,
+      stompClient: "",
+      timer: "",
+      loadingState: false,
+      containerRunningSelected: 'cloud',
+      options: [
+        { text: '本地', value: 'location', disabled: false },
+        { text: '云端', value: 'cloud', disabled: false }
+      ],
+      value: null,
+      testOptions: ['1','2']
+      // testOptions: [
+      //   { name: 'Vue.js', language: 'JavaScript' },
+      //   { name: 'Rails', language: 'Ruby' },
+      //   { name: 'Sinatra', language: 'Ruby' },
+      //   { name: 'Laravel', language: 'PHP', $isDisabled: true },
+      //   { name: 'Phoenix', language: 'Elixir' }
+      // ]
+    };
+  },
+  computed: {
+    isAdmin() {
+      return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
+    },
+    isLocation() {
+      if(this.containerRunningSelected === 'cloud') return false;
+      return true;
+    },
+    image() {
+      if (!this.container.image.name) return null;
+      return this.container.image.name;
+    },
+    status() {
+      const status =
+        this.newInfo && this.newInfo.status
+          ? this.newInfo.status
+          : this.container.status;
+      switch (status) {
+        case "New":
+          return {
+            text: "新创建",
+            theme: "bg-primary",
+          };
+        case "Init":
+          return {
+            text: "容器初始化",
+            theme: "bg-info",
+          };
+        case "Repo_Clone_Success":
+          return {
+            text: "项目拉取成功",
+            theme: "bg-success",
+          };
+        case "Pip_Install_Success":
+          return {
+            text: "依赖构建成功",
+            theme: "bg-success",
+          };
+        case "Dataset_Load_Success":
+          return {
+            text: "数据集加载成功",
+            theme: "bg-success",
+          };
+        case "Jupyterlab_Start_Success":
+          return {
+            text: "开发环境启动成功",
+            theme: "bg-success",
+          };
+        case "Port_Forwarding_Success":
+          return {
+            text: "端口映射成功",
+            theme: "bg-success",
+          };
+        case "Running":
+          return {
+            text: "运行",
+            theme: "bg-success",
+          };
+        case "Failure":
+          return {
+            text: "失效",
+            theme: "bg-danger",
+          };
+        case "Deleted":
+          return {
+            text: "已删除",
+            theme: "bg-secondary",
+          };
+        default:
+          return {
+            text: "NULL",
+            theme: "bg-secondary",
+          };
+      }
+    },
+    cpuUsage() {
+      if (this.newInfo && this.newInfo.cpu_usage) return this.newInfo.cpu_usage;
+      return this.container.cpu_usage;
+    },
+    cpuProgress() {
+      let cpuUsage = this.container.cpu_usage;
+      if (cpuUsage >= 30 && cpuUsage < 60) {
+        return "warning";
+      } else if (cpuUsage >= 60) {
+        return "danger";
+      } else {
+        return "success";
+      }
+    },
+    memUsage() {
+      if (this.newInfo && this.newInfo.mem_usage) return this.newInfo.mem_usage;
+      return this.container.mem_usage;
+    },
+    memProgress() {
+      let memUsage = this.container.mem_usage;
+      if (memUsage >= 30 && memUsage < 60) {
+        return "warning";
+      } else if (memUsage >= 60) {
+        return "danger";
+      } else {
+        return "success";
+      }
+    },
+    updateTime() {
+      if (this.newInfo && this.newInfo.update_time)
+        return this.newInfo.update_time;
+      return this.container.update_time;
+    },
+    configFile() {
+      let config = this.container.docker_compose_config;
+      let blob = new Blob([config], { type: "application/x-yaml" });
+      return URL.createObjectURL(blob);
+    },
+    isDel() {
+      if (this.container.status === "Deleted") return true;
+      return false;
+    },
+  },
+  mounted() {
+    if (this.status.text !== "Deleted") this.initWebSocket();
+  },
+  destroyed() {
+    if (this.websock) this.websock.close();
+  },
+  methods: {
+    // 打开JupyterLab页面
+    openLab(href) {
+      window.open(href, "_blank");
+    },
+    // 删除容器
+    delContainer() {
+      this.loadingState = true;
+      let id = this.container.id;
+      this.$request
+        .delete("containers/" + id)
+        .then((res) => res.data)
+        .then((res) => {
+          if (res.code === 1) {
+            this.successMsg();
+          } else {
+            this.errorMsg();
+          }
+          this.loadingState = false;
+        })
+        .catch((err) => {
+          this.loadingState = false;
+          console.err(err);
+        });
+    },
+    
+    // 初始化websocket
+    initWebSocket() {
+      const wsuri =
+        process.env.VUE_APP_WS_URL + "_containers?id=" + this.container.id;
+      this.websock = new WebSocket(wsuri, this.$keycloak.token);
+      this.websock.onmessage = this.websocketonmessage;
+      this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      this.websock.onclose = this.websocketclose;
+    },
+
+    // 连接建立之后执行send方法发送数据
+    websocketonopen() {},
+
+    // 连接建立失败重连
+    websocketonerror() {
+      this.initWebSocket();
+    },
+
+    // 数据接收
+    websocketonmessage(res) {
+      const message = JSON.parse(res.data);
+      this.newInfo = message;
+      console.log(message);
+    },
+
+    // 数据发送
+    websocketsend(data) {
+      this.websock.send(data);
+    },
+
+    // 关闭
+    websocketclose(e) {
+      console.log("websocket error", e);
+    },
+
+    // 容器创建成功提醒
+    successMsg() {
+      Swal.fire("容器删除成功!", "", "success").then((res) => {
+        if (res.isConfirmed) {
+          console.log("触发刷新列表函数 from container-item");
+          EventBus.$emit("update");
         }
+      });
     },
-    computed:{
-        image() {
-            if(!this.container.images.name) return null;
-            return this.container.images.name
-        },
-        status() {
-            const status = this.newInfo && this.newInfo.status ? this.newInfo.status : this.container.status;
-            switch(status){
-                case 'New':
-                    return {
-                        text: '新创建',
-                        theme: 'bg-primary'
-                    };
-                case 'Init':
-                    return {
-                        text: '容器初始化',
-                        theme: 'bg-info'
-                    };
-                case 'Repo_Clone_Success':
-                    return {
-                        text: '项目拉取成功',
-                        theme: 'bg-success'
-                    };
-                case 'Pip_Install_Success':
-                    return {
-                        text: '依赖构建成功',
-                        theme: 'bg-success'
-                    };
-                case 'Dataset_Load_Success':
-                    return {
-                        text: '数据集加载成功',
-                        theme: 'bg-success'
-                    };
-                case 'Jupyterlab_Start_Success':
-                    return {
-                        text: '开发环境启动成功',
-                        theme: 'bg-success'
-                    };
-                case 'Port_Forwarding_Success':
-                    return {
-                        text: '端口映射成功',
-                        theme: 'bg-success'
-                    };
-                case 'Running':
-                    return {
-                        text: '运行',
-                        theme: 'bg-success'
-                    };
-                case 'Failure':
-                    return {
-                        text: '失效',
-                        theme: 'bg-danger'
-                    };
-                case 'Deleted':
-                    return {
-                        text: '已删除',
-                        theme: 'bg-secondary'
-                    };
-                default:
-                    return {
-                        text: 'NULL',
-                        theme: 'bg-secondary'
-                    }
-            }
-        },
-        cpuUsage() {
-            if(this.newInfo && this.newInfo.cpu_usage) return this.newInfo.cpu_usage;
-            return this.container.cpu_usage;
-        },
-        cpuProgress() {
-            let cpuUsage = this.container.cpu_usage;
-            if(cpuUsage >= 30 && cpuUsage < 60) {
-                return 'warning'
-            } else if (cpuUsage >= 60) {
-                return 'danger'
-            } else {
-                return 'success'
-            }
-        },
-        memUsage() {
-            if(this.newInfo && this.newInfo.mem_usage) return this.newInfo.mem_usage;
-            return this.container.mem_usage;
-        },
-        memProgress() {
-            let memUsage = this.container.mem_usage;
-            if(memUsage >= 30 && memUsage < 60) {
-                return 'warning'
-            } else if (memUsage >= 60) {
-                return 'danger'
-            } else {
-                return 'success'
-            }
-        },
-        updateTime() {
-            if(this.newInfo && this.newInfo.update_time) return this.newInfo.update_time;
-            return this.container.update_time;
-        },
-        configFile() {
-            let config = this.container.docker_compose_config
-            let blob = new Blob([config], {type : 'application/x-yaml'});
-            return URL.createObjectURL(blob);
-        },
-        isDel() {
-            if(this.container.status === 'Deleted') return true;
-            return false;
-        }
+
+    // 容器创建失败提醒
+    errorMsg() {
+      Swal.fire("容器删除失败!", "", "error");
     },
-    mounted() {
-        if(this.status.text !== 'Deleted') this.initWebSocket();
-    },
-    destroyed() {
-        if(this.websock) this.websock.close();
-    },
-    methods: {
-        // 打开JupyterLab页面
-        openLab(href) {
-            window.open(href, "_blank")
-        },
-        // 删除容器 
-        delContainer() {
-            this.loadingState = true;
-            let id = this.container.id;
-            this.$request.delete('containers/' + id)
-            .then((res) => res.data)
-            .then((res) => {
-                if(res.code === 1) {
-                    this.successMsg();
-                } else {
-                    this.errorMsg();
-                }
-                this.loadingState = false;
-            })
-            .catch((err) => {
-                this.loadingState = false;
-                console.err(err)
-            })
-        },
-        // 初始化websocket
-        initWebSocket() {
-
-            const wsuri = process.env.VUE_APP_WS_URL + "_containers?id=" + this.container.id;
-            this.websock = new WebSocket(wsuri, this.$keycloak.token);
-            this.websock.onmessage = this.websocketonmessage;
-            this.websock.onopen = this.websocketonopen;
-            this.websock.onerror = this.websocketonerror;
-            this.websock.onclose = this.websocketclose;
-
-        },
-
-        // 连接建立之后执行send方法发送数据
-        websocketonopen() { 
-        
-        },
-
-        // 连接建立失败重连
-        websocketonerror() {
-            this.initWebSocket()
-        },
-
-        // 数据接收
-        websocketonmessage(res) {
-            const message = JSON.parse(res.data);
-            this.newInfo = message;
-            console.log(message)
-        },
-
-        // 数据发送
-        websocketsend(data) {
-            this.websock.send(data)
-        },
-
-        // 关闭
-        websocketclose(e) {
-            console.log('websocket error', e)
-        },
-
-        // 容器创建成功提醒
-        successMsg() {
-            Swal.fire(
-                "容器删除成功!",
-                "",
-                "success"
-            ).then((res) => {
-                if(res.isConfirmed) {
-                    console.log('触发刷新列表函数 from container-item')
-                    EventBus.$emit('update');
-                }
-            })
-        },
-        
-        // 容器创建失败提醒
-        errorMsg() {
-            Swal.fire(
-                "容器删除失败!",
-                "",
-                "error"
-            )
-        },
-    }
-}
+  },
+};
 </script>
 
 <template>
-<LoaderContainer :loading="loadingState">
+  <LoaderContainer :loading="loadingState">
     <div class="list-item-con">
-        <div class="row align-items-center">
-            <div class="col-12 col-md-3 mb-2">
-                <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
-                    <i class="bx bx-code-block me-1"></i>
-                    {{ container.id }}
-                </h5>
-            </div>
-            <div class="col-12 col-md-3 mb-2">
-                <h5 v-if="image" class="d-block text-truncate text-dark mb-0 list-item-name">
-                    <i class="bx bx-code-block me-1"></i>
-                    {{ image }}
-                </h5>
-            </div>
-            <div class="col-12 col-md-3 mb-2">
-                <span class="d-inline-block text-truncate">
-                    <i class="bx bx-user me-1"></i>
-                    {{ container.user.username }}
-                </span>
-            </div>
-            <div class="col-12 col-md-3 mb-2">
-                <div class="float-end d-none d-md-block">
-                    <span class="badge me-2"
-                        :class="status.theme"
-                    >
-                        {{ status.text }}
-                    </span>
-                    <span class="text-success">{{ updateTime | moment('YYYY-MM-DD HH:mm:ss') }}</span>
-                </div>
-                <div class="float-start d-md-none">
-                    <span class="badge me-2"
-                        :class="status.theme"
-                    >
-                        {{ status.text }}
-                    </span>
-                    <span class="text-success">{{ updateTime | moment('YYYY-MM-DD HH:mm:ss') }}</span>
-                </div>
-            </div>
+      <div class="row align-items-center">
+        <div class="col-12 col-md-3 mb-2">
+          <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
+            <i class="bx bx-code-block me-1"></i>
+            {{ container.id }}
+          </h5>
         </div>
-        <div class="row">
-            <div class="col-6 col-md-2 mb-2">
-                <span class="badge rounded-pill bg-primary me-2">
-                    <i class="bx bx-chip me-1"></i>内核
-                </span> {{ container.cpus }}
-            </div>
-            <div class="col-6 col-md-2 mb-2">
-                <span class="badge rounded-pill bg-primary me-2">
-                    <i class="bx bx-grid-alt me-1"></i>内存
-                </span> {{ container.mem }}GB
-            </div>
+        <div class="col-12 col-md-3 mb-2">
+          <h5
+            v-if="image"
+            class="d-block text-truncate text-dark mb-0 list-item-name"
+          >
+            <i class="bx bx-layer me-1"></i>
+            {{ image }}
+          </h5>
         </div>
-        <div class="row">
-            <div class="col-12 col-md-4 mb-2">
-                <p class="mb-0">CPU使用</p>
-                <b-progress :value="cpuUsage" :max="100" :variant="cpuProgress"></b-progress>
-            </div>
-            <div class="col-12 col-md-4 mb-2">
-                <p class="mb-0">内存使用</p>
-                <b-progress :value="memUsage" :max="100" :variant="memProgress"></b-progress>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="float-end">
-                    <ul v-if="!isDel" class="list-inline mb-0 font-size-20">
-                        <li class="list-inline-item">
-                            <a
-                                :href="configFile"
-                                class="text-primary p-1"
-                                download="docker-compose-config"
-                            >
-                                <i class="bx bx-cloud-download"></i>
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a
-                                :href="container.jupyter_url"
-                                class="text-primary p-1"
-                            >
-                                <i class="bx bx-code-block"></i>
-                            </a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a
-                                class="text-danger p-1"
-                                href="javascript:void(0)" 
-                                @click="delContainer"
-                            >
-                                <i class="bx bxs-trash"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div class="col-12 col-md-3 mb-2">
+          <span class="d-inline-block text-truncate">
+            <i class="bx bx-user me-1"></i>
+            {{ container.user.username }}
+          </span>
         </div>
+        <div class="col-12 col-md-3 mb-2">
+          <div class="float-end d-none d-md-block">
+            <span class="badge me-2" :class="status.theme">
+              {{ status.text }}
+            </span>
+            <span class="text-success">{{
+              updateTime | moment("YYYY-MM-DD HH:mm:ss")
+            }}</span>
+          </div>
+          <div class="float-start d-md-none">
+            <span class="badge me-2" :class="status.theme">
+              {{ status.text }}
+            </span>
+            <span class="text-success">{{
+              updateTime | moment("YYYY-MM-DD HH:mm:ss")
+            }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-2 mb-2">
+          <span class="badge rounded-pill bg-primary me-2">
+            <i class="bx bx-chip me-1"></i>内核
+          </span>
+          {{ container.cpus }}
+        </div>
+        <div class="col-6 col-md-2 mb-2">
+          <span class="badge rounded-pill bg-primary me-2">
+            <i class="bx bx-grid-alt me-1"></i>内存
+          </span>
+          {{ container.mem }}GB
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-2 mb-2">
+          <p class="mb-0">CPU使用</p>
+          <b-progress
+            :value="cpuUsage"
+            :max="100"
+            :variant="cpuProgress"
+          ></b-progress>
+        </div>
+        <div class="col-12 col-md-2 mb-2">
+          <p class="mb-0">内存使用</p>
+          <b-progress
+            :value="memUsage"
+            :max="100"
+            :variant="memProgress"
+          ></b-progress>
+        </div>
+        <div class="col-12 col-md-8">
+          <div class="float-end container-btn-group">
+            <b-form-radio-group
+              id="location-radios"
+              class="check-group me-2 mb-0"
+              size="sm"
+              v-model="containerRunningSelected"
+              :options="options"
+              buttons
+              button-variant="outline-primary"
+              name="local-cloud-radios"
+            ></b-form-radio-group>
+
+            <b-button v-if="isLocation" class="i-text-middle me-2" variant="primary" size="sm">
+              <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
+              <a
+                :href="configFile"
+                class="text-white text-decoration-none"
+                download="docker-compose-config"
+              >
+              本地运行
+              </a>
+            </b-button>
+            <select v-if="isAdmin" class="form-select form-select-sm select-custom me-2" aria-label=".form-select-sm example">
+              <option selected>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+            <!-- <multiselect class="d-inline-block" style="width:50%" size="sm" v-model="value" :options="testOptions"></multiselect> -->
+            <!-- <multiselect
+                v-model="value"
+                deselect-label="Can't remove this value"
+                track-by="name"
+                label="name"
+                placeholder="Select one"
+                :options="testOptions"
+                :searchable="false"
+                :allow-empty="false"
+              >
+                <template slot="singleLabel" slot-scope="{ option }">
+                  <strong>{{ option.name }}</strong> is written in<strong>
+                    {{ option.language }}</strong>
+                </template>
+              </multiselect> -->
+            <b-button v-if="!isLocation" class="i-text-middle me-2" variant="primary" size="sm">
+              <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
+              云端运行
+            </b-button>
+            <b-button v-if="!isLocation" class="i-text-middle me-2" variant="primary" size="sm">
+              <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
+              JupyterLab
+            </b-button>
+            <b-button v-if="!isLocation" class="i-text-middle" variant="danger" size="sm" @click="delContainer">
+              <i class="bx bx-trash font-size-16 align-middle me-1"></i>
+              删除
+            </b-button>
+            <!-- </div> -->
+            <!-- <multiselect
+                v-model="value"
+                deselect-label="Can't remove this value"
+                track-by="name"
+                label="name"
+                placeholder="Select one"
+                :options="options"
+                :searchable="false"
+                :allow-empty="false"
+              >
+                <template slot="singleLabel" slot-scope="{ option }">
+                  <strong>{{ option.name }}</strong> is written in<strong>
+                    {{ option.language }}</strong>
+                </template>
+              </multiselect> -->
+            <!-- <ul v-if="!isDel" class="list-inline mb-0 font-size-20">
+              <li class="list-inline-item">
+                <a
+                  :href="configFile"
+                  class="text-primary p-1"
+                  download="docker-compose-config"
+                >
+                  <i class="bx bx-cloud-download"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a :href="container.jupyter_url" class="text-primary p-1">
+                  <i class="bx bx-code-block"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a
+                  class="text-danger p-1"
+                  href="javascript:void(0)"
+                  @click="delContainer"
+                >
+                  <i class="bx bxs-trash"></i>
+                </a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </div>
     </div>
-</LoaderContainer>
+  </LoaderContainer>
 </template>
+<style scoped>
+.i-text-middle {
+  display: inline-flex;
+  align-items: center;
+}
+.container-btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.select-custom {
+  width: 30%;
+  padding: 0.3rem 1.75rem 0.3rem 0.75rem;
+}
+</style>
