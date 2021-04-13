@@ -1,8 +1,9 @@
 <script>
-// import Multiselect from "vue-multiselect";
+import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import { EventBus } from "@/utils/event-bus";
+import { mapState, mapActions } from "vuex";
 
 export default {
   props: {
@@ -12,44 +13,80 @@ export default {
     },
   },
   components: {
-    // Multiselect,
+    Multiselect,
     LoaderContainer,
   },
   data() {
     return {
-      newInfo: null,
+      newInfo: this.container,
       websock: null,
       stompClient: "",
       timer: "",
       loadingState: false,
-      containerRunningSelected: 'cloud',
+      containerRunningSelected: 'location',
       options: [
         { text: '本地', value: 'location', disabled: false },
         { text: '云端', value: 'cloud', disabled: false }
       ],
-      value: null,
-      testOptions: ['1','2']
-      // testOptions: [
-      //   { name: 'Vue.js', language: 'JavaScript' },
-      //   { name: 'Rails', language: 'Ruby' },
-      //   { name: 'Sinatra', language: 'Ruby' },
-      //   { name: 'Laravel', language: 'PHP', $isDisabled: true },
-      //   { name: 'Phoenix', language: 'Elixir' }
-      // ]
+      selectedHost: null,
     };
   },
   computed: {
+    // 主机列表
+    ...mapState("resources", ["hosts"]),
+
+    // 是否是管理员
     isAdmin() {
       return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
     },
+
+    // 本地/远程按钮控制其他按钮显示
     isLocation() {
       if(this.containerRunningSelected === 'cloud') return false;
       return true;
     },
+
+    // 是否可以选择运行位置
+    canSelectLocation () {
+      return this.newInfo.status === "New";
+    },
+
+    // 是否可以选择JupyterLab运行
+    canSelectCloudRunning () {
+      const status =
+        this.newInfo && this.newInfo.status
+          ? this.newInfo.status
+          : this.container.status;
+      switch (status) {
+        case "Port_Forwarding_Success":
+          return true;
+        case "Running":
+          return true;
+        default:
+          return false;
+        }
+    },
+
+    // 运行位置显示
+    locationOptions () {
+      return [
+        { text: '本地', value: 'location', disabled: !this.canSelectLocation && !this.newInfo.user_host },
+        { text: '云端', value: 'cloud', disabled: !this.canSelectLocation && this.newInfo.user_host }
+      ]
+    },
+
+    // 容器使用镜像
     image() {
       if (!this.container.image.name) return null;
       return this.container.image.name;
     },
+
+    // JupyterLab链接
+    jupyterUrl () {
+      if(!this.newInfo.jupyter_url) return '';
+      return this.newInfo.jupyter_url;
+    },
+
     status() {
       const status =
         this.newInfo && this.newInfo.status
@@ -61,6 +98,11 @@ export default {
             text: "新创建",
             theme: "bg-primary",
           };
+        case "Deployed":
+          return {
+            text: "等待部署",
+            theme: "bg-info",
+          };
         case "Init":
           return {
             text: "容器初始化",
@@ -69,27 +111,32 @@ export default {
         case "Repo_Clone_Success":
           return {
             text: "项目拉取成功",
-            theme: "bg-success",
+            theme: "bg-info",
           };
         case "Pip_Install_Success":
           return {
             text: "依赖构建成功",
-            theme: "bg-success",
+            theme: "bg-info",
           };
         case "Dataset_Load_Success":
           return {
             text: "数据集加载成功",
-            theme: "bg-success",
+            theme: "bg-info",
           };
         case "Jupyterlab_Start_Success":
           return {
             text: "开发环境启动成功",
-            theme: "bg-success",
+            theme: "bg-info",
           };
         case "Port_Forwarding_Success":
           return {
             text: "端口映射成功",
-            theme: "bg-success",
+            theme: "bg-info",
+          };
+        case "Paused":
+          return {
+            text: "暂停",
+            theme: "bg-info",
           };
         case "Running":
           return {
@@ -163,6 +210,10 @@ export default {
     if (this.websock) this.websock.close();
   },
   methods: {
+
+    ...mapActions('resource', ['getHosts']),
+    ...mapActions('containers', ['runContainer']),
+
     // 打开JupyterLab页面
     openLab(href) {
       window.open(href, "_blank");
@@ -187,7 +238,33 @@ export default {
           console.err(err);
         });
     },
+
+    // 搜索主机
+    changeHostsAction(value) {
+      this.getHosts({
+        q: value
+      })
+    },
     
+    // 运行容器
+    runInCloud () {
+      let id = this.newInfo.id;
+      let host_id = this.selectedHost ? this.selectedHost.id : "";
+      let gpu_enabled = false;// 不确定，暂时设置为false
+      this.runContainer({id, host_id, gpu_enabled})
+      .then((data)=>{
+        console.log(data)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    },
+
+    // // 跳转JupyterLab
+    // toLab () {
+
+    // },
+
     // 初始化websocket
     initWebSocket() {
       const wsuri =
@@ -210,7 +287,8 @@ export default {
     // 数据接收
     websocketonmessage(res) {
       const message = JSON.parse(res.data);
-      this.newInfo = message;
+      // this.newInfo = message;
+      this.newInfo = { ...this.newInfo, ...message };
       console.log(message);
     },
 
@@ -318,19 +396,19 @@ export default {
           ></b-progress>
         </div>
         <div class="col-12 col-md-8">
-          <div class="float-end container-btn-group">
+          <div class="float-end w-100 container-btn-group">
             <b-form-radio-group
               id="location-radios"
-              class="check-group me-2 mb-0"
+              class="text-truncate check-group me-2 mb-0"
               size="sm"
               v-model="containerRunningSelected"
-              :options="options"
+              :options="locationOptions"
               buttons
               button-variant="outline-primary"
               name="local-cloud-radios"
             ></b-form-radio-group>
 
-            <b-button v-if="isLocation" class="i-text-middle me-2" variant="primary" size="sm">
+            <b-button v-if="canSelectLocation && isLocation" class="text-truncate i-text-middle me-2" variant="primary" size="sm">
               <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
               <a
                 :href="configFile"
@@ -340,81 +418,55 @@ export default {
               本地运行
               </a>
             </b-button>
-            <select v-if="isAdmin" class="form-select form-select-sm select-custom me-2" aria-label=".form-select-sm example">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-            <!-- <multiselect class="d-inline-block" style="width:50%" size="sm" v-model="value" :options="testOptions"></multiselect> -->
-            <!-- <multiselect
-                v-model="value"
-                deselect-label="Can't remove this value"
-                track-by="name"
-                label="name"
-                placeholder="Select one"
-                :options="testOptions"
-                :searchable="false"
-                :allow-empty="false"
-              >
-                <template slot="singleLabel" slot-scope="{ option }">
-                  <strong>{{ option.name }}</strong> is written in<strong>
-                    {{ option.language }}</strong>
-                </template>
-              </multiselect> -->
-            <b-button v-if="!isLocation" class="i-text-middle me-2" variant="primary" size="sm">
+
+            <multiselect
+              class="host-select d-inline-block me-2"
+              v-if="!isLocation && isAdmin"
+              v-model="selectedHost"
+              :options="hosts"
+              @search-change="changeHostsAction"
+              track-by="ip"
+              label="ip"
+              placeholder="选择主机"
+              select-label="选择主机"
+              selectedLabel="已选"
+              deselectLabel="点击取消"
+            >
+              <template slot="singleLabel" slot-scope="{ option }" class="i-text-middle">
+                <div class="i-text-middle">
+                  <i class="bx bx-laptop me-1"></i>
+                  {{ option.ip }}
+                </div>
+              </template>
+              <span slot="noResult">未搜索到相关主机</span>
+            </multiselect>
+
+            <b-button v-if="canSelectLocation && !isLocation" class="text-truncate i-text-middle me-2" variant="primary" size="sm" @click="runInCloud">
               <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
               云端运行
             </b-button>
-            <b-button v-if="!isLocation" class="i-text-middle me-2" variant="primary" size="sm">
+
+            <b-button v-if="canSelectCloudRunning && canSelectLocation" class="text-truncate i-text-middle me-2" variant="primary" size="sm">
               <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
+              <a
+                :href="jupyterUrl"
+                class="text-white text-decoration-none"
+                download="docker-compose-config"
+                target="_blank"
+              >
               JupyterLab
+              </a>
             </b-button>
-            <b-button v-if="!isLocation" class="i-text-middle" variant="danger" size="sm" @click="delContainer">
+
+            <b-button v-if="canSelectCloudRunning && canSelectLocation" class="text-truncate i-text-middle me-2" variant="primary" size="sm">
+              <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
+              暂停
+            </b-button>
+
+            <b-button v-if="!canSelectLocation" class="text-truncate i-text-middle" variant="danger" size="sm" @click="delContainer">
               <i class="bx bx-trash font-size-16 align-middle me-1"></i>
               删除
             </b-button>
-            <!-- </div> -->
-            <!-- <multiselect
-                v-model="value"
-                deselect-label="Can't remove this value"
-                track-by="name"
-                label="name"
-                placeholder="Select one"
-                :options="options"
-                :searchable="false"
-                :allow-empty="false"
-              >
-                <template slot="singleLabel" slot-scope="{ option }">
-                  <strong>{{ option.name }}</strong> is written in<strong>
-                    {{ option.language }}</strong>
-                </template>
-              </multiselect> -->
-            <!-- <ul v-if="!isDel" class="list-inline mb-0 font-size-20">
-              <li class="list-inline-item">
-                <a
-                  :href="configFile"
-                  class="text-primary p-1"
-                  download="docker-compose-config"
-                >
-                  <i class="bx bx-cloud-download"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a :href="container.jupyter_url" class="text-primary p-1">
-                  <i class="bx bx-code-block"></i>
-                </a>
-              </li>
-              <li class="list-inline-item">
-                <a
-                  class="text-danger p-1"
-                  href="javascript:void(0)"
-                  @click="delContainer"
-                >
-                  <i class="bx bxs-trash"></i>
-                </a>
-              </li>
-            </ul> -->
           </div>
         </div>
       </div>

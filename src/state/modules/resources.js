@@ -10,22 +10,23 @@ export const getters = {
 };
 
 export const mutations = {
-  setHosts(state, newValue) {
-    state.host = newValue
+  SET_HOSTS(state, newValue) {
+    state.hosts = newValue
+    // state.hosts.splice(0, state.hosts.length, ...newValue)
   },
 };
 
 export const actions = {
-    getHosts({ commit }) {
-      if(!Vue.prototype.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN")) return;
-      request.get('hosts')
-      .then(({ data }) => {
-        if(data.code === 1) {
-          commit('setHosts', data);
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    },
+  getHosts({ commit }, params) {
+    if(!Vue.prototype.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN")) return;
+    request.get('hosts', { params })
+    .then(({ data }) => {
+      if(data.code === 1) {
+        commit('SET_HOSTS', data.data);
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  },
 };

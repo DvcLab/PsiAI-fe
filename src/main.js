@@ -97,7 +97,7 @@ Vue.use(VueKeyCloak, {
       console.log(data)
       store.commit('auth/SET_CURRENT_USER', data)
     })
-    // store.commit('') 
+    store.dispatch('resources/getHosts');
     new Vue({
       router,
       store,
