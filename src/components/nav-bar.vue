@@ -57,23 +57,35 @@ export default {
     }
   },
   computed: {
+    // ...authComputed,
     ...mapState({
-      userInfo(state){
+      currentUser(state){
         if(state.auth.currentUser) {
           return state.auth.currentUser
         } else {
           return {
-            attributes: {
-              headimgurl: [],
-            },
-            username: ''
+            avatar_url: ""
           }
         }
       } 
     }),
-    avatarUrl() {
-      return this.userInfo.attributes.headimgurl ? this.userInfo.attributes.headimgurl[0] : require('@/assets/images/users/avatar-1.jpg')
-    }
+    // ...mapState({
+    //   userInfo(state){
+    //     if(state.auth.currentUser) {
+    //       return state.auth.currentUser
+    //     } else {
+    //       return {
+    //         attributes: {
+    //           headimgurl: [],
+    //         },
+    //         username: ''
+    //       }
+    //     }
+    //   } 
+    // }),
+    // avatarUrl() {
+    //   return this.userInfo.attributes.headimgurl ? this.userInfo.attributes.headimgurl[0] : require('@/assets/images/users/avatar-1.jpg')
+    // }
   },
   // components: { simplebar },
   mounted() {
@@ -703,16 +715,22 @@ export default {
               v-real-img="avatarUrl"
               :alt="userInfo.username"
             /> -->
-            <img
+            <!-- <img
               v-show="userInfo && userInfo.attributes"
               class="rounded-circle header-profile-user"
               :src="avatarUrl"
               :alt="userInfo.username"
+            /> -->
+            <img
+              v-show="currentUser"
+              class="rounded-circle header-profile-user"
+              v-real-img="currentUser.avatar_url"
+              :alt="currentUser.preferred_username"
             />
             <!-- <span class="d-none d-xl-inline-block ms-1">{{
               $t("navbar.dropdown.henry.text")
             }}</span> -->
-            <span v-if="userInfo" class="d-none d-xl-inline-block ms-1">{{ userInfo.username | ellipsis }}</span>
+            <span v-if="currentUser" class="d-none d-xl-inline-block ms-1">{{ currentUser.preferred_username | ellipsis }}</span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
 
