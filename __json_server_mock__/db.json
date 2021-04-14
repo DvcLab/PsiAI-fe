@@ -5,6 +5,85 @@
       "id": 1
     }
   ],
+  "hosts": {
+    "code": 1,
+    "msg": "SUCCESS",
+    "data": [
+      {
+        "gpu_enabled": true,
+        "uid": "eca931de-4254-40db-bf9a-944773b18cbe",
+        "user": {
+          "username": "dockerhub_admin",
+          "email": "347151192@qq.com",
+          "avatar_url": "http://test.img",
+          "enabled": true,
+          "roles": [
+            "DOCKHUB_USER",
+            "DOCKHUB_ADMIN"
+          ],
+          "max_container_num": 10,
+          "container_num": 0,
+          "id": "eca931de-4254-40db-bf9a-944773b18cbe",
+          "create_time": 1618061719000,
+          "update_time": 1618061719000
+        },
+        "user_host": false,
+        "node_exporter_port": 9100,
+        "ssh_session": false,
+        "cpu_assign": 0.0,
+        "mem_assign": 0.0,
+        "cpu_info": {
+          "cpu_num": 0,
+          "io_wait": 0.0,
+          "idle": 0.0,
+          "avg_temp": 0.0,
+          "max_temp": 0.0,
+          "usage": 0.0,
+          "time": 1618408129438
+        },
+        "mem_info": {
+          "total": 0.0,
+          "free": 0.0,
+          "buffer": 0.0,
+          "cached": 0.0,
+          "avail": 0.0,
+          "usage": 0.0,
+          "time": 1618408129438
+        },
+        "io_info": {
+          "disk_total": 0.0,
+          "disk_free": 0.0,
+          "read": 0.0,
+          "writen": 0.0,
+          "usage": 0.0,
+          "time": 1618408129438
+        },
+        "net_info": {
+          "in_rate": 0.0,
+          "out_rate": 0.0,
+          "total_rate": 0.0,
+          "time": 1618408129438
+        },
+        "cpu_series": [],
+        "network_series": [],
+        "gpu_series": [],
+        "ip": "172.17.221.237",
+        "port": 60111,
+        "username": "root",
+        "container_num": 0,
+        "status": "RUNNING",
+        "id": "b8615dd29109f32a4178dc57faef6fb1",
+        "create_time": 1618408129000,
+        "update_time": 1618408129000
+      }
+    ],
+    "_meta": {
+      "page": 1,
+      "size": 10,
+      "total": 1,
+      "total_page": 1
+    }
+  },
   "projects": {
     "code": 1,
     "msg": "SUCCESS",

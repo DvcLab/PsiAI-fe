@@ -3,8 +3,7 @@ import Vue from 'vue'
 export default [
   {
     path: '/',
-    redirect: to => {
-      console.log(to)
+    redirect: () => {
       if(Vue.prototype.$keycloak.realmAccess.roles.includes('DOCKHUB_ADMIN')) return '/hosts'
       return '/products'
     }
