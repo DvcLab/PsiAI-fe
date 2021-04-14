@@ -40,6 +40,11 @@ export default {
       return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
     },
 
+    // 是否是用户自己创建的容器
+    // isMine() {
+
+    // },
+
     // 本地/远程按钮控制其他按钮显示
     isLocation() {
       if(this.containerRunningSelected === 'cloud') return false;
@@ -65,6 +70,25 @@ export default {
         default:
           return false;
         }
+    },
+
+    // 显示重新启动按钮
+    isRestartShow () {
+      const status =
+        this.newInfo && this.newInfo.status
+          ? this.newInfo.status
+          : this.container.status;
+      if(status === 'Paused') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    // 是否已删除容器
+    isDel() {
+      if (this.container.status === "Deleted") return true;
+      return false;
     },
 
     // 运行位置显示
@@ -198,10 +222,7 @@ export default {
       let blob = new Blob([config], { type: "application/x-yaml" });
       return URL.createObjectURL(blob);
     },
-    isDel() {
-      if (this.container.status === "Deleted") return true;
-      return false;
-    },
+    
   },
   mounted() {
     if (this.status.text !== "Deleted") this.initWebSocket();
@@ -250,20 +271,14 @@ export default {
     runInCloud () {
       let id = this.newInfo.id;
       let host_id = this.selectedHost ? this.selectedHost.id : "";
-      let gpu_enabled = false;// 不确定，暂时设置为false
-      this.runContainer({id, host_id, gpu_enabled})
+      this.runContainer({id, host_id})
       .then((data)=>{
-        console.log(data)
+        console.log(data) // 待测试，才可继续
       })
       .catch((err)=>{
         console.log(err)
       })
     },
-
-    // // 跳转JupyterLab
-    // toLab () {
-
-    // },
 
     // 初始化websocket
     initWebSocket() {
@@ -302,7 +317,19 @@ export default {
       console.log("websocket error", e);
     },
 
-    // 容器创建成功提醒
+    delContainerMsg() {
+      Swal.fire({
+        title: '确认删除所选容器?',
+        showCancelButton: true,
+        confirmButtonText: `确认`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.delContainer();
+        }
+      })
+    },
+
+    // 容器删除成功提醒
     successMsg() {
       Swal.fire("容器删除成功!", "", "success").then((res) => {
         if (res.isConfirmed) {
@@ -312,7 +339,7 @@ export default {
       });
     },
 
-    // 容器创建失败提醒
+    // 容器删除失败提醒
     errorMsg() {
       Swal.fire("容器删除失败!", "", "error");
     },
@@ -326,8 +353,8 @@ export default {
       <div class="row align-items-center">
         <div class="col-12 col-md-3 mb-2">
           <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
-            <i class="bx bx-code-block me-1"></i>
-            {{ container.id }}
+            <i class="bx bx-cube me-1"></i>
+            {{ newInfo.container_name }}
           </h5>
         </div>
         <div class="col-12 col-md-3 mb-2">
@@ -346,15 +373,7 @@ export default {
           </span>
         </div>
         <div class="col-12 col-md-3 mb-2">
-          <div class="float-end d-none d-md-block">
-            <span class="badge me-2" :class="status.theme">
-              {{ status.text }}
-            </span>
-            <span class="text-success">{{
-              updateTime | moment("YYYY-MM-DD HH:mm:ss")
-            }}</span>
-          </div>
-          <div class="float-start d-md-none">
+          <div class="float-start float-md-end text-truncate">
             <span class="badge me-2" :class="status.theme">
               {{ status.text }}
             </span>
@@ -396,10 +415,10 @@ export default {
           ></b-progress>
         </div>
         <div class="col-12 col-md-8">
-          <div class="float-end w-100 container-btn-group">
+          <div v-if="!isDel" class="float-end w-100 container-btn-group">
             <b-form-radio-group
               id="location-radios"
-              class="text-truncate check-group me-2 mb-0"
+              class="text-truncate check-group btn-item mb-0"
               size="sm"
               v-model="containerRunningSelected"
               :options="locationOptions"
@@ -407,20 +426,19 @@ export default {
               button-variant="outline-primary"
               name="local-cloud-radios"
             ></b-form-radio-group>
-
-            <b-button v-if="canSelectLocation && isLocation" class="text-truncate i-text-middle me-2" variant="primary" size="sm">
-              <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
-              <a
-                :href="configFile"
-                class="text-white text-decoration-none"
-                download="docker-compose-config"
-              >
-              本地运行
-              </a>
-            </b-button>
+          
+            <a
+              v-if="canSelectLocation && isLocation"
+              :href="configFile"
+              class="btn btn-outline-primary btn-sm btn-item"
+              download="docker-compose-config"
+            >
+            <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
+            本地运行
+            </a>
 
             <multiselect
-              class="host-select d-inline-block me-2"
+              class="host-select d-inline-block btn-item"
               v-if="!isLocation && isAdmin"
               v-model="selectedHost"
               :options="hosts"
@@ -433,7 +451,7 @@ export default {
               deselectLabel="点击取消"
             >
               <template slot="singleLabel" slot-scope="{ option }" class="i-text-middle">
-                <div class="i-text-middle">
+                <div class="text-truncate i-text-middle">
                   <i class="bx bx-laptop me-1"></i>
                   {{ option.ip }}
                 </div>
@@ -441,32 +459,37 @@ export default {
               <span slot="noResult">未搜索到相关主机</span>
             </multiselect>
 
-            <b-button v-if="canSelectLocation && !isLocation" class="text-truncate i-text-middle me-2" variant="primary" size="sm" @click="runInCloud">
+            <b-button v-if="canSelectLocation && !isLocation" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="runInCloud">
               <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
               云端运行
             </b-button>
 
-            <b-button v-if="canSelectCloudRunning && canSelectLocation" class="text-truncate i-text-middle me-2" variant="primary" size="sm">
-              <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
-              <a
-                :href="jupyterUrl"
-                class="text-white text-decoration-none"
-                download="docker-compose-config"
-                target="_blank"
-              >
+            <a
+              v-if="canSelectCloudRunning && !canSelectLocation"
+              :href="jupyterUrl"
+              class="btn btn-outline-primary btn-sm btn-item"
+              download="docker-compose-config"
+              target="_blank"
+            >
+              <i class="bx bx-code-block font-size-16 align-middle me-1"></i>
               JupyterLab
-              </a>
-            </b-button>
+            </a>
 
-            <b-button v-if="canSelectCloudRunning && canSelectLocation" class="text-truncate i-text-middle me-2" variant="primary" size="sm">
-              <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
+            <b-button v-if="canSelectCloudRunning && canSelectLocation" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="pauseContainer">
+              <i class="bx bx-pause font-size-16 align-middle me-1"></i>
               暂停
             </b-button>
 
-            <b-button v-if="!canSelectLocation" class="text-truncate i-text-middle" variant="danger" size="sm" @click="delContainer">
+            <b-button v-if="isRestartShow" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="restartContainer">
+              <i class="bx bx-revision font-size-16 align-middle me-1"></i>
+              重启
+            </b-button>
+
+            <b-button v-if="!canSelectLocation" class="text-truncate i-text-middle btn-item" variant="outline-danger" size="sm" @click="delContainer">
               <i class="bx bx-trash font-size-16 align-middle me-1"></i>
               删除
             </b-button>
+
           </div>
         </div>
       </div>
@@ -482,6 +505,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+.container-btn-group .btn-item {
+  margin-right: 0.5rem;
+}
+.container-btn-group .btn-item:last-child{
+  margin-right: 0;
 }
 .select-custom {
   width: 30%;

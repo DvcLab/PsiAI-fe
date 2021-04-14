@@ -16,11 +16,12 @@ export const mutations = {
 };
 
 export const actions = {
-  runContainer({ commit }, { id, gpu_enabled = false, host_id = "" }) {
+  // 运行容器
+  runContainer({ state }, { id, host_id = "" }) {
+    console.log(state)
     return new Promise((resolve, reject) => {
       request.post('containers/' + id + '/run', {
         params: {
-          gpu_enabled,
           host_id
         }
       })
