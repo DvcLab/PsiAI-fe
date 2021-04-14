@@ -119,6 +119,7 @@ export default {
       return this.newInfo.jupyter_url;
     },
 
+    // 容器状态
     status() {
       const status =
         this.newInfo && this.newInfo.status
@@ -192,10 +193,14 @@ export default {
           };
       }
     },
+
+    // cpu使用 
     cpuUsage() {
       if (this.newInfo && this.newInfo.cpu_usage) return this.newInfo.cpu_usage;
       return this.container.cpu_usage;
     },
+
+    // cpu使用条颜色
     cpuProgress() {
       let cpuUsage = this.container.cpu_usage;
       if (cpuUsage >= 30 && cpuUsage < 60) {
@@ -206,10 +211,14 @@ export default {
         return "success";
       }
     },
+
+    // mem使用
     memUsage() {
       if (this.newInfo && this.newInfo.mem_usage) return this.newInfo.mem_usage;
       return this.container.mem_usage;
     },
+
+    // mem使用条颜色
     memProgress() {
       let memUsage = this.container.mem_usage;
       if (memUsage >= 30 && memUsage < 60) {
@@ -220,11 +229,15 @@ export default {
         return "success";
       }
     },
+
+    // 更新时间
     updateTime() {
       if (this.newInfo && this.newInfo.update_time)
         return this.newInfo.update_time;
       return this.container.update_time;
     },
+
+    // docker_compose_config文件内容
     configFile() {
       let config = this.container.docker_compose_config;
       let blob = new Blob([config], { type: "application/x-yaml" });
@@ -233,20 +246,25 @@ export default {
     
   },
   mounted() {
+    // 未删除容器，请求ws
     if (this.status.text !== "Deleted") this.initWebSocket();
   },
   destroyed() {
+    // 退出关闭ws
     if (this.websock) this.websock.close();
   },
   methods: {
-
+    // 主机相关API：获取主机列表
     ...mapActions('resource', ['getHosts']),
+
+    // 容器相关API：运行容器
     ...mapActions('containers', ['runContainer']),
 
     // 打开JupyterLab页面
     openLab(href) {
       window.open(href, "_blank");
     },
+
     // 删除容器
     delContainer() {
       this.loadingState = true;
@@ -288,7 +306,7 @@ export default {
       })
     },
 
-    // 初始化websocket
+    // ws初始化
     initWebSocket() {
       const wsuri =
         process.env.VUE_APP_WS_URL + "_containers?id=" + this.container.id;
@@ -299,15 +317,15 @@ export default {
       this.websock.onclose = this.websocketclose;
     },
 
-    // 连接建立之后执行send方法发送数据
+    // ws连接建立之后执行send方法发送数据
     websocketonopen() {},
 
-    // 连接建立失败重连
+    // ws连接建立失败重连
     websocketonerror() {
       this.initWebSocket();
     },
 
-    // 数据接收
+    // ws数据接收
     websocketonmessage(res) {
       const message = JSON.parse(res.data);
       // this.newInfo = message;
@@ -315,16 +333,17 @@ export default {
       console.log(message);
     },
 
-    // 数据发送
+    // ws数据发送
     websocketsend(data) {
       this.websock.send(data);
     },
 
-    // 关闭
+    // ws关闭
     websocketclose(e) {
       console.log("websocket error", e);
     },
 
+    // 删除容器确认弹窗
     delContainerMsg() {
       Swal.fire({
         title: '确认删除所选容器?',
@@ -359,12 +378,14 @@ export default {
   <LoaderContainer :loading="loadingState">
     <div class="list-item-con">
       <div class="row align-items-center">
+
         <div class="col-12 col-md-3 mb-2">
           <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
             <i class="bx bx-cube me-1"></i>
             {{ newInfo.container_name }}
           </h5>
         </div>
+
         <div class="col-12 col-md-3 mb-2">
           <h5
             v-if="image"
@@ -374,12 +395,14 @@ export default {
             {{ image }}
           </h5>
         </div>
+
         <div class="col-12 col-md-3 mb-2">
           <span class="d-inline-block text-truncate">
             <i class="bx bx-user me-1"></i>
             {{ container.user.username }}
           </span>
         </div>
+
         <div class="col-12 col-md-3 mb-2">
           <div class="float-start float-md-end text-truncate">
             <span class="badge me-2" :class="status.theme">
@@ -390,22 +413,28 @@ export default {
             }}</span>
           </div>
         </div>
+
       </div>
+
       <div class="row">
+
         <div class="col-6 col-md-2 mb-2">
           <span class="badge rounded-pill bg-primary me-2">
             <i class="bx bx-chip me-1"></i>内核
           </span>
           {{ container.cpus }}
         </div>
+
         <div class="col-6 col-md-2 mb-2">
           <span class="badge rounded-pill bg-primary me-2">
             <i class="bx bx-grid-alt me-1"></i>内存
           </span>
           {{ container.mem }}GB
         </div>
+
       </div>
       <div class="row">
+
         <div class="col-12 col-md-2 mb-2">
           <p class="mb-0">CPU使用</p>
           <b-progress
@@ -414,6 +443,7 @@ export default {
             :variant="cpuProgress"
           ></b-progress>
         </div>
+
         <div class="col-12 col-md-2 mb-2">
           <p class="mb-0">内存使用</p>
           <b-progress
@@ -422,8 +452,10 @@ export default {
             :variant="memProgress"
           ></b-progress>
         </div>
+        
         <div class="col-12 col-md-8">
           <div v-if="!isDel" class="float-end w-100 container-btn-group">
+            
             <b-form-radio-group
               id="location-radios"
               class="text-truncate check-group btn-item mb-0"
