@@ -18,7 +18,7 @@ export const mutations = {
 export const actions = {
   // 运行容器
   runContainer({ state }, { id, host_id = "" }) {
-    console.log(state)
+    console.log(state.containers)
     return new Promise((resolve, reject) => {
       request.post('containers/' + id + '/run', {
         params: {
@@ -33,6 +33,35 @@ export const actions = {
         reject(err);
       })
     })
-  }
+  },
 
+  // 暂停容器
+  pauseContainer({ state }, { id }) {
+    console.log(state.containers)
+    return new Promise((resolve, reject) => {
+      request.post('containers/' + id + '/pause')
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      })
+    })
+  },
+
+  // 重启容器
+  restartContainer({ state }, { id }) {
+    console.log(state.containers)
+    return new Promise((resolve, reject) => {
+      request.post('containers/' + id + '/restart')
+      .then(({ data }) => {
+        resolve(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      })
+    })
+  },
 };

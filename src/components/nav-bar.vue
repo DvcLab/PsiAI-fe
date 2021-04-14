@@ -57,7 +57,6 @@ export default {
     }
   },
   computed: {
-    // ...authComputed,
     ...mapState({
       currentUser(state){
         if(state.auth.currentUser) {
@@ -69,23 +68,7 @@ export default {
         }
       } 
     }),
-    // ...mapState({
-    //   userInfo(state){
-    //     if(state.auth.currentUser) {
-    //       return state.auth.currentUser
-    //     } else {
-    //       return {
-    //         attributes: {
-    //           headimgurl: [],
-    //         },
-    //         username: ''
-    //       }
-    //     }
-    //   } 
-    // }),
-    // avatarUrl() {
-    //   return this.userInfo.attributes.headimgurl ? this.userInfo.attributes.headimgurl[0] : require('@/assets/images/users/avatar-1.jpg')
-    // }
+
   },
   // components: { simplebar },
   mounted() {
@@ -713,12 +696,6 @@ export default {
               class="rounded-circle header-profile-user"
               src="@/assets/images/users/avatar-1.jpg"
               v-real-img="avatarUrl"
-              :alt="userInfo.username"
-            /> -->
-            <!-- <img
-              v-show="userInfo && userInfo.attributes"
-              class="rounded-circle header-profile-user"
-              :src="avatarUrl"
               :alt="userInfo.username"
             /> -->
             <img

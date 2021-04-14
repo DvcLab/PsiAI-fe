@@ -93,10 +93,6 @@ Vue.use(VueKeyCloak, {
     clientId: process.env.VUE_APP_AUTH_CLIENT_ID
   },
   onReady: kc => {
-    // kc.loadUserProfile().success((data) => {
-    //   console.log(data)
-    //   store.commit('auth/SET_CURRENT_USER', data)
-    // })
     kc.loadUserInfo().success((data)=> {
       console.log(data)
       store.commit('auth/SET_CURRENT_USER', data)

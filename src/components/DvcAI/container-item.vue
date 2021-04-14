@@ -35,15 +35,23 @@ export default {
     // 主机列表
     ...mapState("resources", ["hosts"]),
 
+    // 当前用户信息
+    ...mapState("auth", ["currentUser"]),
+
     // 是否是管理员
     isAdmin() {
       return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
     },
 
     // 是否是用户自己创建的容器
-    // isMine() {
+    isMine() {
+      return this.newInfo.uid === this.currentUser.sub;
+    },
 
-    // },
+    // 管理员是否可以操作
+    isAdminOperate () {
+      return this.isAdmin && this.isMine;
+    },
 
     // 本地/远程按钮控制其他按钮显示
     isLocation() {
@@ -94,8 +102,8 @@ export default {
     // 运行位置显示
     locationOptions () {
       return [
-        { text: '本地', value: 'location', disabled: !this.canSelectLocation && !this.newInfo.user_host },
-        { text: '云端', value: 'cloud', disabled: !this.canSelectLocation && this.newInfo.user_host }
+        { text: '本地', value: 'location', disabled: !this.canSelectLocation && !this.newInfo.user_host && !this.isMine },
+        { text: '云端', value: 'cloud', disabled: !this.canSelectLocation && this.newInfo.user_host && !this.isMine }
       ]
     },
 
@@ -273,7 +281,7 @@ export default {
       let host_id = this.selectedHost ? this.selectedHost.id : "";
       this.runContainer({id, host_id})
       .then((data)=>{
-        console.log(data) // 待测试，才可继续
+        console.log(data) // 待测试
       })
       .catch((err)=>{
         console.log(err)
@@ -428,7 +436,7 @@ export default {
             ></b-form-radio-group>
           
             <a
-              v-if="canSelectLocation && isLocation"
+              v-if="canSelectLocation && isLocation && isMine"
               :href="configFile"
               class="btn btn-outline-primary btn-sm btn-item"
               download="docker-compose-config"
@@ -459,13 +467,13 @@ export default {
               <span slot="noResult">未搜索到相关主机</span>
             </multiselect>
 
-            <b-button v-if="canSelectLocation && !isLocation" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="runInCloud">
+            <b-button v-if="canSelectLocation && !isLocation && isMine" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="runInCloud">
               <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
               云端运行
             </b-button>
 
             <a
-              v-if="canSelectCloudRunning && !canSelectLocation"
+              v-if="canSelectCloudRunning && !canSelectLocation && isMine"
               :href="jupyterUrl"
               class="btn btn-outline-primary btn-sm btn-item"
               download="docker-compose-config"
@@ -475,7 +483,7 @@ export default {
               JupyterLab
             </a>
 
-            <b-button v-if="canSelectCloudRunning && canSelectLocation" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="pauseContainer">
+            <b-button v-if="canSelectCloudRunning" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="pauseContainer">
               <i class="bx bx-pause font-size-16 align-middle me-1"></i>
               暂停
             </b-button>
