@@ -1,24 +1,30 @@
 export const menuItems = [
     {
         id: 1,
-        label: "menuitems.psiai.projects",
-        icon: "bx-briefcase-alt-2",
-        link: "/"
+        label: "menuitems.psiai.containers",
+        icon: "bx-code-block",
+        link: "/hosts"
     },
     {
         id: 2,
+        label: "menuitems.psiai.projects",
+        icon: "bx-briefcase-alt-2",
+        link: "/projects"
+    },
+    {
+        id: 3,
         label: "menuitems.psiai.datasets",
         icon: "bx-cube",
         link: "/datasets"
     },
     {
-        id: 3,
+        id: 4,
         label: "menuitems.psiai.images",
         icon: "bx-layer",
         link: "/images"
     },
     {
-        id: 4,
+        id: 5,
         label: "menuitems.psiai.containers",
         icon: "bx-code-block",
         link: "/containers"

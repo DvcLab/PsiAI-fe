@@ -1,8 +1,25 @@
 // import store from '@/state/store'
-// import Vue from 'vue'
+import Vue from 'vue'
 export default [
   {
     path: '/',
+    redirect: to => {
+      console.log(to)
+      if(Vue.prototype.$keycloak.realmAccess.roles.includes('DOCKHUB_ADMIN')) return '/hosts'
+      return '/products'
+    }
+  },
+  {
+    path: '/hosts',
+    name: '主机',
+    meta: {
+      authRequired: true,
+      roles: ['DOCKHUB_ADMIN'],
+    },
+    component: () => import('./views/DvcAI/hosts/hosts-list.vue'),
+  },
+  {
+    path: '/projects',
     name: '项目',
     meta: {
       authRequired: true,

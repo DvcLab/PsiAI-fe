@@ -37,14 +37,8 @@ router.beforeEach((routeTo, routeFrom, next) => {
   if (!authRequired) return next()
   // 如果该页面需要认证，则判断该用户是否已登录
   if (Vue.prototype.$keycloak.authenticated) {
-    // if(routeTo.path === '/logout') {
-    //   if (routeFrom.name !== null) {
-    //     Vue.prototype.$keycloak.logoutFn()
-    //   // return next('/')
-    //   } else {
-    //     return next('/')
-    //   }
-    // }
+    const permission = hasPermission(Vue.prototype.$keycloak.realmAccess.roles, routeTo.meta.roles);
+    if(!permission) next('/projects');
     next()
   } else {
     // 未登录则进入登录界面
@@ -134,3 +128,10 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
 })
 
 export default router
+
+// 权限判断函数
+function hasPermission(roles, permissionRoles) {
+  if (roles.indexOf('DOCKHUB_ADMIN') >= 0) return true; // admin permission passed directly
+  if (!permissionRoles) return true;
+  return roles.some(role => permissionRoles.indexOf(role) >= 0)
+}
