@@ -24,7 +24,7 @@ export default {
       timer: "",
       loadingState: false,
       containerRunningSelected: 'location',
-      options: [
+      locationOptions: [
         { text: '本地', value: 'location', disabled: false },
         { text: '云端', value: 'cloud', disabled: false }
       ],
@@ -51,6 +51,11 @@ export default {
     // 管理员是否可以操作
     isAdminOperate () {
       return this.isAdmin && this.isMine;
+    },
+
+    // 是否在用户本机
+    isUserHost () {
+      return this.newInfo.user_host;
     },
 
     // 本地/远程按钮控制其他按钮显示
@@ -99,18 +104,10 @@ export default {
       return false;
     },
 
-    // 运行位置显示
-    locationOptions () {
-      return [
-        { text: '本地', value: 'location', disabled: !this.canSelectLocation && !this.newInfo.user_host && !this.isMine },
-        { text: '云端', value: 'cloud', disabled: !this.canSelectLocation && this.newInfo.user_host && !this.isMine }
-      ]
-    },
-
     // 容器使用镜像
     image() {
       if (!this.container.image.name) return null;
-      return this.container.image.name;
+      return this.newInfo.image.name;
     },
 
     // JupyterLab链接
@@ -258,7 +255,7 @@ export default {
     ...mapActions('resource', ['getHosts']),
 
     // 容器相关API：运行容器
-    ...mapActions('containers', ['runContainer']),
+    ...mapActions('containers', ['runContainer', 'pauseContainer', 'restartContainer']),
 
     // 打开JupyterLab页面
     openLab(href) {
@@ -274,9 +271,18 @@ export default {
         .then((res) => res.data)
         .then((res) => {
           if (res.code === 1) {
-            this.successMsg();
+
+            Swal.fire("容器删除成功!", "", "success").then((res) => {
+              if (res.isConfirmed) {
+                console.log("触发刷新列表函数 from container-item");
+                EventBus.$emit("update");
+              }
+            });
+
           } else {
-            this.errorMsg();
+
+            Swal.fire("容器删除失败!", "", "error");
+
           }
           this.loadingState = false;
         })
@@ -295,14 +301,85 @@ export default {
     
     // 运行容器
     runInCloud () {
+      this.loadingState = true;
+
       let id = this.newInfo.id;
       let host_id = this.selectedHost ? this.selectedHost.id : "";
       this.runContainer({id, host_id})
       .then((data)=>{
-        console.log(data) // 待测试
+        if(data.code === 1) {
+          Swal.fire("容器启动成功!", "", "success")
+          .then(() => {
+            EventBus.$emit("update");
+            this.loadingState = false;
+          })
+        } else {
+          Swal.fire("容器启动错误!", data.msg, "error")
+          .then(() => {
+            this.loadingState = false;
+          })
+        }
       })
       .catch((err)=>{
-        console.log(err)
+        Swal.fire("容器启动错误!", err, "error")
+        .then(() => {
+          this.loadingState = false;
+        })
+      })
+    },
+
+    // 暂停容器
+    pause() {
+      this.loadingState = true;
+      let id = this.newInfo.id;
+      this.pauseContainer({ id })
+      .then((data) => {
+        console.log(data);
+        if(data.code === 1) {
+          
+          Swal.fire("容器暂停成功!", "", "success")
+          .then(() => {
+            this.loadingState = false;
+            EventBus.$emit("update");
+          })
+
+        } else {
+          Swal.fire("容器暂停错误!", data.msg, "error")
+          .then(() => {
+            this.loadingState = false;
+          })
+        }
+        
+      })
+      .catch((err) => {
+        Swal.fire("容器暂停错误!", err, "error")
+        .then(() => {
+          this.loadingState = false;
+        })
+      })
+    },
+
+    // 重启容器
+    restart() {
+      this.loadingState = true;
+      let id = this.newInfo.id;
+      this.restartContainer({ id })
+      .then((data) => {
+        console.log(data);
+        if(data.code === 1) {
+          
+          Swal.fire("容器重启成功!", "", "success")
+          .then(() => {
+            this.loadingState = false;
+            EventBus.$emit("update");
+          })
+
+        } else {
+          Swal.fire("容器重启错误!", data.msg, "error")
+        }
+      })
+      .catch((err) => {
+        Swal.fire("容器重启错误!", err, "error")
       })
     },
 
@@ -343,32 +420,33 @@ export default {
       console.log("websocket error", e);
     },
 
+    // 暂停容器确认弹窗
+    pauseContainerMsg() {
+      Swal.fire({
+        icon:'question',
+        title: '确认暂停所选容器?',
+        showCancelButton: true,
+        confirmButtonText: `确认`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.pauseContainer();
+        }
+      })
+    },
+
     // 删除容器确认弹窗
     delContainerMsg() {
       Swal.fire({
+        icon:'question',
         title: '确认删除所选容器?',
         showCancelButton: true,
         confirmButtonText: `确认`,
+        cancelButtonText: `取消`
       }).then((result) => {
         if (result.isConfirmed) {
           this.delContainer();
         }
       })
-    },
-
-    // 容器删除成功提醒
-    successMsg() {
-      Swal.fire("容器删除成功!", "", "success").then((res) => {
-        if (res.isConfirmed) {
-          console.log("触发刷新列表函数 from container-item");
-          EventBus.$emit("update");
-        }
-      });
-    },
-
-    // 容器删除失败提醒
-    errorMsg() {
-      Swal.fire("容器删除失败!", "", "error");
     },
   },
 };
@@ -382,7 +460,14 @@ export default {
         <div class="col-12 col-md-3 mb-2">
           <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
             <i class="bx bx-cube me-1"></i>
-            {{ newInfo.container_name }}
+            <span class="me-1"> {{ newInfo.container_name }}</span>
+            <span
+              v-if="!canSelectLocation"
+              class="badge rounded-pill"
+              :class="`bg-${ newInfo.user_host ? 'primary' : 'info' }`"
+            >
+              {{ newInfo.user_host ? '本地' : '远程' }}
+            </span>
           </h5>
         </div>
 
@@ -457,6 +542,7 @@ export default {
           <div v-if="!isDel" class="float-end w-100 container-btn-group">
             
             <b-form-radio-group
+              v-if="canSelectLocation && isMine"
               id="location-radios"
               class="text-truncate check-group btn-item mb-0"
               size="sm"
@@ -479,7 +565,7 @@ export default {
 
             <multiselect
               class="host-select d-inline-block btn-item"
-              v-if="!isLocation && isAdmin"
+              v-if="!isLocation && isAdmin && canSelectLocation && isMine"
               v-model="selectedHost"
               :options="hosts"
               @search-change="changeHostsAction"
@@ -505,7 +591,7 @@ export default {
             </b-button>
 
             <a
-              v-if="canSelectCloudRunning && !canSelectLocation && isMine"
+              v-if="canSelectCloudRunning && isMine"
               :href="jupyterUrl"
               class="btn btn-outline-primary btn-sm btn-item"
               download="docker-compose-config"
@@ -515,17 +601,17 @@ export default {
               JupyterLab
             </a>
 
-            <b-button v-if="canSelectCloudRunning" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="pauseContainer">
+            <b-button v-if="canSelectCloudRunning && !isUserHost" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="pause">
               <i class="bx bx-pause font-size-16 align-middle me-1"></i>
               暂停
             </b-button>
 
-            <b-button v-if="isRestartShow" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="restartContainer">
+            <b-button v-if="isRestartShow && !isUserHost" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="restart">
               <i class="bx bx-revision font-size-16 align-middle me-1"></i>
               重启
             </b-button>
 
-            <b-button v-if="!canSelectLocation" class="text-truncate i-text-middle btn-item" variant="outline-danger" size="sm" @click="delContainer">
+            <b-button v-if="!canSelectLocation" class="text-truncate i-text-middle btn-item" variant="outline-danger" size="sm" @click="delContainerMsg">
               <i class="bx bx-trash font-size-16 align-middle me-1"></i>
               删除
             </b-button>
