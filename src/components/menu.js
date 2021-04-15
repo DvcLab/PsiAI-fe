@@ -2,7 +2,7 @@ export const menuItems = [
     {
         id: 1,
         label: "menuitems.dvcai.hosts",
-        icon: "bx-code-block",
+        icon: "bx-server",
         link: "/hosts"
     },
     {

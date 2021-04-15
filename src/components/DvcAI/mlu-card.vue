@@ -1,7 +1,5 @@
 <script>
 export default {
-  components: {},
-
   props: {
     mlu: {
       type: Object,
@@ -19,11 +17,6 @@ export default {
     }
   },
 
-  data () {
-    return {
-    }
-  },
-
   computed: {
     memRatio() {
       return this.mlu.mem_usage / this.mlu.mem_total;
@@ -32,9 +25,9 @@ export default {
 
   methods: {
     chartColor(num){
-      if(num<=40){
+      if(num <= 40){
         return 'success'
-      }else if(num<=70){
+      }else if(num <= 70){
         return 'warning'
       }else{
         return 'danger'
@@ -52,29 +45,47 @@ export default {
 
       <div class="row">
         
-        <div class="col-12 col-md-6">
-          <feather type="cpu" class="float-left mt-2 mr-2"></feather>
-          <span class="badge badge-warning badge-pill">{{mlu.model_name}}</span>
-
-          <br />
-          <span class="badge badge-pill badge-soft-primary"
-            >总内存：{{ mlu.mem_total }} MiB</span
-          >
+        <div class="col-12 col-md-6 d-inline-flex align-items-center">
+          <i class="bx bx-chip d-inline-block fs-2" />
+          <div class="d-inline-block ms-2">
+            <span class="badge rounded-pill bg-warning">
+              {{ mlu.model_name }}
+            </span>
+            <br />
+            <span class="badge rounded-pill bg-primary">
+              总内存：{{ mlu.mem_total }} MiB
+            </span>
+          </div>
         </div>
 
         <div class="col-4 col-md-2">
           <span>GPU使用</span><br />
-          <b-progress :value="mlu.util" :max="100" :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(mlu.util)" show-progress class=""></b-progress>
+          <b-progress
+            :value="mlu.util"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(mlu.util)"
+            show-progress
+          ></b-progress>
         </div>
 
         <div class="col-4 col-md-2">
           <span>内存使用</span><br />
-          <b-progress :value="memRatio" :max="100" :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(memRatio)" show-progress class=""></b-progress>
+          <b-progress
+            :value="memRatio"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(memRatio)"
+            show-progress
+          ></b-progress>
         </div>
 
         <div class="col-4 col-md-2">
           <span>风扇转速</span><br />
-          <b-progress :value="mlu.fan" :max="100" :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(mlu.fan)" show-progress class=""></b-progress>
+          <b-progress
+            :value="mlu.fan"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(mlu.fan)"
+            show-progress
+          ></b-progress>
         </div>
 
       </div>
