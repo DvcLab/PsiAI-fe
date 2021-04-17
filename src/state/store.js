@@ -2,11 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import modules from './modules'
+import dvcModules from './DvcAI-modules'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules,
+  dvcModules,
   // Enable strict mode in development to get a warning
   // when mutating state outside of a mutation.
   // https://vuex.vuejs.org/guide/strict.html

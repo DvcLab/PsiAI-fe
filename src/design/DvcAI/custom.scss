@@ -105,6 +105,27 @@
 .nav-i-mt {
     margin-top: 0.6rem;
 }
+// 选择本地/远程按钮label底部为0
+#location-radios label{
+    margin-bottom: 0!important;
+}
+
+.host-select {
+    width: 38%!important;
+    min-height: 0!important;
+}
+.host-select .multiselect__tags {
+    min-height: 0!important;
+    padding: 0.25rem 0.5rem!important;
+    border-radius: 0.2rem!important;
+    font-size: 0.75rem!important;
+}
+.host-select .multiselect__select {
+    height: 30px;
+}
+.host-select .multiselect__placeholder {
+    font-size: 0.75rem;
+}
 @keyframes rotate{
     0%{
         transform:translateY(-50%) rotate(0deg)

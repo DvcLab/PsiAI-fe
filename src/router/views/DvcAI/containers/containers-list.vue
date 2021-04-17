@@ -31,6 +31,7 @@ export default {
     window.addEventListener('scroll', this.load);
     this.getContainersList('', 1);
     EventBus.$on('update', () => this.reload());
+    // this.getHostList();
   },
   destroyed(){
     window.removeEventListener('scroll', this.load, false);
@@ -172,6 +173,20 @@ export default {
     toCreateContainerPage() {
       this.$router.push({path: '/createContainers'})
     },
+
+    // // 获取主机列表
+    // getHostList() {
+    //   return this.$request.get('hosts')
+    //   .then((res) => {
+    //     console.log(res.data)
+    //     return res.data;
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //     return [];
+    //   })
+    // }, 
+
   }
 };
 </script>

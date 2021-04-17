@@ -96,9 +96,11 @@ Vue.use(VueKeyCloak, {
     clientId: process.env.VUE_APP_AUTH_CLIENT_ID
   },
   onReady: kc => {
-    kc.loadUserProfile().success((data) => {
+    kc.loadUserInfo().success((data)=> {
+      console.log(data)
       store.commit('auth/SET_CURRENT_USER', data)
     })
+    store.dispatch('resources/getHosts');
     new Vue({
       router,
       store,
