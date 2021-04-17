@@ -20,7 +20,6 @@ export default {
     return {
       newInfo: this.container,
       websock: null,
-      stompClient: "",
       timer: "",
       loadingState: false,
       containerRunningSelected: 'location',
@@ -434,7 +433,7 @@ export default {
       const message = JSON.parse(res.data);
       // this.newInfo = message;
       this.newInfo = { ...this.newInfo, ...message };
-      console.log(message);
+      // console.log(message);
     },
 
     // ws数据发送
