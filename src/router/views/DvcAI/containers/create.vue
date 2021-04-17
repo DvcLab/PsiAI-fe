@@ -331,7 +331,9 @@ export default {
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title mb-4">创建容器</h4>
+            <h4 class="card-title mb-4">
+              创建容器
+            </h4>
             <form @submit.prevent="formSubmit">
               <div class="row">
 

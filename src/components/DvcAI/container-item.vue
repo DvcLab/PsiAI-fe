@@ -191,6 +191,21 @@ export default {
       }
     },
 
+    // cpu使用
+    cpu () {
+      let cpu = this.newInfo.cpu_usage;
+      let variant = "success"
+      if (cpu >= 30 && cpu < 60) {
+        variant = "warning";
+      } else if (cpu >= 60) {
+        variant = "danger";
+      }
+      return {
+        value: cpu,
+        variant
+      }
+    },
+
     // cpu使用 
     cpuUsage() {
       if (this.newInfo && this.newInfo.cpu_usage) return this.newInfo.cpu_usage;
@@ -210,20 +225,17 @@ export default {
     },
 
     // mem使用
-    memUsage() {
-      if (this.newInfo && this.newInfo.mem_usage) return this.newInfo.mem_usage;
-      return this.container.mem_usage;
-    },
-
-    // mem使用条颜色
-    memProgress() {
-      let memUsage = this.container.mem_usage;
-      if (memUsage >= 30 && memUsage < 60) {
-        return "warning";
-      } else if (memUsage >= 60) {
-        return "danger";
-      } else {
-        return "success";
+    mem(){
+      let mem = this.newInfo.mem_usage;
+      let variant = "success"
+      if (mem >= 30 && mem < 60) {
+        variant = "warning";
+      } else if (mem >= 60) {
+        variant = "danger";
+      }
+      return {
+        value: mem,
+        variant
       }
     },
 
@@ -301,23 +313,27 @@ export default {
     
     // 运行容器
     runInCloud () {
+      if(!this.selectedHost && this.isAdmin) {
+        return Swal.fire("请选择容器运行主机!", "", "error");
+      }
       this.loadingState = true;
-
       let id = this.newInfo.id;
       let host_id = this.selectedHost ? this.selectedHost.id : "";
       this.runContainer({id, host_id})
       .then((data)=>{
         if(data.code === 1) {
-          Swal.fire("容器启动成功!", "", "success")
-          .then(() => {
-            EventBus.$emit("update");
-            this.loadingState = false;
-          })
+
+          this.loadingState = false;
+          EventBus.$emit("update");
+          Swal.fire("容器启动成功!", "", "success");
+
         } else {
+
           Swal.fire("容器启动错误!", data.msg, "error")
           .then(() => {
             this.loadingState = false;
           })
+
         }
       })
       .catch((err)=>{
@@ -336,26 +352,28 @@ export default {
       .then((data) => {
         console.log(data);
         if(data.code === 1) {
-          
-          Swal.fire("容器暂停成功!", "", "success")
-          .then(() => {
-            this.loadingState = false;
-            EventBus.$emit("update");
-          })
+
+          this.loadingState = false;
+          EventBus.$emit("update");
+          Swal.fire("容器暂停成功!", "", "success");
 
         } else {
+
           Swal.fire("容器暂停错误!", data.msg, "error")
           .then(() => {
             this.loadingState = false;
           })
+
         }
         
       })
       .catch((err) => {
+
         Swal.fire("容器暂停错误!", err, "error")
         .then(() => {
           this.loadingState = false;
         })
+
       })
     },
 
@@ -367,19 +385,27 @@ export default {
       .then((data) => {
         console.log(data);
         if(data.code === 1) {
-          
-          Swal.fire("容器重启成功!", "", "success")
-          .then(() => {
-            this.loadingState = false;
-            EventBus.$emit("update");
-          })
+
+          this.loadingState = false;
+          EventBus.$emit("update");
+          Swal.fire("容器重启成功!", "", "success");
 
         } else {
+
           Swal.fire("容器重启错误!", data.msg, "error")
+          .then(() => {
+            this.loadingState = false;
+          });
+
         }
       })
       .catch((err) => {
+
         Swal.fire("容器重启错误!", err, "error")
+        .then(() => {
+          this.loadingState = false;
+        });
+
       })
     },
 
@@ -427,9 +453,10 @@ export default {
         title: '确认暂停所选容器?',
         showCancelButton: true,
         confirmButtonText: `确认`,
+        cancelButtonText: `取消`
       }).then((result) => {
         if (result.isConfirmed) {
-          this.pauseContainer();
+          this.pause();
         }
       })
     },
@@ -523,18 +550,18 @@ export default {
         <div class="col-12 col-md-2 mb-2">
           <p class="mb-0">CPU使用</p>
           <b-progress
-            :value="cpuUsage"
+            :value="cpu.value"
             :max="100"
-            :variant="cpuProgress"
+            :variant="cpu.variant"
           ></b-progress>
         </div>
 
         <div class="col-12 col-md-2 mb-2">
           <p class="mb-0">内存使用</p>
           <b-progress
-            :value="memUsage"
+            :value="mem.value"
             :max="100"
-            :variant="memProgress"
+            :variant="mem.variant"
           ></b-progress>
         </div>
         
@@ -601,7 +628,7 @@ export default {
               JupyterLab
             </a>
 
-            <b-button v-if="canSelectCloudRunning && !isUserHost" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="pause">
+            <b-button v-if="canSelectCloudRunning && !isUserHost" class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="pauseContainerMsg">
               <i class="bx bx-pause font-size-16 align-middle me-1"></i>
               暂停
             </b-button>
