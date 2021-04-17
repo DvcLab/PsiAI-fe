@@ -17,6 +17,15 @@ export default {
       }
       return tagList;
     },
+    types() {
+      if (!this.image.types) return [];
+      let typesList = this.image.types;
+      if (typesList.length > 3) {
+        let temp = typesList.slice(0, 3);
+        return temp;
+      }
+      return typesList;
+    },
   },
 };
 </script>
@@ -24,22 +33,12 @@ export default {
 <template>
   <div>
     <div class="image-item-con row align-items-center">
-      <div class="col-10 col-md-8">
+      <div class="col-10 col-md-6">
         <h5 class="d-block text-truncate mb-0 list-item-name">
           {{ image.name }}
         </h5>
         <p class="text-truncate mb-0">{{ image.desc }}</p>
         <p class="text-muted text-truncate mb-0">
-          <span v-if="image.types && image.types.length > 0">
-            <span
-              v-for="item in image.types"
-              class="badge bg-primary me-1"
-              :key="item"
-            >
-              {{ item }}
-            </span>
-          </span>
-
           <span v-if="image.tags && image.tags.length > 0">
             <span
               v-for="item in tags"
@@ -52,16 +51,19 @@ export default {
         </p>
       </div>
 
-      <div class="col-2 col-md-2">
-        <span
-          v-if="image.types.length > 0"
-          class="badge bg-primary me-2"
-          :class="{
-            'bg-info': `${image.types[0]}` === 'GPU',
-          }"
-        >
-          {{ image.types[0] }}
-        </span>
+      <div class="col-2 col-md-4">
+        <span v-if="types.length > 0">
+            <span
+              v-for="item in image.types"
+              class="badge bg-primary me-1"
+              :key="item"
+              :class="{
+                'bg-info': `${image.types[0]}` === 'GPU',
+              }"
+            >
+              {{ item }}
+            </span>
+          </span>
       </div>
 
       <div class="col-md-2 text-end d-none d-md-block">
