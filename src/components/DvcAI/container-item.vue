@@ -45,6 +45,7 @@ export default {
 
     // 是否是用户自己创建的容器
     isMine() {
+      if(!this.currentUser.sub) return false;
       return this.newInfo.uid === this.currentUser.sub;
     },
 
@@ -518,11 +519,17 @@ export default {
         <div class="col-12 col-md-3 mb-2">
           <div class="float-start float-md-end text-truncate">
             <span class="badge me-2" :class="status.theme">
-              {{ status.text }}
+              <span v-if="newInfo.status === 'Running' && newInfo.alive_time">
+                已运行 {{ newInfo.alive_time | duration('humanize') }}
+              </span>
+              <span v-else>
+                {{ status.text }}
+              </span>
             </span>
-            <span class="text-success">{{
-              updateTime | moment("YYYY-MM-DD HH:mm:ss")
-            }}</span>
+            
+            <span class="text-success">
+              {{ updateTime | moment("YYYY-MM-DD HH:mm:ss") }}
+            </span>
           </div>
         </div>
 
