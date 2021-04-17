@@ -23,7 +23,7 @@ export default {
 
 <template>
   <div>
-    <div class="dataset-item-con row align-items-center">
+    <div class="row align-items-center p-2">
       <div class="col-md-1 d-none d-md-block">
         <img
           class="avatar-sm"
@@ -62,9 +62,6 @@ export default {
 </template>
 
 <style scoped>
-.dataset-item-con {
-  padding: 0.5rem;
-}
 h5 {
   color: inherit;
 }

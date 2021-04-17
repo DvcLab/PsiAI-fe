@@ -5,6 +5,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    match: {
+      type: String,
+      default: ""
+    }
   },
   computed: {
     tags() {
@@ -32,11 +36,22 @@ export default {
 
 <template>
   <div>
-    <div class="image-item-con row align-items-center">
+    <div class="row align-items-center p-2">
       <div class="col-10 col-md-6">
-        <h5 class="d-block text-truncate mb-0 list-item-name">
+        <div class="d-inline-flex align-items-center mb-1">
+          <h5 class="d-block text-truncate mb-0 list-item-name">
+            {{ image.name }}
+          </h5>
+          <span
+            v-if="image && image.id === match"
+            class="badge bg-info ms-2"
+          >
+            推荐
+          </span>
+        </div>
+        <!-- <h5 class="d-block text-truncate mb-0 list-item-name">
           {{ image.name }}
-        </h5>
+        </h5> -->
         <p class="text-truncate mb-0">{{ image.desc }}</p>
         <p class="text-muted text-truncate mb-0">
           <span v-if="image.tags && image.tags.length > 0">
@@ -55,10 +70,10 @@ export default {
         <span v-if="types.length > 0">
             <span
               v-for="item in image.types"
-              class="badge bg-primary me-1"
+              class="badge bg-info me-1"
               :key="item"
               :class="{
-                'bg-info': `${image.types[0]}` === 'GPU',
+                'bg-warning': `${image.types[0]}` === 'GPU',
               }"
             >
               {{ item }}
@@ -75,9 +90,6 @@ export default {
 </template>
 
 <style scoped>
-.image-item-con {
-  padding: 0.5rem;
-}
 h5 {
   color: inherit;
 }

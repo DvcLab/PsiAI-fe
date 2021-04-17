@@ -107,7 +107,7 @@ export default {
 
     // 容器使用镜像
     image() {
-      if (!this.container.image.name) return null;
+      if (!this.newInfo.image.name) return null;
       return this.newInfo.image.name;
     },
 

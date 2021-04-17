@@ -11,6 +11,7 @@ import SelectCard from "@/components/DvcAI/select-card";
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import { required } from "vuelidate/lib/validators";
 import Swal from "sweetalert2";
+import { mapActions } from "vuex";
 
 /**
  * Create Container component
@@ -78,7 +79,8 @@ export default {
       selectedImage: null,
       selectedDatasetsList: [],
       submitted: false,
-      loadingState: false
+      loadingState: false,
+      matchImage: null,
     };
   },
   computed: {
@@ -142,6 +144,8 @@ export default {
     this.getDatasetsList();
   },
   methods: {
+    // 镜像相关API：获取适配指定项目（依赖）的镜像
+    ...mapActions('images', ['getImagesForProject']),
 
     // 获取项目列表
     getProjsList() {
@@ -156,9 +160,21 @@ export default {
     },
 
     // 监听proj里select的选择
-    changeProjSelectAction(){
+    changeProjSelectAction(proj){
+
       // 切换项目，分支对应清空
       this.selectedBranch = '';
+      this.selectedImage = null;
+      // 搜索匹配镜像
+      this.getImagesForProject(proj.id)
+      .then(({ data })=>{
+        this.selectedImage = data[0];
+        this.matchImage = data[0];
+      })
+      .catch((err)=> {
+        console.log(err)
+      })
+      
     },
 
     // 监听proj里input的内容
@@ -408,10 +424,16 @@ export default {
                   <template slot="singleLabel" slot-scope="{ option }">
                     <i class="bx bx-layer me-1"></i>
                     <span>{{ option.name }}</span>
+                    <span
+                      v-if="matchImage && selectedImage.id === matchImage.id"
+                      class="badge bg-info ms-2"
+                    >
+                      推荐
+                    </span>
                   </template>
                   <template slot="option" slot-scope="{ option }">
                     <div class="row">
-                      <ImageSelectItem class="col-12" :image="option"/>
+                      <ImageSelectItem class="col-12" :image="option" :match="matchImage ? matchImage.id : ''"/>
                     </div>
                   </template>
                   <span slot="noResult">未查询到该镜像</span>

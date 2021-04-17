@@ -29,7 +29,7 @@ export default {
 
 <template>
     <div>
-        <div class="proj-item-con row align-items-center">
+        <div class="row align-items-center p-2">
 
             <div class="col-md-2 d-none d-md-block">
                 <img class="avatar-sm" src="@/assets/images/companies/img-1.png" v-real-img="proj.cover_img_url" alt="项目" />
@@ -72,9 +72,6 @@ export default {
 </template>
 
 <style scoped>
-.proj-item-con {
-    padding: 0.5rem;
-}
 h5 {
     color: inherit;
 }
