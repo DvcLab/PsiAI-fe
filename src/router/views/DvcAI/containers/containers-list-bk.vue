@@ -1,5 +1,5 @@
 <script>
-// import Layout from "../../../layouts/main";
+import Layout from "../../../layouts/main";
 import ContainerList from "@/components/DvcAI/container-list";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
@@ -16,7 +16,7 @@ export default {
     title: "容器列表",
     meta: [{ name: "容器列表", content: appConfig.description }]
   },
-  components: { Loader, ContainerList, Autocomplete },
+  components: { Layout, Loader, ContainerList, Autocomplete },
   data() {
     return {
       containers: [],
@@ -171,14 +171,14 @@ export default {
 
     // 跳转创建容器页面
     toCreateContainerPage() {
-      this.$router.push({path: '/containers/create'})
+      this.$router.push({path: '/createContainer'})
     },
 
   }
 };
 </script>
 <template>
-  <!-- <Layout> -->
+  <Layout>
 
     <div class="row">
       
@@ -224,5 +224,5 @@ export default {
       </div>
 
     </div>
-  <!-- </Layout> -->
+  </Layout>
 </template>

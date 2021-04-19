@@ -31,16 +31,42 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/DvcAI/containers/containers-list.vue'),
+    component: () => import('./views/DvcAI/containers/index.vue'),
+    children: [
+      {
+        path: '',
+        name: '容器列表',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/containers/containers-list.vue'),
+      },
+      {
+        path: 'create',
+        name: '创建容器',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/containers/create.vue'),
+      },
+    ]
   },
   {
-    path: '/createContainers',
-    name: '创建容器',
+    path: '/container/:id',
+    name: '容器',
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/DvcAI/containers/create.vue'),
+    component: () => import('./views/DvcAI/containers/container-detail.vue'),
   },
+  // {
+  //   path: '/createContainer',
+  //   name: '创建容器',
+  //   meta: {
+  //     authRequired: true,
+  //   },
+  //   component: () => import('./views/DvcAI/containers/create-bk.vue'),
+  // },
   {
     path: '/404',
     name: '404',

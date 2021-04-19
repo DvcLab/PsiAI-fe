@@ -1,0 +1,9 @@
+.btn-rightsidebar{
+  @media (min-width: 992px) {
+    min-width: 260px;
+  }
+
+  @media (min-width: 1200px) {
+    min-width: 380px;
+  }
+}

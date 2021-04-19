@@ -1,5 +1,5 @@
 <script>
-// import Layout from "../../../layouts/main";
+import Layout from "../../../layouts/main";
 import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
 import Multiselect from "vue-multiselect";
@@ -22,7 +22,7 @@ export default {
     title: "创建容器",
     meta: [{ name: "创建容器", content: appConfig.description }]
   },
-  components: { PageHeader, LoaderContainer, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
+  components: { Layout, PageHeader, LoaderContainer, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
   data() {
     return {
       title: "创建容器",
@@ -350,7 +350,7 @@ export default {
 };
 </script>
 <template>
-<div>
+  <Layout>
     <PageHeader :title="title" :items="linkItems" />
     <LoaderContainer :loading="loadingState">
     <div class="row">
@@ -544,5 +544,5 @@ export default {
       </div>
     </div>
     </LoaderContainer>
-</div>
+  </Layout>
 </template>
