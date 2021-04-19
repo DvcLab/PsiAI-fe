@@ -97,7 +97,6 @@ Vue.use(VueKeyCloak, {
   },
   onReady: kc => {
     kc.loadUserInfo().success((data)=> {
-      console.log(data)
       store.commit('auth/SET_CURRENT_USER', data)
     })
     store.dispatch('resources/getHosts');

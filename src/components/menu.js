@@ -3,7 +3,8 @@ export const menuItems = [
         id: 1,
         label: "menuitems.dvcai.hosts",
         icon: "bx-server",
-        link: "/hosts"
+        link: "/hosts",
+        roles: ["DOCKHUB_ADMIN"]
     },
     {
         id: 2,
@@ -14,7 +15,7 @@ export const menuItems = [
     {
         id: 3,
         label: "menuitems.dvcai.datasets",
-        icon: "bx-cube",
+        icon: "bx-data",
         link: "/datasets"
     },
     {
@@ -26,7 +27,7 @@ export const menuItems = [
     {
         id: 5,
         label: "menuitems.dvcai.containers",
-        icon: "bx-code-block",
+        icon: "bx-cube",
         link: "/containers"
     }
     // {

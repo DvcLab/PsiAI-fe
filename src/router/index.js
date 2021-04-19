@@ -38,7 +38,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
   // 如果该页面需要认证，则判断该用户是否已登录
   if (Vue.prototype.$keycloak.authenticated) {
     const permission = hasPermission(Vue.prototype.$keycloak.realmAccess.roles, routeTo.meta.roles);
-    if(!permission) next('/projects');
+    if(!permission) next('/404');
     next()
   } else {
     // 未登录则进入登录界面
