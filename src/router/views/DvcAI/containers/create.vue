@@ -4,6 +4,7 @@ import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
 import Multiselect from "vue-multiselect";
 import queryString from 'query-string';
+import PageHeader from "@/components/page-header";
 import ProjSelectItem from "@/components/DvcAI/proj-select-item";
 import ImageSelectItem from "@/components/DvcAI/image-select-item";
 import DatasetSelectItem from "@/components/DvcAI/dataset-select-item";
@@ -21,9 +22,20 @@ export default {
     title: "创建容器",
     meta: [{ name: "创建容器", content: appConfig.description }]
   },
-  components: { Layout, LoaderContainer, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
+  components: { Layout, PageHeader, LoaderContainer, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
   data() {
     return {
+      title: "创建容器",
+      linkItems: [
+        {
+          text: "容器列表",
+          href: "/containers",
+        },
+        {
+          text: "创建容器",
+          active: true,
+        },
+      ],
       cpus: 1,
       cpuData: {
         value: 1,
@@ -339,6 +351,7 @@ export default {
 </script>
 <template>
   <Layout>
+    <PageHeader :title="title" :items="linkItems" />
     <LoaderContainer :loading="loadingState">
     <div class="row">
 
@@ -347,9 +360,9 @@ export default {
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title mb-4">
+            <!-- <h4 class="card-title mb-4">
               创建容器
-            </h4>
+            </h4> -->
             <form @submit.prevent="formSubmit">
               <div class="row">
 
