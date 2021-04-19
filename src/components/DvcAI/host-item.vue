@@ -78,7 +78,7 @@ export default {
     // 初始化weosocket
     initWebSocket() {
       const wsuri =
-        process.env.VUE_APP_WS_URL + "_hosts?host_id=" + this.host.id;
+        process.env.VUE_APP_WS_URL + "_hosts?id=" + this.host.id;
       this.websock = new WebSocket(wsuri, this.$keycloak.token);
       this.websock.onmessage = this.websocketonmessage;
       this.websock.onopen = this.websocketonopen;

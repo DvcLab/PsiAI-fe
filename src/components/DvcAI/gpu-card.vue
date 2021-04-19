@@ -50,7 +50,7 @@ export default {
           </div>
         </div>
 
-        <div class="col-4 col-md-2">
+        <div class="col-4 col-md-2 text-truncate">
           <span>GPU使用</span><br />
           <b-progress
             :value="gpu.gpu_util"
@@ -60,7 +60,7 @@ export default {
           ></b-progress>
         </div>
 
-        <div class="col-4 col-md-2">
+        <div class="col-4 col-md-2 text-truncate">
           <span>显存使用</span><br />
           <b-progress
             :value="gpu.memory_util"
@@ -70,7 +70,7 @@ export default {
           ></b-progress>
         </div>
 
-        <div class="col-4 col-md-2">
+        <div class="col-4 col-md-2 text-truncate">
           <span>风扇转速</span><br />
           <b-progress
             :value="gpu.fan_speed"

@@ -58,7 +58,7 @@ export default {
           </div>
         </div>
 
-        <div class="col-4 col-md-2">
+        <div class="col-4 col-md-2 text-truncate">
           <span>GPU使用</span><br />
           <b-progress
             :value="mlu.util"
@@ -68,7 +68,7 @@ export default {
           ></b-progress>
         </div>
 
-        <div class="col-4 col-md-2">
+        <div class="col-4 col-md-2 text-truncate">
           <span>内存使用</span><br />
           <b-progress
             :value="memRatio"
@@ -78,7 +78,7 @@ export default {
           ></b-progress>
         </div>
 
-        <div class="col-4 col-md-2">
+        <div class="col-4 col-md-2 text-truncate">
           <span>风扇转速</span><br />
           <b-progress
             :value="mlu.fan"
