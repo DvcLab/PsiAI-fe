@@ -6,6 +6,7 @@ import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 // import Swal from "sweetalert2";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
+import { mapState, mapActions } from "vuex";
 
 /**
  * 主机列表
@@ -25,7 +26,7 @@ export default {
 
   data() {
     return {
-      hosts: [],
+      // hosts: [],
       isSearch: false,
       searchContent: '',
       curPage: 1,
@@ -35,9 +36,15 @@ export default {
     };
   },
 
+  computed: {
+    // 主机列表
+    ...mapState("hosts", ["hosts"]),
+  },
+
   mounted() {
     window.addEventListener('scroll', this.load);
-    this.getHostList('', 1);
+    // this.getHostList('', 1);
+    this.listHosts({})
   },
 
   destroyed(){
@@ -46,6 +53,9 @@ export default {
 
   methods: {
     
+    // 主机相关API：获取主机列表
+    ...mapActions('hosts', ['listHosts']),
+
     // 获取主机
     getHosts(q) {
       return this.$request.get('hosts', q)

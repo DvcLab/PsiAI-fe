@@ -37,10 +37,10 @@ export default {
     },
   },
   created() {
-    // this.initWebSocket()
+    this.initWebSocket()
   },
   destroyed() {
-    // this.websock.close()
+    this.websock.close()
   },
   methods: {
     // chartsOption参数设置
@@ -58,7 +58,11 @@ export default {
               margin: 0,
             },
             dataLabels: {
+              name: {
+                fontSize: "0.8rem"
+              },
               value: {
+                fontSize: "0.8rem",
                 formatter: function (val) {
                   return val + symbol;
                 },
@@ -74,8 +78,8 @@ export default {
     // 初始化weosocket
     initWebSocket() {
       const wsuri =
-        process.env.VUE_APP_WS_URL + "_host_info?host_id=" + this.host.id;
-      this.websock = new WebSocket(wsuri);
+        process.env.VUE_APP_WS_URL + "_hosts?host_id=" + this.host.id;
+      this.websock = new WebSocket(wsuri, this.$keycloak.token);
       this.websock.onmessage = this.websocketonmessage;
       this.websock.onopen = this.websocketonopen;
       this.websock.onerror = this.websocketonerror;
@@ -92,7 +96,8 @@ export default {
 
     // 数据接收
     websocketonmessage(msg) {
-      this.hostSelfData = JSON.parse(msg.data);
+      const message = JSON.parse(msg.data);
+      this.hostSelfData = { ...this.hostSelfData, ...message }
     },
 
     // 数据发送

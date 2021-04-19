@@ -33,6 +33,8 @@ export const actions = {
         if(data.code === 1) {
           commit('SET_HOSTS', data.data);
           resolve(data);
+        } else {
+          reject(data);
         }
       })
       .catch((err) => {
