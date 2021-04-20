@@ -59,14 +59,6 @@ export default [
     },
     component: () => import('./views/DvcAI/containers/container-detail.vue'),
   },
-  // {
-  //   path: '/createContainer',
-  //   name: '创建容器',
-  //   meta: {
-  //     authRequired: true,
-  //   },
-  //   component: () => import('./views/DvcAI/containers/create-bk.vue'),
-  // },
   {
     path: '/404',
     name: '404',

@@ -409,6 +409,14 @@ export default {
       })
     },
 
+    // 跳转容器详情页
+    toContainerDetail(e){
+      let target = e.target;
+      if(target.nodeName !== "BUTTON" && target.nodeName !== "A") {
+        this.$router.push({ path: '/container/' + this.container.id })
+      }
+    },
+
     // ws初始化
     initWebSocket() {
       const wsuri =
@@ -475,13 +483,14 @@ export default {
         }
       })
     },
+    
   },
 };
 </script>
 
 <template>
   <LoaderContainer :loading="loadingState">
-    <div class="list-item-con">
+    <div class="list-item-con" @click="toContainerDetail">
       <div class="row align-items-center">
 
         <div class="col-12 col-md-3 mb-2">
@@ -572,6 +581,7 @@ export default {
         </div>
         
         <div class="col-12 col-md-8">
+
           <div v-if="!isDel" class="float-end w-100 container-btn-group">
             
             <b-form-radio-group
