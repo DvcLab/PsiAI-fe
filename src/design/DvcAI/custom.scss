@@ -110,6 +110,10 @@
     margin-bottom: 0!important;
 }
 
+.multiselect__option--highlight:after {
+    background: transparent!important;
+}
+
 .host-select {
     width: 38%!important;
     min-height: 0!important;
@@ -134,3 +138,4 @@
         transform:translateY(-50%) rotate(359deg)
     }
 }
+
