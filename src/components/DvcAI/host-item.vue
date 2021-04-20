@@ -36,10 +36,12 @@ export default {
       return Math.floor(this.hostSelfData.mem_info.usage * 100 * 100) / 100;
     },
   },
-  created() {
+  mounted() {
+    // 连接ws
     this.initWebSocket()
   },
   destroyed() {
+    // 退出关闭ws
     this.websock.close()
   },
   methods: {
@@ -95,14 +97,14 @@ export default {
     },
 
     // 数据接收
-    websocketonmessage(msg) {
-      const message = JSON.parse(msg.data);
+    websocketonmessage(res) {
+      const message = JSON.parse(res.data);
       this.hostSelfData = { ...this.hostSelfData, ...message }
     },
 
     // 数据发送
-    websocketsend(Data) {
-      this.websock.send(Data);
+    websocketsend(data) {
+      this.websock.send(data);
     },
 
     // 关闭
