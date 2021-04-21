@@ -483,6 +483,7 @@ export default {
 
     // 判断图片url是否可以加载
     async imageIsExist (url) {
+      if(!url) return false;
       let img = new Image();
       img.src = url;
       img.onload = function () {
@@ -501,10 +502,10 @@ export default {
 <template>
   <LoaderContainer :loading="loadingState">
     <div class="list-item-con">
-      <div class="row align-items-center">
+      <div class="row d-flex align-items-center">
 
         <div class="col-12 col-md-6 mb-2">
-          <div class="row">
+          <div class="row d-flex align-items-center">
 
             <div class="col-12 col-md-4">
               <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
@@ -533,7 +534,7 @@ export default {
             <div class="col-12 col-md-4 d-none d-md-block">
               <div class="d-flex align-items-center">
                 <img
-                  v-if="isImgExist"
+                  v-if="imageIsExist(container.user.avatar_url)"
                   class="rounded-circle avatar-xxs me-2"
                   v-real-img="container.user.avatar_url"
                   alt=""
@@ -717,10 +718,5 @@ export default {
 .select-custom {
   width: 30%;
   padding: 0.3rem 1.75rem 0.3rem 0.75rem;
-}
-.avatar-xxs {
-  height: 1.5rem;
-  width: 1.5rem;
-  line-height: 1.5rem;
 }
 </style>

@@ -11,7 +11,12 @@
     overflow: hidden;
     -webkit-box-orient: vertical;
 }
-
+// 用户头像xxs
+.avatar-xxs {
+    height: 1.5rem;
+    width: 1.5rem;
+    line-height: 1.5rem;
+}
 .autocomplete-input {
     position: relative;
     background-color: white;
