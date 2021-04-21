@@ -510,13 +510,21 @@ export default {
             <div class="col-12 col-md-4">
               <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
                 <i class="bx bx-cube me-1"></i>
-                <span class="me-1"> {{ newInfo.container_name }}</span>
+                <span class="me-2"> {{ newInfo.container_name }}</span>
                 <span
                   v-if="!canSelectLocation"
-                  class="badge rounded-pill"
+                  class="badge me-1"
                   :class="`bg-${ newInfo.user_host ? 'primary' : 'info' }`"
                 >
                   {{ newInfo.user_host ? '本地' : '远程' }}
+                </span>
+                <span class="d-md-none badge" :class="status.theme">
+                  <span v-if="newInfo.status === 'Running' && newInfo.alive_time">
+                    已运行 {{ newInfo.alive_time | duration('humanize') }}
+                  </span>
+                  <span v-else>
+                    {{ status.text }}
+                  </span>
                 </span>
               </h5>
             </div>
@@ -559,7 +567,7 @@ export default {
           
         </div>
 
-        <div class="col-12 col-md-6 mb-2">
+        <div class="col-12 col-md-6 mb-2 d-none d-md-block">
           <div class="float-start float-md-end text-truncate">
             <span class="badge me-2" :class="status.theme">
               <span v-if="newInfo.status === 'Running' && newInfo.alive_time">
@@ -694,6 +702,13 @@ export default {
             </b-button>
 
           </div>
+        </div>
+      </div>
+      <div class="row d-md-none">
+        <div class="col-12">
+          <span class="text-success">
+            更新于 {{ updateTime | moment("YYYY-MM-DD HH:mm:ss") }}
+          </span>
         </div>
       </div>
     </div>
