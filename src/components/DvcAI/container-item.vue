@@ -252,7 +252,12 @@ export default {
       let blob = new Blob([config], { type: "application/x-yaml" });
       return URL.createObjectURL(blob);
     },
-    
+
+    // 判断图片是否存在
+    isImgExist(){
+      if(!this.container.user.avatar_url) return false;
+      return this.imageIsExist(this.container.user.avatar_url);
+    }
   },
   mounted() {
     // 未删除容器，请求ws
@@ -475,6 +480,20 @@ export default {
         }
       })
     },
+
+    // 判断图片url是否可以加载
+    async imageIsExist (url) {
+      let img = new Image();
+      img.src = url;
+      img.onload = function () {
+        if (this.complete == true){
+          return true;
+        }
+      }
+      img.onerror = function () {
+        return false;
+      }
+    },
   },
 };
 </script>
@@ -484,38 +503,62 @@ export default {
     <div class="list-item-con">
       <div class="row align-items-center">
 
-        <div class="col-12 col-md-3 mb-2">
-          <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
-            <i class="bx bx-cube me-1"></i>
-            <span class="me-1"> {{ newInfo.container_name }}</span>
-            <span
-              v-if="!canSelectLocation"
-              class="badge rounded-pill"
-              :class="`bg-${ newInfo.user_host ? 'primary' : 'info' }`"
-            >
-              {{ newInfo.user_host ? '本地' : '远程' }}
-            </span>
-          </h5>
+        <div class="col-12 col-md-6 mb-2">
+          <div class="row">
+
+            <div class="col-12 col-md-4">
+              <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
+                <i class="bx bx-cube me-1"></i>
+                <span class="me-1"> {{ newInfo.container_name }}</span>
+                <span
+                  v-if="!canSelectLocation"
+                  class="badge rounded-pill"
+                  :class="`bg-${ newInfo.user_host ? 'primary' : 'info' }`"
+                >
+                  {{ newInfo.user_host ? '本地' : '远程' }}
+                </span>
+              </h5>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <span
+                v-if="image"
+                class="d-block text-truncate mb-0"
+              >
+                <i class="bx bx-layer me-1"></i>
+                {{ image }}
+              </span>
+            </div>
+
+            <div class="col-12 col-md-4 d-none d-md-block">
+              <div class="d-flex align-items-center">
+                <img
+                  v-if="isImgExist"
+                  class="rounded-circle avatar-xxs me-2"
+                  v-real-img="container.user.avatar_url"
+                  alt=""
+                />
+                <div v-else class="avatar-xxs me-2">
+                  <span class="avatar-title rounded-circle">{{ container.user.username[0] }}</span>
+                </div>
+                <span class="d-inline-block text-truncate">
+                  {{ container.user.username }}
+                </span>
+              </div>
+            </div>
+
+            <div class="col-12 d-md-none">
+              <span class="d-block text-truncate mb-0">
+                <i class="bx bx-user me-1"></i>
+                {{ container.user.username }}
+              </span>
+            </div>
+
+          </div>
+          
         </div>
 
-        <div class="col-12 col-md-3 mb-2">
-          <h5
-            v-if="image"
-            class="d-block text-truncate text-dark mb-0 list-item-name"
-          >
-            <i class="bx bx-layer me-1"></i>
-            {{ image }}
-          </h5>
-        </div>
-
-        <div class="col-12 col-md-3 mb-2">
-          <span class="d-inline-block text-truncate">
-            <i class="bx bx-user me-1"></i>
-            {{ container.user.username }}
-          </span>
-        </div>
-
-        <div class="col-12 col-md-3 mb-2">
+        <div class="col-12 col-md-6 mb-2">
           <div class="float-start float-md-end text-truncate">
             <span class="badge me-2" :class="status.theme">
               <span v-if="newInfo.status === 'Running' && newInfo.alive_time">
@@ -674,5 +717,10 @@ export default {
 .select-custom {
   width: 30%;
   padding: 0.3rem 1.75rem 0.3rem 0.75rem;
+}
+.avatar-xxs {
+  height: 1.5rem;
+  width: 1.5rem;
+  line-height: 1.5rem;
 }
 </style>
