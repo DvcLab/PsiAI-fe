@@ -44,7 +44,7 @@ export default {
 
     // 是否是用户自己创建的容器
     isMine() {
-      if(!this.currentUser.sub) return false;
+      if(!this.currentUser || !this.currentUser.sub) return false;
       return this.newInfo.uid === this.currentUser.sub;
     },
 
