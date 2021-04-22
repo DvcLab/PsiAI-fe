@@ -37,11 +37,18 @@
     padding: 0.8rem;
 }
 .grid-avatar {
-    height: 1.7rem;
-    width: 1.7rem;
+    height: 1.5rem;
+    width: 1.5rem;
     border-radius: 50%;
 }
 .grid-time {
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     line-height: 1.7rem;
+}
+.grid-username {
+    font-size: 0.6rem;
+    color: #3c4043;
+}
+.grid-username:hover {
+    color: #3c4043;
 }
