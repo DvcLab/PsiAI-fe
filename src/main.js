@@ -16,6 +16,8 @@ import VueMoment from 'vue-moment';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
+import _ from 'lodash';
+
 import request from '@/utils/request';
 
 import "../src/design/app.scss";
@@ -32,6 +34,7 @@ import i18n from './i18n'
 import tinymce from 'vue-tinymce-editor'
 
 // 全局注册
+Vue.prototype.$_ = _
 Vue.prototype.$request = request
 
 // const firebaseConfig = {
@@ -94,10 +97,9 @@ Vue.use(VueKeyCloak, {
   },
   onReady: kc => {
     kc.loadUserInfo().success((data)=> {
-      console.log(data)
       store.commit('auth/SET_CURRENT_USER', data)
     })
-    store.dispatch('resources/getHosts');
+    store.dispatch('hosts/listHosts', {});
     new Vue({
       router,
       store,

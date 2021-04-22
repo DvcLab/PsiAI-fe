@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     // 主机列表
-    ...mapState("resources", ["hosts"]),
+    ...mapState("hosts", ["hosts"]),
 
     // 当前用户信息
     ...mapState("auth", ["currentUser"]),
@@ -268,8 +268,8 @@ export default {
     if (this.websock) this.websock.close();
   },
   methods: {
-    // 主机相关API：获取主机列表
-    ...mapActions('resource', ['getHosts']),
+    // // 主机相关API：获取主机列表
+    // ...mapActions('hosts', ['listHosts']),
 
     // 容器相关API：运行容器
     ...mapActions('containers', ['runContainer', 'pauseContainer', 'restartContainer']),

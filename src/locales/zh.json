@@ -91,7 +91,8 @@
     }
   },
   "menuitems": {
-    "psiai":{
+    "dvcai":{
+      "hosts": "主机列表",
       "projects": "项目列表",
       "datasets": "数据集列表",
       "images": "镜像列表",

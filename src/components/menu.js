@@ -1,26 +1,33 @@
 export const menuItems = [
     {
         id: 1,
-        label: "menuitems.psiai.projects",
-        icon: "bx-briefcase-alt-2",
-        link: "/"
+        label: "menuitems.dvcai.hosts",
+        icon: "bx-server",
+        link: "/hosts",
+        roles: ["DOCKHUB_ADMIN"]
     },
     {
         id: 2,
-        label: "menuitems.psiai.datasets",
-        icon: "bx-cube",
-        link: "/datasets"
+        label: "menuitems.dvcai.projects",
+        icon: "bx-briefcase-alt-2",
+        link: "/projects"
     },
     {
         id: 3,
-        label: "menuitems.psiai.images",
+        label: "menuitems.dvcai.datasets",
+        icon: "bx-data",
+        link: "/datasets"
+    },
+    {
+        id: 4,
+        label: "menuitems.dvcai.images",
         icon: "bx-layer",
         link: "/images"
     },
     {
-        id: 4,
-        label: "menuitems.psiai.containers",
-        icon: "bx-code-block",
+        id: 5,
+        label: "menuitems.dvcai.containers",
+        icon: "bx-cube",
         link: "/containers"
     }
     // {
