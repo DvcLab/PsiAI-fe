@@ -22,7 +22,6 @@ export default {
   },
   mounted(){
     this.imageIsExist(this.src).then((res)=>{
-      console.log(res)
       this.isExist = res;
     })
   },

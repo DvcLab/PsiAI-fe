@@ -54,8 +54,8 @@ export default {
         </p>
       </div>
 
-      <div class="col-2 col-md-1 text-end">
-        <Avatar size="xs" :src="dataset.user.avatar_url" :user-name="dataset.user.username"/>
+      <div class="col-2 col-md-1">
+        <Avatar size="xs" :src="dataset.user.avatar_url" :user-name="dataset.user.username" class="mx-auto"/>
       </div>
 
       <div class="col-4 col-md-2 text-end">
