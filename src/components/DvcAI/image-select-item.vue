@@ -81,10 +81,10 @@ export default {
           </span>
       </div>
 
-      <div class="col-md-2 text-end d-none d-md-block">
+      <!-- <div class="col-md-2 text-end d-none d-md-block">
         <i class="bx bx-calendar me-1"></i>
         <span>{{ image.update_time | moment("from", "now") }} 更新</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

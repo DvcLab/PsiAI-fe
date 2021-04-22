@@ -47,20 +47,25 @@ export default {
         </p>
       </div>
     </a>
-    <div class="grid-footer">
+    <div class="row grid-footer">
       <!-- 暂时点击用户头像跳转空链接 -->
-      <a href="javascript:void(0);">
-        <img
-          v-if="dataset.user"
-          class="grid-avatar float-start"
-          src="@/assets/images/users/avatar-1.jpg"
-          v-real-img="dataset.user.avatar_url"
-          :alt="dataset.user.username"
-        />
-      </a>
-      <span class="grid-time float-end">{{
-        dataset.update_time | moment("from", "now")
-      }}</span>
+      <div class="col-8 d-inline-flex align-items-center">
+        <a href="javascript:void(0);">
+          <img
+            v-if="dataset.user"
+            class="grid-avatar float-start me-2"
+            src="@/assets/images/users/avatar-1.jpg"
+            v-real-img="dataset.user.avatar_url"
+            :alt="dataset.user.username"
+          />
+        </a>
+        <p class="text-truncate mb-0"><a class="grid-username" href="javascript:void(0);">{{dataset.user.username}}</a></p>
+      </div>
+      <div class="col-4">
+        <span class="grid-time float-end text-truncate">{{
+          dataset.update_time | moment("from", "now")
+        }}</span>
+      </div>
     </div>
   </div>
 </template>
