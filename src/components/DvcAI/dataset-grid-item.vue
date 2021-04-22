@@ -1,10 +1,15 @@
 <script>
+import Avatar from "@/components/DvcAI/avatar";
+
 export default {
   props: {
     dataset: {
       type: Object,
       default: () => {},
     },
+  },
+  components: {
+    Avatar
   },
   computed: {
     tags() {
@@ -51,13 +56,7 @@ export default {
       <!-- 暂时点击用户头像跳转空链接 -->
       <div class="col-8 d-inline-flex align-items-center">
         <a href="javascript:void(0);">
-          <img
-            v-if="dataset.user"
-            class="grid-avatar float-start me-2"
-            src="@/assets/images/users/avatar-1.jpg"
-            v-real-img="dataset.user.avatar_url"
-            :alt="dataset.user.username"
-          />
+          <Avatar size="xxs" :src="dataset.user.avatar_url" :user-name="dataset.user.username" class="me-2"/>
         </a>
         <p class="text-truncate mb-0"><a class="grid-username" href="javascript:void(0);">{{dataset.user.username}}</a></p>
       </div>

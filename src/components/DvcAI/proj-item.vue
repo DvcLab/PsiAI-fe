@@ -1,10 +1,15 @@
 <script>
+import Avatar from "@/components/DvcAI/avatar";
+
 export default {
   props: {
     proj: {
       type: Object,
       default: () => {},
     },
+  },
+  components: {
+    Avatar
   },
   computed: {
     branches() {
@@ -33,11 +38,14 @@ export default {
       </div>
 
       <div class="col-4 col-md-3">
-        <h5 class="list-item-name i-text-middle text-truncate mb-0">
-          <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
-          <a :href="proj.url" class="text-dark me-1">{{ proj.name }}</a>
-          <i class="bx bxl-github"></i>
-        </h5>
+        <div class="i-text-middle">
+          <h5 class="list-item-name text-truncate mb-0">
+            <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
+            <!-- 暂时跳转至github项目 -->
+            <a :href="proj.url" class="text-dark me-1">{{ proj.name }}</a>
+          </h5>
+          <a :href="proj.url" class="i-text-middle"><i class="bx bxl-github font-size-18"></i></a>
+        </div>
         <p class="text-muted text-truncate list-item-desc mb-0">{{ proj.desc }}</p>
       </div>
 
@@ -93,13 +101,7 @@ export default {
       </div>
 
       <div class="col-2 col-md-1">
-        <img
-          v-if="proj.user"
-          class="rounded-circle avatar-xs"
-          src="@/assets/images/users/avatar-1.jpg"
-          v-real-img="proj.user.avatar_url"
-          :alt="proj.user.username"
-        />
+        <Avatar size="xs" :src="proj.user.avatar_url" :user-name="proj.user.username"/>
       </div>
 
       <div class="col-2 col-md-2 text-end d-none d-md-block">

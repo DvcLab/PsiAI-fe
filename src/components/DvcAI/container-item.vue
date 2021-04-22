@@ -2,6 +2,7 @@
 import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import LoaderContainer from "@/components/DvcAI/loader-container";
+import Avatar from "@/components/DvcAI/avatar";
 import { EventBus } from "@/utils/event-bus";
 import { mapState, mapActions } from "vuex";
 
@@ -15,6 +16,7 @@ export default {
   components: {
     Multiselect,
     LoaderContainer,
+    Avatar
   },
   data() {
     return {
@@ -541,15 +543,7 @@ export default {
 
             <div class="col-12 col-md-4 d-none d-md-block">
               <div class="d-flex align-items-center">
-                <img
-                  v-if="imageIsExist(container.user.avatar_url)"
-                  class="rounded-circle avatar-xxs me-2"
-                  v-real-img="container.user.avatar_url"
-                  alt=""
-                />
-                <div v-else class="avatar-xxs me-2">
-                  <span class="avatar-title rounded-circle">{{ container.user.username[0] }}</span>
-                </div>
+                <Avatar size="xxs" :src="container.user.avatar_url" :user-name="container.user.username" class="me-2"/>
                 <span class="d-inline-block text-truncate">
                   {{ container.user.username }}
                 </span>

@@ -1,10 +1,15 @@
 <script>
+import Avatar from "@/components/DvcAI/avatar";
+
 export default {
   props: {
     proj: {
       type: Object,
       default: () => {},
     },
+  },
+  components: {
+    Avatar
   },
   computed: {
     branches() {
@@ -29,7 +34,7 @@ export default {
 
 <template>
   <div class="grid-item-con">
-    <!-- 暂时点击项目卡片到空链接 -->
+    <!-- 暂时跳转至github项目 -->
     <a :href="proj.url">
       <img
         class="grid-img"
@@ -38,11 +43,14 @@ export default {
         alt="项目"
       />
       <div class="grid-body">
-        <h5 class="grid-item-name i-text-middle text-truncate">
-          <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
-          <span class="text-dark me-1">{{ proj.name }}</span>
-          <i class="bx bxl-github"></i>
-        </h5>
+        <div class="i-text-middle mb-1">
+          <h5 class="grid-item-name text-truncate mb-0">
+            <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
+            <span class="text-dark me-1">{{ proj.name }}</span>
+          </h5>
+          <a class="i-text-middle" :href="proj.url"><i class="bx bxl-github font-size-18"></i></a>
+        </div>
+        
         <p class="grid-item-desc text-muted text-truncate-2 mb-0">{{ proj.desc }}</p>
 
         <p class="mt-1 mb-0">
@@ -66,13 +74,7 @@ export default {
       <!-- 暂时点击用户头像跳转空链接 -->
       <div class="col-8 d-inline-flex align-items-center">
         <a href="javascript:void(0);">
-          <img
-            v-if="proj.user"
-            class="grid-avatar float-start me-2"
-            src="@/assets/images/users/avatar-1.jpg"
-            v-real-img="proj.user.avatar_url"
-            :alt="proj.user.username"
-          />
+          <Avatar size="xxs" :src="proj.user.avatar_url" :user-name="proj.user.username" class="me-2"/>
         </a>
         <p class="text-truncate mb-0"><a class="grid-username" href="javascript:void(0);">{{proj.user.username}}</a></p>
       </div>

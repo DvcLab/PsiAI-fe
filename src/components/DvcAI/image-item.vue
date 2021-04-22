@@ -1,10 +1,15 @@
 <script>
+import Avatar from "@/components/DvcAI/avatar";
+
 export default {
   props: {
     image: {
       type: Object,
       default: () => {},
     },
+  },
+  components: {
+    Avatar
   },
   computed: {
     tags() {
@@ -54,13 +59,14 @@ export default {
       </div>
 
       <div class="col-2 col-md-1">
-        <img
+        <!-- <img
           v-if="image.user"
           class="rounded-circle avatar-xs"
           src="@/assets/images/users/avatar-1.jpg"
           v-real-img="image.user.avatar_url"
           :alt="image.user.username"
-        />
+        /> -->
+        <Avatar size="xs" :src="image.user.avatar_url" :user-name="image.user.username"/>
       </div>
 
       <div class="col-md-2 text-end d-none d-md-block">
