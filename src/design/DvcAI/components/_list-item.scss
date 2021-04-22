@@ -26,13 +26,14 @@
 }
 // 列表项的名称样式
 .list-item-name {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 500;
     line-height: 1.2;
     text-decoration: none;
     position: relative;
-    display: inline-block;
-    max-width:100%;
+    display: inline-flex;
+    max-width: 100%;
+    margin-bottom: 0.25rem;
 }
 .list-item-name a:hover:after  {
     content: "";
@@ -41,4 +42,7 @@
     left: 0;
     right: 0;
     bottom: 1px;
+}
+.list-item-desc {
+    font-size: 0.7rem;
 }

@@ -11,6 +11,11 @@
     overflow: hidden;
     -webkit-box-orient: vertical;
 }
+// icon与文字对齐
+.i-text-middle {
+    display: inline-flex;
+    align-items: center;
+}
 // 用户头像xxs
 .avatar-xxs {
     height: 1.5rem;

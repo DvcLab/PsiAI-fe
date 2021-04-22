@@ -30,7 +30,7 @@ export default {
 <template>
   <div class="grid-item-con">
     <!-- 暂时点击项目卡片到空链接 -->
-    <a href="javascript:void(0);">
+    <a :href="proj.url">
       <img
         class="grid-img"
         src="@/assets/images/companies/img-1.png"
@@ -38,23 +38,24 @@ export default {
         alt="项目"
       />
       <div class="grid-body">
-        <h5 class="text-truncate mb-0 grid-item-name">
+        <h5 class="grid-item-name i-text-middle text-truncate">
           <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
-          <span class="text-dark">{{ proj.name }}</span>
+          <span class="text-dark me-1">{{ proj.name }}</span>
+          <i class="bx bxl-github"></i>
         </h5>
-        <p class="text-muted text-truncate-2 mb-0">{{ proj.desc }}</p>
+        <p class="grid-item-desc text-muted text-truncate-2 mb-0">{{ proj.desc }}</p>
 
         <p class="mt-1 mb-0">
           <span v-for="item in branches" :key="item">
             <span class="badge bg-primary me-2">
-              <i class="bx bx-git-branch me-1"></i>
+              <i class="bx bx-git-branch"></i>
               {{ item }}
             </span>
           </span>
 
           <span v-for="item in datasets" :key="item">
             <span class="badge bg-primary me-2">
-              <i class="bx bx-cube me-1"></i>
+              <i class="bx bx-cube"></i>
               {{ item }}
             </span>
           </span>
@@ -81,7 +82,13 @@ export default {
           proj.update_time | moment("from", "now")
         }}</span>
       </div>
-      
+
     </div>
   </div>
 </template>
+<style scoped>
+.i-text-middle {
+  display: inline-flex;
+  align-items: center;
+}
+</style>

@@ -24,9 +24,13 @@
     padding: 16px;
 }
 .grid-item-name {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 500;
     line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+.grid-item-desc {
+    font-size: 0.7rem;
 }
 .grid-footer {
     /* display: flex;

@@ -32,11 +32,11 @@ export default {
         alt="项目"
       />
       <div class="grid-body">
-        <h5 class="text-truncate mb-0 grid-item-name">
-          <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
+        <h5 class="grid-item-name i-text-middle text-truncate">
+          <i class="bx bx-cube me-1 d-md-none"></i>
           <span class="text-dark">{{ dataset.name }}</span>
         </h5>
-        <p class="text-muted text-truncate-2 mb-0">{{ dataset.desc }}</p>
+        <p class="text-muted text-truncate-2 list-item-desc mb-0">{{ dataset.desc }}</p>
 
         <p class="mt-1 mb-0">
           <span v-for="item in tags" :key="item">

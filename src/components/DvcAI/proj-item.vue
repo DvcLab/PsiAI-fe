@@ -33,11 +33,12 @@ export default {
       </div>
 
       <div class="col-4 col-md-3">
-        <h5 class="text-truncate mb-0 list-item-name">
+        <h5 class="list-item-name i-text-middle text-truncate mb-0">
           <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
-          <a :href="proj.url" class="text-dark">{{ proj.name }}</a>
+          <a :href="proj.url" class="text-dark me-1">{{ proj.name }}</a>
+          <i class="bx bxl-github"></i>
         </h5>
-        <p class="text-muted text-truncate mb-0">{{ proj.desc }}</p>
+        <p class="text-muted text-truncate list-item-desc mb-0">{{ proj.desc }}</p>
       </div>
 
       <div class="col-3 col-md-2 flex-wrap">

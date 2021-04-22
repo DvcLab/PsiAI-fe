@@ -38,7 +38,7 @@ export default {
           <i class="bx bx-cube me-1 d-md-none"></i>
           <a :href="dataset.url" class="text-dark">{{ dataset.name }}</a>
         </h5>
-        <p class="text-muted text-truncate mb-0">{{ dataset.desc }}</p>
+        <p class="text-muted text-truncate list-item-desc mb-0">{{ dataset.desc }}</p>
         <p
           v-if="dataset.tags && dataset.tags.length > 0"
           class="text-muted text-truncate mb-0"
