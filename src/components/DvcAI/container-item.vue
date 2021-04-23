@@ -254,12 +254,6 @@ export default {
       let blob = new Blob([config], { type: "application/x-yaml" });
       return URL.createObjectURL(blob);
     },
-
-    // 判断图片是否存在
-    isImgExist(){
-      if(!this.container.user.avatar_url) return false;
-      return this.imageIsExist(this.container.user.avatar_url);
-    }
   },
   mounted() {
     // 未删除容器，请求ws
@@ -489,21 +483,6 @@ export default {
           this.delContainer();
         }
       })
-    },
-
-    // 判断图片url是否可以加载
-    async imageIsExist (url) {
-      if(!url) return false;
-      let img = new Image();
-      img.src = url;
-      img.onload = function () {
-        if (this.complete == true){
-          return true;
-        }
-      }
-      img.onerror = function () {
-        return false;
-      }
     },
   },
 };

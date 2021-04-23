@@ -2,6 +2,7 @@
 // import Layout from "../../../layouts/main";
 import ContainerList from "@/components/DvcAI/container-list";
 import Loader from "@/components/DvcAI/loader";
+import Avatar from "@/components/DvcAI/avatar";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
@@ -16,7 +17,7 @@ export default {
     title: "容器列表",
     meta: [{ name: "容器列表", content: appConfig.description }]
   },
-  components: { Loader, ContainerList, Autocomplete },
+  components: { Loader, ContainerList, Autocomplete, Avatar },
   data() {
     return {
       containers: [],
@@ -184,21 +185,6 @@ export default {
       this.$router.push({path: '/containers/create'})
     },
 
-    // 判断图片url是否可以加载
-    async imageIsExist (url) {
-      if(!url) return false;
-      let img = new Image();
-      img.src = url;
-      img.onload = function () {
-        if (this.complete == true){
-          return true;
-        }
-      }
-      img.onerror = function () {
-        return false;
-      }
-    }
-
   }
 };
 </script>
@@ -232,15 +218,7 @@ export default {
                     </div>
                     <div class="col-12 col-md-4 d-none d-md-block">
                       <div class="d-flex align-items-center">
-                        <img
-                          v-if="imageIsExist(result.user.avatar_url)"
-                          class="rounded-circle avatar-xxs me-2"
-                          v-real-img="result.user.avatar_url"
-                          alt=""
-                        />
-                        <div v-else class="avatar-xxs me-2">
-                          <span class="avatar-title rounded-circle">{{result.user.username[0]}}</span>
-                        </div>
+                        <Avatar size="xxs" :src="result.user.avatar_url" :user-name="result.user.username" class="me-2"/>
                         <span class="d-inline-block text-truncate">{{result.user.username}}</span>
                       </div>
                     </div>
