@@ -127,7 +127,7 @@ export default {
       
       
       <div class="mt-4">
-        <b-button class="text-truncate i-text-middle btn-block w-100" variant="outline-primary" size="md" @click="pauseContainerMsg">
+        <b-button class="text-truncate i-text-middle btn-block w-100" variant="outline-primary" size="md">
           <i class="bx bx-pause font-size-16 align-middle me-1"></i>
           暂停
         </b-button>

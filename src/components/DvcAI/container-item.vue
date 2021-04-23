@@ -412,9 +412,16 @@ export default {
 
     // 跳转容器详情页
     toContainerDetail(e){
+      console.log(e)
       let target = e.target;
-      if(target.nodeName !== "BUTTON" && target.nodeName !== "A") {
-        this.$router.push({ path: '/container/' + this.container.id })
+      if(target.matches('button') || target.matches('a') || target.matches('input') || target.matches('#location-radios span') || target.matches('label.btn') || target.matches('div.multiselect') || target.matches('div.multiselect__tags')) {
+        console.log('不可跳转')
+        return;
+      }else if(target.matches('.username') || target.matches('.avatar')) {
+        console.log('点击跳转用户信息页');
+      } else {
+        return this.$router.push({ path: '/container/' + this.container.id })
+        // console.log('可以跳转详情页')
       }
     },
 
@@ -490,7 +497,7 @@ export default {
 
 <template>
   <LoaderContainer :loading="loadingState">
-    <div class="list-item-con">
+    <div class="list-item-con" @click="toContainerDetail">
       <div class="row d-flex align-items-center">
 
         <div class="col-12 col-md-6 mb-2">
@@ -530,8 +537,8 @@ export default {
 
             <div class="col-12 col-md-4 d-none d-md-block">
               <div class="d-flex align-items-center">
-                <Avatar size="xxs" :src="container.user.avatar_url" :user-name="container.user.username" class="me-2"/>
-                <span class="d-inline-block text-truncate">
+                <Avatar size="xxs" :src="container.user.avatar_url" :user-name="container.user.username" class="avatar me-2"/>
+                <span class="d-inline-block text-truncate username">
                   {{ container.user.username }}
                 </span>
               </div>
