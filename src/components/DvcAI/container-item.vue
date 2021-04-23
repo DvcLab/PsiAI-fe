@@ -2,6 +2,7 @@
 import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import LoaderContainer from "@/components/DvcAI/loader-container";
+import Avatar from "@/components/DvcAI/avatar";
 import { EventBus } from "@/utils/event-bus";
 import { mapState, mapActions } from "vuex";
 
@@ -15,6 +16,7 @@ export default {
   components: {
     Multiselect,
     LoaderContainer,
+    Avatar
   },
   data() {
     return {
@@ -32,7 +34,7 @@ export default {
   },
   computed: {
     // 主机列表
-    ...mapState("resources", ["hosts"]),
+    ...mapState("hosts", ["hosts"]),
 
     // 当前用户信息
     ...mapState("auth", ["currentUser"]),
@@ -44,7 +46,7 @@ export default {
 
     // 是否是用户自己创建的容器
     isMine() {
-      if(!this.currentUser.sub) return false;
+      if(!this.currentUser || !this.currentUser.sub) return false;
       return this.newInfo.uid === this.currentUser.sub;
     },
 
@@ -252,7 +254,12 @@ export default {
       let blob = new Blob([config], { type: "application/x-yaml" });
       return URL.createObjectURL(blob);
     },
-    
+
+    // 判断图片是否存在
+    isImgExist(){
+      if(!this.container.user.avatar_url) return false;
+      return this.imageIsExist(this.container.user.avatar_url);
+    }
   },
   mounted() {
     // 未删除容器，请求ws
@@ -263,8 +270,8 @@ export default {
     if (this.websock) this.websock.close();
   },
   methods: {
-    // 主机相关API：获取主机列表
-    ...mapActions('resource', ['getHosts']),
+    // // 主机相关API：获取主机列表
+    // ...mapActions('hosts', ['listHosts']),
 
     // 容器相关API：运行容器
     ...mapActions('containers', ['runContainer', 'pauseContainer', 'restartContainer']),
@@ -483,48 +490,86 @@ export default {
         }
       })
     },
-    
+
+    // 判断图片url是否可以加载
+    async imageIsExist (url) {
+      if(!url) return false;
+      let img = new Image();
+      img.src = url;
+      img.onload = function () {
+        if (this.complete == true){
+          return true;
+        }
+      }
+      img.onerror = function () {
+        return false;
+      }
+    },
   },
 };
 </script>
 
 <template>
   <LoaderContainer :loading="loadingState">
-    <div class="list-item-con" @click="toContainerDetail">
-      <div class="row align-items-center">
+    <div class="list-item-con">
+      <div class="row d-flex align-items-center">
 
-        <div class="col-12 col-md-3 mb-2">
-          <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
-            <i class="bx bx-cube me-1"></i>
-            <span class="me-1"> {{ newInfo.container_name }}</span>
-            <span
-              v-if="!canSelectLocation"
-              class="badge rounded-pill"
-              :class="`bg-${ newInfo.user_host ? 'primary' : 'info' }`"
-            >
-              {{ newInfo.user_host ? '本地' : '远程' }}
-            </span>
-          </h5>
+        <div class="col-12 col-md-6 mb-2">
+          <div class="row d-flex align-items-center">
+
+            <div class="col-12 col-md-4">
+              <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
+                <i class="bx bx-cube me-1"></i>
+                <span class="me-2"> {{ newInfo.container_name }}</span>
+                <span
+                  v-if="!canSelectLocation"
+                  class="badge me-1"
+                  :class="`bg-${ newInfo.user_host ? 'primary' : 'info' }`"
+                >
+                  {{ newInfo.user_host ? '本地' : '远程' }}
+                </span>
+                <span class="d-md-none badge" :class="status.theme">
+                  <span v-if="newInfo.status === 'Running' && newInfo.alive_time">
+                    已运行 {{ newInfo.alive_time | duration('humanize') }}
+                  </span>
+                  <span v-else>
+                    {{ status.text }}
+                  </span>
+                </span>
+              </h5>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <span
+                v-if="image"
+                class="d-block text-truncate mb-0"
+              >
+                <i class="bx bx-layer me-1"></i>
+                {{ image }}
+              </span>
+            </div>
+
+            <div class="col-12 col-md-4 d-none d-md-block">
+              <div class="d-flex align-items-center">
+                <Avatar size="xxs" :src="container.user.avatar_url" :user-name="container.user.username" class="me-2"/>
+                <span class="d-inline-block text-truncate">
+                  {{ container.user.username }}
+                </span>
+              </div>
+            </div>
+
+            <div class="col-12 d-md-none">
+              <span class="d-block text-truncate mb-0">
+                <i class="bx bx-user me-1"></i>
+                {{ container.user.username }}
+              </span>
+            </div>
+
+          </div>
+          
         </div>
 
-        <div class="col-12 col-md-3 mb-2">
-          <h5
-            v-if="image"
-            class="d-block text-truncate text-dark mb-0 list-item-name"
-          >
-            <i class="bx bx-layer me-1"></i>
-            {{ image }}
-          </h5>
-        </div>
-
-        <div class="col-12 col-md-3 mb-2">
-          <span class="d-inline-block text-truncate">
-            <i class="bx bx-user me-1"></i>
-            {{ container.user.username }}
-          </span>
-        </div>
-
-        <div class="col-12 col-md-3 mb-2">
+        <div class="col-12 col-md-6 mb-2 d-none d-md-block">
           <div class="float-start float-md-end text-truncate">
             <span class="badge me-2" :class="status.theme">
               <span v-if="newInfo.status === 'Running' && newInfo.alive_time">
@@ -660,6 +705,13 @@ export default {
             </b-button>
 
           </div>
+        </div>
+      </div>
+      <div class="row d-md-none">
+        <div class="col-12">
+          <span class="text-success">
+            更新于 {{ updateTime | moment("YYYY-MM-DD HH:mm:ss") }}
+          </span>
         </div>
       </div>
     </div>

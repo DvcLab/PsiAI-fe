@@ -1,10 +1,15 @@
 <script>
+import Avatar from "@/components/DvcAI/avatar";
+
 export default {
   props: {
     dataset: {
       type: Object,
       default: () => {},
     },
+  },
+  components: {
+    Avatar
   },
   computed: {
     tags() {
@@ -38,7 +43,7 @@ export default {
           <i class="bx bx-cube me-1 d-md-none"></i>
           <a :href="dataset.url" class="text-dark">{{ dataset.name }}</a>
         </h5>
-        <p class="text-muted text-truncate mb-0">{{ dataset.desc }}</p>
+        <p class="text-muted text-truncate list-item-desc mb-0">{{ dataset.desc }}</p>
         <p
           v-if="dataset.tags && dataset.tags.length > 0"
           class="text-muted text-truncate mb-0"
@@ -49,14 +54,8 @@ export default {
         </p>
       </div>
 
-      <div class="col-2 col-md-1 text-end">
-        <img
-          v-if="dataset.user"
-          class="rounded-circle avatar-xs"
-          src="@/assets/images/users/avatar-1.jpg"
-          v-real-img="dataset.user.avatar_url"
-          :alt="dataset.user.username"
-        />
+      <div class="col-2 col-md-1">
+        <Avatar size="xs" :src="dataset.user.avatar_url" :user-name="dataset.user.username" class="mx-auto"/>
       </div>
 
       <div class="col-4 col-md-2 text-end">

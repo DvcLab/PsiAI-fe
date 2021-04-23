@@ -40,3 +40,12 @@ jobs:
         with:
           source: "./dist/"
           target: "/opt/dvclab/"
+      # 重启openresty服务
+      - name: Restart
+        uses: appleboy/ssh-action@master 
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          port: ${{ secrets.PORT }}
+          script: docker restart openresty

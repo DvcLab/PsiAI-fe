@@ -26,11 +26,13 @@ export default {
         <div class="col-12">
           <div class="bg-white list-head-text">
             <div class="row align-items-center">
-                <span class="col-6 col-md-5">镜像名称</span>
-                <span class="col-2 col-md-2">类型</span>
-                <span class="col-2 col-md-1">用户</span>
+                <span class="col-md-1 d-none d-md-block">#</span>
+                <span class="col-6 col-md-3">镜像名称</span>
+                <span class="col-md-1 text-center d-none d-md-block">类型</span>
+                <span class="col-6 col-md-2 text-start text-md-center">类库</span>
+                <span class="col-md-1 text-center d-none d-md-block">用户</span>
                 <span class="col-md-2 text-end d-none d-md-block">创建时间</span>
-                <span class="col-2 col-md-2 text-end">更新时间</span>
+                <span class="col-md-2 text-end d-none d-md-block">更新时间</span>
             </div>
           </div>
         </div>

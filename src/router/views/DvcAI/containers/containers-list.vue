@@ -24,9 +24,19 @@ export default {
       curPage: 1,
       curTotal: 0,
       meta: {},
-      loadingState: true
+      loadingState: true,
+      status: 'active'
     };
   },
+  // computed: {
+  //   containerFilter() {
+  //     if(status === 'active') {
+  //       return this.containers.filter((item) => item.status!=="New" || item.status!=="Deleted" || item.status!=="Failure");
+  //     } else {
+  //       return this.containers;
+  //     }
+  //   }
+  // },
   mounted() {
     window.addEventListener('scroll', this.load);
     this.getContainersList('', 1);
@@ -121,7 +131,7 @@ export default {
 
     // 选择搜索内容，input显示内容
     getResultValue(result) {
-      return result.name;
+      return result.container_name;
       // console.log(result)
       // this.searchContent = result ? result.id : '';
       // return result ? result.id : ''
@@ -174,6 +184,21 @@ export default {
       this.$router.push({path: '/containers/create'})
     },
 
+    // 判断图片url是否可以加载
+    async imageIsExist (url) {
+      if(!url) return false;
+      let img = new Image();
+      img.src = url;
+      img.onload = function () {
+        if (this.complete == true){
+          return true;
+        }
+      }
+      img.onerror = function () {
+        return false;
+      }
+    }
+
   }
 };
 </script>
@@ -183,8 +208,8 @@ export default {
     <div class="row">
       
       <div class="col-12 align-items-center">
-        <div class="row">
-          <div class="col-6 mb-3">
+        <div class="row d-flex align-item-center">
+          <div class="col-7 mb-3">
             <autocomplete
               aria-label="搜索容器..."
               placeholder="搜索容器..."
@@ -198,14 +223,49 @@ export default {
                   v-bind="props"
                   class="search-result"
                 >
-                  <div class="text-start">
-                    <h6><i class="bx bx-code-block me-1"></i>{{ result.id }}</h6>
+                  <div class="row d-flex align-items-center">
+                    <div class="col-12 col-md-4">
+                      <h6 class="mb-0"><i class="bx bx-cube me-1"></i>{{result.container_name}}</h6>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <span><i class="bx bx-layer me-1"></i>{{result.image.name}}</span>
+                    </div>
+                    <div class="col-12 col-md-4 d-none d-md-block">
+                      <div class="d-flex align-items-center">
+                        <img
+                          v-if="imageIsExist(result.user.avatar_url)"
+                          class="rounded-circle avatar-xxs me-2"
+                          v-real-img="result.user.avatar_url"
+                          alt=""
+                        />
+                        <div v-else class="avatar-xxs me-2">
+                          <span class="avatar-title rounded-circle">{{result.user.username[0]}}</span>
+                        </div>
+                        <span class="d-inline-block text-truncate">{{result.user.username}}</span>
+                      </div>
+                    </div>
+                    <div class="col-12 d-md-none">
+                      <span class="d-block text-truncate mb-0">
+                        <i class="bx bx-user me-1"></i>{{result.user.username}}
+                      </span>
+                    </div>
                   </div>
                 </li>
               </template>
             </autocomplete>
+            
           </div>
-          <div class="col-6 align-self-center mb-3">
+          <!-- <div class="col-1 d-flex align-items-center mb-3">
+            <b-form-checkbox
+              v-model="status"
+              value="active"
+              unchecked-value="no_active"
+              class="d-inline-block"
+              checked
+              plain
+              >全部</b-form-checkbox>
+          </div> -->
+          <div class="col-5 align-self-center mb-3">
             <button
               type="button"
               class="btn btn-success btn-rounded float-end"
