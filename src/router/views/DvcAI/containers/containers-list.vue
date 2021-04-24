@@ -255,16 +255,6 @@ export default {
             </autocomplete>
             
           </div>
-          <!-- <div class="col-1 d-flex align-items-center mb-3">
-            <b-form-checkbox
-              v-model="status"
-              value="active"
-              unchecked-value="no_active"
-              class="d-inline-block"
-              checked
-              plain
-              >全部</b-form-checkbox>
-          </div> -->
           <div class="col-5 align-self-center mb-3">
             <button
               type="button"
@@ -276,8 +266,30 @@ export default {
           </div>
         </div>
       </div>
+      <div class="col-12">
+        <b-tabs pills active-nav-item-class="text-white">
+          <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill">
+            <template v-slot:title>
+              <span class="d-inline-block d-sm-none">
+                <i class="fas fa-home"></i>
+              </span>
+              <span class="d-none d-sm-inline-block">运行</span>
+            </template>
+            <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+          </b-tab>
+          <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill">
+            <template v-slot:title>
+              <span class="d-inline-block d-sm-none">
+                <i class="fas fa-home"></i>
+              </span>
+              <span class="d-none d-sm-inline-block">全部</span>
+            </template>
+            <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+          </b-tab>
+        </b-tabs>
+      </div>
 
-      <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+      <!-- <ContainerList class="col-12" :containers="containers" :updating="loadingState"/> -->
 
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>
