@@ -29,7 +29,7 @@ export default {
       linkItems: [
         {
           text: "容器列表",
-          href: "/containers",
+          to: { path: '/containers' },
         },
         {
           text: "创建容器",
