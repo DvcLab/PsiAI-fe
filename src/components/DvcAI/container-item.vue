@@ -50,11 +50,6 @@ export default {
       return this.newInfo.uid === this.currentUser.sub;
     },
 
-    // 管理员是否可以操作
-    isAdminOperate () {
-      return this.isAdmin && this.isMine;
-    },
-
     // 是否在用户本机
     isUserHost () {
       return this.newInfo.user_host;
@@ -670,7 +665,7 @@ export default {
             </b-button>
 
             <a
-              v-if="canSelectCloudRunning && isMine"
+              v-if="canSelectCloudRunning"
               :href="jupyterUrl"
               class="btn btn-outline-primary btn-sm btn-item"
               download="docker-compose-config"
