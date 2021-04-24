@@ -1,11 +1,9 @@
 <script>
-import ContainerHeader from './container-header'
-import ContainerContent from './container-detail-content'
 /**
  * Container Detail component
  */
 export default {
-  components: { ContainerHeader, ContainerContent },
+  components: {  },
   props: {
     container: {
       type: Object,
@@ -14,7 +12,50 @@ export default {
   },
   data() {
     return {
-      
+      series: [76],
+      chartOptions: {
+        chart: {
+          height: 150,
+          type: "radialBar",
+          sparkline: {
+            enabled: true,
+          },
+        },
+        colors: ["#556ee6"],
+        plotOptions: {
+          radialBar: {
+            startAngle: -90,
+            endAngle: 90,
+            track: {
+              background: "#e7e7e7",
+              strokeWidth: "97%",
+              margin: 5, // margin is in pixels
+            },
+            hollow: {
+              size: "60%",
+            },
+
+            dataLabels: {
+              name: {
+                show: false,
+              },
+              value: {
+                offsetY: -2,
+                fontSize: "16px",
+              },
+            },
+          },
+        },
+        grid: {
+          padding: {
+            top: -10,
+          },
+        },
+        stroke: {
+          dashArray: 3,
+        },
+        labels: ["Storage"],
+      },
     };
   },
   
@@ -23,11 +64,7 @@ export default {
 <template>
   <div v-if="container" class="card">
     <div class="card-body">
-      <ContainerHeader :container="container"/>
-      <ContainerContent :container="container"/>
-      <!-- <b-tabs content-class="p-3" nav-class="nav-tabs-custom">
-                        <b-tab title="All Orders" active> -->
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-6">
 
           <h4 class="card-title mb-3">
@@ -72,6 +109,7 @@ export default {
                 :options="chartOptions"
               ></apexchart>
 
+              <!-- <p class="text-muted mt-4">48.02 GB (76%) of 64 GB used</p> -->
             </div>
 
             <div class="col text-center">
@@ -85,10 +123,11 @@ export default {
                 :options="chartOptions"
               ></apexchart>
 
+              <!-- <p class="text-muted mt-4">48.02 GB (76%) of 64 GB used</p> -->
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>

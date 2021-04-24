@@ -7,7 +7,7 @@ module.exports = {
       "prismjs",
       {
         languages: ["javascript", "css", "markup"],
-        plugins: ["line-numbers"],
+        plugins: ["line-numbers", "copy-to-clipboard-button"],
         theme: "okaidia",
         css: true
       }
