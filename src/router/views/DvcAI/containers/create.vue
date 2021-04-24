@@ -29,7 +29,7 @@ export default {
       linkItems: [
         {
           text: "容器列表",
-          href: "/containers",
+          to: { path: '/containers' },
         },
         {
           text: "创建容器",
@@ -314,6 +314,11 @@ export default {
       }
     },
 
+    // 返回容器列表
+    backContainersList() {
+      this.$router.push({path: '/containers'})
+    },
+
     // 容器创建成功提醒
     successMsg() {
       Swal.fire(
@@ -323,7 +328,7 @@ export default {
       ).then((res) => {
         if(res.isConfirmed) {
           this.loadingState = false;
-          this.$router.push({path: '/containers'})
+          this.backContainersList();
         }
       })
     },
@@ -337,7 +342,7 @@ export default {
       ).then((res) => {
         if(res.isConfirmed) {
           this.loadingState = false;
-          this.$router.push({path: '/containers'})
+          this.backContainersList();
         }
       })
     },
@@ -535,7 +540,8 @@ export default {
               </div>
 
               <div class="text-center mt-4">
-                <button type="submit" class="btn btn-success">创建容器</button>
+                <button type="submit" class="btn btn-success me-2">创建</button>
+                <button class="btn btn-secondary" @click="backContainersList">取消</button>
               </div>
 
             </form>

@@ -1,5 +1,5 @@
 <script>
-import Avatar from "@/components/DvcAI/avatar";
+import Avatar from "@/components/DvcAI/utility/avatar";
 
 export default {
   props: {

@@ -2,7 +2,7 @@
 import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import LoaderContainer from "@/components/DvcAI/loader-container";
-import Avatar from "@/components/DvcAI/avatar";
+import Avatar from "@/components/DvcAI/utility/avatar";
 import { EventBus } from "@/utils/event-bus";
 import { mapState, mapActions } from "vuex";
 
@@ -48,11 +48,6 @@ export default {
     isMine() {
       if(!this.currentUser || !this.currentUser.sub) return false;
       return this.newInfo.uid === this.currentUser.sub;
-    },
-
-    // 管理员是否可以操作
-    isAdminOperate () {
-      return this.isAdmin && this.isMine;
     },
 
     // 是否在用户本机
@@ -665,7 +660,7 @@ export default {
             </b-button>
 
             <a
-              v-if="canSelectCloudRunning && isMine"
+              v-if="canSelectCloudRunning"
               :href="jupyterUrl"
               class="btn btn-outline-primary btn-sm btn-item"
               download="docker-compose-config"

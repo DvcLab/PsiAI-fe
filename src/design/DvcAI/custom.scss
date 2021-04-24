@@ -120,8 +120,16 @@
     margin-bottom: 0!important;
 }
 
+// 下拉框高亮颜色
+.multiselect__option--highlight {
+    background: rgba(116, 120, 141, 0.25) !important;
+    color: inherit!important;
+}
+
+// 下拉框右上角标签颜色
 .multiselect__option--highlight:after {
     background: transparent!important;
+    color: inherit!important;
 }
 
 .host-select {
