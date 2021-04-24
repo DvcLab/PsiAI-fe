@@ -1,10 +1,15 @@
 <script>
+import Avatar from "@/components/DvcAI/utility/avatar";
+
 export default {
   props: {
     dataset: {
       type: Object,
       default: () => {},
     },
+  },
+  components: {
+    Avatar
   },
   computed: {
     tags() {
@@ -28,7 +33,7 @@ export default {
         <img
           class="avatar-sm"
           :src="require('@/assets/images/companies/img-1.png')"
-          :v-real-img="dataset.cover_img_url"
+          v-real-img="dataset.cover_img_url"
           alt="数据集"
         />
       </div>
@@ -49,13 +54,7 @@ export default {
       </div>
 
       <div class="col-2 col-md-1">
-        <img
-          v-if="dataset.user"
-          class="rounded-circle avatar-xs"
-          src="@/assets/images/users/avatar-1.jpg"
-          :v-real-img="dataset.user.avatar_url"
-          :alt="dataset.user.username"
-        />
+        <Avatar size="xs" :src="dataset.user.avatar_url" :user-name="dataset.user.username"/>
       </div>
     </div>
   </div>

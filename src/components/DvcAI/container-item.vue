@@ -2,7 +2,7 @@
 import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import LoaderContainer from "@/components/DvcAI/loader-container";
-import Avatar from "@/components/DvcAI/avatar";
+import Avatar from "@/components/DvcAI/utility/avatar";
 import { EventBus } from "@/utils/event-bus";
 import { mapState, mapActions } from "vuex";
 
