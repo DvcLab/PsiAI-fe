@@ -60,13 +60,14 @@ export default {
     },
 
     // 获取容器列表
-    getContainersList(q, page) {
+    getContainersList(q = '', page = 1, enabled = true) {
       const _this = this;
       this.loadingState = true;
       this.getContainers({
         params: {
           q: q,
-          page: page
+          page: page,
+          enabled: enabled
         }
       })
       .then((res) => {
@@ -162,6 +163,22 @@ export default {
           this.containers = [];
         })
       }
+    },
+
+    // 获取正在运行容器列表
+    getRunningContainerList() {
+      this.containers = [];
+      this.curTotal = 0;
+      this.curPage = 1;
+      this.getContainersList('', this.curPage, true);
+    },
+
+    // 获取全部状态容器列表
+    getAllContainerList() {
+      this.containers = [];
+      this.curTotal = 0;
+      this.curPage = 1;
+      this.getContainersList('', this.curPage, false);
     },
 
     // 滑动至底部，加载剩余镜像
@@ -268,7 +285,7 @@ export default {
       </div>
       <div class="col-12">
         <b-tabs pills active-nav-item-class="text-white">
-          <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill">
+          <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getRunningContainerList">
             <template v-slot:title>
               <span class="d-inline-block d-sm-none">
                 <i class="fas fa-home"></i>
@@ -277,7 +294,7 @@ export default {
             </template>
             <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
           </b-tab>
-          <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill">
+          <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getAllContainerList">
             <template v-slot:title>
               <span class="d-inline-block d-sm-none">
                 <i class="fas fa-home"></i>
