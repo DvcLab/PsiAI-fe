@@ -1,6 +1,6 @@
 <script>
 // import Layout from "../../../layouts/main";
-import ContainerList from "@/components/DvcAI/container-list";
+import ContainerList from "@/components/DvcAI/containers/list/container-list";
 import Loader from "@/components/DvcAI/loader";
 import Avatar from "@/components/DvcAI/utility/avatar";
 import appConfig from "@/app.config";

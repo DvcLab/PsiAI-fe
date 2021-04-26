@@ -29,6 +29,4 @@ export default {
 		data-prismjs-copy-error="按Ctrl+C复制"
 		data-prismjs-copy-success="文本已复制！"><code class="language-yaml">{{file}}</code></pre>
 </div>
-  
-    
 </template>

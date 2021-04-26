@@ -2,6 +2,7 @@
 /**
  * Container Header component
  */
+
 export default {
   components: {},
   props: {
