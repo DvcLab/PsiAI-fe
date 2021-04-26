@@ -17,6 +17,10 @@ export default {
     }
   },
   computed: {
+    // 是否可以选择运行位置
+    canSelectLocation () {
+      return this.container.status === "New";
+    },
     // cpu使用
     cpu () {
       let cpu = this.container.cpu_usage;
@@ -32,7 +36,7 @@ export default {
       }
     },
     // mem使用
-    mem(){
+    mem () {
       let mem = this.container.mem_usage;
       let variant = "success"
       if (mem >= 30 && mem < 60) {
@@ -58,6 +62,7 @@ export default {
             <i class="bx bx-cube me-1"></i>
             {{ container.container_name }}
             <span
+              v-if="!canSelectLocation"
               class="badge rounded-pill"
               :class="`bg-${container.user_host ? 'primary' : 'info'}`"
             >
