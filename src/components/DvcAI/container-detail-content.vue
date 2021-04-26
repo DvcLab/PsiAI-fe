@@ -23,5 +23,11 @@ export default {
     <b-tab title="dockerfile" active>
       <Dockerfile :file="container.docker_compose_config"/>
     </b-tab>
+    <b-tab title="日志">
+      暂无
+    </b-tab>
+    <b-tab title="资源">
+      暂无
+    </b-tab>
   </b-tabs>
 </template>

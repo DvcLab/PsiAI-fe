@@ -1,6 +1,7 @@
 <script>
 import Prism from "prismjs";
-import 'prismjs/themes/prism.css'
+// import 'prismjs/themes/prism.css';
+// import 'prismjs/components/prism-yaml';
 /**
  * Container dockerfile component
  */
@@ -17,14 +18,17 @@ export default {
     };
   },
   mounted() {
-    Prism.highlightAll()
+    Prism.highlightAll();
   }
 };
 </script>
 <template>
-  <!-- <div> -->
-    <pre data-src="prismjs/plugins/toolbar/prism-toolbar.js">
-      <code class="language-yaml" data-prismjs-copy="Copy the JavaScript snippet!">{{file}}</code>
-    </pre>
-  <!-- </div> -->
+<div data-prismjs-copy-timeout="500">
+  <pre
+		data-prismjs-copy="复制文本"
+		data-prismjs-copy-error="按Ctrl+C复制"
+		data-prismjs-copy-success="文本已复制！"><code class="language-yaml">{{file}}</code></pre>
+</div>
+  
+    
 </template>

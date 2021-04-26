@@ -2,7 +2,7 @@
 // import Layout from "../../../layouts/main";
 import ContainerList from "@/components/DvcAI/container-list";
 import Loader from "@/components/DvcAI/loader";
-import Avatar from "@/components/DvcAI/avatar";
+import Avatar from "@/components/DvcAI/utility/avatar";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";

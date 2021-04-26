@@ -12,52 +12,39 @@ export default {
   },
   data() {
     return {
-      series: [76],
-      chartOptions: {
-        chart: {
-          height: 150,
-          type: "radialBar",
-          sparkline: {
-            enabled: true,
-          },
-        },
-        colors: ["#556ee6"],
-        plotOptions: {
-          radialBar: {
-            startAngle: -90,
-            endAngle: 90,
-            track: {
-              background: "#e7e7e7",
-              strokeWidth: "97%",
-              margin: 5, // margin is in pixels
-            },
-            hollow: {
-              size: "60%",
-            },
-
-            dataLabels: {
-              name: {
-                show: false,
-              },
-              value: {
-                offsetY: -2,
-                fontSize: "16px",
-              },
-            },
-          },
-        },
-        grid: {
-          padding: {
-            top: -10,
-          },
-        },
-        stroke: {
-          dashArray: 3,
-        },
-        labels: ["Storage"],
-      },
-    };
+      
+    }
   },
+  computed: {
+    // cpu使用
+    cpu () {
+      let cpu = this.container.cpu_usage;
+      let variant = "success"
+      if (cpu >= 30 && cpu < 60) {
+        variant = "warning";
+      } else if (cpu >= 60) {
+        variant = "danger";
+      }
+      return {
+        value: cpu,
+        variant
+      }
+    },
+    // mem使用
+    mem(){
+      let mem = this.container.mem_usage;
+      let variant = "success"
+      if (mem >= 30 && mem < 60) {
+        variant = "warning";
+      } else if (mem >= 60) {
+        variant = "danger";
+      }
+      return {
+        value: mem,
+        variant
+      }
+    },
+  }
 };
 </script>
 <template>
@@ -86,9 +73,9 @@ export default {
         </div>
 
         <div class="col-12 col-md-3">
-          <span class="d-block text-truncate mb-0">
+          <span v-if="container.gpu_enabled" class="d-block text-truncate mb-0">
             <i class="bx bx-chip me-1"></i>GPU
-            {{ container.gpu_enabled ? "有" : "无" }}
+            启用
           </span>
         </div>
 
@@ -97,19 +84,33 @@ export default {
 
     <div class="col-12">
       <div class="row">
+
         <div class="col-6 col-md-3 mb-2">
-          <span class="badge rounded-pill bg-primary me-2">
-            <i class="bx bx-chip me-1"></i>内核
-          </span>
-          {{ container.cpus }}
+          <div class="mb-1">
+            <span class="me-2"><i class="bx bx-chip me-1"></i>内核</span>
+            <span>{{ container.cpus }} ({{cpu.value}}%)</span>
+          </div>
+          <b-progress
+            :value="cpu.value"
+            :max="100"
+            :variant="cpu.variant"
+          ></b-progress>
         </div>
+
         <div class="col-6 col-md-3 mb-2">
-          <span class="badge rounded-pill bg-primary me-2">
-            <i class="bx bx-grid-alt me-1"></i>内存
-          </span>
-          {{ container.mem }}GB
+          <div class="mb-1">
+            <span class="me-2"><i class="bx bx-chip me-1"></i>内存</span>
+            <span>{{ container.mem }}GB ({{mem.value}}%)</span>
+          </div>
+          <b-progress
+            :value="mem.value"
+            :max="100"
+            :variant="mem.variant"
+          ></b-progress>
         </div>
+
       </div>
+
     </div>
   </div>
 </template>
