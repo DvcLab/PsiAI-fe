@@ -54,7 +54,7 @@ export default {
     alt=""
   />
 
-  <div v-else :class="`avatar-${size}`">
+  <div v-else class="d-inline-block" :class="`avatar-${size}`">
     <span class="avatar-title rounded-circle">{{ userName[0] }}</span>
   </div>
 
