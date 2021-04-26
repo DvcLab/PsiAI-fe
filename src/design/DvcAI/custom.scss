@@ -22,8 +22,12 @@
     width: 1.5rem;
     line-height: 1.5rem;
 }
+// 容器列表页中胶囊边框弧度
 .border-pill {
     border-radius: 5rem!important;
+}
+.cursor-pointer {
+    cursor: pointer;
 }
 .autocomplete-input {
     position: relative;

@@ -29,13 +29,19 @@ export default {
       return datasetList;
     },
   },
+  methods: {
+    // 打开对应的github项目页面
+    openProj(href) {
+      window.open(href, "_blank");
+    },
+  }
 };
 </script>
 
 <template>
   <div class="grid-item-con">
     <!-- 暂时跳转至github项目 -->
-    <a :href="proj.url">
+    <a @click.prevent="openProj(proj.url)">
       <img
         class="grid-img"
         src="@/assets/images/companies/img-1.png"
@@ -48,7 +54,7 @@ export default {
             <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
             <span class="text-dark me-1">{{ proj.name }}</span>
           </h5>
-          <a class="i-text-middle" :href="proj.url"><i class="bx bxl-github font-size-18"></i></a>
+          <a class="i-text-middle cursor-pointer" @click.prevent="openProj(proj.url)"><i class="bx bxl-github font-size-18"></i></a>
         </div>
         
         <p class="grid-item-desc text-muted text-truncate-2 mb-0">{{ proj.desc }}</p>

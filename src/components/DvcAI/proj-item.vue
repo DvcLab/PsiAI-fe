@@ -21,6 +21,12 @@ export default {
       return branchList;
     },
   },
+  methods: {
+    // 打开对应的github项目页面
+    openProj(href) {
+      window.open(href, "_blank");
+    },
+  }
 };
 </script>
 
@@ -42,9 +48,9 @@ export default {
           <h5 class="list-item-name text-truncate mb-0">
             <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
             <!-- 暂时跳转至github项目 -->
-            <a :href="proj.url" class="text-dark me-1">{{ proj.name }}</a>
+            <a class="text-dark me-1" @click.prevent="openProj(proj.url)">{{ proj.name }}</a>
           </h5>
-          <a :href="proj.url" class="i-text-middle"><i class="bx bxl-github font-size-18"></i></a>
+          <a class="i-text-middle cursor-pointer" @click.prevent="openProj(proj.url)"><i class="bx bxl-github font-size-18"></i></a>
         </div>
         <p class="text-muted text-truncate list-item-desc mb-0">{{ proj.desc }}</p>
       </div>

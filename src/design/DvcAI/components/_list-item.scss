@@ -36,6 +36,7 @@
     display: inline-flex;
     max-width: 100%;
     margin-bottom: 0.25rem;
+    cursor: pointer;
 }
 .list-item-name a:hover:after  {
     content: "";
