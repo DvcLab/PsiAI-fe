@@ -381,7 +381,7 @@ export default {
 
         {{ container.create_time | moment("YYYY-MM-DD HH:mm:ss") }}
       </p>
-      <p class="mb-1">
+      <p v-show="this.status.text === 'Running'" class="mb-1">
         <i class="bx bx-calendar me-1"></i>运行时间
 
         {{ container.alive_time | duration("humanize") }}
