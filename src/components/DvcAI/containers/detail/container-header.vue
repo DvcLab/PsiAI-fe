@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     toEdit() {
-      console.log('非编辑状态');
       this.$emit('edit', true)
     }
   }

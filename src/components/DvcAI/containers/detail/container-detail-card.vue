@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     changeEditState (state) {
-      console.log(state)
       this.isEdit = state;
     }
   }

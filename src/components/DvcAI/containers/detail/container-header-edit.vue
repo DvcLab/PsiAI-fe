@@ -70,7 +70,6 @@ export default {
         return Swal.fire("容器名未修改!", "请修改后再点击保存按钮", "info")
       }
 
-      // if(this.newName.length > 0 && this.newName.length < 64) {
       if(!this.$v.$invalid) {
         this.$request.post('containers/'+this.container.id+'/names/'+this.newName)
         .then(({data})=>{
