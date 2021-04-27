@@ -42,6 +42,14 @@ export default [
     component: () => import('./views/DvcAI/containers/create.vue'),
   },
   {
+    path: '/profile',
+    name: '个人信息管理',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('./views/DvcAI/user/profile'),
+  },
+  {
     path: '/404',
     name: '404',
     component: require('./views/DvcAI/utility/404').default,

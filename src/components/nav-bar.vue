@@ -716,13 +716,14 @@ export default {
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
 
-          <!-- 用户profile 注释 -->
-          <!-- <b-dropdown-item>
-            <router-link tag="span" to="/contacts/profile">
+          <!-- profile个人信息管理页 -->
+          <b-dropdown-item>
+            <!--<router-link tag="span" to="/myprofile">-->
+            <router-link tag="span" to='/profile'>
               <i class="bx bx-user font-size-16 align-middle me-1"></i>
               {{ $t("navbar.dropdown.henry.list.profile") }}
             </router-link>
-          </b-dropdown-item> -->
+          </b-dropdown-item>
           
           <!-- 我的钱包 注释 -->
           <!-- <b-dropdown-item href="javascript: void(0);">
