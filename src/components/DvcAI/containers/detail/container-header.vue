@@ -63,7 +63,7 @@ export default {
       <div class="row w-100">
 
         <div class="col-12 col-md-3">
-          <h4 class="card-title mb-3">
+          <h4 class="card-title text-truncate mb-3">
             <span @click="toEdit">
               <i class="bx bx-cube me-1"></i>
               {{ container.container_name }}

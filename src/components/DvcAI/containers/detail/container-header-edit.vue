@@ -3,6 +3,7 @@
  * Container Header Edit component
  */
 import Swal from "sweetalert2";
+import { required, maxLength } from 'vuelidate/lib/validators'
 import { EventBus } from "@/utils/event-bus";
 
 export default {
@@ -16,7 +17,14 @@ export default {
   data() {
     return {
       name: this.container.container_name,
-      newName: this.container.container_name
+      newName: this.container.container_name,
+      submitted: false,
+    }
+  },
+  validations: {
+    newName: {
+      required,
+      maxLength: maxLength(64)
     }
   },
   computed: {
@@ -55,24 +63,21 @@ export default {
   },
   methods: {
     
-    toEdit() {
-      console.log('编辑状态');
-      this.$emit('edit', false);
-    },
     // 修改容器名
     toChangeContainerName() {
+      this.submitted = true;
       if(this.name === this.newName) {
         return Swal.fire("容器名未修改!", "请修改后再点击保存按钮", "info")
       }
 
-      if(this.newName.length > 0 && this.newName.length < 64) {
+      // if(this.newName.length > 0 && this.newName.length < 64) {
+      if(!this.$v.$invalid) {
         this.$request.post('containers/'+this.container.id+'/names/'+this.newName)
         .then(({data})=>{
           console.log(data)
           if(data.code === 1) {
             Swal.fire("容器名修改成功!", "", "success").then((res) => {
               if (res.isConfirmed) {
-                console.log("触发刷新列表函数 from container-header-edit");
                 this.$emit('edit', false);
                 EventBus.$emit("update");
               }
@@ -82,7 +87,7 @@ export default {
           }
         })
       } else {
-        Swal.fire("容器名有误!", "", "error");
+        Swal.fire("容器名有误!", "请重新填写容器名", "error");
       }
     },
     // 取消编辑
@@ -100,7 +105,7 @@ export default {
 };
 </script>
 <template>
-  <div class="row" @click="cancelEdit">
+  <div class="row">
     <div class="col-12">
 
       <b-form inline class="row align-items-center">
@@ -112,9 +117,13 @@ export default {
           <b-input id="container-name" type="text" max="64" min="1" v-model="newName" :placeholder="name" />
         </div>
         
-        <div class="col-12 col-md-5 mb-2">
-          <div class="float-md-end">
-            <b-button class="me-2" variant="outline-primary" size="sm" @click="toChangeContainerName">保存</b-button>
+        <div class="col-12 col-md-5 d-flex align-items-center mb-2">
+          <div class="me-auto">
+            <span class="error" v-if="submitted && !$v.newName.required">不能为空</span>
+            <span class="error" v-if="submitted && !$v.newName.maxLength">不能超过64字符</span>
+          </div>
+          <div>
+            <b-button variant="outline-primary me-2" size="sm" @click="toChangeContainerName">保存</b-button>
             <b-button variant="outline-secondary" size="sm" @click="cancelEdit">取消</b-button>
           </div>
         </div>
