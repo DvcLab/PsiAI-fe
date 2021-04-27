@@ -7,3 +7,20 @@
     min-width: 380px;
   }
 }
+
+.rightside-host-select {
+  width: 60%!important;
+  min-height: 0!important;
+}
+.rightside-host-select .multiselect__tags {
+  min-height: 0!important;
+  padding: 0.25rem 0.5rem!important;
+  border-radius: 0.2rem!important;
+  font-size: 0.75rem!important;
+}
+.rightside-host-select .multiselect__select {
+  height: 30px;
+}
+.rightside-host-select .multiselect__placeholder {
+  font-size: 0.75rem;
+}

@@ -378,12 +378,10 @@ export default {
       </p>
       <p class="mb-1">
         <i class="bx bx-calendar me-1"></i>创建时间
-
         {{ container.create_time | moment("YYYY-MM-DD HH:mm:ss") }}
       </p>
-      <p v-show="this.status.text === 'Running'" class="mb-1">
+      <p v-show="this.container.status === 'Running'" class="mb-1">
         <i class="bx bx-calendar me-1"></i>运行时间
-
         {{ container.alive_time | duration("humanize") }}
       </p>
 
@@ -413,7 +411,7 @@ export default {
         </a>
 
         <multiselect
-          class="host-select d-inline-block btn-item me-2"
+          class="rightside-host-select d-inline-block btn-item me-2"
           v-if="!isLocation && isAdmin && canSelectLocation && isMine"
           v-model="selectedHost"
           :options="hosts"
