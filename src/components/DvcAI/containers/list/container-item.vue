@@ -407,7 +407,6 @@ export default {
 
     // 跳转容器详情页
     toContainerDetail(e){
-      console.log(e)
       let target = e.target;
       if(target.matches('button') || target.matches('a') || target.matches('input') || target.matches('#location-radios span') || target.matches('label.btn') || target.matches('div.multiselect') || target.matches('div.multiselect__tags')) {
         console.log('不可跳转')

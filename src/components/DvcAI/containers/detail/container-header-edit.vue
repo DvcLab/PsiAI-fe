@@ -1,7 +1,9 @@
 <script>
 /**
- * Container Header component
+ * Container Header Edit component
  */
+import Swal from "sweetalert2";
+import { EventBus } from "@/utils/event-bus";
 
 export default {
   components: {},
@@ -13,6 +15,8 @@ export default {
   },
   data() {
     return {
+      name: this.container.container_name,
+      newName: this.container.container_name
     }
   },
   computed: {
@@ -50,34 +54,75 @@ export default {
     },
   },
   methods: {
+    
     toEdit() {
-      console.log('非编辑状态');
-      this.$emit('edit', true)
+      console.log('编辑状态');
+      this.$emit('edit', false);
+    },
+    // 修改容器名
+    toChangeContainerName() {
+      if(this.name === this.newName) {
+        return Swal.fire("容器名未修改!", "请修改后再点击保存按钮", "info")
+      }
+
+      if(this.newName.length > 0 && this.newName.length < 64) {
+        this.$request.post('containers/'+this.container.id+'/names/'+this.newName)
+        .then(({data})=>{
+          console.log(data)
+          if(data.code === 1) {
+            Swal.fire("容器名修改成功!", "", "success").then((res) => {
+              if (res.isConfirmed) {
+                console.log("触发刷新列表函数 from container-header-edit");
+                this.$emit('edit', false);
+                EventBus.$emit("update");
+              }
+            });
+          } else {
+            Swal.fire("容器名修改失败!", "", "error");
+          }
+        })
+      } else {
+        Swal.fire("容器名有误!", "", "error");
+      }
+    },
+    // 取消编辑
+    cancelEdit() {
+      this.$emit('edit', false);
+      // let target = e.target;
+      // if(target.matches('button') || target.matches('input') || target.matches('span')) {
+      //   console.log('不可跳转');
+      // } else {
+      //   console.log('可跳转');
+      //   this.$emit('edit', false);
+      // }
     }
   }
 };
 </script>
 <template>
-  <div class="row">
+  <div class="row" @click="cancelEdit">
     <div class="col-12">
-      <div class="row w-100">
 
-        <div class="col-12 col-md-3">
-          <h4 class="card-title mb-3">
-            <span @click="toEdit">
-              <i class="bx bx-cube me-1"></i>
-              {{ container.container_name }}
-            </span>
-            <span
-              v-if="!canSelectLocation"
-              class="badge rounded-pill"
-              :class="`bg-${container.user_host ? 'primary' : 'info'}`"
-            >
-              {{ container.user_host ? "本地" : "远程" }}
-            </span>
-          </h4>
+      <b-form inline class="row align-items-center">
+        <div class="col-4 col-md-3 align-self-center mb-2">
+          <span class="input-title">容器名</span>
         </div>
 
+        <div class="col-8 col-md-4 mb-2">
+          <b-input id="container-name" type="text" max="64" min="1" v-model="newName" :placeholder="name" />
+        </div>
+        
+        <div class="col-12 col-md-5 mb-2">
+          <div class="float-md-end">
+            <b-button class="me-2" variant="outline-primary" size="sm" @click="toChangeContainerName">保存</b-button>
+            <b-button variant="outline-secondary" size="sm" @click="cancelEdit">取消</b-button>
+          </div>
+        </div>
+      </b-form>
+
+    </div>
+    <div class="col-12">
+      <div class="row">
         <div class="col-12 col-md-3">
           <span class="d-block text-truncate mb-0">
             <i class="bx bx-layer me-1"></i>镜像
@@ -91,7 +136,6 @@ export default {
             <span class="gpu-state">启用</span>
           </span>
         </div>
-
       </div>
     </div>
 
@@ -130,5 +174,9 @@ export default {
 <style scoped>
 .gpu-state {
   color: #008800;
+}
+.input-title {
+  font-weight: 500;
+  font-size: 0.85rem;
 }
 </style>
