@@ -1,10 +1,10 @@
 <script>
 import Prism from "prismjs";
-// import 'prismjs/themes/prism.css';
-// import 'prismjs/components/prism-yaml';
+
 /**
- * Container dockerfile component
+ * Container dockerfile code container component
  */
+
 export default {
   components: {},
   props: {

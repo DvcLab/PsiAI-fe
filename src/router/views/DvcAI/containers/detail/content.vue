@@ -1,8 +1,10 @@
 <script>
-import Dockerfile from './container-dockerfile'
+import Dockerfile from './code';
+
 /**
- * Container Header component
+ * Container Card Content component
  */
+
 export default {
   components: { Dockerfile },
   props: {

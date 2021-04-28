@@ -47,7 +47,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/DvcAI/containers/index.vue'),
+    component: () => import('./views/DvcAI/containers'),
     children: [
       {
         path: '',
@@ -55,7 +55,7 @@ export default [
         meta: {
           authRequired: true,
         },
-        component: () => import('./views/DvcAI/containers/containers-list.vue'),
+        component: () => import('./views/DvcAI/containers/list'),
       },
       {
         path: 'create',
@@ -63,7 +63,7 @@ export default [
         meta: {
           authRequired: true,
         },
-        component: () => import('./views/DvcAI/containers/create.vue'),
+        component: () => import('./views/DvcAI/containers/create'),
       },
     ]
   },
@@ -73,7 +73,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/DvcAI/containers/container-detail.vue'),
+    component: () => import('./views/DvcAI/containers/detail'),
   },
   {
     path: '/404',

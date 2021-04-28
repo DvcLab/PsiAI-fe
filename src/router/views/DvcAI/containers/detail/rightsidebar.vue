@@ -1,12 +1,12 @@
 <script>
-/**
- * Container Detail Rightsidebar component
- */
-
 import { mapState, mapActions } from "vuex";
 import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import { EventBus } from "@/utils/event-bus";
+
+/**
+ * Container Detail Rightsidebar component
+ */
 
 export default {
   components: { Multiselect },

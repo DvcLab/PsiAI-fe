@@ -1,22 +1,23 @@
 <script>
-import Layout from "../../../layouts/main";
+import Layout from "@/router/layouts/main";
 import PageHeader from "@/components/page-header";
 import LoaderContainer from "@/components/DvcAI/loader-container";
-import ContainerDetailCard from "@/components/DvcAI/containers/detail/container-detail-card";
-import ContainerDetailRightSidebar from "@/components/DvcAI/containers/detail/container-detail-rightsidebar";
+import Card from "./card";
+import Rightsidebar from "./rightsidebar";
 import appConfig from "@/app.config";
 import { EventBus } from "@/utils/event-bus";
 
 /**
  * Container Detail component
  */
+
 export default {
   inject:['reload'],
   page: {
     title: "容器详情",
     meta: [{ name: "description", content: appConfig.description }]
   },
-  components: { Layout, PageHeader, LoaderContainer, ContainerDetailCard, ContainerDetailRightSidebar },
+  components: { Layout, PageHeader, LoaderContainer, Card, Rightsidebar },
   data() {
     return {
       title: "容器详情",
@@ -110,23 +111,16 @@ export default {
   <Layout>
     <PageHeader :title="title" :items="items" />
     <LoaderContainer :loading="loadingState">
-      <!-- <div class="d-lg-flex">
-        
-        <div class="w-100">
-          <ContainerDetailCard :container="container"/>
-        </div>
-        <div class="btn-rightsidebar ms-lg-4">
-          <ContainerDetailRightSidebar :container="container" @changeLoading="onLoading" />
-        </div>
-      </div> -->
       <div class="row">
         
         <div class="col-12 col-md-8">
-          <ContainerDetailCard :container="container"/>
+          <Card :container="container"/>
         </div>
+
         <div class="col-12 col-md-4">
-          <ContainerDetailRightSidebar :container="container" @changeLoading="onLoading" />
+          <Rightsidebar :container="container" @changeLoading="onLoading" />
         </div>
+
       </div>
     </LoaderContainer>
   </Layout>

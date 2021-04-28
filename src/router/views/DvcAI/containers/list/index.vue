@@ -1,12 +1,11 @@
 <script>
-// import Layout from "../../../layouts/main";
-import ContainerList from "@/components/DvcAI/containers/list/container-list";
-import Loader from "@/components/DvcAI/loader";
-import Avatar from "@/components/DvcAI/utility/avatar";
-import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
+import appConfig from "@/app.config";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 import { EventBus } from '@/utils/event-bus';
+import Loader from "@/components/DvcAI/loader";
+import Avatar from "@/components/DvcAI/utility/avatar";
+import ContainerList from "./list";
 
 /**
  * 容器列表
