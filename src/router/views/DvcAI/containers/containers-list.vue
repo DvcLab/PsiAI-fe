@@ -29,15 +29,6 @@ export default {
       status: 'active'
     };
   },
-  // computed: {
-  //   containerFilter() {
-  //     if(status === 'active') {
-  //       return this.containers.filter((item) => item.status!=="New" || item.status!=="Deleted" || item.status!=="Failure");
-  //     } else {
-  //       return this.containers;
-  //     }
-  //   }
-  // },
   mounted() {
     window.addEventListener('scroll', this.load);
     this.getContainersList('', 1);
@@ -206,90 +197,79 @@ export default {
 };
 </script>
 <template>
-  <!-- <Layout> -->
-
-    <div class="row">
-      
-      <div class="col-12 align-items-center">
-        <div class="row d-flex align-item-center">
-          <div class="col-7 mb-3">
-            <autocomplete
-              aria-label="搜索容器..."
-              placeholder="搜索容器..."
-              :search="search"
-              :get-result-value="getResultValue"
-              :debounce-time="500"
-              @submit="handleSubmit"
+  <div class="row">
+    
+    <div class="col-12 align-items-center">
+      <div class="row d-flex align-item-center">
+        <div class="col-7 mb-3">
+          <autocomplete
+            aria-label="搜索容器..."
+            placeholder="搜索容器..."
+            :search="search"
+            :get-result-value="getResultValue"
+            :debounce-time="500"
+            @submit="handleSubmit"
+            >
+            <template #result="{ result, props }">
+              <li
+                v-bind="props"
+                class="search-result"
               >
-              <template #result="{ result, props }">
-                <li
-                  v-bind="props"
-                  class="search-result"
-                >
-                  <div class="row d-flex align-items-center">
-                    <div class="col-12 col-md-4">
-                      <h6 class="mb-0"><i class="bx bx-cube me-1"></i>{{result.container_name}}</h6>
-                    </div>
-                    <div class="col-12 col-md-4">
-                      <span><i class="bx bx-layer me-1"></i>{{result.image.name}}</span>
-                    </div>
-                    <div class="col-12 col-md-4 d-none d-md-block">
-                      <div class="d-flex align-items-center">
-                        <Avatar size="xxs" :src="result.user.avatar_url" :user-name="result.user.username" class="me-2"/>
-                        <span class="d-inline-block text-truncate">{{result.user.username}}</span>
-                      </div>
-                    </div>
-                    <div class="col-12 d-md-none">
-                      <span class="d-block text-truncate mb-0">
-                        <i class="bx bx-user me-1"></i>{{result.user.username}}
-                      </span>
+                <div class="row d-flex align-items-center">
+                  <div class="col-12 col-md-4">
+                    <h6 class="mb-0"><i class="bx bx-cube me-1"></i>{{result.container_name}}</h6>
+                  </div>
+                  <div class="col-12 col-md-4">
+                    <span><i class="bx bx-layer me-1"></i>{{result.image.name}}</span>
+                  </div>
+                  <div class="col-12 col-md-4 d-none d-md-block">
+                    <div class="d-flex align-items-center">
+                      <Avatar size="xxs" :src="result.user.avatar_url" :user-name="result.user.username" class="me-2"/>
+                      <span class="d-inline-block text-truncate">{{result.user.username}}</span>
                     </div>
                   </div>
-                </li>
-              </template>
-            </autocomplete>
-            
-          </div>
-          <div class="col-5 align-self-center mb-3">
-            <button
-              type="button"
-              class="btn btn-success btn-rounded float-end"
-              @click="toCreateContainerPage"
-            >
-              <i class="mdi mdi-plus me-1"></i> 创建容器
-            </button>
-          </div>
+                  <div class="col-12 d-md-none">
+                    <span class="d-block text-truncate mb-0">
+                      <i class="bx bx-user me-1"></i>{{result.user.username}}
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </template>
+          </autocomplete>
+          
+        </div>
+        <div class="col-5 align-self-center mb-3">
+          <button
+            type="button"
+            class="btn btn-success btn-rounded float-end"
+            @click="toCreateContainerPage"
+          >
+            <i class="mdi mdi-plus me-1"></i> 创建容器
+          </button>
         </div>
       </div>
-      <div class="col-12">
-        <b-tabs pills active-nav-item-class="text-white">
-          <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getRunningContainerList">
-            <template v-slot:title>
-              <span class="d-inline-block d-sm-none">
-                <i class="fas fa-home"></i>
-              </span>
-              <span class="d-none d-sm-inline-block">运行</span>
-            </template>
-            <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
-          </b-tab>
-          <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getAllContainerList">
-            <template v-slot:title>
-              <span class="d-inline-block d-sm-none">
-                <i class="fas fa-home"></i>
-              </span>
-              <span class="d-none d-sm-inline-block">全部</span>
-            </template>
-            <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
-          </b-tab>
-        </b-tabs>
-      </div>
-
-      <!-- <ContainerList class="col-12" :containers="containers" :updating="loadingState"/> -->
-
-      <div class="col-12 mt-4">
-        <Loader :loading="loadingState"/>
-      </div>
-
     </div>
-  <!-- </Layout> -->
+    <div class="col-12">
+      <b-tabs pills active-nav-item-class="text-white">
+        <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getRunningContainerList">
+          <template v-slot:title>
+            <span class="d-inline-block">运行</span>
+          </template>
+          <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+        </b-tab>
+        <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getAllContainerList">
+          <template v-slot:title>
+            <span class="d-inline-block">全部</span>
+          </template>
+          <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+        </b-tab>
+      </b-tabs>
+    </div>
+
+    <div class="col-12 mt-4">
+      <Loader :loading="loadingState"/>
+    </div>
+
+  </div>
 </template>
