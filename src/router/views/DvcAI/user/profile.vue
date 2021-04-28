@@ -2,7 +2,6 @@
 import Layout from "../../../layouts/main";
 import PageHeader from "@/components/page-header";
 import appConfig from "@/app.config";
-import { EventBus } from '@/utils/event-bus';
 import { mapState } from 'vuex';
 /**
  * 容器列表
@@ -15,42 +14,14 @@ export default {
   components: {Layout, PageHeader},
   data() {
     return {
-      containers: [],
-      searchContent: '',
-      curPage: 1,
-      curTotal: 0,
-      meta: {},
-      loadingState: true,
-
       title: "个人信息管理页",
       items: [
-        /*{
-          text: "首页",
-          href: "/",
-        },*/
         {
           text: "个人信息管理页",
           active: true,
         },
       ],
-      showModal: false,
-      submitted: false,
-      users: {
-        name: "",
-        designation: "",
-        email: "",
-      },
-      value1: null,
-      options: [
-        "Photoshop",
-        "illustrator",
-        "Html",
-        "Css",
-        "Php",
-        "Java",
-        "Python",
-        "Ruby",
-      ],
+      
     };
   },
   computed: {
@@ -73,39 +44,12 @@ export default {
     }
    },
   mounted() {
-    window.addEventListener('scroll', this.load);
-    // this.getContainersList('', 1);
-    EventBus.$on('update', () => this.reload());
+
   },
   destroyed(){
-    window.removeEventListener('scroll', this.load, false);
   },
   methods: {
-    /**
-     * Modal form submit
-     */
-    // eslint-disable-next-line no-unused-vars
-    handleSubmit(e) {
-      this.submitted = true;
-
-      // stop here if form is invalid
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        return;
-      } else {
-        this.userGridData.push({
-          id: this.userGridData.length + 1,
-          name: this.users.name,
-          designation: this.users.designation,
-          projects: this.value1,
-          email: this.users.email,
-        });
-        this.showModal = false;
-        this.users = {};
-        this.value1 = [];
-      }
-      this.submitted = false;
-    },
+    
   }
 };
 </script>

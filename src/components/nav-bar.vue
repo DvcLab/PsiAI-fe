@@ -130,8 +130,15 @@ export default {
         });
       });
     },
+
+    // 退出登录
     logout() {
       this.$keycloak.logoutFn()
+    },
+
+    // 跳转用户个人信息
+    toProfile() {
+      this.$router.push('/profile');
     }
   },
 };
@@ -717,16 +724,15 @@ export default {
           </template>
 
           <!-- profile个人信息管理页 -->
-          <b-dropdown-item>
-            <!--<router-link tag="span" to="/myprofile">-->
+          <!-- <b-dropdown-item>
             <router-link tag="span" to='/profile'>
               <i class="bx bx-user font-size-16 align-middle me-1"></i>
               {{ $t("navbar.dropdown.henry.list.profile") }}
             </router-link>
-          </b-dropdown-item>
+          </b-dropdown-item> -->
           
           <!-- 我的钱包 注释 -->
-          <!-- <b-dropdown-item href="javascript: void(0);">
+          <!-- <b-dropdown-item href="javascript: void(0);">geren
             <i class="bx bx-wallet font-size-16 align-middle me-1"></i>
             {{ $t("navbar.dropdown.henry.list.mywallet") }}
           </b-dropdown-item> -->
@@ -770,12 +776,15 @@ export default {
             ></i>
             {{ $t("navbar.dropdown.henry.list.logout") }}
           </a> -->
-
+          <b-dropdown-item @click="toProfile">
+            <i class="bx bx-user font-size-16 align-middle me-1"></i>
+            个人信息
+          </b-dropdown-item>
           <b-dropdown-item @click="logout" class="text-danger">
             <i
               class="bx bx-power-off font-size-16 align-middle me-1 text-danger"
             ></i>
-            {{ $t("navbar.dropdown.henry.list.logout") }}
+            登出
           </b-dropdown-item>
         </b-dropdown>
 
