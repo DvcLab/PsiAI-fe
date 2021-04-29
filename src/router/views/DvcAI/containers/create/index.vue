@@ -297,6 +297,8 @@ export default {
           console.log(err);
           this.errorMsg();
         })
+      } else {
+        this.loadingState = false;
       }
     },
 
