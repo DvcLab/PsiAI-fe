@@ -367,9 +367,6 @@ export default {
         <div class="card">
           <div class="card-body">
             
-            <!-- <h4 class="card-title mb-4">
-              创建容器
-            </h4> -->
             <form @submit.prevent="formSubmit">
               <div class="row">
 
@@ -542,7 +539,7 @@ export default {
               </div>
 
               <div class="text-center mt-4">
-                <button type="submit" class="btn btn-success me-2">创建</button>
+                <button type="submit" class="btn btn-success me-2" :disabled="$v.$invalid">创建</button>
                 <button class="btn btn-secondary" @click="backContainersList">取消</button>
               </div>
 
