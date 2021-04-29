@@ -143,7 +143,8 @@ export default {
               <img src="@/assets/images/DvcAI/logo.png" alt height="22" />
             </span>
             <span class="logo-lg">
-              <img src="@/assets/images/DvcAI/logo-dark.png" alt height="17" />
+              <!-- <img src="@/assets/images/DvcAI/logo-dark.png" alt height="17" /> -->
+              <img src="@/assets/images/DvcAI/logo-dark.png" alt height="24" />
             </span>
           </router-link>
 
@@ -152,7 +153,8 @@ export default {
               <img src="@/assets/images/DvcAI/logo.png" alt height="22" />
             </span>
             <span class="logo-lg">
-              <img src="@/assets/images/DvcAI/logo-light.png" alt height="19" />
+              <!-- <img src="@/assets/images/DvcAI/logo-light.png" alt height="19" /> -->
+              <img src="@/assets/images/DvcAI/logo-light.png" alt height="24" />
             </span>
           </router-link>
         </div>
