@@ -1,6 +1,6 @@
 <script>
 import Header from './header';
-import HeaderEdit from './header-edit';
+// import HeaderEdit from './header-edit';
 import Content from './content';
 
 /**
@@ -8,31 +8,26 @@ import Content from './content';
  */
 
 export default {
-  components: { Header,HeaderEdit, Content },
+  components: { Header, Content },
   props: {
     container: {
       type: Object,
       default: () => {},
     },
+    canEdit: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
-    return {
-      isEdit: false,
-    };
+    return {};
   },
-  methods: {
-    changeEditState (state) {
-      this.isEdit = state;
-    }
-  }
-  
 };
 </script>
 <template>
   <div v-if="container" class="card">
     <div class="card-body">
-      <Header v-if="!isEdit" :container="container" @edit="changeEditState"/>
-      <HeaderEdit v-else :container="container" @edit="changeEditState"/>
+      <Header :container="container" :canEdit="canEdit"/>
       <Content :container="container"/>
     </div>
   </div>

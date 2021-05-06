@@ -1,4 +1,5 @@
 <script>
+import { mapState } from "vuex";
 import Layout from "@/router/layouts/main";
 import PageHeader from "@/components/page-header";
 import LoaderContainer from "@/components/DvcAI/loader-container";
@@ -33,10 +34,25 @@ export default {
       ],
       id: this.$route.params.id,
       container: null,
-      // newInfo: this.container,
       websock: null,
       loadingState: false,
+      isEdit: false
     };
+  },
+  computed: {
+    // 当前用户信息
+    ...mapState("auth", ["currentUser"]),
+
+    // 是否是管理员
+    isAdmin() {
+      return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
+    },
+
+    // 是否是用户自己创建的容器
+    isMine() {
+      if(!this.currentUser || !this.currentUser.sub) return false;
+      return this.newInfo.uid === this.currentUser.sub;
+    },
   },
   mounted(){
     this.getContainer();
@@ -50,6 +66,8 @@ export default {
     if (this.websock) this.websock.close();
   },
   methods:{
+
+    // 获取容器信息
     getContainer() {
       this.$request.get('containers/'+ this.$route.params.id)
       .then(({data})=>{
@@ -63,6 +81,7 @@ export default {
         console.log(err)
       })
     },
+
     // ws初始化
     initWebSocket() {
       const wsuri =
@@ -104,6 +123,24 @@ export default {
       console.log(state)
       this.loadingState = state;
     },
+    toEdit() {
+      this.isEdit = true;
+    },
+    // 取消编辑容器名
+    cancelEdit(e) {
+
+      let target = e.target;
+      
+      if(target.matches('button') || target.matches('i') || target.matches('a') || target.matches('input') || target.matches('#location-radios span') || target.matches('label.btn') || target.matches('div.multiselect') || target.matches('div.multiselect__tags')) {
+        console.log('不可取消编辑')
+        return;
+      } else if(target.matches('.username') || target.matches('.avatar')) {
+        console.log('点击跳转用户信息页');
+      } else {
+        console.log('可以取消编辑')
+        EventBus.$emit('cancelEdit');
+      }
+    },
   },
 };
 </script>
@@ -111,10 +148,11 @@ export default {
   <Layout>
     <PageHeader :title="title" :items="items" />
     <LoaderContainer :loading="loadingState">
-      <div class="row">
+      <div class="row font-size-14" @click="cancelEdit">
         
         <div class="col-12 col-md-8">
-          <Card :container="container"/>
+          <!-- <Card :container="container" :canEdit="isAdmin || isMine" :isEdit="isEdit" @edit="toEdit"/> -->
+          <Card :container="container" :canEdit="isAdmin || isMine"/>
         </div>
 
         <div class="col-12 col-md-4">
