@@ -391,7 +391,7 @@ export default {
             v-if="canSelectLocation && isMine"
             id="location-radios"
             class="text-truncate check-group btn-item mb-0"
-            size="sm"
+            size="md"
             v-model="containerRunningSelected"
             :options="locationOptions"
             buttons
@@ -403,7 +403,7 @@ export default {
         <a
           v-if="canSelectLocation && isLocation && isMine"
           :href="configFile"
-          class="btn btn-outline-primary btn-sm btn-item"
+          class="btn btn-outline-primary btn-md btn-item mb-2"
           download="docker-compose-config"
         >
           <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
@@ -411,7 +411,7 @@ export default {
         </a>
 
         <multiselect
-          class="rightside-host-select d-inline-block btn-item me-2"
+          class="d-inline-block btn-item me-2 mb-2"
           v-if="!isLocation && isAdmin && canSelectLocation && isMine"
           v-model="selectedHost"
           :options="hosts"
@@ -438,9 +438,9 @@ export default {
 
         <b-button
           v-if="canSelectLocation && !isLocation && isMine"
-          class="text-truncate i-text-middle btn-item"
+          class="text-truncate i-text-middle btn-item mb-2"
           variant="outline-primary"
-          size="sm"
+          size="md"
           @click="runInCloud"
         >
           <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
@@ -450,7 +450,7 @@ export default {
         <a
           v-if="canSelectCloudRunning"
           :href="jupyterUrl"
-          class="btn btn-outline-primary btn-sm btn-item me-2 mb-2"
+          class="btn btn-outline-primary btn-md btn-item me-2 mb-2"
           download="docker-compose-config"
           target="_blank"
         >
@@ -462,7 +462,7 @@ export default {
           v-if="canSelectCloudRunning && !isUserHost"
           class="text-truncate i-text-middle btn-item me-2 mb-2"
           variant="outline-primary"
-          size="sm"
+          size="md"
           @click="pauseContainerMsg"
         >
           <i class="bx bx-pause font-size-16 align-middle me-1"></i>
@@ -473,7 +473,7 @@ export default {
           v-if="isRestartShow && !isUserHost"
           class="text-truncate i-text-middle btn-item me-2 mb-2"
           variant="outline-primary"
-          size="sm"
+          size="md"
           @click="restart"
         >
           <i class="bx bx-revision font-size-16 align-middle me-1"></i>
@@ -484,7 +484,7 @@ export default {
           v-if="!canSelectLocation"
           class="text-truncate i-text-middle btn-item me-2 mb-2"
           variant="outline-danger"
-          size="sm"
+          size="md"
           @click="delContainerMsg"
         >
           <i class="bx bx-trash font-size-16 align-middle me-1"></i>

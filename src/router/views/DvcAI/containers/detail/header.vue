@@ -78,7 +78,7 @@ export default {
   methods: {
     // 进入编辑状态
     toEdit() {
-      this.isEdit = true;
+      if(!this.isEdit) this.isEdit = true;
       // this.$emit('edit')
     },
 
@@ -128,10 +128,10 @@ export default {
     <div class="col-12 mb-2">
       <div class="row align-items-center">
 
-        <div class="col-12 col-md-4 col-lg-3">
+        <div class="col-12 col-md-4">
 
-          <h4 v-if="!isEdit" class="card-title text-truncate i-text-middle">
-            <span class="me-1">
+          <h4 v-if="!isEdit" class="card-title d-block text-truncate i-text-middle">
+            <span id="container-name" class="me-1" @click="toEdit">
               <i class="bx bx-cube me-1"></i>
               {{ container.container_name }}
             </span>
@@ -152,14 +152,14 @@ export default {
 
         </div>
 
-        <div class="col-12 col-md-4 col-lg-3">
+        <div class="col-12 col-md-4">
           <span class="d-block text-truncate mb-0">
             <i class="bx bx-layer me-1"></i>镜像
             {{ container.image.name }}
           </span>
         </div>
 
-        <div v-if="container.gpu_enabled" class="col-12 col-md-4 col-lg-3">
+        <div v-if="container.gpu_enabled" class="col-12 col-md-4">
           <span class="d-block text-truncate mb-0">
             <i class="bx bx-chip me-1"></i>GPU
             <span class="gpu-state">启用</span>
@@ -172,8 +172,8 @@ export default {
     <div class="col-12 mb-2">
       <div class="row">
 
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="mb-1">
+        <div class="col-6 col-md-4">
+          <div class="text-truncate mb-1">
             <span class="me-2"><i class="bx bx-chip me-1"></i>内核</span>
             <span>{{ container.cpus }} ({{ cpu.value }}%)</span>
           </div>
@@ -184,8 +184,8 @@ export default {
           ></b-progress>
         </div>
 
-        <div class="col-6 col-md-4 col-lg-3">
-          <div class="mb-1">
+        <div class="col-6 col-md-4">
+          <div class="text-truncate mb-1">
             <span class="me-2"><i class="bx bx-chip me-1"></i>内存</span>
             <span>{{ container.mem }}GB ({{ mem.value }}%)</span>
           </div>

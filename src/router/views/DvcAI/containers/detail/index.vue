@@ -128,10 +128,10 @@ export default {
     },
     // 取消编辑容器名
     cancelEdit(e) {
-
+      console.log(e)
       let target = e.target;
       
-      if(target.matches('button') || target.matches('i') || target.matches('a') || target.matches('input') || target.matches('#location-radios span') || target.matches('label.btn') || target.matches('div.multiselect') || target.matches('div.multiselect__tags')) {
+      if(target.matches('button') || target.matches('i') || target.matches('a') || target.matches('input') || target.matches('#location-radios span') || target.matches('label.btn') || target.matches('div.multiselect') || target.matches('div.multiselect__tags') || target.matches('#container-name')) {
         console.log('不可取消编辑')
         return;
       } else if(target.matches('.username') || target.matches('.avatar')) {
