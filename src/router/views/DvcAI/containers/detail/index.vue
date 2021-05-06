@@ -36,7 +36,6 @@ export default {
       container: null,
       websock: null,
       loadingState: false,
-      isEdit: false
     };
   },
   computed: {
@@ -123,12 +122,10 @@ export default {
       console.log(state)
       this.loadingState = state;
     },
-    toEdit() {
-      this.isEdit = true;
-    },
+
     // 取消编辑容器名
     cancelEdit(e) {
-      console.log(e)
+
       let target = e.target;
       
       if(target.matches('button') || target.matches('i') || target.matches('a') || target.matches('input') || target.matches('#location-radios span') || target.matches('label.btn') || target.matches('div.multiselect') || target.matches('div.multiselect__tags') || target.matches('#container-name')) {
@@ -151,7 +148,6 @@ export default {
       <div class="row font-size-14" @click="cancelEdit">
         
         <div class="col-12 col-md-8">
-          <!-- <Card :container="container" :canEdit="isAdmin || isMine" :isEdit="isEdit" @edit="toEdit"/> -->
           <Card :container="container" :canEdit="isAdmin || isMine"/>
         </div>
 
