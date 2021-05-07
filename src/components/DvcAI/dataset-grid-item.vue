@@ -1,5 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
+import LazyImg from "@/components/DvcAI/utility/lazy-img";
 
 export default {
   props: {
@@ -9,7 +10,8 @@ export default {
     },
   },
   components: {
-    Avatar
+    Avatar,
+    LazyImg
   },
   computed: {
     tags() {
@@ -28,14 +30,15 @@ export default {
 
 <template>
   <div class="grid-item-con">
-    <!-- 暂时点击项目卡片到空链接 -->
+    <!-- 暂时点击数据集卡片到空链接 -->
     <a href="javascript:void(0);">
-      <img
+      <LazyImg :img-class="'grid-img'" :src="dataset.cover_img_url"/>
+      <!-- <img
         class="grid-img"
         src="@/assets/images/companies/img-1.png"
         v-real-img="dataset.cover_img_url"
-        alt="项目"
-      />
+        alt="数据集"
+      /> -->
       <div class="grid-body">
         <h5 class="grid-item-name i-text-middle text-truncate">
           <i class="bx bx-cube me-1 d-md-none"></i>

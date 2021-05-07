@@ -1,5 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
+import LazyImg from "@/components/DvcAI/utility/lazy-img";
 
 export default {
   props: {
@@ -9,7 +10,8 @@ export default {
     },
   },
   components: {
-    Avatar
+    Avatar,
+    LazyImg
   },
   computed: {
     branches() {
@@ -42,12 +44,13 @@ export default {
   <div class="grid-item-con">
     <!-- 暂时跳转至github项目 -->
     <a @click.prevent="openProj(proj.url)">
-      <img
+      <LazyImg :img-class="'grid-img'" :src="proj.cover_img_url"/>
+      <!-- <img
         class="grid-img"
-        src="@/assets/images/companies/img-1.png"
+        loading="lazy"
         v-real-img="proj.cover_img_url"
         alt="项目"
-      />
+      /> -->
       <div class="grid-body">
         <div class="i-text-middle mb-1">
           <h5 class="grid-item-name text-truncate mb-0">

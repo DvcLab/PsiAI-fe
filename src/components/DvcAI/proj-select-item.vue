@@ -1,5 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
+import LazyImg from "@/components/DvcAI/utility/lazy-img";
 
 export default {
   props: {
@@ -10,6 +11,7 @@ export default {
   },
   components: {
     Avatar,
+    LazyImg
   },
   computed: {
     branches() {
@@ -36,12 +38,13 @@ export default {
   <div>
     <div class="row align-items-center p-2">
       <div class="col-md-2 d-none d-md-block">
-        <img
+        <LazyImg :img-class="'avatar-sm'" :src="proj.cover_img_url" :imgColor="'#fff'"/>
+        <!-- <img
           class="avatar-sm"
           src="@/assets/images/companies/img-1.png"
           v-real-img="proj.cover_img_url"
           alt="项目"
-        />
+        /> -->
       </div>
 
       <div class="col-10 col-md-8">
