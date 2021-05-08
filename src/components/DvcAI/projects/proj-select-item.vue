@@ -39,12 +39,6 @@ export default {
     <div class="row align-items-center p-2">
       <div class="col-md-2 d-none d-md-block">
         <LazyImg :img-class="'avatar-sm'" :src="proj.cover_img_url" :imgColor="'#fff'"/>
-        <!-- <img
-          class="avatar-sm"
-          src="@/assets/images/companies/img-1.png"
-          v-real-img="proj.cover_img_url"
-          alt="项目"
-        /> -->
       </div>
 
       <div class="col-10 col-md-8">
@@ -55,28 +49,28 @@ export default {
           {{ proj.desc }}
         </p>
         <p class="text-truncate mb-0">
-          <span v-if="datasets.length > 0">
-            <span
-              class="badge bg-primary me-2"
-              v-for="item in datasets"
-              :key="item"
-            >
-              {{ item }}
-            </span>
-          </span>
-          <span v-else class="badge bg-secondary me-2">无绑定数据集</span>
           <span
-            class="badge bg-success me-2"
+            class="badge bg-primary me-2"
             v-for="item in branches"
             :key="item"
           >
             {{ item }}
           </span>
+          <span v-if="datasets.length > 0">
+            <span
+              class="badge bg-info me-2"
+              v-for="item in datasets"
+              :key="item.id"
+            >
+              {{ item.name }}
+            </span>
+          </span>
+          <span v-else class="badge bg-secondary me-2">无绑定数据集</span>
         </p>
       </div>
 
       <div class="col-2 col-md-2 text-end">
-        <!-- <img v-if="proj.user" class="rounded-circle avatar-xs" src="@/assets/images/users/avatar-1.jpg" v-real-img="proj.user.avatar_url" :alt="proj.user.username" /> -->
+
         <Avatar
           size="xs"
           :src="proj.user.avatar_url"

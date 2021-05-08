@@ -1,5 +1,4 @@
 <script>
-// import Layout from "../../../layouts/main";
 import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
 import Multiselect from "vue-multiselect";
@@ -173,10 +172,11 @@ export default {
 
     // 监听proj里select的选择
     changeProjSelectAction(proj){
-
       // 切换项目，分支对应清空
       this.selectedBranch = '';
       this.selectedImage = null;
+      // 匹配分支
+      this.selectedBranch = proj.branches[0];
       // 搜索匹配镜像
       this.getImagesForProject(proj.id)
       .then(({ data })=>{
@@ -186,7 +186,8 @@ export default {
       .catch((err)=> {
         console.log(err)
       })
-      
+      // 匹配数据集
+      this.selectedDatasetsList.push(...proj.datasets);
     },
 
     // 监听proj里input的内容
