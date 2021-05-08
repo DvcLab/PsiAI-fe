@@ -1,10 +1,9 @@
 <script>
-import Layout from "../../../layouts/main";
-import HostList from "@/components/DvcAI/host-list";
+// import Layout from "@/router/layouts/main";
+import List from "./list";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
-// import Swal from "sweetalert2";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 
 /**
@@ -17,10 +16,10 @@ export default {
   },
 
   components: {
-    Layout,
+    // Layout,
     Loader,
     Autocomplete,
-    HostList
+    List
   },
 
   data() {
@@ -37,7 +36,7 @@ export default {
 
   mounted() {
     window.addEventListener('scroll', this.load);
-    this.getHostList('', 1);
+    this.getList('', 1);
   },
 
   destroyed(){
@@ -59,7 +58,7 @@ export default {
     },
 
     // 搜索获取主机列表
-    getHostList(q, page) {
+    getList(q, page) {
       this.loadingState = true;
       this.getHosts({
         params: {
@@ -137,7 +136,7 @@ export default {
         this.hosts = [];
         this.curPage = 1;
         this.curTotal = 0;
-        this.getHostList(content, this.curPage);
+        this.getList(content, this.curPage);
       }
     },
     
@@ -149,48 +148,67 @@ export default {
         let page = _this.curPage;
         if(page < totalPage) {                                       //先判断下一页是否有数据  
           _this.curPage++;                                           //查询条件的页码+1
-          _this.getHostList(_this.searchContent, _this.meta.page);   //拉取接口数据
+          _this.getList(_this.searchContent, _this.meta.page);   //拉取接口数据
         } else {
           console.log('全部主机加载完')
         }
       }
     },
 
+    // 跳转创建主机页面
+    toCreateHostPage() {
+      this.$router.push({path: '/hosts/create'})
+    },
+
   }
 };
 </script>
 <template>
-  <Layout>
-    <div class="row">
 
-      <div class="col-12 mb-3 text-center">
-        <autocomplete
-          aria-label="搜索主机..."
-          placeholder="搜索主机..."
-          :search="search"
-          :get-result-value="getResultValue"
-          :debounce-time="500"
-          @submit="handleSubmit"
-          >
-          <template #result="{ result, props }">
-            <li
-              v-bind="props"
-              class="search-result"
+  <div class="row">
+
+    <div class="col-12 text-center">
+      <div class="row d-flex align-item-center">
+        <div class="col-7 mb-3">
+          <autocomplete
+            aria-label="搜索主机..."
+            placeholder="搜索主机..."
+            :search="search"
+            :get-result-value="getResultValue"
+            :debounce-time="500"
+            @submit="handleSubmit"
             >
-              <div class="text-start">
-                <h6><i class="bx bx-server me-1"></i>{{ result.ip }}</h6>
-              </div>
-            </li>
-          </template>
-        </autocomplete>
+            <template #result="{ result, props }">
+              <li
+                v-bind="props"
+                class="search-result"
+              >
+                <div class="text-start">
+                  <h6><i class="bx bx-server me-1"></i>{{ result.ip }}</h6>
+                </div>
+              </li>
+            </template>
+          </autocomplete>
+        </div>
+        <div class="col-5 align-self-center mb-3">
+          <button
+            type="button"
+            class="btn btn-success btn-rounded float-end"
+            @click="toCreateHostPage"
+          >
+            <i class="mdi mdi-plus me-1"></i> 创建主机
+          </button>
+        </div>
       </div>
-
-      <HostList class="col-12" :hosts="hosts" :updating="loadingState"/>
-
-      <div class="col-12 mt-4">
-        <Loader :loading="loadingState"/>
-      </div>
-
+      
     </div>
-  </Layout>
+
+    <List class="col-12" :hosts="hosts" :updating="loadingState"/>
+
+    <div class="col-12 mt-4">
+      <Loader :loading="loadingState"/>
+    </div>
+
+  </div>
+
 </template>

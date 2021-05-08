@@ -1,9 +1,9 @@
 <script>
-import HostItem from './host-item';
+import Item from './item';
 
 export default {
     components: {
-      HostItem
+      Item
     },
     props: {
         hosts: {
@@ -22,7 +22,7 @@ export default {
   <div v-if="hosts && hosts.length > 0">
     <div class="row">
       <div class="col-12">
-        <HostItem v-for="item in hosts" :key="item.id" :host="item"/>
+        <Item v-for="item in hosts" :key="item.id" :host="item"/>
       </div>
     </div>
   </div>

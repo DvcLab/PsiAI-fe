@@ -1,7 +1,7 @@
 <script>
 import LoaderContainer from "@/components/DvcAI/loader-container";
-import GpuCard from "./gpu-card";
-import MluCard from "./mlu-card";
+import GpuCard from "@/components/DvcAI/gpu-card";
+import MluCard from "@/components/DvcAI/mlu-card";
 
 export default {
   components: { GpuCard, MluCard, LoaderContainer },

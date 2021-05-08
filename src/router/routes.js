@@ -15,7 +15,25 @@ export default [
       authRequired: true,
       roles: ['DOCKHUB_ADMIN'],
     },
-    component: () => import('./views/DvcAI/hosts/hosts-list.vue'),
+    component: () => import('./views/DvcAI/hosts'),
+    children: [
+      {
+        path: '',
+        name: '容器列表',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/hosts/list'),
+      },
+      {
+        path: 'create',
+        name: '创建容器',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/hosts/create'),
+      },
+    ]
   },
   {
     path: '/projects',
