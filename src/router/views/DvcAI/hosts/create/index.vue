@@ -1,17 +1,10 @@
 <script>
 import appConfig from "@/app.config";
-// import VueSlideBar from "vue-slide-bar";
-// import Multiselect from "vue-multiselect";
-import queryString from 'query-string';
+// import queryString from 'query-string';
 import PageHeader from "@/components/page-header";
-// import ProjSelectItem from "@/components/DvcAI/proj-select-item";
-// import ImageSelectItem from "@/components/DvcAI/image-select-item";
-// import DatasetSelectItem from "@/components/DvcAI/dataset-select-item";
-// import SelectCard from "@/components/DvcAI/select-card";
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import { required } from "vuelidate/lib/validators";
 import Swal from "sweetalert2";
-// import { mapActions } from "vuex";
 
 /**
  * Create Hosts component
@@ -36,6 +29,7 @@ export default {
         },
       ],
       loadingState: false,
+      submitted: false,
       ip:'',
       port: '',
       username: '',
@@ -59,20 +53,25 @@ export default {
     // 提交表单
     formSubmit(e) {
       console.log(e)
-      const _this = this;
       this.loadingState = true;
       this.submitted = true;
       this.$v.$touch();
       if (!this.$v.$invalid) {
         // 填写内容无误提交远程
-        let query = queryString.stringify({
-            ip: this.ip,
-            port: this.port,
-            username: this.username,
-            private_key: this.privateKey,
-            gpu_enabled: this.hasGPU,
-          })
-        _this.$request.put('hosts?'+query)
+        // let query = queryString.stringify({
+        //     ip: this.ip,
+        //     port: this.port,
+        //     username: this.username,
+        //     private_key: this.privateKey,
+        //     gpu_enabled: this.hasGPU,
+        //   })
+        this.$request.put('hosts',{
+          "ip": this.ip,
+          "port": this.port,
+          "username": this.username,
+          "private_key": this.privateKey,
+          "gpu_enabled": this.hasGPU,
+        })
         .then((res) => res.data)
         .then((res) => {
           if(res.code === 1) {
