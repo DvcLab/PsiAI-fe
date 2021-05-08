@@ -47,8 +47,8 @@ export default {
       </div>
 
       <div class="col-4 col-md-3">
-        <div class="i-text-middle">
-          <h5 class="list-item-name text-truncate mb-0">
+        <div class="i-text-middle d-block text-truncate ">
+          <h5 class="list-item-name d-inline-block text-truncate mb-0">
             <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
             <!-- 暂时跳转至github项目 -->
             <a class="text-dark me-1" @click.prevent="openProj(proj.url)">{{ proj.name }}</a>
@@ -81,7 +81,7 @@ export default {
         </div>
       </div>
 
-      <div class="col-3 col-md-3">
+      <div class="col-3 col-md-2">
         <div v-if="proj.datasets && proj.datasets.length > 0">
           <i class="bx bx-cube me-1"></i>
           <span class="text-dark">
@@ -109,8 +109,9 @@ export default {
         <span v-else class="badge bg-secondary">暂无</span>
       </div>
 
-      <div class="col-2 col-md-1">
+      <div class="col-2 col-md-2 d-inline-flex align-items-center">
         <Avatar size="xs" :src="proj.user.avatar_url" :user-name="proj.user.username"/>
+        <p class="text-truncate ms-2 mb-0 d-none d-md-block"><a class="grid-username" href="javascript:void(0);">{{proj.user.username}}</a></p>
       </div>
 
       <div class="col-2 col-md-2 text-end d-none d-md-block">

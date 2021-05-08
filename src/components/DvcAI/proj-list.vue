@@ -24,11 +24,11 @@ export default {
         <div class="col-12">
           <div class="bg-white list-head-text">
             <div class="row align-items-center">
-              <div class="col-md-1 d-none d-md-block">#</div>
-              <div class="col-4 col-md-3">项目名称</div>
+              <!-- <div class="col-md-1 d-none d-md-block">#</div> -->
+              <div class="col-4 col-md-4">项目名称</div>
               <div class="col-3 col-md-2">分支</div>
-              <div class="col-3 col-md-3">数据集</div>
-              <div class="col-2 col-md-1">用户</div>
+              <div class="col-3 col-md-2">数据集</div>
+              <div class="col-2 col-md-2">用户</div>
               <div class="col-md-2 text-end d-none d-md-block">创建时间</div>
             </div>
           </div>

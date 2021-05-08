@@ -41,7 +41,7 @@ export default {
         /> -->
       </div>
 
-      <div class="col-6 col-md-8">
+      <div class="col-6 col-md-7">
         <h5 class="text-truncate mb-0 list-item-name">
           <i class="bx bx-cube me-1 d-md-none"></i>
           <a :href="dataset.url" class="text-dark">{{ dataset.name }}</a>
@@ -57,8 +57,9 @@ export default {
         </p>
       </div>
 
-      <div class="col-2 col-md-1">
-        <Avatar size="xs" :src="dataset.user.avatar_url" :user-name="dataset.user.username" class="mx-auto"/>
+      <div class="col-2 col-md-2 d-inline-flex align-items-center">
+        <Avatar size="xs" :src="dataset.user.avatar_url" :user-name="dataset.user.username"/>
+        <p class="text-truncate ms-2 mb-0 d-none d-md-block"><a class="grid-username" href="javascript:void(0);">{{dataset.user.username}}</a></p>
       </div>
 
       <div class="col-4 col-md-2 text-end">
