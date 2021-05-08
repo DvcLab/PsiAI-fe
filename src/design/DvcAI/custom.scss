@@ -15,6 +15,13 @@
     background-attachment: fixed!important;
     // background-size: cover!important;
 }
+
+@media (max-width: 992px) {
+    .vertical-menu {
+        background-size: cover!important;
+    }
+}
+
 // 文本显示两行省略
 .text-truncate-2 {
     overflow: hidden;
