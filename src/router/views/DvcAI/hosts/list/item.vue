@@ -11,6 +11,11 @@ export default {
       default: () => {},
     },
   },
+  filters: {
+    preId(id){
+      return id.slice(0,8)
+    }
+  },
   data() {
     return {
       websock: null,
@@ -168,7 +173,7 @@ export default {
     <div class="list-item-con">
       <div class="row">
         <div class="col-12 col-md-6">
-          <h4>{{ hostSelfData.ip }}</h4>
+          <h4>{{ hostSelfData.ip }}<span class="text-secondary font-size-13">（{{ hostSelfData.id | preId }}）</span></h4>
         </div>
 
         <div class="col-12 col-md-6">
