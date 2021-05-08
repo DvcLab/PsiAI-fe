@@ -64,16 +64,16 @@ export default {
 
         <p class="mt-1 mb-0">
           <span v-for="item in branches" :key="item">
-            <span class="badge bg-primary me-2">
+            <span class="badge bg-primary i-text-middle me-2">
               <i class="bx bx-git-branch"></i>
               {{ item }}
             </span>
           </span>
 
           <span v-for="item in datasets" :key="item">
-            <span class="badge bg-primary me-2">
+            <span class="badge bg-info i-text-middle me-2">
               <i class="bx bx-cube"></i>
-              {{ item }}
+              {{ item.name }}
             </span>
           </span>
         </p>

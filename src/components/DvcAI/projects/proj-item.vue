@@ -38,16 +38,10 @@ export default {
     <div class="row align-items-center">
       <div class="col-1 col-md-1 d-none d-md-block">
         <LazyImg :img-class="'avatar-sm'" :src="proj.cover_img_url" :imgColor="'#fff'"/>
-        <!-- <img
-          class="avatar-sm"
-          src="@/assets/images/companies/img-1.png"
-          v-real-img="proj.cover_img_url"
-          alt="项目"
-        /> -->
       </div>
 
       <div class="col-4 col-md-3">
-        <div class="i-text-middle d-block text-truncate ">
+        <div class="i-text-middle d-block text-truncate">
           <h5 class="list-item-name d-inline-block text-truncate mb-0">
             <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
             <!-- 暂时跳转至github项目 -->
@@ -60,8 +54,8 @@ export default {
 
       <div class="col-3 col-md-2 flex-wrap">
         <div v-if="proj.branches && proj.branches.length > 0">
-          <i class="bx bx-git-branch me-1"></i>
-          <span class="badge bg-primary me-2">
+          <span class="badge bg-primary i-text-middle me-2">
+            <i class="bx bx-git-branch me-1"></i>
             {{ proj.branches[0] }}
           </span>
           <b-dropdown
@@ -83,8 +77,8 @@ export default {
 
       <div class="col-3 col-md-2">
         <div v-if="proj.datasets && proj.datasets.length > 0">
-          <i class="bx bx-cube me-1"></i>
-          <span class="text-dark">
+          <span class="badge bg-info i-text-middle me-2">
+            <i class="bx bx-cube me-1"></i>
             {{ proj.datasets[0].name }}
           </span>
           <b-dropdown
