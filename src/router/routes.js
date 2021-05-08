@@ -41,7 +41,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/DvcAI/projects/projects-list.vue'),
+    component: () => import('./views/DvcAI/projects/list'),
   },
   {
     path: '/datasets',

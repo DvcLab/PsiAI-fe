@@ -1,7 +1,7 @@
 <script>
-import Layout from "../../../layouts/main";
-import ProjList from "@/components/DvcAI/proj-list";
-import ProjGridList from "@/components/DvcAI/proj-grid-list";
+import Layout from "@/router/layouts/main";
+import List from "./list";
+import Grid from "./grid";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
@@ -21,8 +21,8 @@ export default {
     Layout,
     Loader,
     Autocomplete,
-    ProjList,
-    ProjGridList
+    List,
+    Grid
   },
 
   data() {
@@ -335,8 +335,8 @@ export default {
         </ul>
       </div>
 
-      <ProjGridList v-if="isGrid" class="col-12" :projects="projects" :updating="loadingState"/>
-      <ProjList v-else class="col-12" :projects="projects" :updating="loadingState"/>
+      <Grid v-if="isGrid" class="col-12" :projects="projects" :updating="loadingState"/>
+      <List v-else class="col-12" :projects="projects" :updating="loadingState"/>
 
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>

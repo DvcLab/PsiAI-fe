@@ -1,5 +1,5 @@
 <script>
-import ProjGridItem from "./proj-grid-item";
+import ProjGridItem from "@/components/DvcAI/projects/proj-grid-item";
 
 export default {
   components: {

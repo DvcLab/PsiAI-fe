@@ -1,5 +1,5 @@
 <script>
-import ProjItem from './proj-item';
+import ProjItem from '@/components/DvcAI/projects/proj-item';
 
 export default {
     components: {
