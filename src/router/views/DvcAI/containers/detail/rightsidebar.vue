@@ -343,7 +343,7 @@ export default {
     delContainerMsg() {
       Swal.fire({
         icon:'question',
-        title: '确认删除所选容器?',
+        title: '确认删除此容器?',
         showCancelButton: true,
         confirmButtonText: `确认`,
         cancelButtonText: `取消`

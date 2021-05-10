@@ -19,7 +19,7 @@ export default [
     children: [
       {
         path: '',
-        name: '容器列表',
+        name: '主机列表',
         meta: {
           authRequired: true,
         },
@@ -27,11 +27,19 @@ export default [
       },
       {
         path: 'create',
-        name: '创建容器',
+        name: '创建主机',
         meta: {
           authRequired: true,
         },
         component: () => import('./views/DvcAI/hosts/create'),
+      },
+      {
+        path: ':id',
+        name: '主机详情',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/hosts/detail'),
       },
     ]
   },
@@ -93,14 +101,6 @@ export default [
       },
     ]
   },
-  // {
-  //   path: '/container/:id',
-  //   name: '容器',
-  //   meta: {
-  //     authRequired: true,
-  //   },
-  //   component: () => import('./views/DvcAI/containers/detail'),
-  // },
   {
     path: '/404',
     name: '404',

@@ -70,7 +70,7 @@ export default {
             </span>
           </span>
 
-          <span v-for="item in datasets" :key="item">
+          <span v-for="item in datasets" :key="item.id">
             <span class="badge bg-info i-text-middle me-2">
               <i class="bx bx-cube"></i>
               {{ item.name }}

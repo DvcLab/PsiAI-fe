@@ -82,6 +82,18 @@ export default {
       };
     },
 
+    // 跳转主机详情页
+    toHostDetail(e){
+      let target = e.target;
+      if(target.matches('h4') || target.matches('span') || target.matches('a') || target.matches('i')) {
+        console.log('不可跳转')
+        return;
+      } else {
+        return this.$router.push({ path: '/hosts/' + this.host.id })
+        // console.log('可以跳转详情页')
+      }
+    },
+
     // 初始化weosocket
     initWebSocket() {
       const wsuri =
@@ -170,7 +182,7 @@ export default {
 </script>
 <template>
   <LoaderContainer :loading="loadingState">
-    <div class="list-item-con">
+    <div class="list-item-con" @click="toHostDetail">
       <div class="row">
         <div class="col-12 col-md-6">
           <h4>{{ hostSelfData.ip }}<span class="text-secondary font-size-13">（{{ hostSelfData.id | preId }}）</span></h4>
@@ -202,7 +214,7 @@ export default {
               class="col-sm-12 col-md-8 mb-2"
               style="font-weight: bold"
             >
-              {{ hostSelfData.cpu_info.cpu_model_name }}
+              <span>{{ hostSelfData.cpu_info.cpu_model_name }}</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.cpu_info.cpu_num)"
@@ -211,7 +223,7 @@ export default {
               <span class="badge rounded-pill bg-primary">
                 <i class="uil uil-circuit" />内核
               </span>
-              {{ hostSelfData.cpu_info.cpu_num }}
+              <span> {{ hostSelfData.cpu_info.cpu_num }}</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.mem_info.total)"
@@ -220,7 +232,7 @@ export default {
               <span class="badge rounded-pill bg-primary">
                 <i class="uil uil-dice-four" />内存
               </span>
-              {{ hostSelfData.mem_info.total }} MiB
+              <span> {{ hostSelfData.mem_info.total }} MiB</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.container_num)"
@@ -229,13 +241,13 @@ export default {
               <span class="badge rounded-pill bg-primary">
                 <i class="uil uil-box" />容器
               </span>
-              {{ hostSelfData.container_num }}
+              <span> {{ hostSelfData.container_num }}</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.gpu_info)"
               class="col-sm-6 col-md-4 mb-2"
             >
-              <span class="badge rounded-pill bg-primary">
+              <span class="badge rounded-pill font-size-11 badge-soft-success">
                 <i class="uil uil-server" />Nvidia Driver
                 {{ hostSelfData.gpu_info.driver_version }}</span
               >
@@ -244,7 +256,7 @@ export default {
               v-if="!this.$_.isNil(hostSelfData.gpu_info)"
               class="col-sm-6 col-md-4 mb-2"
             >
-              <span class="badge rounded-pill bg-primary">
+              <span class="badge rounded-pill font-size-11 badge-soft-warning">
                 <i class="uil uil-servers" /> CUDA
                 {{ hostSelfData.gpu_info.cuda_version }}</span
               >
