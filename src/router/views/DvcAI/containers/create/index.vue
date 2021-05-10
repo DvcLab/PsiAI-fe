@@ -1,16 +1,17 @@
 <script>
-import Layout from "../../../layouts/main";
 import appConfig from "@/app.config";
 import VueSlideBar from "vue-slide-bar";
 import Multiselect from "vue-multiselect";
 import queryString from 'query-string';
-import ProjSelectItem from "@/components/DvcAI/proj-select-item";
+import PageHeader from "@/components/page-header";
+import ProjSelectItem from "@/components/DvcAI/projects/proj-select-item";
 import ImageSelectItem from "@/components/DvcAI/image-select-item";
 import DatasetSelectItem from "@/components/DvcAI/dataset-select-item";
 import SelectCard from "@/components/DvcAI/select-card";
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import { required } from "vuelidate/lib/validators";
 import Swal from "sweetalert2";
+import { mapActions } from "vuex";
 
 /**
  * Create Container component
@@ -20,9 +21,20 @@ export default {
     title: "创建容器",
     meta: [{ name: "创建容器", content: appConfig.description }]
   },
-  components: { Layout, LoaderContainer, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
+  components: { PageHeader, LoaderContainer, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
   data() {
     return {
+      title: "创建容器",
+      linkItems: [
+        {
+          text: "容器列表",
+          to: { path: '/containers' },
+        },
+        {
+          text: "创建容器",
+          active: true,
+        },
+      ],
       cpus: 1,
       cpuData: {
         value: 1,
@@ -78,7 +90,8 @@ export default {
       selectedImage: null,
       selectedDatasetsList: [],
       submitted: false,
-      loadingState: false
+      loadingState: false,
+      matchImage: null,
     };
   },
   computed: {
@@ -142,6 +155,8 @@ export default {
     this.getDatasetsList();
   },
   methods: {
+    // 镜像相关API：获取适配指定项目（依赖）的镜像
+    ...mapActions('images', ['getImagesForProject']),
 
     // 获取项目列表
     getProjsList() {
@@ -156,9 +171,23 @@ export default {
     },
 
     // 监听proj里select的选择
-    changeProjSelectAction(){
+    changeProjSelectAction(proj){
       // 切换项目，分支对应清空
       this.selectedBranch = '';
+      this.selectedImage = null;
+      // 匹配分支
+      this.selectedBranch = proj.branches[0];
+      // 搜索匹配镜像
+      this.getImagesForProject(proj.id)
+      .then(({ data })=>{
+        this.selectedImage = data[0];
+        this.matchImage = data[0];
+      })
+      .catch((err)=> {
+        console.log(err)
+      })
+      // 匹配数据集
+      this.selectedDatasetsList.push(...proj.datasets);
     },
 
     // 监听proj里input的内容
@@ -269,6 +298,8 @@ export default {
           console.log(err);
           this.errorMsg();
         })
+      } else {
+        this.loadingState = false;
       }
     },
 
@@ -286,6 +317,11 @@ export default {
       }
     },
 
+    // 返回容器列表
+    backContainersList() {
+      this.$router.push({path: '/containers'})
+    },
+
     // 容器创建成功提醒
     successMsg() {
       Swal.fire(
@@ -295,7 +331,7 @@ export default {
       ).then((res) => {
         if(res.isConfirmed) {
           this.loadingState = false;
-          this.$router.push({path: '/containers'})
+          this.backContainersList();
         }
       })
     },
@@ -309,7 +345,7 @@ export default {
       ).then((res) => {
         if(res.isConfirmed) {
           this.loadingState = false;
-          this.$router.push({path: '/containers'})
+          this.backContainersList();
         }
       })
     },
@@ -322,7 +358,8 @@ export default {
 };
 </script>
 <template>
-  <Layout>
+<div>
+    <PageHeader :title="title" :items="linkItems" />
     <LoaderContainer :loading="loadingState">
     <div class="row">
 
@@ -331,7 +368,6 @@ export default {
         <div class="card">
           <div class="card-body">
             
-            <h4 class="card-title mb-4">创建容器</h4>
             <form @submit.prevent="formSubmit">
               <div class="row">
 
@@ -406,10 +442,16 @@ export default {
                   <template slot="singleLabel" slot-scope="{ option }">
                     <i class="bx bx-layer me-1"></i>
                     <span>{{ option.name }}</span>
+                    <span
+                      v-if="matchImage && selectedImage.id === matchImage.id"
+                      class="badge bg-info ms-2"
+                    >
+                      推荐
+                    </span>
                   </template>
                   <template slot="option" slot-scope="{ option }">
                     <div class="row">
-                      <ImageSelectItem class="col-12" :image="option"/>
+                      <ImageSelectItem class="col-12" :image="option" :match="matchImage ? matchImage.id : ''"/>
                     </div>
                   </template>
                   <span slot="noResult">未查询到该镜像</span>
@@ -498,7 +540,8 @@ export default {
               </div>
 
               <div class="text-center mt-4">
-                <button type="submit" class="btn btn-success">创建容器</button>
+                <button type="submit" class="btn btn-success me-2" :disabled="$v.$invalid">创建</button>
+                <button class="btn btn-secondary" @click="backContainersList">取消</button>
               </div>
 
             </form>
@@ -507,5 +550,5 @@ export default {
       </div>
     </div>
     </LoaderContainer>
-  </Layout>
+</div>
 </template>

@@ -1,10 +1,17 @@
 <script>
+import Avatar from "@/components/DvcAI/utility/avatar";
+import LazyImg from "@/components/DvcAI/utility/lazy-img";
+
 export default {
   props: {
     dataset: {
       type: Object,
       default: () => {},
     },
+  },
+  components: {
+    Avatar,
+    LazyImg
   },
   computed: {
     tags() {
@@ -23,14 +30,15 @@ export default {
 
 <template>
   <div>
-    <div class="dataset-item-con row align-items-center">
+    <div class="row align-items-center p-2">
       <div class="col-md-1 d-none d-md-block">
-        <img
+        <LazyImg :img-class="'avatar-sm'" :src="dataset.cover_img_url" :imgColor="'#fff'"/>
+        <!-- <img
           class="avatar-sm"
           :src="require('@/assets/images/companies/img-1.png')"
-          :v-real-img="dataset.cover_img_url"
+          v-real-img="dataset.cover_img_url"
           alt="数据集"
-        />
+        /> -->
       </div>
 
       <div class="col-10 col-md-10">
@@ -48,23 +56,14 @@ export default {
         </p>
       </div>
 
-      <div class="col-2 col-md-1">
-        <img
-          v-if="dataset.user"
-          class="rounded-circle avatar-xs"
-          src="@/assets/images/users/avatar-1.jpg"
-          :v-real-img="dataset.user.avatar_url"
-          :alt="dataset.user.username"
-        />
+      <div class="col-2 col-md-1 text-end">
+        <Avatar size="xs" :src="dataset.user.avatar_url" :user-name="dataset.user.username"/>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.dataset-item-con {
-  padding: 0.5rem;
-}
 h5 {
   color: inherit;
 }

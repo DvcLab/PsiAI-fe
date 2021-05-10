@@ -1,5 +1,5 @@
 <script>
-import ProjGridItem from "./proj-grid-item";
+import ProjGridItem from "@/components/DvcAI/projects/proj-grid-item";
 
 export default {
   components: {
@@ -22,7 +22,7 @@ export default {
   <div v-if="projects && projects.length > 0">
     <div class="row">
       <div
-        class="col-12 col-sm-6 col-md-3 col-lg-4 col-xl-3"
+        class="col-12 col-sm-6 col-md-3 col-lg-4 col-xl-2"
         v-for="item in projects"
         :key="item.id"
       >

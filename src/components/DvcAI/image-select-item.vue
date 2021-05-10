@@ -5,6 +5,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    match: {
+      type: String,
+      default: ""
+    }
   },
   computed: {
     tags() {
@@ -17,29 +21,39 @@ export default {
       }
       return tagList;
     },
+    types() {
+      if (!this.image.types) return [];
+      let typesList = this.image.types;
+      if (typesList.length > 3) {
+        let temp = typesList.slice(0, 3);
+        return temp;
+      }
+      return typesList;
+    },
   },
 };
 </script>
 
 <template>
   <div>
-    <div class="image-item-con row align-items-center">
-      <div class="col-10 col-md-8">
-        <h5 class="d-block text-truncate mb-0 list-item-name">
+    <div class="row align-items-center p-2">
+      <div class="col-10 col-md-6">
+        <div class="d-inline-flex align-items-center mb-1">
+          <h5 class="d-block text-truncate mb-0 list-item-name">
+            {{ image.name }}
+          </h5>
+          <span
+            v-if="image && image.id === match"
+            class="badge bg-info ms-2"
+          >
+            推荐
+          </span>
+        </div>
+        <!-- <h5 class="d-block text-truncate mb-0 list-item-name">
           {{ image.name }}
-        </h5>
+        </h5> -->
         <p class="text-truncate mb-0">{{ image.desc }}</p>
         <p class="text-muted text-truncate mb-0">
-          <span v-if="image.types && image.types.length > 0">
-            <span
-              v-for="item in image.types"
-              class="badge bg-primary me-1"
-              :key="item"
-            >
-              {{ item }}
-            </span>
-          </span>
-
           <span v-if="image.tags && image.tags.length > 0">
             <span
               v-for="item in tags"
@@ -52,30 +66,30 @@ export default {
         </p>
       </div>
 
-      <div class="col-2 col-md-2">
-        <span
-          v-if="image.types.length > 0"
-          class="badge bg-primary me-2"
-          :class="{
-            'bg-info': `${image.types[0]}` === 'GPU',
-          }"
-        >
-          {{ image.types[0] }}
-        </span>
+      <div class="col-2 col-md-4">
+        <span v-if="types.length > 0">
+            <span
+              v-for="item in image.types"
+              class="badge bg-info me-1"
+              :key="item"
+              :class="{
+                'bg-warning': `${image.types[0]}` === 'GPU',
+              }"
+            >
+              {{ item }}
+            </span>
+          </span>
       </div>
 
-      <div class="col-md-2 text-end d-none d-md-block">
+      <!-- <div class="col-md-2 text-end d-none d-md-block">
         <i class="bx bx-calendar me-1"></i>
         <span>{{ image.update_time | moment("from", "now") }} 更新</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <style scoped>
-.image-item-con {
-  padding: 0.5rem;
-}
 h5 {
   color: inherit;
 }

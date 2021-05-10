@@ -1,10 +1,17 @@
 <script>
+import Avatar from "@/components/DvcAI/utility/avatar";
+import LazyImg from "@/components/DvcAI/utility/lazy-img";
+
 export default {
   props: {
     proj: {
       type: Object,
       default: () => {},
     },
+  },
+  components: {
+    Avatar,
+    LazyImg
   },
   computed: {
     branches() {
@@ -16,6 +23,12 @@ export default {
       return branchList;
     },
   },
+  methods: {
+    // 打开对应的github项目页面
+    openProj(href) {
+      window.open(href, "_blank");
+    },
+  }
 };
 </script>
 
@@ -24,26 +37,25 @@ export default {
       
     <div class="row align-items-center">
       <div class="col-1 col-md-1 d-none d-md-block">
-        <img
-          class="avatar-sm"
-          src="@/assets/images/companies/img-1.png"
-          v-real-img="proj.cover_img_url"
-          alt="项目"
-        />
+        <LazyImg :img-class="'avatar-sm'" :src="proj.cover_img_url" :imgColor="'#fff'"/>
       </div>
 
       <div class="col-4 col-md-3">
-        <h5 class="text-truncate mb-0 list-item-name">
-          <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
-          <a :href="proj.url" class="text-dark">{{ proj.name }}</a>
-        </h5>
-        <p class="text-muted text-truncate mb-0">{{ proj.desc }}</p>
+        <div class="i-text-middle d-block text-truncate">
+          <h5 class="list-item-name d-inline-block text-truncate mb-0">
+            <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
+            <!-- 暂时跳转至github项目 -->
+            <a class="text-dark me-1" @click.prevent="openProj(proj.url)">{{ proj.name }}</a>
+          </h5>
+          <a class="i-text-middle cursor-pointer" @click.prevent="openProj(proj.url)"><i class="bx bxl-github font-size-18"></i></a>
+        </div>
+        <p class="text-muted text-truncate list-item-desc mb-0">{{ proj.desc }}</p>
       </div>
 
       <div class="col-3 col-md-2 flex-wrap">
         <div v-if="proj.branches && proj.branches.length > 0">
-          <i class="bx bx-git-branch me-1"></i>
-          <span class="badge bg-primary me-2">
+          <span class="badge bg-primary i-text-middle me-2">
+            <i class="bx bx-git-branch me-1"></i>
             {{ proj.branches[0] }}
           </span>
           <b-dropdown
@@ -63,10 +75,10 @@ export default {
         </div>
       </div>
 
-      <div class="col-3 col-md-3">
+      <div class="col-3 col-md-2">
         <div v-if="proj.datasets && proj.datasets.length > 0">
-          <i class="bx bx-cube me-1"></i>
-          <span class="text-dark">
+          <span class="badge bg-info i-text-middle me-2">
+            <i class="bx bx-cube me-1"></i>
             {{ proj.datasets[0].name }}
           </span>
           <b-dropdown
@@ -91,14 +103,9 @@ export default {
         <span v-else class="badge bg-secondary">暂无</span>
       </div>
 
-      <div class="col-2 col-md-1">
-        <img
-          v-if="proj.user"
-          class="rounded-circle avatar-xs"
-          src="@/assets/images/users/avatar-1.jpg"
-          v-real-img="proj.user.avatar_url"
-          :alt="proj.user.username"
-        />
+      <div class="col-2 col-md-2 d-inline-flex align-items-center">
+        <Avatar size="xs" :src="proj.user.avatar_url" :user-name="proj.user.username"/>
+        <p class="text-truncate ms-2 mb-0 d-none d-md-block"><a class="grid-username" href="javascript:void(0);">{{proj.user.username}}</a></p>
       </div>
 
       <div class="col-2 col-md-2 text-end d-none d-md-block">

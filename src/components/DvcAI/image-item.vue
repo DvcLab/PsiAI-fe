@@ -1,4 +1,6 @@
 <script>
+import Avatar from "@/components/DvcAI/utility/avatar";
+
 export default {
   props: {
     image: {
@@ -6,10 +8,23 @@ export default {
       default: () => {},
     },
   },
+  components: {
+    Avatar
+  },
   computed: {
+    types() {
+      if (!this.image.types) return [];
+      let typeList = this.image.types;
+      if (typeList.length > 3) {
+        let temp = typeList.slice(0, 3);
+        // temp.push('...');
+        return temp;
+      }
+      return typeList;
+    },
     tags() {
+      if (!this.image.tags) return [];
       let tagList = this.image.tags;
-      if (!tagList) return [];
       if (tagList.length > 3) {
         let temp = tagList.slice(0, 3);
         // temp.push('...');
@@ -17,6 +32,15 @@ export default {
       }
       return tagList;
     },
+    libs() {
+      if (!this.image.libs) return [];
+      let libs = this.image.libs;
+      let libsList = [];
+      for(let i in libs) {
+        libsList.push(i+' '+libs[i]);
+      }
+      return libsList;
+    }
   },
 };
 </script>
@@ -24,43 +48,80 @@ export default {
 <template>
   <div class="list-item-con">
     <div class="row align-items-center">
-        
-      <div class="col-6 col-md-5">
+
+      <div class="col-md-1 d-none d-md-block">
+        <img
+          class="avatar-sm"
+          src="@/assets/images/companies/img-3.png"
+          v-real-img="image.cover_img_url"
+          alt="镜像"
+        />
+      </div>
+
+      <div class="col-6 col-md-3">
         <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
-          <i class="bx bx-layer me-1"></i>
+          <i class="bx bx-layer me-1 d-md-none"></i>
           {{ image.name }}
         </h5>
         <p class="text-muted text-truncate mb-0">{{ image.desc }}</p>
         <p
-          v-if="image.tags && image.tags.length > 0"
           class="text-muted text-truncate mb-0"
         >
-          <span v-for="item in tags" class="badge bg-primary me-1" :key="item">
-            {{ item }}
+          <span v-if="types.length > 0">
+            <span v-for="item in types" class="badge bg-warning me-1 d-md-none" :key="item">
+              {{ item }}
+            </span>
+          </span>
+          <span v-if="tags.length > 0">
+            <span v-for="item in tags" class="badge bg-primary me-1" :key="item">
+              {{ item }}
+            </span>
           </span>
         </p>
       </div>
 
-      <div class="col-2 col-md-2">
-        <span
-          v-if="image.types && image.types.length > 0"
-          class="badge bg-primary me-2"
-          :class="{
-            'bg-info': `${image.types[0]}` === 'GPU',
-          }"
+      <div class="col-md-1 text-center d-none d-md-block">
+        <p
+          v-if="types.length > 0"
+          class="text-muted text-truncate mb-0"
         >
-          {{ image.types[0] }}
-        </span>
+          <span v-for="item in types" class="badge bg-warning me-1" :key="item">{{ item }}</span>
+        </p>
+      </div>
+      
+      <div class="col-md-2 text-md-center d-none d-md-block">
+        <p
+          v-if="libs.length > 0"
+          class="text-muted text-truncate mb-0"
+        >
+          <span v-for="item in libs" class="badge bg-info me-1" :key="item">{{ item }}</span>
+        </p>
       </div>
 
-      <div class="col-2 col-md-1">
-        <img
-          v-if="image.user"
-          class="rounded-circle avatar-xs"
-          src="@/assets/images/users/avatar-1.jpg"
-          v-real-img="image.user.avatar_url"
-          :alt="image.user.username"
-        />
+      <div class="col-6 flex-wrap text-start d-md-none">
+        <div v-if="libs.length > 0">
+          <span class="badge bg-info me-2">
+            {{ libs[0] }}
+          </span>
+          <b-dropdown
+            class="card-drop"
+            variant="white"
+            menu-class="dropdown-menu-end"
+            right
+            toggle-class="p-0"
+          >
+            <template v-slot:button-content>
+              <i class="mdi mdi-dots-horizontal font-size-18"></i>
+            </template>
+            <b-dropdown-item v-for="item in libs" :key="item">
+              {{ item }}
+            </b-dropdown-item>
+          </b-dropdown>
+        </div>
+      </div>
+
+      <div class="col-md-1 d-none d-md-block">
+        <Avatar v-if="image.user" size="xs" :src="image.user.avatar_url" :user-name="image.user.username" class="mx-auto"/>
       </div>
 
       <div class="col-md-2 text-end d-none d-md-block">
@@ -68,7 +129,7 @@ export default {
         <span>{{ image.create_time | moment("from", "now") }}</span>
       </div>
 
-      <div class="col-2 col-md-2 text-end">
+      <div class="col-md-2 text-end d-none d-md-block">
         <i class="bx bx-calendar me-1"></i>
         <span>{{ image.update_time | moment("from", "now") }}</span>
       </div>
@@ -76,11 +137,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style scoped>
-.proj-item-con {
-  background-color: #fff;
-  padding: 0.75rem;
-  margin-top: 0.75rem;
-}
-</style>

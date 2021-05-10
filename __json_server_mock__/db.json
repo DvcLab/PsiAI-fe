@@ -5,6 +5,417 @@
       "id": 1
     }
   ],
+  "hosts": {
+    "code": 1,
+    "msg": "SUCCESS",
+    "data": [
+      {
+        "cpu_info": {
+          "cpu_model_name": "Intel(R) Xeon(R) Gold 6240 CPU @ 2.60GHz",
+          "cpu_num": 72,
+          "io_wait": 0.0,
+          "idle": 0.9986,
+          "avg_temp": 34.38889,
+          "max_temp": 37.0,
+          "usage": 0.0013999939,
+          "time": 1618470632620
+        },
+        "mem_info": {
+          "total": 251.38763,
+          "free": 245.91277,
+          "buffer": 0.22083282,
+          "cached": 2.0987625,
+          "avail": 247.59006,
+          "usage": 0.01510644,
+          "time": 1618470632739
+        },
+        "io_info": {
+          "disk_total": 437.0,
+          "disk_free": 319.0,
+          "read": 9.7E-4,
+          "writen": 0.020119999,
+          "usage": 0.27002287,
+          "time": 1618470632762
+        },
+        "net_info": {
+          "in_rate": 0.004378536716103554,
+          "out_rate": 0.004132682923227549,
+          "total_rate": 0.008511219639331102,
+          "time": 1618470632819
+        },
+        "mlu_info": {
+          "mlus": [
+            {
+              "id": 0,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 39.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 1,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 42.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 2,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 39.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 3,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 39.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 4,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 36.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 5,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 41.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 6,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 40.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 7,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 40.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            }
+          ],
+          "attached_mlus": 8,
+          "time": 1618470633869
+        },
+        "cpu_series": [],
+        "network_series": [],
+        "gpu_series": [],
+        "mlu_series": [],
+        "ip": "10.1.6.14",
+        "port": 22,
+        "username": "root",
+        "container_num": 1,
+        "status": "RUNNING",
+        "id": 2,
+        "create_time": 1599561143000,
+        "update_time": 1618470637000
+      },
+      {
+        "cpu_info": {
+          "cpu_model_name": "Intel(R) Xeon(R) Gold 6240 CPU @ 2.60GHz",
+          "cpu_num": 72,
+          "io_wait": 0.07,
+          "idle": 0.98510003,
+          "avg_temp": 36.88889,
+          "max_temp": 39.0,
+          "usage": 0.014899969,
+          "time": 1618470632172
+        },
+        "mem_info": {
+          "total": 251.38756,
+          "free": 209.82,
+          "buffer": 0.1435585,
+          "cached": 24.772434,
+          "avail": 238.76468,
+          "usage": 0.0502128,
+          "time": 1618470632315
+        },
+        "io_info": {
+          "disk_total": 9749.0,
+          "disk_free": 9595.0,
+          "read": 0.21812,
+          "writen": 0.16645999,
+          "usage": 0.015796483,
+          "time": 1618470632344
+        },
+        "net_info": {
+          "in_rate": 0.02101454883813858,
+          "out_rate": 0.0186624638736248,
+          "total_rate": 0.03967701271176338,
+          "time": 1618470632421
+        },
+        "mlu_info": {
+          "mlus": [
+            {
+              "id": 0,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 36.0,
+              "usage": 0.0,
+              "mem_usage": 2755.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 1,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 41.0,
+              "usage": 0.0,
+              "mem_usage": 2755.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 2,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 38.0,
+              "usage": 0.0,
+              "mem_usage": 2755.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 3,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 37.0,
+              "usage": 0.0,
+              "mem_usage": 2755.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 4,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 37.0,
+              "usage": 0.0,
+              "mem_usage": 2755.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 5,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 41.0,
+              "usage": 0.0,
+              "mem_usage": 2755.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 6,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 41.0,
+              "usage": 0.0,
+              "mem_usage": 2756.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 7,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 41.0,
+              "usage": 0.0,
+              "mem_usage": 2756.0,
+              "mem_total": 16384.0
+            }
+          ],
+          "attached_mlus": 8,
+          "time": 1618470633481
+        },
+        "cpu_series": [],
+        "network_series": [],
+        "gpu_series": [],
+        "mlu_series": [],
+        "ip": "10.1.6.11",
+        "port": 22,
+        "username": "root",
+        "container_num": 1,
+        "status": "RUNNING",
+        "id": 5,
+        "create_time": 1599561143000,
+        "update_time": 1618470636000
+      },
+      {
+        "cpu_info": {
+          "cpu_model_name": "Intel(R) Xeon(R) Gold 6240 CPU @ 2.60GHz",
+          "cpu_num": 72,
+          "io_wait": 0.0,
+          "idle": 0.9983,
+          "avg_temp": 34.72222,
+          "max_temp": 37.0,
+          "usage": 0.0016999841,
+          "time": 1618470631111
+        },
+        "mem_info": {
+          "total": 251.38763,
+          "free": 231.18132,
+          "buffer": 0.15662766,
+          "cached": 9.8320465,
+          "avail": 240.68625,
+          "usage": 0.04256928,
+          "time": 1618470631223
+        },
+        "io_info": {
+          "disk_total": 9749.0,
+          "disk_free": 9582.0,
+          "read": 2.6E-4,
+          "writen": 0.39327,
+          "usage": 0.017129958,
+          "time": 1618470631247
+        },
+        "net_info": {
+          "in_rate": 0.028933722525835037,
+          "out_rate": 0.010808967053890228,
+          "total_rate": 0.039742689579725266,
+          "time": 1618470631303
+        },
+        "mlu_info": {
+          "mlus": [
+            {
+              "id": 0,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 34.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 1,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 36.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 2,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 33.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 3,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 34.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 4,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 33.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 5,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 36.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 6,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 37.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            },
+            {
+              "id": 7,
+              "model_name": "MLU270",
+              "util": 0.0,
+              "fan": 0.0,
+              "temp": 37.0,
+              "usage": 0.0,
+              "mem_usage": 2707.0,
+              "mem_total": 16384.0
+            }
+          ],
+          "attached_mlus": 8,
+          "time": 1618470632354
+        },
+        "cpu_series": [],
+        "network_series": [],
+        "gpu_series": [],
+        "mlu_series": [],
+        "ip": "10.4.6.13",
+        "port": 22,
+        "username": "root",
+        "container_num": 1,
+        "status": "RUNNING",
+        "id": 1,
+        "create_time": 1592901572000,
+        "update_time": 1618470635000
+      }
+    ],
+    "_meta": {
+      "page": 1,
+      "size": 10,
+      "total": 3,
+      "total_page": 1
+    }
+  },
   "projects": {
     "code": 1,
     "msg": "SUCCESS",

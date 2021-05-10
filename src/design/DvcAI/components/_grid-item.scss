@@ -24,9 +24,13 @@
     padding: 16px;
 }
 .grid-item-name {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 500;
     line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+.grid-item-desc {
+    font-size: 0.7rem;
 }
 .grid-footer {
     /* display: flex;
@@ -37,11 +41,18 @@
     padding: 0.8rem;
 }
 .grid-avatar {
-    height: 1.7rem;
-    width: 1.7rem;
+    height: 1.5rem;
+    width: 1.5rem;
     border-radius: 50%;
 }
 .grid-time {
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     line-height: 1.7rem;
+}
+.grid-username {
+    font-size: 0.6rem;
+    color: #3c4043;
+}
+.grid-username:hover {
+    color: #3c4043;
 }

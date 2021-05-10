@@ -1,9 +1,9 @@
 <script>
-import ContainerItem from './container-item';
+import Item from './item';
 
 export default {
     components: {
-        ContainerItem
+        Item
     },
     props: {
         containers: {
@@ -22,7 +22,7 @@ export default {
     <div v-if="containers && containers.length > 0">
       <div class="row">
         <div class="col-12">
-          <ContainerItem v-for="item in containers" :key="item.id" :container="item"/>
+          <Item v-for="item in containers" :key="item.id" :container="item"/>
         </div>
       </div>
     </div>

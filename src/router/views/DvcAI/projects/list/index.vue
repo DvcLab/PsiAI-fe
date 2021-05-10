@@ -1,7 +1,7 @@
 <script>
-import Layout from "../../../layouts/main";
-import ProjList from "@/components/DvcAI/proj-list";
-import ProjGridList from "@/components/DvcAI/proj-grid-list";
+import Layout from "@/router/layouts/main";
+import List from "./list";
+import Grid from "./grid";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
@@ -21,8 +21,8 @@ export default {
     Layout,
     Loader,
     Autocomplete,
-    ProjList,
-    ProjGridList
+    List,
+    Grid
   },
 
   data() {
@@ -275,7 +275,7 @@ export default {
   <Layout>
     <div class="row">
 
-      <div class="col-9 col-md-10 mb-4 text-center">
+      <div class="col-8 col-sm-9 col-md-10 mb-4 text-center">
         <autocomplete
           aria-label="搜索添加项目..."
           placeholder="搜索添加项目..."
@@ -290,7 +290,7 @@ export default {
               class="search-result"
             >
               <div v-if="isSearch" class="text-start">
-                <h6><i class="bx bx-briefcase-alt-2 me-1"></i>{{ result.name }}</h6>
+                <h6 class="i-text-middle"><i class="bx bx-briefcase-alt-2 me-1"></i>{{ result.name }}</h6>
               </div>
               <div v-else class="row align-items-center">
                 <div class="col-4 text-sm-start">
@@ -311,7 +311,7 @@ export default {
         </autocomplete>
       </div>
 
-      <div class="col-3 col-md-2 mb-4 text-center">
+      <div class="col-4 col-sm-3 col-md-2 mb-4 text-center">
         <ul class="nav nav-pills product-view-nav float-end">
           <li class="nav-item">
             <a
@@ -335,8 +335,8 @@ export default {
         </ul>
       </div>
 
-      <ProjGridList v-if="isGrid" class="col-12" :projects="projects" :updating="loadingState"/>
-      <ProjList v-else class="col-12" :projects="projects" :updating="loadingState"/>
+      <Grid v-if="isGrid" class="col-12" :projects="projects" :updating="loadingState"/>
+      <List v-else class="col-12" :projects="projects" :updating="loadingState"/>
 
       <div class="col-12 mt-4">
         <Loader :loading="loadingState"/>

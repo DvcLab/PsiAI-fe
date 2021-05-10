@@ -119,14 +119,17 @@ export default {
       return new Promise(resolve => {
 
         if(this.isUrl(content)) { // 用户输入网址，则添加数据集
+          this.loadingState = true;
 
           this.getNewDatasetInfo(content).then((res) => {
             this.isSearch = false;
             if(res.code === 1) {
               // 查询成功
+              this.loadingState = false;
               return resolve([res.data]);
-            } else if (res.code === 0) {
+            } else {
               // 查询失败
+              this.loadingState = false;
               return resolve([]);
             }
           })

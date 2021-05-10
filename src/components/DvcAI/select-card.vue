@@ -8,7 +8,6 @@ export default {
   },
   methods: {
     del(key) {
-      console.log("点击了关闭按钮");
       this.$emit("del", key);
     },
   },

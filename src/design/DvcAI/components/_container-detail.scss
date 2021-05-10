@@ -1,0 +1,36 @@
+.btn-rightsidebar{
+  @media (min-width: 992px) {
+    min-width: 260px;
+  }
+
+  @media (min-width: 1200px) {
+    min-width: 380px;
+  }
+}
+
+.rightside-host-select {
+  width: 60%!important;
+  min-height: 0!important;
+}
+.rightside-host-select .multiselect__tags {
+  min-height: 0!important;
+  padding: 0.25rem 0.5rem!important;
+  border-radius: 0.2rem!important;
+  font-size: 0.75rem!important;
+}
+.rightside-host-select .multiselect__select {
+  height: 30px;
+}
+.rightside-host-select .multiselect__placeholder {
+  font-size: 0.75rem;
+}
+
+/* Copy样式 */
+div.code-toolbar > .toolbar button{
+  color: #556ee6!important;
+  background-color: #eff2f7!important;
+  border-color: #556ee6!important;
+  box-shadow: none!important;
+  border: 1px solid transparent!important;
+  margin-right: 0.25rem!important;
+}

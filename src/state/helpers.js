@@ -32,3 +32,13 @@ export const todoComputed = {
   })
 }
 export const todoMethods = mapActions('todo', ['fetchTodos'])
+
+
+// DvcAI
+export const resourcesComputed = {
+  ...mapState('resources', {
+    hosts: (state) => state.hosts
+  })
+}
+
+export const resourcesMethods = mapActions('resources', ['getHosts'])

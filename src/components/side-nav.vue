@@ -86,6 +86,11 @@ export default {
         toggleMenu(event) {
             event.currentTarget.nextElementSibling.classList.toggle("mm-show");
         },
+        hasPermission(roles, permissionRoles) {
+            if (roles.indexOf('DOCKHUB_ADMIN') >= 0) return true; // admin permission passed directly
+            if (!permissionRoles) return true;
+            return roles.some(role => permissionRoles.indexOf(role) >= 0)
+        }
     },
 };
 </script>
@@ -101,7 +106,8 @@ export default {
             <li class="menu-title" v-if="item.isTitle" :key="item.id">
                 {{ $t(item.label) }}
             </li>
-            <li v-if="!item.isTitle && !item.isLayout" :key="item.id">
+            <!-- <li v-if="!item.isTitle && !item.isLayout" :key="item.id"> -->
+            <li v-if="!item.isTitle && !item.isLayout && hasPermission($keycloak.realmAccess.roles, item.roles)" :key="item.id">
                 <a v-if="hasItems(item)" href="javascript:void(0);" class="is-parent" :class="{ 'has-arrow': !item.badge, 'has-dropdown': item.badge }">
                     <i :class="`bx ${item.icon}`" v-if="item.icon"></i>
                     <span>{{ $t(item.label) }}</span>

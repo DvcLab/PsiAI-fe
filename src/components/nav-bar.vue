@@ -58,22 +58,17 @@ export default {
   },
   computed: {
     ...mapState({
-      userInfo(state){
+      currentUser(state){
         if(state.auth.currentUser) {
           return state.auth.currentUser
         } else {
           return {
-            attributes: {
-              headimgurl: [],
-            },
-            username: ''
+            avatar_url: ""
           }
         }
       } 
     }),
-    avatarUrl() {
-      return this.userInfo.attributes.headimgurl ? this.userInfo.attributes.headimgurl[0] : require('@/assets/images/users/avatar-1.jpg')
-    }
+
   },
   // components: { simplebar },
   mounted() {
@@ -155,7 +150,8 @@ export default {
               <img src="@/assets/images/DvcAI/logo.png" alt height="22" />
             </span>
             <span class="logo-lg">
-              <img src="@/assets/images/DvcAI/logo-dark.png" alt height="17" />
+              <!-- <img src="@/assets/images/DvcAI/logo-dark.png" alt height="17" /> -->
+              <img src="@/assets/images/DvcAI/logo-dark.png" alt height="24" />
             </span>
           </router-link>
 
@@ -164,7 +160,8 @@ export default {
               <img src="@/assets/images/DvcAI/logo.png" alt height="22" />
             </span>
             <span class="logo-lg">
-              <img src="@/assets/images/DvcAI/logo-light.png" alt height="19" />
+              <!-- <img src="@/assets/images/DvcAI/logo-light.png" alt height="19" /> -->
+              <img src="@/assets/images/DvcAI/logo-light.png" alt height="24" />
             </span>
           </router-link>
         </div>
@@ -711,15 +708,15 @@ export default {
               :alt="userInfo.username"
             /> -->
             <img
-              v-show="userInfo && userInfo.attributes"
+              v-show="currentUser"
               class="rounded-circle header-profile-user"
-              :src="avatarUrl"
-              :alt="userInfo.username"
+              v-real-img="currentUser.avatar_url"
+              :alt="currentUser.preferred_username"
             />
             <!-- <span class="d-none d-xl-inline-block ms-1">{{
               $t("navbar.dropdown.henry.text")
             }}</span> -->
-            <span v-if="userInfo" class="d-none d-xl-inline-block ms-1">{{ userInfo.username | ellipsis }}</span>
+            <span v-if="currentUser" class="d-none d-xl-inline-block ms-1">{{ currentUser.preferred_username | ellipsis }}</span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
 

@@ -1,11 +1,11 @@
 <script>
-import Layout from "../../../layouts/main";
-import ContainerList from "@/components/DvcAI/container-list";
-import Loader from "@/components/DvcAI/loader";
-import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
+import appConfig from "@/app.config";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
 import { EventBus } from '@/utils/event-bus';
+import Loader from "@/components/DvcAI/loader";
+import Avatar from "@/components/DvcAI/utility/avatar";
+import ContainerList from "./list";
 
 /**
  * 容器列表
@@ -16,7 +16,7 @@ export default {
     title: "容器列表",
     meta: [{ name: "容器列表", content: appConfig.description }]
   },
-  components: { Layout, Loader, ContainerList, Autocomplete },
+  components: { Loader, ContainerList, Autocomplete, Avatar },
   data() {
     return {
       containers: [],
@@ -24,13 +24,15 @@ export default {
       curPage: 1,
       curTotal: 0,
       meta: {},
-      loadingState: true
+      loadingState: true,
+      status: 'active'
     };
   },
   mounted() {
     window.addEventListener('scroll', this.load);
     this.getContainersList('', 1);
     EventBus.$on('update', () => this.reload());
+    // this.getHostList();
   },
   destroyed(){
     window.removeEventListener('scroll', this.load, false);
@@ -49,13 +51,14 @@ export default {
     },
 
     // 获取容器列表
-    getContainersList(q, page) {
+    getContainersList(q = '', page = 1, enabled = true) {
       const _this = this;
       this.loadingState = true;
       this.getContainers({
         params: {
           q: q,
-          page: page
+          page: page,
+          enabled: enabled
         }
       })
       .then((res) => {
@@ -120,7 +123,7 @@ export default {
 
     // 选择搜索内容，input显示内容
     getResultValue(result) {
-      return result.name;
+      return result.container_name;
       // console.log(result)
       // this.searchContent = result ? result.id : '';
       // return result ? result.id : ''
@@ -153,6 +156,22 @@ export default {
       }
     },
 
+    // 获取正在运行容器列表
+    getRunningContainerList() {
+      this.containers = [];
+      this.curTotal = 0;
+      this.curPage = 1;
+      this.getContainersList('', this.curPage, true);
+    },
+
+    // 获取全部状态容器列表
+    getAllContainerList() {
+      this.containers = [];
+      this.curTotal = 0;
+      this.curPage = 1;
+      this.getContainersList('', this.curPage, false);
+    },
+
     // 滑动至底部，加载剩余镜像
     load() {
       const _this = this;
@@ -170,57 +189,86 @@ export default {
 
     // 跳转创建容器页面
     toCreateContainerPage() {
-      this.$router.push({path: '/createContainers'})
+      this.$router.push({path: '/containers/create'})
     },
+
   }
 };
 </script>
 <template>
-  <Layout>
-
-    <div class="row">
-      
-      <div class="col-12 align-items-center">
-        <div class="row">
-          <div class="col-6 mb-3">
-            <autocomplete
-              aria-label="搜索容器..."
-              placeholder="搜索容器..."
-              :search="search"
-              :get-result-value="getResultValue"
-              :debounce-time="500"
-              @submit="handleSubmit"
-              >
-              <template #result="{ result, props }">
-                <li
-                  v-bind="props"
-                  class="search-result"
-                >
-                  <div class="text-start">
-                    <h6><i class="bx bx-code-block me-1"></i>{{ result.id }}</h6>
-                  </div>
-                </li>
-              </template>
-            </autocomplete>
-          </div>
-          <div class="col-6 align-self-center mb-3">
-            <button
-              type="button"
-              class="btn btn-success btn-rounded float-end"
-              @click="toCreateContainerPage"
+  <div class="row">
+    
+    <div class="col-12 align-items-center">
+      <div class="row d-flex align-item-center">
+        <div class="col-7 mb-3">
+          <autocomplete
+            aria-label="搜索容器..."
+            placeholder="搜索容器..."
+            :search="search"
+            :get-result-value="getResultValue"
+            :debounce-time="500"
+            @submit="handleSubmit"
             >
-              <i class="mdi mdi-plus me-1"></i> 创建容器
-            </button>
-          </div>
+            <template #result="{ result, props }">
+              <li
+                v-bind="props"
+                class="search-result"
+              >
+                <div class="row d-flex align-items-center">
+                  <div class="col-12 col-md-4">
+                    <h6 class="mb-0"><i class="bx bx-cube me-1"></i>{{result.container_name}}</h6>
+                  </div>
+                  <div class="col-12 col-md-4">
+                    <span><i class="bx bx-layer me-1"></i>{{result.image.name}}</span>
+                  </div>
+                  <div class="col-12 col-md-4 d-none d-md-block">
+                    <div class="d-flex align-items-center">
+                      <Avatar size="xxs" :src="result.user.avatar_url" :user-name="result.user.username" class="me-2"/>
+                      <span class="d-inline-block text-truncate">{{result.user.username}}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 d-md-none">
+                    <span class="d-block text-truncate mb-0">
+                      <i class="bx bx-user me-1"></i>{{result.user.username}}
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </template>
+          </autocomplete>
+          
+        </div>
+        <div class="col-5 align-self-center mb-3">
+          <button
+            type="button"
+            class="btn btn-success btn-rounded float-end"
+            @click="toCreateContainerPage"
+          >
+            <i class="mdi mdi-plus me-1"></i> 创建容器
+          </button>
         </div>
       </div>
-
-      <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
-
-      <div class="col-12 mt-4">
-        <Loader :loading="loadingState"/>
-      </div>
-
     </div>
-  </Layout>
+    <div class="col-12">
+      <b-tabs pills active-nav-item-class="text-white">
+        <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getRunningContainerList">
+          <template v-slot:title>
+            <span class="d-inline-block">运行</span>
+          </template>
+          <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+        </b-tab>
+        <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getAllContainerList">
+          <template v-slot:title>
+            <span class="d-inline-block">全部</span>
+          </template>
+          <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+        </b-tab>
+      </b-tabs>
+    </div>
+
+    <div class="col-12 mt-4">
+      <Loader :loading="loadingState"/>
+    </div>
+
+  </div>
 </template>
