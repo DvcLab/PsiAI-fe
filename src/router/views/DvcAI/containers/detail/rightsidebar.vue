@@ -16,6 +16,11 @@ export default {
       default: () => {},
     },
   },
+  filters: {
+    preId(id){
+      return id.slice(0,8)
+    }
+  },
   data() {
     return {
       loadingState: false,
@@ -416,13 +421,17 @@ export default {
           v-model="selectedHost"
           :options="hosts"
           @search-change="changeHostsAction"
-          track-by="ip"
-          label="ip"
+          track-by="id"
           placeholder="选择主机"
           select-label="选择主机"
           selectedLabel="已选"
           deselectLabel="点击取消"
         >
+          <template slot="option" slot-scope="{ option }">
+            <span>
+              {{ option.ip }}（{{ option.id | preId }}）
+            </span>
+          </template>
           <template
             slot="singleLabel"
             slot-scope="{ option }"
@@ -430,7 +439,7 @@ export default {
           >
             <div class="text-truncate i-text-middle">
               <i class="bx bx-laptop me-1"></i>
-              {{ option.ip }}
+              {{ option.ip }}（{{ option.id | preId }}）
             </div>
           </template>
           <span slot="noResult">未搜索到相关主机</span>
