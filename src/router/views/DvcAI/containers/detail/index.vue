@@ -72,6 +72,7 @@ export default {
       this.$request.get('containers/'+ this.$route.params.id)
       .then(({data})=>{
         if(data.code === 1) {
+          this.loadingState = false;
           this.container = data.data;
         } else {
           console.log(data)

@@ -53,21 +53,42 @@ export default {
       <label class="text-muted">内存</label>
     </div>
     <div class="col-sm-12 col-md-10">
-      <span>{{host.mem_info.total}}MiB</span>
+      <span>{{host.mem_info.total}} MiB</span>
     </div>
 
     <div class="col-sm-12 col-md-2">
       <label class="text-muted">硬盘</label>
     </div>
     <div class="col-sm-12 col-md-10">
-      <span>{{host.io_info.disk_total}}MiB</span>
+      <span>{{host.io_info.disk_total}} MiB</span>
     </div>
 
     <div class="col-sm-12 col-md-2">
       <label class="text-muted">容器数</label>
     </div>
     <div class="col-sm-12 col-md-10">
-      <span>{{host.container_num}}MiB</span>
+      <span>{{host.container_num}}</span>
+    </div>
+
+    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-2">
+      <label class="text-muted">GPU版本</label>
+    </div>
+    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-10">
+      <span>{{host.gpu_info.driver_version}}</span>
+    </div>
+
+    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-2">
+      <label class="text-muted">CUDA版本</label>
+    </div>
+    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-10">
+      <span>{{host.gpu_info.cuda_version}}</span>
+    </div>
+
+    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-2">
+      <label class="text-muted">GPU数量</label>
+    </div>
+    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-10">
+      <span>{{host.gpu_info.attached_gpus}}</span>
     </div>
   </div>
 </template>
