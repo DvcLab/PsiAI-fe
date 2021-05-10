@@ -417,7 +417,7 @@ export default {
       }else if(target.matches('.username') || target.matches('.avatar')) {
         console.log('点击跳转用户信息页');
       } else {
-        return this.$router.push({ path: '/container/' + this.container.id })
+        return this.$router.push({ path: '/containers/' + this.container.id })
         // console.log('可以跳转详情页')
       }
     },

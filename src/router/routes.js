@@ -83,16 +83,24 @@ export default [
         },
         component: () => import('./views/DvcAI/containers/create'),
       },
+      {
+        path: ':id',
+        name: '容器详情',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/containers/detail'),
+      },
     ]
   },
-  {
-    path: '/container/:id',
-    name: '容器',
-    meta: {
-      authRequired: true,
-    },
-    component: () => import('./views/DvcAI/containers/detail'),
-  },
+  // {
+  //   path: '/container/:id',
+  //   name: '容器',
+  //   meta: {
+  //     authRequired: true,
+  //   },
+  //   component: () => import('./views/DvcAI/containers/detail'),
+  // },
   {
     path: '/404',
     name: '404',
