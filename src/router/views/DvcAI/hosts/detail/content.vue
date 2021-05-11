@@ -1,11 +1,12 @@
 <script>
 import Config from './config'
+import Charts from './charts'
 /**
  * Host Card Content component
  */
 
 export default {
-  components: { Config },
+  components: { Config, Charts },
   props: {
     host: {
       type: Object,
@@ -25,7 +26,7 @@ export default {
       <Config :host="host"/>
     </b-tab>
     <b-tab title="监控">
-      暂无
+      <Charts :host="host"/>
     </b-tab>
     <b-tab title="日志">
       暂无

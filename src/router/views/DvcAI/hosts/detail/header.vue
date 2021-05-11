@@ -85,7 +85,7 @@ export default {
           <span class="badge rounded-pill font-size-11 badge-soft-primary">
             <i class="bx bx-grid-alt me-1" />内存
           </span>
-          <span> {{ host.mem_info.total }} MiB</span>
+          <span> {{ host.mem_info.total }} GB</span>
         </div>
         <div
           v-if="!this.$_.isNil(host.container_num)"

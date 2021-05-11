@@ -232,7 +232,7 @@ export default {
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-grid-alt me-1" />内存
               </span>
-              <span> {{ hostSelfData.mem_info.total }} MiB</span>
+              <span> {{ hostSelfData.mem_info.total }} GB</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.container_num)"
