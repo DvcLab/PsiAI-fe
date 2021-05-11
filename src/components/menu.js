@@ -21,7 +21,7 @@ export const menuItems = [
     {
         id: 4,
         label: "menuitems.dvcai.images",
-        icon: "bx-layer",
+        icon: "mdi mdi-docker",
         link: "/images"
     },
     {
