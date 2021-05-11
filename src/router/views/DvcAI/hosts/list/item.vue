@@ -221,7 +221,7 @@ export default {
               class="col-sm-6 col-md-4 mb-2"
             >
               <span class="badge rounded-pill bg-primary">
-                <i class="uil uil-circuit" />内核
+                <i class="bx bx-chip me-1" />内核
               </span>
               <span> {{ hostSelfData.cpu_info.cpu_num }}</span>
             </div>
@@ -229,8 +229,8 @@ export default {
               v-if="!this.$_.isNil(hostSelfData.mem_info.total)"
               class="col-sm-6 col-md-4 mb-2"
             >
-              <span class="badge rounded-pill bg-primary">
-                <i class="uil uil-dice-four" />内存
+              <span class="badge rounded-pill font-size-11 badge-soft-primary">
+                <i class="bx bx-grid-alt me-1" />内存
               </span>
               <span> {{ hostSelfData.mem_info.total }} MiB</span>
             </div>
@@ -238,8 +238,8 @@ export default {
               v-if="!this.$_.isNil(hostSelfData.container_num)"
               class="col-sm-6 col-md-4 mb-2"
             >
-              <span class="badge rounded-pill bg-primary">
-                <i class="uil uil-box" />容器
+              <span class="badge rounded-pill font-size-11 badge-soft-primary">
+                <i class="bx bx-cube me-1" />容器
               </span>
               <span> {{ hostSelfData.container_num }}</span>
             </div>
@@ -248,7 +248,7 @@ export default {
               class="col-sm-6 col-md-4 mb-2"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-success">
-                <i class="uil uil-server" />Nvidia Driver
+                <i class="bx bx-server" /> Nvidia Driver
                 {{ hostSelfData.gpu_info.driver_version }}</span
               >
             </div>
@@ -257,7 +257,7 @@ export default {
               class="col-sm-6 col-md-4 mb-2"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-warning">
-                <i class="uil uil-servers" /> CUDA
+                <i class="bx bx-command" /> CUDA
                 {{ hostSelfData.gpu_info.cuda_version }}</span
               >
             </div>
