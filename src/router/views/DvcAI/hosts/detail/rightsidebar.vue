@@ -1,6 +1,4 @@
 <script>
-// import { mapState, mapActions } from "vuex";
-// import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import { EventBus } from "@/utils/event-bus";
 import Avatar from "@/components/DvcAI/utility/avatar";
@@ -96,9 +94,14 @@ export default {
           <Avatar size="xs" :src="host.user.avatar_url" :user-name="host.user.username"/>
         </div>
         <div class="media-body">
-          <h5 class="font-size-15 mt-0 mb-1">
+          <h5 class="font-size-14 mt-0 mb-0">
             {{ host.user.username }}
           </h5>
+          <p v-if="host.user && host.user.roles.includes('DOCKHUB_ADMIN')" class="mb-0">
+            <span class="badge font-size-11 badge-soft-primary me-2">
+              管理员
+            </span>
+          </p>
         </div>
       </div>
       <hr class="mt-2" />

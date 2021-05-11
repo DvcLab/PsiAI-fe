@@ -36,6 +36,13 @@ export default {
     </div>
 
     <div class="col-sm-12 col-md-2">
+      <label class="text-muted">端口</label>
+    </div>
+    <div class="col-sm-12 col-md-10">
+      <span>{{host.port}}</span>
+    </div>
+
+    <div class="col-sm-12 col-md-2">
       <label class="text-muted">CPU型号</label>
     </div>
     <div class="col-sm-12 col-md-10">
@@ -46,7 +53,7 @@ export default {
       <label class="text-muted">CPU核数</label>
     </div>
     <div class="col-sm-12 col-md-10">
-      <span>{{host.cpu_info.cpu_num}}核</span>
+      <span>{{host.cpu_info.cpu_num}} 核</span>
     </div>
 
     <div class="col-sm-12 col-md-2">
@@ -76,19 +83,19 @@ export default {
     <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-10">
       <span>{{host.gpu_info.driver_version}}</span>
     </div>
+    
+    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-2">
+      <label class="text-muted">GPU数量</label>
+    </div>
+    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-10">
+      <span>{{host.gpu_info.attached_gpus}}</span>
+    </div>
 
     <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-2">
       <label class="text-muted">CUDA版本</label>
     </div>
     <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-10">
       <span>{{host.gpu_info.cuda_version}}</span>
-    </div>
-
-    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-2">
-      <label class="text-muted">GPU数量</label>
-    </div>
-    <div v-if="!this.$_.isNil(host.gpu_info)" class="col-sm-12 col-md-10">
-      <span>{{host.gpu_info.attached_gpus}}</span>
     </div>
   </div>
 </template>

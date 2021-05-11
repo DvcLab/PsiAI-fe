@@ -369,9 +369,14 @@ export default {
           />
         </div>
         <div class="media-body">
-          <h5 class="font-size-15 mt-0 mb-1">
+          <h5 class="font-size-14 mt-0 mb-0">
             {{ container.user.username }}
           </h5>
+          <p v-if="container.user && container.user.roles.includes('DOCKHUB_ADMIN')" class="mb-0">
+            <span class="badge font-size-11 badge-soft-primary me-2">
+              管理员
+            </span>
+          </p>
         </div>
       </div>
       <hr class="mt-2" />
