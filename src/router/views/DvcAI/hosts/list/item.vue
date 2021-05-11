@@ -314,6 +314,7 @@ export default {
 
       <div v-if="!this.$_.isNil(hostSelfData.gpu_info)" class="row">
         <GpuCard
+          class="col-md-12 col-xl-6 mt-2"
           v-for="(gpu, index) in hostSelfData.gpu_info.gpus"
           :key="index"
           :gpu="gpu"
@@ -322,6 +323,7 @@ export default {
 
       <div v-if="!this.$_.isNil(hostSelfData.mlu_info)" class="row">
         <MluCard
+          class="col-md-12 col-xl-6 mt-2"
           v-for="(mlu, index) in hostSelfData.mlu_info.mlus"
           :key="index"
           :mlu="mlu"

@@ -24,10 +24,10 @@ export default {
     <b-tab title="基本信息" active>
       <Config :host="host"/>
     </b-tab>
-    <b-tab title="日志">
+    <b-tab title="监控">
       暂无
     </b-tab>
-    <b-tab title="资源">
+    <b-tab title="日志">
       暂无
     </b-tab>
   </b-tabs>

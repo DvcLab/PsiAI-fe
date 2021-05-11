@@ -30,7 +30,7 @@ export default {
 }
 </script>
 <template>
-  <div class="col-md-12 col-xl-6 mt-2">
+  <div>
     <div
       class="rounded"
       style="border: 1px #69c solid;padding: 0.2rem 0.4rem;background:#e7f4ff"
