@@ -57,7 +57,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/DvcAI/images/images-list.vue'),
+    component: () => import('./views/DvcAI/images/list'),
   },
   {
     path: '/containers',
