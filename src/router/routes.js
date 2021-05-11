@@ -95,7 +95,7 @@ export default [
   },
   {
     path: '/profile',
-    name: '个人信息管理',
+    name: '个人中心',
     meta: {
       authRequired: true,
     },

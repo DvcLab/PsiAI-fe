@@ -9,16 +9,16 @@ import { mapState } from 'vuex';
  */
 export default {
   page: {
-    title: "个人信息管理页",
-    meta: [{ name: "个人信息管理页", content: appConfig.description }]
+    title: "个人中心",
+    meta: [{ name: "个人中心", content: appConfig.description }]
   },
   components: {Layout, PageHeader},
   data() {
     return {
-      title: "个人信息管理页",
+      title: "个人中心",
       items: [
         {
-          text: "个人信息管理页",
+          text: "个人中心",
           active: true,
         },
       ],
@@ -61,9 +61,38 @@ export default {
     <Layout>
       <PageHeader :title="title" :items="items" />
       <div class="row">
-        
+
+        <!--右边这一列-->
+        <div class="col-xl-8">
+          <div class="card">
+                <div class="card-body">
+                    <!--<h4 class="card-title mb-3">Orders</h4>-->
+                    <b-tabs content-class="p-3" nav-class="nav-tabs-custom">
+                        <b-tab title="项目" active>
+                          我的项目
+                        </b-tab>
+                        <b-tab title="数据集" active>
+                          我的数据集
+                        </b-tab>
+                        <b-tab title="镜像" active>
+                          我的镜像
+                        </b-tab>
+                        <b-tab title="容器" active>
+                          我的容器
+                        </b-tab>
+                        <b-tab title="收藏" active>
+                          我收藏的项目/数据集/镜像/容器
+                        </b-tab>
+                        <b-tab title="关注" active>
+                          我的关注
+                        </b-tab>
+                    </b-tabs>
+                </div>
+          </div>
+        </div>
+        <!--右边这一列结束-->
          <!--左边这一列-->
-        <div class="col-xl-4">
+        <div class="col-xl-4"><!--
           <div class="card">
             <div class="card-body">
               <div class="media align-items-center">
@@ -141,8 +170,8 @@ export default {
 
              
             </div>
-          </div>
-          <!--左上角带头像的框--><!--
+          </div>-->
+          <!--左上角带头像的框-->
           <div class="card text-center">
             <div class="card-body">
               <div v-if="!avatarUrl" class="avatar-sm mx-auto mb-4">
@@ -222,42 +251,11 @@ export default {
                   </ul>
               </div>
             </div>
-          </div>-->
+          </div>
           <!--左上角带头像的框结束-->
 
         </div>
         <!--左边这一列结束-->
-
-        <!--右边这一列-->
-        <div class="col-xl-8">
-          <div class="card">
-                <div class="card-body">
-                    <!--<h4 class="card-title mb-3">Orders</h4>-->
-                    <b-tabs content-class="p-3" nav-class="nav-tabs-custom">
-                        <b-tab title="项目" active>
-                          我的项目
-                        </b-tab>
-                        <b-tab title="数据集" active>
-                          我的数据集
-                        </b-tab>
-                        <b-tab title="镜像" active>
-                          我的镜像
-                        </b-tab>
-                        <b-tab title="容器" active>
-                          我的容器
-                        </b-tab>
-                        <b-tab title="收藏" active>
-                          我收藏的项目/数据集/镜像/容器
-                        </b-tab>
-                        <b-tab title="关注" active>
-                          我的关注
-                        </b-tab>
-                    </b-tabs>
-                </div>
-          </div>
-        </div>
-        <!--右边这一列结束-->
-
 
       </div>
       

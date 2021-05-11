@@ -90,7 +90,6 @@ export default {
           return {
             text: "运行",
             theme: "badge-soft-success",
-            //theme: "bg-success",
             icon: "bx bx-play"
           };
         case "Failure":
