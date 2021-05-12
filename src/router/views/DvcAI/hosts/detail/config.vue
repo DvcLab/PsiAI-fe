@@ -13,6 +13,32 @@ export default {
       default: () => {},
     },
   },
+  filters:{
+    // 计算机存储数值换算,默认传进来的最小单位为GB
+    gbFiltertoNum (value) {
+
+      if (value === 0) return '0'
+ 
+      const k = 1024
+
+      let i = Math.floor(Math.log(value) / Math.log(k))
+
+      return (value / Math.pow(k, i)).toPrecision(4)
+    },
+
+    // 计算机存储单位换算,默认传进来的最小单位为GB
+    gbFiltertoUnit (value) {
+
+      if (value === 0) return 'GB'
+ 
+      const k = 1024
+      const sizes = ['GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+      let i = Math.floor(Math.log(value) / Math.log(k))
+
+      return sizes[i];
+    },
+  },
   data() {
     return {
       
@@ -65,7 +91,7 @@ export default {
           <p class="text-muted mb-2">内存</p>
         </div>
         <div v-if="host.mem_info.total" class="col-sm-12 col-md-10">
-          <span>{{host.mem_info.total}} MiB</span>
+          <span>{{host.mem_info.total | gbFiltertoNum}} {{host.mem_info.total | gbFiltertoUnit}}</span>
         </div>
 
         <div v-if="host.io_info.disk_total" class="col-sm-12 col-md-2">

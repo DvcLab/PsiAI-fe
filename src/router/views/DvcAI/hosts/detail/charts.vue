@@ -195,7 +195,7 @@ export default {
             show: true,
             // fontWeight:'bold',
             formatter: function(value){ // 设置y轴数值显示方式
-              return value + ' MB'
+              return value + ' Mbps'
             },
           },
 

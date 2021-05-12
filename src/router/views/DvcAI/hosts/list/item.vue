@@ -12,9 +12,34 @@ export default {
     },
   },
   filters: {
+    // id取前8位
     preId(id){
       return id.slice(0,8)
-    }
+    },
+    // 计算机存储数值换算,默认传进来的最小单位为GB
+    gbFiltertoNum (value) {
+
+      if (value === 0) return '0'
+ 
+      const k = 1024
+
+      let i = Math.floor(Math.log(value) / Math.log(k))
+
+      return (value / Math.pow(k, i)).toPrecision(4)
+    },
+
+    // 计算机存储单位换算,默认传进来的最小单位为GB
+    gbFiltertoUnit (value) {
+
+      if (value === 0) return 'GB'
+ 
+      const k = 1024
+      const sizes = ['GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+      let i = Math.floor(Math.log(value) / Math.log(k))
+
+      return sizes[i];
+    },
   },
   data() {
     return {
@@ -232,7 +257,7 @@ export default {
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-grid-alt me-1" />内存
               </span>
-              <span> {{ hostSelfData.mem_info.total }} GB</span>
+              <span> {{ hostSelfData.mem_info.total | gbFiltertoNum }} {{ hostSelfData.mem_info.total | gbFiltertoUnit }}</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.container_num)"
