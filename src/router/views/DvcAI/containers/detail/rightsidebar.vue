@@ -108,6 +108,7 @@ export default {
           return {
             text: "NULL",
             theme: "badge-soft-secondary",
+            icon: ""
           };
       }
     },

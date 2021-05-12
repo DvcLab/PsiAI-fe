@@ -46,14 +46,7 @@ export default {
       return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
     },
    },
-  mounted() {
 
-  },
-  destroyed(){
-  },
-  methods: {
-    
-  }
 };
 </script>
 
@@ -66,7 +59,6 @@ export default {
         <div class="col-xl-8">
           <div class="card">
                 <div class="card-body">
-                    <!--<h4 class="card-title mb-3">Orders</h4>-->
                     <b-tabs content-class="p-3" nav-class="nav-tabs-custom">
                         <b-tab title="项目" active>
                           我的项目
@@ -92,85 +84,8 @@ export default {
         </div>
         <!--右边这一列结束-->
          <!--左边这一列-->
-        <div class="col-xl-4"><!--
-          <div class="card">
-            <div class="card-body">
-              <div class="media align-items-center">
-                <div class="align-self-center me-3">
-                  <img
-                    src="@/assets/images/users/avatar-1.jpg"
-                    v-real-img="userInfo.avatar_url"
-                    class="avatar-xs rounded-circle"
-                    alt
-                  />
-                </div>
-                <div class="media-body">
-                  <h5 class="font-size-15 mt-0 mb-1">
-                    {{ userInfo.name }}
-                  </h5>
-                </div>
-              </div>
-              <hr class="mt-2" />
-               
-              <p class="text-muted" v-if="isAdmin">
-                <a
-                  href="javascript: void(0);"
-                  class="badge bg-primary font-size-11"
-                  >管理员</a
-                >
-              </p>
-              <p v-if="userInfo.email" class="text-muted">{{userInfo.email}}</p>
-              <p v-if="userInfo.blog" class="text-muted">{{userInfo.blog}}</p>
-              <p v-if="userInfo.username" class="text-muted">{{userInfo.username}}</p>
-              <p v-if="userInfo.associatedAcount" class="text-muted">{{userInfo.associatedAcount}}</p>
-              
-              <p class="text-muted">
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item me-3">
-                      <h5
-                        class="font-size-12"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Amount"
-                      >
-                        <i class="bx bxs-group"></i> 0 followers
-                      </h5>
-                    </li>
-                    <li class="list-inline-item me-3">
-                      <h5
-                        class="font-size-12"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Amount"
-                      >
-                        <i class="bx bx bx-share-alt"></i> 0 
-                      </h5>
-                    </li>
-                    <li class="list-inline-item me-3">
-                      <h5
-                        class="font-size-12"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="Amount"
-                      >
-                        <i class="bx bx-star"></i> 0
-                      </h5>
-                    </li>
-                  </ul>
-              </p>
-              <a
-                class="btn btn-outline-primary btn-md btn-item mb-2"
-                download="docker-compose-config"
-                style="width:90%; padding:4px 16px"
-              >
-                
-                编辑
-              </a>
+        <div class="col-xl-4">
 
-
-             
-            </div>
-          </div>-->
           <!--左上角带头像的框-->
           <div class="card text-center">
             <div class="card-body">
@@ -204,10 +119,7 @@ export default {
               <p v-if="userInfo.blog" class="text-muted">{{userInfo.blog}}</p>
               <p v-if="userInfo.username" class="text-muted">{{userInfo.username}}</p>
               <p v-if="userInfo.associatedAcount" class="text-muted">{{userInfo.associatedAcount}}</p>
-              
-              
-              
-              
+
               <a
                 class="btn btn-outline-primary btn-md btn-item mb-2"
                 download="docker-compose-config"

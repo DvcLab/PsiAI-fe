@@ -209,6 +209,7 @@ export default {
             text: "NULL",
             textTheme: "text-secondary",
             theme: "bg-secondary",
+            icon: ""
           };
       }
     },

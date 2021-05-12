@@ -775,7 +775,7 @@ export default {
           </a> -->
           <b-dropdown-item @click="toProfile">
             <i class="bx bx-user font-size-16 align-middle me-1"></i>
-            个人信息
+            个人中心
           </b-dropdown-item>
           <b-dropdown-item @click="logout" class="text-danger">
             <i
