@@ -1,6 +1,5 @@
 <script>
 import { mapState } from "vuex";
-import Layout from "@/router/layouts/main";
 import PageHeader from "@/components/page-header";
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import Card from "./card";
@@ -18,7 +17,7 @@ export default {
     title: "容器详情",
     meta: [{ name: "description", content: appConfig.description }]
   },
-  components: { Layout, PageHeader, LoaderContainer, Card, Rightsidebar },
+  components: { PageHeader, LoaderContainer, Card, Rightsidebar },
   data() {
     return {
       title: "容器详情",
@@ -142,7 +141,8 @@ export default {
 };
 </script>
 <template>
-  <Layout>
+  <!-- <Layout> -->
+  <div>
     <PageHeader :title="title" :items="items" />
     <LoaderContainer :loading="loadingState">
       <div class="row font-size-14" @click="cancelEdit">
@@ -157,5 +157,6 @@ export default {
 
       </div>
     </LoaderContainer>
-  </Layout>
+  <!-- </Layout> -->
+  </div>
 </template>

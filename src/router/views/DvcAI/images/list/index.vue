@@ -1,7 +1,6 @@
 <script>
-import Layout from "../../../layouts/main";
-// import ImageItem from "@/components/DvcAI/image-item";
-import ImageList from "@/components/DvcAI/image-list";
+import Layout from "@/router/layouts/main";
+import ImageList from "./list";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';

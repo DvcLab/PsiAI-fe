@@ -51,8 +51,8 @@ export default {
 
       <div class="col-md-1 d-none d-md-block">
         <img
-          class="avatar-sm"
-          src="@/assets/images/companies/img-3.png"
+          class="img-sm"
+          src="@/assets/images/DvcAI/image-default.png"
           v-real-img="image.cover_img_url"
           alt="镜像"
         />
@@ -137,3 +137,8 @@ export default {
     </div>
   </div>
 </template>
+<style scoped>
+.img-sm {
+  height: 3rem;
+}
+</style>
