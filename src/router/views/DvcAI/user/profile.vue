@@ -46,7 +46,6 @@ export default {
       return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
     },
    },
-
 };
 </script>
 
@@ -55,7 +54,7 @@ export default {
       <PageHeader :title="title" :items="items" />
       <div class="row">
 
-        <!--右边这一列-->
+        <!--左边这一列-->
         <div class="col-xl-8">
           <div class="card">
                 <div class="card-body">
@@ -82,11 +81,10 @@ export default {
                 </div>
           </div>
         </div>
-        <!--右边这一列结束-->
-         <!--左边这一列-->
-        <div class="col-xl-4">
+        <!--左边这一列结束-->
 
-          <!--左上角带头像的框-->
+        <!--右边这一列-->
+        <div class="col-xl-4">
           <div class="card text-center">
             <div class="card-body">
               <div v-if="!avatarUrl" class="avatar-sm mx-auto mb-4">
@@ -164,10 +162,8 @@ export default {
               </div>
             </div>
           </div>
-          <!--左上角带头像的框结束-->
-
         </div>
-        <!--左边这一列结束-->
+        <!--右边这一列结束-->
 
       </div>
       
