@@ -1,6 +1,6 @@
 <script>
-import Config from './config'
-import Charts from './charts'
+import Config from "./config";
+import Charts from "./charts";
 /**
  * Host Card Content component
  */
@@ -14,22 +14,42 @@ export default {
     },
   },
   data() {
-    return {
-      
-    };
+    return {};
   },
 };
 </script>
 <template>
-  <b-tabs content-class="p-3" nav-class="nav-tabs-custom">
-    <b-tab title="基本信息" active>
+<div class="custom-tab">
+
+  <b-tabs pills fill content-class="text-muted mt-4">
+    <b-tab active class="border-0">
+      <template v-slot:title>
+        <span class="d-inline-block d-sm-none">
+          <i class="fas fa-home"></i>
+        </span>
+        <span class="d-none d-sm-inline-block">基本信息</span>
+      </template>
       <Config :host="host"/>
     </b-tab>
-    <b-tab title="监控">
+    <b-tab>
+      <template v-slot:title>
+        <span class="d-inline-block d-sm-none">
+          <i class="far fa-user"></i>
+        </span>
+        <span class="d-none d-sm-inline-block">监控</span>
+      </template>
       <Charts :host="host"/>
     </b-tab>
-    <b-tab title="日志">
+    <b-tab>
+      <template v-slot:title>
+        <span class="d-inline-block d-sm-none">
+          <i class="far fa-envelope"></i>
+        </span>
+        <span class="d-none d-sm-inline-block">日志</span>
+      </template>
       暂无
     </b-tab>
   </b-tabs>
+    
+</div>
 </template>

@@ -12,17 +12,14 @@ export default {
     },
   },
   filters: {
-    preId(id){
-      return id.slice(0,8)
-    }
+    preId(id) {
+      return id.slice(0, 8);
+    },
   },
   data() {
-    return {
-    }
+    return {};
   },
-  mounted(){
-
-  },
+  mounted() {},
   computed: {
     updateTime() {
       let curTime = new Date(this.host.update_time);
@@ -41,79 +38,84 @@ export default {
       return Math.floor(this.host.mem_info.usage * 100 * 100) / 100;
     },
   },
-  methods: {
-    
-  }
+  methods: {},
 };
 </script>
 <template>
-  <div class="row">
-    <div class="col-12 mb-2">
-      <h4>{{ host.ip }}<span class="text-secondary font-size-13">（{{ host.id | preId }}）</span></h4>
-    </div>
-    <div class="col-12">
+  <div v-if="host" class="card mb-4">
+    <div class="card-body">
       <div class="row">
+        <div class="col-12 mb-2">
+          <h4>
+            {{ host.ip }}
+            <span class="text-secondary font-size-13">（{{ host.id | preId }}）</span>
+          </h4>
+        </div>
         <div class="col-12">
-          <div class="row mb-1">
-            <div
-              v-if="!this.$_.isNil(host.cpu_info.cpu_model_name)"
-              class="col-sm-12 col-md-6 mb-2"
-              style="font-weight: bold"
-            >
-              <span>{{ host.cpu_info.cpu_model_name }}</span>
-            </div>
-            <div
-              v-if="!this.$_.isNil(host.cpu_info.cpu_num)"
-              class="col-sm-6 col-md-6 mb-2"
-            >
-              <span class="badge rounded-pill bg-primary">
-                <i class="bx bx-chip me-1" />内核
-              </span>
-              <span> {{ host.cpu_info.cpu_num }}</span>
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div
+                  v-if="!this.$_.isNil(host.cpu_info.cpu_model_name)"
+                  class="col-sm-12 col-md-6 mb-2"
+                  style="font-weight: bold"
+                >
+                  <span>{{ host.cpu_info.cpu_model_name }}</span>
+                </div>
+                <div
+                  v-if="!this.$_.isNil(host.cpu_info.cpu_num)"
+                  class="col-sm-6 col-md-6 mb-2"
+                >
+                  <span class="badge rounded-pill bg-primary">
+                    <i class="bx bx-chip me-1" />内核
+                  </span>
+                  <span> {{ host.cpu_info.cpu_num }}</span>
+                </div>
+              </div>
             </div>
           </div>
-          
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div
+              v-if="!this.$_.isNil(host.mem_info.total)"
+              class="col-sm-6 col-md-4 col-lg-3 mb-2"
+            >
+              <span class="badge rounded-pill font-size-11 badge-soft-primary">
+                <i class="bx bx-grid-alt me-1" />内存
+              </span>
+              <span> {{ host.mem_info.total }} GB</span>
+            </div>
+            <div
+              v-if="!this.$_.isNil(host.container_num)"
+              class="col-sm-6 col-md-4 col-lg-3 mb-2"
+            >
+              <span class="badge rounded-pill font-size-11 badge-soft-primary">
+                <i class="bx bx-cube me-1" />容器
+              </span>
+              <span> {{ host.container_num }}</span>
+            </div>
+            <div
+              v-if="!this.$_.isNil(host.gpu_info)"
+              class="col-sm-6 col-md-4 col-lg-3 mb-2"
+            >
+              <span class="badge rounded-pill font-size-11 badge-soft-success">
+                <i class="bx bx-server" /> Nvidia Driver
+                {{ host.gpu_info.driver_version }}</span
+              >
+            </div>
+            <div
+              v-if="!this.$_.isNil(host.gpu_info)"
+              class="col-sm-6 col-md-4 col-lg-3 mb-2"
+            >
+              <span class="badge rounded-pill font-size-11 badge-soft-warning">
+                <i class="bx bx-command" /> CUDA
+                {{ host.gpu_info.cuda_version }}</span
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-12">
-      <div class="row">
-        <div
-          v-if="!this.$_.isNil(host.mem_info.total)"
-          class="col-sm-6 col-md-4 col-lg-3 mb-2"
-        >
-          <span class="badge rounded-pill font-size-11 badge-soft-primary">
-            <i class="bx bx-grid-alt me-1" />内存
-          </span>
-          <span> {{ host.mem_info.total }} GB</span>
-        </div>
-        <div
-          v-if="!this.$_.isNil(host.container_num)"
-          class="col-sm-6 col-md-4 col-lg-3 mb-2"
-        >
-          <span class="badge rounded-pill font-size-11 badge-soft-primary">
-            <i class="bx bx-cube me-1" />容器
-          </span>
-          <span> {{ host.container_num }}</span>
-        </div>
-        <div
-          v-if="!this.$_.isNil(host.gpu_info)"
-          class="col-sm-6 col-md-4 col-lg-3 mb-2"
-        >
-          <span class="badge rounded-pill font-size-11 badge-soft-success">
-            <i class="bx bx-server" /> Nvidia Driver
-            {{ host.gpu_info.driver_version }}</span
-          >
-        </div>
-        <div
-          v-if="!this.$_.isNil(host.gpu_info)"
-          class="col-sm-6 col-md-4 col-lg-3 mb-2"
-        >
-          <span class="badge rounded-pill font-size-11 badge-soft-warning">
-            <i class="bx bx-command" /> CUDA
-            {{ host.gpu_info.cuda_version }}</span>
-        </div>
-      </div>
-    </div>  
   </div>
 </template>

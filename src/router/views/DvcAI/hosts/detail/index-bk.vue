@@ -3,10 +3,8 @@ import Swal from "sweetalert2";
 // import { mapState } from "vuex";
 import PageHeader from "@/components/page-header";
 import LoaderContainer from "@/components/DvcAI/loader-container";
-// import Card from "./card";
+import Card from "./card";
 import Rightsidebar from "./rightsidebar";
-import Header from './header';
-import Content from './content';
 import appConfig from "@/app.config";
 import { EventBus } from "@/utils/event-bus";
 
@@ -20,7 +18,7 @@ export default {
     title: "主机详情",
     meta: [{ name: "description", content: appConfig.description }]
   },
-  components: { PageHeader, LoaderContainer, Rightsidebar, Header, Content},
+  components: { PageHeader, LoaderContainer, Card, Rightsidebar },
   data() {
     return {
       title: "主机详情",
@@ -147,8 +145,7 @@ export default {
       <div class="row font-size-14">
         
         <div class="col-12 col-md-8">
-          <Header :host="host"/>
-          <Content :host="host"/>
+          <Card :host="host"/>
         </div>
 
         <div class="col-12 col-md-4">

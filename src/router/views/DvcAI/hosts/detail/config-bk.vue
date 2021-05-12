@@ -21,10 +21,9 @@ export default {
 };
 </script>
 <template>
-<div>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title mb-3">主机</h5>
+  <div>
+    <div>
+      <p class="text-primary">主机</p>
       <div class="row">
         <div class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">ID</p>
@@ -83,10 +82,9 @@ export default {
         </div>
       </div>
     </div>
-  </div>
-  <div v-if="!this.$_.isNil(host.io_info)" class="card">
-    <div class="card-body">
-      <h5 class="card-title mb-3">硬盘</h5>
+    <hr class="my-4">
+    <div v-if="!this.$_.isNil(host.io_info)">
+      <p class="text-primary">硬盘</p>
       <div class="row">
         <div class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">可用/总硬盘(GB)</p>
@@ -96,10 +94,9 @@ export default {
         </div>
       </div>
     </div>
-  </div>
-  <div v-if="!this.$_.isNil(host.gpu_info)" class="card">
-    <div class="card-body">
-      <h5 class="card-title mb-3">GPU</h5>
+    <hr class="my-4">
+    <div v-if="!this.$_.isNil(host.gpu_info)">
+      <p class="text-primary">GPU</p>
       <div class="row">
         <div class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">数量</p>
@@ -142,7 +139,6 @@ export default {
       </div>
     </div>
   </div>
-</div>
 </template>
 <style scoped>
 hr:last-child {

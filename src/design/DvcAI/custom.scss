@@ -46,6 +46,11 @@
     width: 1.5rem;
     line-height: 1.5rem;
 }
+// 自定义tab按钮背景
+.custom-tab .nav {
+    background-color: #fff;
+    border-radius: 0.25rem;
+}
 // 容器列表页中胶囊边框弧度
 .border-pill {
     border-radius: 5rem!important;
