@@ -48,7 +48,7 @@ export default {
     this.initWebSocket();
     EventBus.$on('update', () => this.reload());
   },
-  destroyed() {
+  beforeDestroy() {
     // 退出关闭ws
     if (this.websock) this.websock.close();
   },

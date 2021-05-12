@@ -21,70 +21,70 @@ export default {
 };
 </script>
 <template>
-<div>
+<div v-if="host">
   <div class="card">
     <div class="card-body">
       <h5 class="card-title mb-3">主机</h5>
       <div class="row">
-        <div class="col-sm-12 col-md-2">
+        <div v-if="host.id" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">ID</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div v-if="host.id" class="col-sm-12 col-md-10">
           <span>{{host.id}}</span>
         </div>
 
-        <div class="col-sm-12 col-md-2">
+        <div v-if="host.ip" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">IP</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div v-if="host.ip" class="col-sm-12 col-md-10">
           <span>{{host.ip}}</span>
         </div>
 
-        <div class="col-sm-12 col-md-2">
+        <div v-if="host.port" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">端口</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div v-if="host.port" class="col-sm-12 col-md-10">
           <span>{{host.port}}</span>
         </div>
 
-        <div class="col-sm-12 col-md-2">
+        <div v-if="host.cpu_info.cpu_model_name" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">CPU</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div v-if="host.cpu_info.cpu_model_name" class="col-sm-12 col-md-10">
           <span>{{host.cpu_info.cpu_model_name}}</span>
         </div>
 
-        <div class="col-sm-12 col-md-2">
+        <div v-if="host.cpu_info.cpu_num" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">核数</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div v-if="host.cpu_info.cpu_num" class="col-sm-12 col-md-10">
           <span>{{host.cpu_info.cpu_num}} 核</span>
         </div>
 
-        <div class="col-sm-12 col-md-2">
+        <div v-if="host.mem_info.total" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">内存</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div v-if="host.mem_info.total" class="col-sm-12 col-md-10">
           <span>{{host.mem_info.total}} MiB</span>
         </div>
 
-        <div class="col-sm-12 col-md-2">
+        <div v-if="host.io_info.disk_total" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">硬盘</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div v-if="host.io_info.disk_total" class="col-sm-12 col-md-10">
           <span>{{host.io_info.disk_total}} GB</span>
         </div>
 
-        <div class="col-sm-12 col-md-2">
+        <div v-if="host.container_num" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">容器数</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div v-if="host.container_num" class="col-sm-12 col-md-10">
           <span>{{host.container_num}}</span>
         </div>
       </div>
     </div>
   </div>
-  <div v-if="!this.$_.isNil(host.io_info)" class="card">
+  <div v-if="host.io_info" class="card">
     <div class="card-body">
       <h5 class="card-title mb-3">硬盘</h5>
       <div class="row">
@@ -97,7 +97,7 @@ export default {
       </div>
     </div>
   </div>
-  <div v-if="!this.$_.isNil(host.gpu_info)" class="card">
+  <div v-if="host.gpu_info" class="card">
     <div class="card-body">
       <h5 class="card-title mb-3">GPU</h5>
       <div class="row">
@@ -120,7 +120,7 @@ export default {
           <span>{{host.gpu_info.cuda_version}}</span>
         </div>
         <div class="col-12">
-          <div v-if="!this.$_.isNil(host.gpu_info)" class="row">
+          <div v-if="host.gpu_info" class="row">
             <GpuCard
               class="col-md-12 col-lg-12 mt-2"
               v-for="(gpu, index) in host.gpu_info.gpus"

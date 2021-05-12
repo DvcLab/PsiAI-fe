@@ -25,7 +25,7 @@ export default {
     <b-tab active class="border-0">
       <template v-slot:title>
         <span class="d-inline-block d-sm-none">
-          <i class="fas fa-home"></i>
+          <i class="bx bx-spreadsheet"></i>
         </span>
         <span class="d-none d-sm-inline-block">基本信息</span>
       </template>
@@ -34,7 +34,7 @@ export default {
     <b-tab>
       <template v-slot:title>
         <span class="d-inline-block d-sm-none">
-          <i class="far fa-user"></i>
+          <i class="bx bx-stats"></i>
         </span>
         <span class="d-none d-sm-inline-block">监控</span>
       </template>
@@ -43,7 +43,7 @@ export default {
     <b-tab>
       <template v-slot:title>
         <span class="d-inline-block d-sm-none">
-          <i class="far fa-envelope"></i>
+          <i class="bx bx-detail"></i>
         </span>
         <span class="d-none d-sm-inline-block">日志</span>
       </template>

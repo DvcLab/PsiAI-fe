@@ -15,36 +15,11 @@ export default {
   },
   data() {
     return {
-    }
+      
+    };
   },
   computed: {
-    // cpu_series() {
-    //   if(!this.host.cpu_series) return;
-    //   let cpuList = [];
-    //   this.host.cpu_series.forEach(item => {
-    //     let [x,y] = item
-    //     cpuList.push([x,y * 100])
-    //   })
-    //   return cpuList;
-    // },
-    gpu_series() {
-      if(!this.host.gpu_series) return;
-      let gpuList = [];
-      this.host.gpu_series.forEach(item => {
-        let [x,y] = item
-        gpuList.push([x,y / 100])
-      })
-      return gpuList;
-    },
-    mlu_series() {
-      if(!this.host.mlu_series) return;
-      let mluList = [];
-      this.host.mlu_series.forEach(item => {
-        let [x,y] = item
-        mluList.push([x,y / 100])
-      })
-      return mluList;
-    }
+    
   },
   methods: {
     // 使用率曲线option
@@ -114,7 +89,12 @@ export default {
           },
 
         }],
-        series: [{
+        series: []
+      }
+      
+      lineData.forEach(item=>{
+
+        let lineOption = {
           xAxisIndex: 0,
           yAxisIndex: 0,
           type: 'line',
@@ -128,10 +108,10 @@ export default {
           },
           showSymbol: false,
           hoverAnimation: false,
-          data: lineData
-        }]
-      }
-
+          data: item
+        }
+        option.series.push(lineOption)
+      })
       return option
 
     },
@@ -200,7 +180,11 @@ export default {
           },
 
         }],
-        series: [{
+        series: []
+      }
+
+      lineData.forEach((item)=>{
+        let lineOption = {
           xAxisIndex: 0,
           yAxisIndex: 0,
           type: 'line',
@@ -215,46 +199,42 @@ export default {
           },
           showSymbol: false,
           hoverAnimation: false,
-          data: lineData
-        }]
-      }
+          data: item
+        }
+        option.series.push(lineOption)
+      })
       return option
     },
   }
 };
 </script>
 <template>
-<div v-if="host">
-  <div v-if="host.cpu_series" class="card">
-    <div class="card-body">
-      <h5 class="card-title mb-3">CPU</h5>
-      <v-chart ref="cpuChart" :options="getLineChartOption(host.cpu_series)" autoresize/>
+  <div>
+    <div class="con" v-if="host.cpu_series">
+      <p class="text-primary">CPU</p>
+      <v-chart :options="getLineChartOption(host.cpu_series)"/>
     </div>
-  </div>
-  <div v-if="gpu_series" class="card">
-    <div class="card-body">
-      <h5 class="card-title mb-3">GPU</h5>
-      <v-chart ref="gpuChart" :options="getLineChartOption(gpu_series)" autoresize/>
+    <hr v-if="host.cpu_series" class="my-4">
+    <div v-if="host.gpu_series">
+      <p class="text-primary">GPU</p>
+      <v-chart :options="getLineChartOption(host.gpu_series)"/>
     </div>
-  </div>
-  <div v-if="mlu_series" class="card">
-    <div class="card-body">
-      <h5 class="card-title mb-3">MLU</h5>
-      <v-chart ref="mluChart" :options="getLineChartOption(host.mlu_series)" autoresize/>
+    <hr v-if="host.gpu_series" class="my-4">
+    <div v-if="host.mlu_series">
+      <p class="text-primary">MLU</p>
+      <v-chart :options="getLineChartOption(host.mlu_series)"/>
     </div>
-  </div>
-  <div v-if="host && host.network_series" class="card">
-    <div class="card-body">
-      <h5 class="card-title mb-3">Network</h5>
-      <v-chart ref="netChart" :options="getNetLineChartOption(host.network_series)" autoresize/>
+    <hr v-if="host.mlu_series" class="my-4">
+    <div v-if="host.network_series">
+      <p class="text-primary">Network</p>
+      <v-chart :options="getNetLineChartOption(host.network_series)"/>
     </div>
-  </div>
     
-    <!-- <div v-if="!host.cpu_series && !host.gpu_series && !host.mlu_series && !host.network_series">暂无数据</div> -->
-</div>
+    <div v-if="!host.cpu_series && !host.gpu_series && !host.mlu_series && !host.network_series">暂无数据</div>
+  </div>
 </template>
 <style scoped>
-.echarts {
-  width: 100%;
+hr:last-child {
+  display: none;
 }
 </style>
