@@ -90,7 +90,7 @@ export default {
                 </div>
                 <div
                   v-if="!this.$_.isNil(host.cpu_info.cpu_num)"
-                  class="col-sm-6 col-md-6 mb-2"
+                  class="col-sm-12 col-md-6 mb-2"
                 >
                   <span class="badge rounded-pill bg-primary">
                     <i class="bx bx-chip me-1" />内核
@@ -105,7 +105,7 @@ export default {
           <div class="row">
             <div
               v-if="!this.$_.isNil(host.mem_info.total)"
-              class="col-sm-6 col-md-4 col-lg-3 mb-2"
+              class="col-sm-6 col-md-6 col-lg-3 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-grid-alt me-1" />内存
@@ -114,7 +114,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(host.container_num)"
-              class="col-sm-6 col-md-4 col-lg-3 mb-2"
+              class="col-sm-6 col-md-6 col-lg-3 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-cube me-1" />容器
@@ -123,16 +123,18 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(host.gpu_info)"
-              class="col-sm-6 col-md-4 col-lg-3 mb-2"
+              class="col-sm-6 col-md-6 col-lg-3 mb-2"
             >
-              <span class="badge rounded-pill font-size-11 badge-soft-success">
+              <div class="text-truncate">
+                <span class="badge rounded-pill font-size-11 badge-soft-success">
                 <i class="bx bx-server" /> Nvidia Driver
-                {{ host.gpu_info.driver_version }}</span
-              >
+                {{ host.gpu_info.driver_version }}
+                </span>
+              </div>
             </div>
             <div
               v-if="!this.$_.isNil(host.gpu_info)"
-              class="col-sm-6 col-md-4 col-lg-3 mb-2"
+              class="col-sm-6 col-md-6 col-lg-3 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-warning">
                 <i class="bx bx-command" /> CUDA

@@ -243,7 +243,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.cpu_info.cpu_num)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
               <span class="badge rounded-pill bg-primary">
                 <i class="bx bx-chip me-1" />内核
@@ -252,7 +252,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.mem_info.total)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-grid-alt me-1" />内存
@@ -261,7 +261,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.container_num)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-cube me-1" />容器
@@ -270,7 +270,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.gpu_info)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-success">
                 <i class="bx bx-server" /> Nvidia Driver
@@ -279,7 +279,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.gpu_info)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-warning">
                 <i class="bx bx-command" /> CUDA
