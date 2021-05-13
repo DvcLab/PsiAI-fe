@@ -102,6 +102,14 @@ export default [
     ]
   },
   {
+    path: '/profile',
+    name: '个人中心',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('./views/DvcAI/user/profile'),
+  },
+  {
     path: '/404',
     name: '404',
     component: require('./views/DvcAI/utility/404').default,

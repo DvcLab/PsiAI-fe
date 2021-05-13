@@ -128,67 +128,93 @@ export default {
         case "New":
           return {
             text: "新创建",
+            textTheme: "text-primary",
             theme: "bg-primary",
+            icon: "bx bx-add-to-queue"
           };
         case "Deployed":
           return {
             text: "等待部署",
+            textTheme: "text-info",
             theme: "bg-info",
+            icon: "bx bx-alarm"
           };
         case "Init":
           return {
             text: "容器初始化",
+            textTheme: "text-info",
             theme: "bg-info",
+            icon: "bx bx-reset"
           };
         case "Repo_Clone_Success":
           return {
             text: "项目拉取成功",
+            textTheme: "text-info",
             theme: "bg-info",
+            icon: "bx bx-check"
           };
         case "Pip_Install_Success":
           return {
             text: "依赖构建成功",
+            textTheme: "text-info",
             theme: "bg-info",
+            icon: "bx bx-check"
           };
         case "Dataset_Load_Success":
           return {
             text: "数据集加载成功",
+            textTheme: "text-info",
             theme: "bg-info",
+            icon: "bx bx-check"
           };
         case "Jupyterlab_Start_Success":
           return {
             text: "开发环境启动成功",
+            textTheme: "text-info",
             theme: "bg-info",
+            icon: "bx bx-check"
           };
         case "Port_Forwarding_Success":
           return {
             text: "端口映射成功",
+            textTheme: "text-info",
             theme: "bg-info",
+            icon: "bx bx-check"
           };
         case "Paused":
           return {
             text: "暂停",
-            theme: "bg-info",
+            textTheme: "text-warning",
+            theme: "bg-warning",
+            icon: "bx bx-pause"
           };
         case "Running":
           return {
             text: "运行",
+            textTheme: "text-success",
             theme: "bg-success",
+            icon: "bx bx-play"
           };
         case "Failure":
           return {
             text: "失效",
-            theme: "bg-danger",
+            textTheme: "text-warning",
+            theme: "bg-warning",
+            icon: "bx bx-block"
           };
         case "Deleted":
           return {
             text: "已删除",
-            theme: "bg-secondary",
+            textTheme: "text-danger",
+            theme: "bg-danger",
+            icon: "bx bx-trash-alt"
           };
         default:
           return {
             text: "NULL",
+            textTheme: "text-secondary",
             theme: "bg-secondary",
+            icon: ""
           };
       }
     },
@@ -555,6 +581,7 @@ export default {
         <div class="col-12 col-md-6 mb-2 d-none d-md-block">
           <div class="float-start float-md-end text-truncate">
             <span class="badge me-2" :class="status.theme">
+              <i class="me-1" :class="status.icon" style="margin-right:0 !important"></i>
               <span v-if="newInfo.status === 'Running' && newInfo.alive_time">
                 已运行 {{ newInfo.alive_time | duration('humanize') }}
               </span>
@@ -563,7 +590,7 @@ export default {
               </span>
             </span>
             
-            <span class="text-success">
+            <span :class="status.textTheme">
               {{ updateTime | moment("YYYY-MM-DD HH:mm:ss") }}
             </span>
           </div>

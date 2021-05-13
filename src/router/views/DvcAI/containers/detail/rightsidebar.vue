@@ -40,67 +40,80 @@ export default {
         case "New":
           return {
             text: "新创建",
-            theme: "bg-primary",
+            theme: "badge-soft-primary",
+            icon: "bx bx-add-to-queue"
           };
         case "Deployed":
           return {
             text: "等待部署",
-            theme: "bg-info",
+            theme: "badge-soft-info",
+            icon: "bx bx-alarm"
           };
         case "Init":
           return {
             text: "容器初始化",
-            theme: "bg-info",
+            theme: "badge-soft-info",
+            icon: "bx bx-reset"
           };
         case "Repo_Clone_Success":
           return {
             text: "项目拉取成功",
-            theme: "bg-info",
+            theme: "badge-soft-info",
+            icon: "bx bx-check"
           };
         case "Pip_Install_Success":
           return {
             text: "依赖构建成功",
-            theme: "bg-info",
+            theme: "badge-soft-info",
+            icon: "bx bx-check"
           };
         case "Dataset_Load_Success":
           return {
             text: "数据集加载成功",
-            theme: "bg-info",
+            theme: "badge-soft-info",
+            icon: "bx bx-check"
           };
         case "Jupyterlab_Start_Success":
           return {
             text: "开发环境启动成功",
-            theme: "bg-info",
+            theme: "badge-soft-info",
+            icon: "bx bx-check"
           };
         case "Port_Forwarding_Success":
           return {
             text: "端口映射成功",
-            theme: "bg-info",
+            theme: "badge-soft-info",
+            icon: "bx bx-check"
           };
         case "Paused":
           return {
             text: "暂停",
-            theme: "bg-info",
+            theme: "badge-soft-warning",
+            icon: "bx bx-pause"
           };
         case "Running":
           return {
             text: "运行",
-            theme: "bg-success",
+            theme: "badge-soft-success",
+            icon: "bx bx-play"
           };
         case "Failure":
           return {
             text: "失效",
-            theme: "bg-danger",
+            theme: "badge-soft-warning",
+            icon: "bx bx-block"
           };
         case "Deleted":
           return {
             text: "已删除",
-            theme: "bg-secondary",
+            theme: "badge-soft-danger",
+            icon: "bx bx-trash-alt"
           };
         default:
           return {
             text: "NULL",
-            theme: "bg-secondary",
+            theme: "badge-soft-secondary",
+            icon: ""
           };
       }
     },
@@ -383,6 +396,7 @@ export default {
       <p class="mb-1">
         <i class="bx bx-stats me-1"></i>运行状态
         <span class="badge me-2" :class="status.theme">
+          <i class="me-1" :class="status.icon" style="margin-right:0 !important"></i>
           {{ status.text }}
         </span>
       </p>
