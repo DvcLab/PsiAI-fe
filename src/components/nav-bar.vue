@@ -45,6 +45,7 @@ export default {
       text: null,
       flag: null,
       value: null,
+      keycloak_url: "https://auth.dvclab.com/auth/realms/master/protocol/openid-connect/auth?client_id=security-admin-console&redirect_uri=https%3A%2F%2Fauth.dvclab.com%2Fauth%2Fadmin%2Fmaster%2Fconsole%2F&state=acfa5ed8-3c27-44f3-9911-352a858d8cbd&response_mode=fragment&response_type=code&scope=openid&nonce=1e8501b0-bf94-4954-9201-e85af8dc3319&code_challenge=BVhmW93t2SHPrngdyZexq1DEGt-18WL6SHf6TGlmWns&code_challenge_method=S256"
     };
   },
   filters:{
@@ -68,7 +69,10 @@ export default {
         }
       } 
     }),
-
+    // 是否是管理员
+    isAdmin() {
+      return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
+    },
   },
   // components: { simplebar },
   mounted() {
@@ -134,6 +138,11 @@ export default {
     // 跳转用户个人信息
     toProfile() {
       this.$router.push('/profile');
+    },
+
+    //跳转到keycloak用户权限管理登录页面
+    toKeycloak() {
+      window.location.href = this.keycloak_url
     }
   },
 };
@@ -773,6 +782,10 @@ export default {
             ></i>
             {{ $t("navbar.dropdown.henry.list.logout") }}
           </a> -->
+          <b-dropdown-item v-if="isAdmin" @click="toKeycloak">
+            <i class="bx bx-cog font-size-16 align-middle me-1"></i>
+            权限管理
+          </b-dropdown-item>
           <b-dropdown-item @click="toProfile">
             <i class="bx bx-user font-size-16 align-middle me-1"></i>
             个人中心
