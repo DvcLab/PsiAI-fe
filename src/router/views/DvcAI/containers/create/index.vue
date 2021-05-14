@@ -125,14 +125,6 @@ export default {
       return res;
     },
 
-    // // 是否需要gpu
-    // isGPU() {
-    //   if(!this.selectedImage) return false;
-    //   let types = this.selectedImage.types;
-    //   let hasGPU = types.includes('GPU');
-    //   return hasGPU;
-    // },
-
     // gpu的选项是否可选
     isDisabledGpu() {
       if(!this.selectedImage) return true;
@@ -294,7 +286,6 @@ export default {
             dataset_url: _this.selectedDatasetsUrls,
             cpus: _this.cpus,
             mem: _this.mem,
-            // gpu: _this.isGPU
             gpu: _this.needGPU
           })
         _this.$request.put('containers?'+query)
