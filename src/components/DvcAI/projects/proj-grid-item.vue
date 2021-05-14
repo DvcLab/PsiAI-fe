@@ -45,15 +45,9 @@ export default {
     <!-- 暂时跳转至github项目 -->
     <a @click.prevent="openProj(proj.url)">
       <LazyImg :img-class="'grid-img'" :src="proj.cover_img_url"/>
-      <!-- <img
-        class="grid-img"
-        loading="lazy"
-        v-real-img="proj.cover_img_url"
-        alt="项目"
-      /> -->
       <div class="grid-body">
-        <div class="i-text-middle mb-1">
-          <h5 class="grid-item-name text-truncate mb-0">
+        <div class="i-text-middle mb-1 text-truncate">
+          <h5 class="grid-item-name cursor-pointer mb-0">
             <i class="bx bx-briefcase-alt-2 me-1 d-md-none"></i>
             <span class="text-dark me-1">{{ proj.name }}</span>
           </h5>
@@ -62,7 +56,7 @@ export default {
         
         <p class="grid-item-desc text-muted text-truncate-2 mb-0">{{ proj.desc }}</p>
 
-        <p class="mt-1 mb-0">
+        <p class="mt-1 mb-0 text-truncate">
           <span v-for="item in branches" :key="item">
             <span class="badge bg-primary i-text-middle me-2">
               <i class="bx bx-git-branch"></i>

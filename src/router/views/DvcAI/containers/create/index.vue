@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import PageHeader from "@/components/page-header";
 import ProjSelectItem from "@/components/DvcAI/projects/proj-select-item";
 import ImageSelectItem from "@/components/DvcAI/images/image-select-item";
-import DatasetSelectItem from "@/components/DvcAI/dataset-select-item";
+import DatasetSelectItem from "@/components/DvcAI/datasets/dataset-select-item";
 import SelectCard from "@/components/DvcAI/select-card";
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import { required } from "vuelidate/lib/validators";

@@ -57,7 +57,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/DvcAI/datasets/datasets-list.vue'),
+    component: () => import('./views/DvcAI/datasets/list'),
   },
   {
     path: '/images',
