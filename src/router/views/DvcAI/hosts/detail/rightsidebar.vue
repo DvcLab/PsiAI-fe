@@ -42,16 +42,16 @@ export default {
     }
   },
   methods: {
-    // 删除容器
+    // 删除主机
     delHost() {
       this.loadingState = true;
       this.$emit('changeLoading', true);
       let id = this.host.id;
       this.$request
         .delete("hosts/" + id)
-        .then((res) => res.data)
-        .then((res) => {
-          if (res.code === 1) {
+        .then(({data}) => {
+          console.log(data)
+          if (data.code === 1) {
             Swal.fire("主机删除成功!", "", "success").then((res) => {
               if (res.isConfirmed) {
                 EventBus.$emit("update");

@@ -146,7 +146,6 @@ export default {
 
     // 加载状态改变
     onLoading(state) {
-      console.log(state)
       this.loadingState = state;
     },
 
