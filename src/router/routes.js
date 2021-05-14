@@ -65,7 +65,25 @@ export default [
     meta: {
       authRequired: true,
     },
-    component: () => import('./views/DvcAI/images/list'),
+    component: () => import('./views/DvcAI/images'),
+    children: [
+      {
+        path: '',
+        name: '镜像列表',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/images/list'),
+      },
+      {
+        path: ':id',
+        name: '镜像详情',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/images/detail'),
+      },
+    ]
   },
   {
     path: '/containers',
