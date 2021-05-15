@@ -1,17 +1,20 @@
 <script>
 import Config from "./config";
-import Charts from "./charts";
 /**
- * Host Card Content component
+ * Image Card Content component
  */
 
 export default {
-  components: { Config, Charts },
+  components: { Config },
   props: {
     image: {
       type: Object,
       default: () => {},
     },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {};
@@ -29,26 +32,16 @@ export default {
         </span>
         <span class="d-none d-sm-inline-block">基本信息</span>
       </template>
-      <Config :image="image"/>
+      <Config :image="image" :isAdmin="isAdmin"/>
     </b-tab>
-    <b-tab>
+    <!-- <b-tab>
       <template v-slot:title>
         <span class="d-inline-block d-sm-none">
           <i class="bx bx-stats"></i>
         </span>
         <span class="d-none d-sm-inline-block">监控</span>
       </template>
-      <Charts :image="image"/>
-    </b-tab>
-    <b-tab>
-      <template v-slot:title>
-        <span class="d-inline-block d-sm-none">
-          <i class="bx bx-detail"></i>
-        </span>
-        <span class="d-none d-sm-inline-block">日志</span>
-      </template>
-      暂无
-    </b-tab>
+    </b-tab> -->
   </b-tabs>
     
 </div>

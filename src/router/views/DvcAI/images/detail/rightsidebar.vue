@@ -13,33 +13,15 @@ export default {
       type: Object,
       default: () => {},
     },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
       loadingState: false,
     };
-  },
-  computed: {
-    status() {
-      const status = this.image.status;
-      switch (status) {
-        case "RUNNING":
-          return {
-            text: "运行",
-            theme: "bg-success",
-          };
-        case "STOPPED":
-          return {
-            text: "停止",
-            theme: "bg-secondary",
-          };
-        default:
-          return {
-            text: "NULL",
-            theme: "bg-secondary",
-          };
-      }
-    }
   },
   methods: {
     // 删除镜像
@@ -48,7 +30,7 @@ export default {
       this.$emit('changeLoading', true);
       let id = this.image.id;
       this.$request
-        .delete("hosts/" + id)
+        .delete("images/" + id)
         .then(({data}) => {
           console.log(data)
           if (data.code === 1) {
@@ -90,10 +72,10 @@ export default {
   <div v-if="image" class="card">
     <div class="card-body">
       <div class="media align-items-center">
-        <div class="align-self-center me-3">
+        <div v-if="image.user" class="align-self-center me-3">
           <Avatar size="xs" :src="image.user.avatar_url" :user-name="image.user.username"/>
         </div>
-        <div class="media-body">
+        <div v-if="image.user" class="media-body">
           <h5 class="font-size-14 mt-0 mb-0">
             {{ image.user.username }}
           </h5>
@@ -104,19 +86,13 @@ export default {
           </p>
         </div>
       </div>
-      <hr class="mt-2" />
-      <p class="mb-1">
-        <i class="bx bx-stats me-1"></i>运行状态
-        <span class="badge me-2" :class="status.theme">
-          {{ status.text }}
-        </span>
-      </p>
+      <hr v-if="image.user" class="mt-2" />
       <p class="mb-1">
         <i class="bx bx-calendar me-1"></i>创建时间
         <span class="text-success">{{ image.create_time | moment("YYYY-MM-DD HH:mm:ss") }}</span>
       </p>
-      <p v-show="this.image.status === 'RUNNING'" class="mb-1">
-        <i class="bx bx-calendar me-1"></i>更新时间
+      <p class="mb-1">
+        <i class="bx bx-calendar me-1"></i>最近更新
         <span class="text-success">{{ image.update_time | moment("YYYY-MM-DD HH:mm:ss") }}</span>
       </p>
       <div class="mt-4">

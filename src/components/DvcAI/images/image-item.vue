@@ -40,13 +40,28 @@ export default {
         libsList.push(i+' '+libs[i]);
       }
       return libsList;
-    }
+    },
   },
+  methods: {
+    // 跳转镜像详情页
+    toImageDetail(e){
+      let target = e.target;
+      if(target.matches('button') || target.matches('a') || target.matches('text') || target.matches('i')) {
+        console.log('不可跳转')
+        return;
+      }else if(target.matches('.username') || target.matches('.avatar')) {
+        console.log('点击跳转用户信息页');
+      } else {
+        return this.$router.push({ path: '/images/' + this.image.id })
+        // console.log('可以跳转详情页')
+      }
+    },
+  }
 };
 </script>
 
 <template>
-  <div class="list-item-con">
+  <div class="list-item-con" @click="toImageDetail">
     <div class="row align-items-center">
 
       <div class="col-md-1 d-none d-md-block">

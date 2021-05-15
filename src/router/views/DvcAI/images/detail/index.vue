@@ -41,10 +41,13 @@ export default {
     };
   },
   computed: {
-
+    // 是否是管理员
+    isAdmin() {
+      return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
+    },
   },
   mounted(){
-    this.getHost();
+    this.getImage();
     EventBus.$on('update', () => this.reload());
   },
   beforeDestroy() {
@@ -54,7 +57,7 @@ export default {
   methods:{
 
     // 获取镜像信息
-    getHost() {
+    getImage() {
       this.loadingState = true;
       this.$request.get('images/'+ this.$route.params.id)
       .then(({data})=>{
@@ -111,11 +114,11 @@ export default {
         
         <div class="col-12 col-md-8">
           <Header :image="image"/>
-          <Content :image="image"/>
+          <Content :image="image" :isAdmin="isAdmin"/>
         </div>
 
         <div class="col-12 col-md-4">
-          <Rightsidebar :image="image" @changeLoading="onLoading" />
+          <Rightsidebar :image="image" :isAdmin="isAdmin" @changeLoading="onLoading" />
         </div>
 
       </div>

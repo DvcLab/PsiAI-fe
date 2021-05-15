@@ -184,6 +184,33 @@
 .host-select .multiselect__placeholder {
     font-size: 0.75rem;
 }
+.type-select .multiselect__tags {
+    min-height: 0!important;
+    padding: 0.25rem 0.5rem!important;
+    border-radius: 0.2rem!important;
+    font-size: 0.75rem!important;
+}
+.type-select .multiselect__tag {
+    background-color: $warning !important;
+}
+.type-select .multiselect__select {
+    height: 30px;
+}
+.type-select .multiselect__placeholder {
+    font-size: 0.75rem;
+}
+.lib-select .multiselect__tags {
+    min-height: 0!important;
+    padding: 0.25rem 0.5rem!important;
+    border-radius: 0.2rem!important;
+    font-size: 0.75rem!important;
+}
+.lib-select .multiselect__select {
+    height: 30px;
+}
+.lib-select .multiselect__placeholder {
+    font-size: 0.75rem;
+}
 @keyframes rotate{
     0%{
         transform:translateY(-50%) rotate(0deg)
