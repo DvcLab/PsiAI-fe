@@ -15,6 +15,7 @@ export default {
   },
   data() {
     return {
+      height: '200px'
     }
   },
   computed: {
@@ -228,7 +229,7 @@ export default {
   <div v-if="host.cpu_series" class="card">
     <div class="card-body">
       <h5 class="card-title mb-3">CPU</h5>
-      <v-chart ref="cpuChart" :options="getLineChartOption(host.cpu_series)" autoresize/>
+      <v-chart :options="getLineChartOption(host.cpu_series)" autoresize/>
     </div>
   </div>
   <div v-if="gpu_series" class="card">
@@ -256,5 +257,6 @@ export default {
 <style scoped>
 .echarts {
   width: 100%;
+  height: 25vh;
 }
 </style>
