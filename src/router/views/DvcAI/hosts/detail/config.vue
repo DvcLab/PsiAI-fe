@@ -1,6 +1,6 @@
 <script>
-import GpuCard from "@/components/DvcAI/gpu-card";
-import MluCard from "@/components/DvcAI/mlu-card";
+import GpuCard from "@/components/DvcAI/hosts/gpu-card";
+import MluCard from "@/components/DvcAI/hosts/mlu-card";
 /**
  * 主机配置信息
  */
@@ -98,7 +98,7 @@ export default {
           <p class="text-muted mb-2">硬盘</p>
         </div>
         <div v-if="host.io_info.disk_total" class="col-sm-12 col-md-10">
-          <span>{{host.io_info.disk_total}} GB</span>
+          <span>{{host.io_info.disk_total | gbFiltertoNum}}  {{host.io_info.disk_total | gbFiltertoUnit}}</span>
         </div>
 
         <div v-if="host.container_num" class="col-sm-12 col-md-2">
@@ -115,10 +115,10 @@ export default {
       <h5 class="card-title mb-3">硬盘</h5>
       <div class="row">
         <div class="col-sm-12 col-md-2">
-          <p class="text-muted mb-2">可用/总硬盘(GB)</p>
+          <p class="text-muted mb-2">可用/总硬盘</p>
         </div>
         <div class="col-sm-12 col-md-10">
-          <span>{{host.io_info.disk_free}}/{{host.io_info.disk_total}}</span>
+          <span>{{host.io_info.disk_free | gbFiltertoNum}} {{host.io_info.disk_free | gbFiltertoUnit}} / {{host.io_info.disk_total | gbFiltertoNum}} {{host.io_info.disk_total | gbFiltertoUnit}}</span>
         </div>
       </div>
     </div>
