@@ -1,4 +1,5 @@
 <script>
+import Swal from "sweetalert2";
 import { mapState } from "vuex";
 import PageHeader from "@/components/page-header";
 import LoaderContainer from "@/components/DvcAI/loader-container";
@@ -67,17 +68,44 @@ export default {
 
     // 获取容器信息
     getContainer() {
+      this.loadingState = true;
       this.$request.get('containers/'+ this.$route.params.id)
       .then(({data})=>{
         if(data.code === 1) {
+          this.loadingState = false;
           this.container = data.data;
         } else {
           console.log(data)
+          Swal.fire(
+            "容器信息获取失败!",
+            "点击按钮返回容器列表",
+            "error"
+          ).then((res) => {
+            if(res.isConfirmed) {
+              this.loadingState = false;
+              this.backContainersList();
+            }
+          })
         }
       })
       .catch((err)=>{
         console.log(err)
+        Swal.fire(
+          "容器信息获取失败!",
+          "点击按钮返回容器列表",
+          "error"
+        ).then((res) => {
+          if(res.isConfirmed) {
+            this.loadingState = false;
+            this.backContainersList();
+          }
+        })
       })
+    },
+
+    // 返回容器列表
+    backContainersList() {
+      this.$router.push({path: '/containers'})
     },
 
     // ws初始化
@@ -118,7 +146,6 @@ export default {
 
     // 加载状态改变
     onLoading(state) {
-      console.log(state)
       this.loadingState = state;
     },
 
@@ -141,7 +168,6 @@ export default {
 };
 </script>
 <template>
-  <!-- <Layout> -->
   <div>
     <PageHeader :title="title" :items="items" />
     <LoaderContainer :loading="loadingState">
@@ -157,6 +183,5 @@ export default {
 
       </div>
     </LoaderContainer>
-  <!-- </Layout> -->
   </div>
 </template>
