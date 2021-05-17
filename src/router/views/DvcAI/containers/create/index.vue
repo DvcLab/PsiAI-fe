@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import PageHeader from "@/components/page-header";
 import ProjSelectItem from "@/components/DvcAI/projects/proj-select-item";
 import ImageSelectItem from "@/components/DvcAI/images/image-select-item";
-import DatasetSelectItem from "@/components/DvcAI/dataset-select-item";
+import DatasetSelectItem from "@/components/DvcAI/datasets/dataset-select-item";
 import SelectCard from "@/components/DvcAI/select-card";
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import { required } from "vuelidate/lib/validators";
@@ -89,6 +89,7 @@ export default {
       selectedBranch: '',
       selectedImage: null,
       selectedDatasetsList: [],
+      needGPU: false,
       submitted: false,
       loadingState: false,
       matchImage: null,
@@ -122,14 +123,6 @@ export default {
         res.push(item.url);
       })
       return res;
-    },
-
-    // 是否需要gpu
-    isGPU() {
-      if(!this.selectedImage) return false;
-      let types = this.selectedImage.types;
-      let hasGPU = types.includes('GPU');
-      return hasGPU;
     },
 
     // gpu的选项是否可选
@@ -227,6 +220,16 @@ export default {
       })
     },
 
+    // 监听镜像选择
+    changeImageSelectAction(image) {
+      console.log(image)
+      if(!this.selectedImage) {
+        this.needGPU = false
+      } else {
+        this.needGPU = this.selectedImage.types.includes('GPU');
+      }
+    },
+
     // 获取数据集列表
     getDatasetsList() {
       this.$request.get('datasets')
@@ -283,7 +286,7 @@ export default {
             dataset_url: _this.selectedDatasetsUrls,
             cpus: _this.cpus,
             mem: _this.mem,
-            gpu: _this.isGPU
+            gpu: _this.needGPU
           })
         _this.$request.put('containers?'+query)
         .then((res) => res.data)
@@ -432,6 +435,7 @@ export default {
                 <multiselect
                   v-model="selectedImage"
                   :options="imagesList"
+                  @select="changeImageSelectAction"
                   placeholder="选择镜像"
                   select-label="选择一个镜像"
                   selectedLabel="已选镜像"
@@ -530,11 +534,11 @@ export default {
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    v-model="isGPU"
+                    v-model="needGPU"
                     :disabled="isDisabledGpu"
                   />
                   <span :class="{'checkbox-disabled-text': isDisabledGpu }">
-                    {{ isGPU ? '需要GPU' : '无需GPU' }}
+                    {{ needGPU ? '需要GPU' : '无需GPU' }}
                   </span>
                 </div>
               </div>

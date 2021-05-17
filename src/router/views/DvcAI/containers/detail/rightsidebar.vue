@@ -356,7 +356,7 @@ export default {
     delContainerMsg() {
       Swal.fire({
         icon:'question',
-        title: '确认删除所选容器?',
+        title: '确认删除此容器?',
         showCancelButton: true,
         confirmButtonText: `确认`,
         cancelButtonText: `取消`
@@ -382,9 +382,14 @@ export default {
           />
         </div>
         <div class="media-body">
-          <h5 class="font-size-15 mt-0 mb-1">
+          <h5 class="font-size-14 mt-0 mb-0">
             {{ container.user.username }}
           </h5>
+          <p v-if="container.user && container.user.roles.includes('DOCKHUB_ADMIN')" class="mb-0">
+            <span class="badge font-size-11 badge-soft-primary me-2">
+              管理员
+            </span>
+          </p>
         </div>
       </div>
       <hr class="mt-2" />

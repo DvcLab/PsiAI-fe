@@ -1,5 +1,5 @@
 <script>
-import DatasetItem from './dataset-item';
+import DatasetItem from '@/components/DvcAI/datasets/dataset-item';
 
 export default {
     components: {

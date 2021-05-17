@@ -1,7 +1,7 @@
 <script>
-import Layout from "../../../layouts/main";
-import DatasetList from "@/components/DvcAI/dataset-list";
-import DatasetGridList from "@/components/DvcAI/dataset-grid-list";
+import Layout from "@/router/layouts/main";
+import DatasetList from "./list";
+import DatasetGridList from "./grid";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
