@@ -1,5 +1,7 @@
 <script>
 import Multiselect from "vue-multiselect";
+import Swal from "sweetalert2";
+import { EventBus } from "@/utils/event-bus";
 /**
  * 镜像配置信息
  */
@@ -46,6 +48,17 @@ export default {
       }
       return libsList;
     },
+    sendLibs(){
+      let res = {};
+      if(!this.selectLibs && this.selectLibs.length === 0) {
+        return res;
+      }
+      let len = this.selectLibs.length;
+      for(let i = 0; i < len; i++) {
+        res[this.selectLibs[i].name] = this.selectLibs[i].tag
+      }
+      return res;
+    }
     // types() {
     //   if (!this.image.types) return [];
     //   return this.image.types
@@ -65,7 +78,6 @@ export default {
     toTypeEdit() {
       this.selectTypes = this.image.types;
       this.isTypeEdit = true;
-      console.log(this.types)
     },
     cancelTypeEdit() {
       this.isTypeEdit = false;
@@ -82,20 +94,116 @@ export default {
       this.isDescEdit = true;
     },
     cancelDescEdit() {
-      this.isDescEdit = false;
+      Swal.fire({
+        icon:'question',
+        title: '确认修改镜像说明?',
+        showCancelButton: true,
+        confirmButtonText: `确认`,
+        cancelButtonText: `取消`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log('发出修改提交')
+          this.updateInfo()
+        } else if (result.isDenied) {
+          console.log('取消编辑')
+        }
+      })
+      
     },
+    // 取消编辑
+    cancelEdit(e) {
+
+      let target = e.target;
+      console.log(e)
+      let isEdit = target.matches('i.bx.bx-edit-alt');
+      if(this.isTypeEdit && !isEdit) {
+        if(this.isLibEdit || this.isDescEdit) {
+          this.isLibEdit = false;
+          this.isDescEdit = false;
+        }
+        if(target.matches('.type-select .multiselect') || target.matches('.type-select .multiselect__tags')) {
+          console.log('点击了type选择')
+        } else {
+          Swal.fire({
+            icon:'question',
+            title: '确认修改镜像类型?',
+            showCancelButton: true,
+            confirmButtonText: `确认`,
+            cancelButtonText: `取消`
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log('发出修改提交')
+              this.updateInfo()
+            } else if (result.isDenied) {
+              console.log('取消编辑');
+              this.isTypeEdit = false;
+              this.isLibEdit = false;
+              this.isDescEdit = false;
+            }
+          })
+        }
+      }
+      if(this.isLibEdit && !target.matches('i.bx.bx-edit-alt')) {
+        if(target.matches('.lib-select .multiselect') || target.matches('.lib-select .multiselect__tags')) {
+          console.log('点击了lib选择')
+        } else {
+          Swal.fire({
+            icon:'question',
+            title: '确认修改镜像类库?',
+            showCancelButton: true,
+            confirmButtonText: `确认`,
+            cancelButtonText: `取消`
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log('发出修改提交')
+              // this.updateInfo()
+            } else if (result.isDenied) {
+              console.log('取消编辑');
+              this.isTypeEdit = false;
+              this.isLibEdit = false;
+              this.isDescEdit = false;
+            }
+          })
+        }
+      }
+    },
+    updateInfo() {
+      let temp = {
+        "name": this.image.name,
+        "tags": this.image.tags,
+        "types": this.selectTypes?this.selectTypes:this.image.types,
+        "libs": this.sendLibs==={}?this.sendLibs:this.image.libs,
+        "desc": this.desc?this.desc:this.image.desc,
+      }
+      this.$request.post('images/'+this.image.id,temp)
+      .then(({data})=>{
+        console.log(data)
+        if(data.code === 1) {
+          Swal.fire("修改成功!", "", "success").then((res) => {
+            if (res.isConfirmed) {
+              this.isTypeEdit = false;
+              this.isLibEdit = false;
+              this.isDescEdit = false;
+              EventBus.$emit("update");
+            }
+          });
+        } else {
+          Swal.fire("容器名修改失败!", "", "error");
+        }
+      })
+    }
   }
 };
 </script>
 <template>
 <div v-if="image">
-  <div class="card">
+  <div class="card" @click="cancelEdit">
     <div class="card-body">
       <div class="row">
         <div v-if="image.id" class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">ID</p>
         </div>
-        <div v-if="image.id" class="col-sm-12 col-md-10">
+        <div v-if="image.id" class="col-sm-12 col-md-10 mb-2">
           <span>{{image.id}}</span>
         </div>
       </div>
@@ -104,7 +212,7 @@ export default {
           <p class="text-muted mb-2">类型</p>
         </div>
         <div class="col-sm-12 col-md-10  type-select">
-          <span v-if="!isTypeEdit" class="i-text-middle">
+          <span v-if="!isTypeEdit" class="i-text-middle mb-2">
             <span v-for="item in image.types" class="badge bg-warning me-1" :key="item">{{ item }}</span>
             <i v-if="canEdit" class="bx bx-edit-alt font-size-16 cursor-pointer me-2" @click="toTypeEdit"></i>
           </span>
@@ -128,8 +236,8 @@ export default {
           <p class="text-muted mb-2">类库</p>
         </div>
         <div class="col-sm-12 col-md-10 lib-select">
-          <span v-if="!isLibEdit" class="i-text-middle">
-            <span v-for="item in libs" class="badge bg-info me-1" :key="item">
+          <span v-if="!isLibEdit" class="i-text-middle mb-2">
+            <span v-for="item in libs" class="badge bg-info me-1" :key="item.name+item.tag">
             {{ item.name }} {{ item.tag }}
             </span>
             <i v-if="canEdit" class="bx bx-edit-alt font-size-16 cursor-pointer me-2" @click="toLibEdit"></i>
@@ -139,7 +247,7 @@ export default {
             class="d-inline-block btn-item me-2 mb-2"
             v-model="selectLibs"
             :options="libsList"
-            @blur="cancelLibEdit"
+            :multiple="true"
             placeholder="选择类型"
             select-label="选择类型"
             selectedLabel="已选"
@@ -156,7 +264,8 @@ export default {
               class="i-text-middle"
             >
               <div class="text-truncate i-text-middle">
-                {{ option.name }} {{ option.tag }}
+                <!-- {{ option.name }} {{ option.tag }} -->
+                {{option.name}}
               </div>
             </template>
           </multiselect>
@@ -166,7 +275,7 @@ export default {
         <div class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">标签</p>
         </div>
-        <div class="col-sm-12 col-md-10">
+        <div class="col-sm-12 col-md-10 mb-2">
           <span v-for="item in image.tags" class="badge bg-primary me-1" :key="item">
             {{ item }}
           </span>
@@ -178,7 +287,7 @@ export default {
         </div>
         <div class="col-sm-12 col-md-10 i-text-middle">
           <span v-if="!isDescEdit">
-            <span v-if="image.desc" class="me-2">{{image.desc}}</span>
+            <span v-if="image.desc" class="me-2 mb-2">{{image.desc}}</span>
             <i v-if="canEdit" class="bx bx-edit-alt font-size-16 cursor-pointer me-2" @click="toDescEdit"></i>
           </span>
           <textarea
