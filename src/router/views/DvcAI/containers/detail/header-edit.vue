@@ -112,7 +112,7 @@ export default {
         </div>
 
         <div class="col-8 col-md-4 mb-2">
-          <b-input id="container-name" @keyup.enter.native="toChangeContainerName()" type="text" max="64" min="1" v-model="newName" :placeholder="name" />
+          <b-input id="container-name" @keyup.enter.native="toChangeContainerName" type="text" max="64" min="1" v-model="newName" :placeholder="name" />
         </div>
         
         <div class="col-12 col-md-5 d-flex align-items-center mb-2">
