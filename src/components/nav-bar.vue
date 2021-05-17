@@ -45,7 +45,7 @@ export default {
       text: null,
       flag: null,
       value: null,
-      keycloak_url: "VUE_APP_AUTH_URL/admin/master/console/#/realms/DvcLAB/users"
+      keycloak_url: "https://auth.dvclab.com/auth/admin/master/console/#/realms/DvcLAB/users",
     }
   },
   filters:{
