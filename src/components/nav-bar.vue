@@ -45,7 +45,7 @@ export default {
       text: null,
       flag: null,
       value: null,
-      keycloak_url: "https://auth.dvclab.com/auth/realms/master/protocol/openid-connect/auth?client_id=security-admin-console&redirect_uri=https%3A%2F%2Fauth.dvclab.com%2Fauth%2Fadmin%2Fmaster%2Fconsole%2F&state=acfa5ed8-3c27-44f3-9911-352a858d8cbd&response_mode=fragment&response_type=code&scope=openid&nonce=1e8501b0-bf94-4954-9201-e85af8dc3319&code_challenge=BVhmW93t2SHPrngdyZexq1DEGt-18WL6SHf6TGlmWns&code_challenge_method=S256"
+      keycloak_url: "https://auth.dvclab.com/auth/admin/master/console/#/realms/DvcLAB/users"
     };
   },
   filters:{
