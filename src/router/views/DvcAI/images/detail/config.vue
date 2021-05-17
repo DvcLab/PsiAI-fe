@@ -23,9 +23,10 @@ export default {
       isTypeEdit: false,
       isLibEdit: false,
       isDescEdit: false,
+      isImgEdit: false,
       typesList: ['CPU','GPU'],
       selectTypes: [],
-      libsList: [{name:"tensorflow",tag:"2.2.0"}],
+      libsList: [{name:"tensorflow",tag:"2.2.0",text:"tensorflow 2.2.0"}],
       // libs: {},
       selectLibs: [],
       desc: '',
@@ -42,7 +43,8 @@ export default {
       for(let i in libs) {
         let tmp = {
           name: i,
-          tag: libs[i]
+          tag: libs[i],
+          text: i+' '+libs[i]
         };
         libsList.push(tmp);
       }
@@ -59,37 +61,29 @@ export default {
       }
       return res;
     }
-    // types() {
-    //   if (!this.image.types) return [];
-    //   return this.image.types
-    // },
-    // types: {
-    //   get(){
-    //     if (!this.image.types) return [];
-    //     return this.image.types
-    //   },
-    //   set(newVal){
-    //     return newVal
-    //   }
-    // },
-
   },
   methods: {
     toTypeEdit() {
       this.selectTypes = this.image.types;
+      this.selectLibs = this.libs;
+      this.desc = this.image.desc;
       this.isTypeEdit = true;
     },
     cancelTypeEdit() {
       this.isTypeEdit = false;
     },
     toLibEdit() {
+      this.selectTypes = this.image.types;
       this.selectLibs = this.libs;
+      this.desc = this.image.desc;
       this.isLibEdit = true;
     },
     cancelLibEdit() {
       this.isLibEdit = false;
     },
     toDescEdit() {
+      this.selectTypes = this.image.types;
+      this.selectLibs = this.libs;
       this.desc = this.image.desc;
       this.isDescEdit = true;
     },
@@ -108,7 +102,6 @@ export default {
           console.log('取消编辑')
         }
       })
-      
     },
     // 取消编辑
     cancelEdit(e) {
@@ -144,7 +137,7 @@ export default {
         }
       }
       if(this.isLibEdit && !target.matches('i.bx.bx-edit-alt')) {
-        if(target.matches('.lib-select .multiselect') || target.matches('.lib-select .multiselect__tags')) {
+        if(target.matches('.lib-select .multiselect')|| target.matches('.lib-select .multiselect__select') || target.matches('.lib-select .multiselect__tags')) {
           console.log('点击了lib选择')
         } else {
           Swal.fire({
@@ -156,7 +149,7 @@ export default {
           }).then((result) => {
             if (result.isConfirmed) {
               console.log('发出修改提交')
-              // this.updateInfo()
+              this.updateInfo()
             } else if (result.isDenied) {
               console.log('取消编辑');
               this.isTypeEdit = false;
@@ -167,6 +160,7 @@ export default {
         }
       }
     },
+    // 更新镜像信息
     updateInfo() {
       let temp = {
         "name": this.image.name,
@@ -207,6 +201,19 @@ export default {
           <span>{{image.id}}</span>
         </div>
       </div>
+      <!-- <div class="row">
+        <div class="col-sm-12 col-md-2">
+          <p class="text-muted mb-2">缩略图</p>
+        </div>
+        <div class="col-sm-12 col-md-10 i-text-middle">
+          <img
+          class="img-sm"
+          src="@/assets/images/DvcAI/image-default.png"
+          v-real-img="image.cover_img_url"
+          alt="镜像"
+        />
+        </div>
+      </div> -->
       <div class="row">
         <div class="col-sm-12 col-md-2">
           <p class="text-muted mb-2">类型</p>
@@ -252,21 +259,13 @@ export default {
             select-label="选择类型"
             selectedLabel="已选"
             deselectLabel="点击取消"
+            label="text"
+            track-by="text"
           >
             <template slot="option" slot-scope="{ option }">
               <span>
                 {{ option.name }} {{ option.tag }}
               </span>
-            </template>
-            <template
-              slot="singleLabel"
-              slot-scope="{ option }"
-              class="i-text-middle"
-            >
-              <div class="text-truncate i-text-middle">
-                <!-- {{ option.name }} {{ option.tag }} -->
-                {{option.name}}
-              </div>
             </template>
           </multiselect>
         </div>
@@ -300,6 +299,7 @@ export default {
           ></textarea>
         </div>
       </div>
+
     </div>
   </div>
 </div>
