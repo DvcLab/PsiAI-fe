@@ -1,7 +1,7 @@
 <script>
 import LoaderContainer from "@/components/DvcAI/loader-container";
-import GpuCard from "@/components/DvcAI/gpu-card";
-import MluCard from "@/components/DvcAI/mlu-card";
+import GpuCard from "@/components/DvcAI/hosts/gpu-card";
+import MluCard from "@/components/DvcAI/hosts/mlu-card";
 
 export default {
   components: { GpuCard, MluCard, LoaderContainer },
@@ -12,9 +12,34 @@ export default {
     },
   },
   filters: {
+    // id取前8位
     preId(id){
       return id.slice(0,8)
-    }
+    },
+    // 计算机存储数值换算,默认传进来的最小单位为GB
+    gbFiltertoNum (value) {
+
+      if (value === 0) return '0'
+ 
+      const k = 1024
+
+      let i = Math.floor(Math.log(value) / Math.log(k))
+
+      return (value / Math.pow(k, i)).toPrecision(4)
+    },
+
+    // 计算机存储单位换算,默认传进来的最小单位为GB
+    gbFiltertoUnit (value) {
+
+      if (value === 0) return 'GB'
+ 
+      const k = 1024
+      const sizes = ['GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+      let i = Math.floor(Math.log(value) / Math.log(k))
+
+      return sizes[i];
+    },
   },
   data() {
     return {
@@ -80,6 +105,18 @@ export default {
         colors: [color],
         labels: [label],
       };
+    },
+
+    // 跳转主机详情页
+    toHostDetail(e){
+      let target = e.target;
+      if(target.matches('h4') || target.matches('span') || target.matches('a') || target.matches('i')) {
+        console.log('不可跳转')
+        return;
+      } else {
+        return this.$router.push({ path: '/hosts/' + this.host.id })
+        // console.log('可以跳转详情页')
+      }
     },
 
     // 初始化weosocket
@@ -170,7 +207,7 @@ export default {
 </script>
 <template>
   <LoaderContainer :loading="loadingState">
-    <div class="list-item-con">
+    <div class="list-item-con" @click="toHostDetail">
       <div class="row">
         <div class="col-12 col-md-6">
           <h4>{{ hostSelfData.ip }}<span class="text-secondary font-size-13">（{{ hostSelfData.id | preId }}）</span></h4>
@@ -202,50 +239,50 @@ export default {
               class="col-sm-12 col-md-8 mb-2"
               style="font-weight: bold"
             >
-              {{ hostSelfData.cpu_info.cpu_model_name }}
+              <span>{{ hostSelfData.cpu_info.cpu_model_name }}</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.cpu_info.cpu_num)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
               <span class="badge rounded-pill bg-primary">
-                <i class="uil uil-circuit" />内核
+                <i class="bx bx-chip me-1" />内核
               </span>
-              {{ hostSelfData.cpu_info.cpu_num }}
+              <span> {{ hostSelfData.cpu_info.cpu_num }}</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.mem_info.total)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
-              <span class="badge rounded-pill bg-primary">
-                <i class="uil uil-dice-four" />内存
+              <span class="badge rounded-pill font-size-11 badge-soft-primary">
+                <i class="bx bx-grid-alt me-1" />内存
               </span>
-              {{ hostSelfData.mem_info.total }} MiB
+              <span> {{ hostSelfData.mem_info.total | gbFiltertoNum }} {{ hostSelfData.mem_info.total | gbFiltertoUnit }}</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.container_num)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
-              <span class="badge rounded-pill bg-primary">
-                <i class="uil uil-box" />容器
+              <span class="badge rounded-pill font-size-11 badge-soft-primary">
+                <i class="bx bx-cube me-1" />容器
               </span>
-              {{ hostSelfData.container_num }}
+              <span> {{ hostSelfData.container_num }}</span>
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.gpu_info)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
-              <span class="badge rounded-pill bg-primary">
-                <i class="uil uil-server" />Nvidia Driver
+              <span class="badge rounded-pill font-size-11 badge-soft-success">
+                <i class="bx bx-server" /> Nvidia Driver
                 {{ hostSelfData.gpu_info.driver_version }}</span
               >
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.gpu_info)"
-              class="col-sm-6 col-md-4 mb-2"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
             >
-              <span class="badge rounded-pill bg-primary">
-                <i class="uil uil-servers" /> CUDA
+              <span class="badge rounded-pill font-size-11 badge-soft-warning">
+                <i class="bx bx-command" /> CUDA
                 {{ hostSelfData.gpu_info.cuda_version }}</span
               >
             </div>
@@ -302,6 +339,7 @@ export default {
 
       <div v-if="!this.$_.isNil(hostSelfData.gpu_info)" class="row">
         <GpuCard
+          class="col-md-12 col-xl-6 mt-2"
           v-for="(gpu, index) in hostSelfData.gpu_info.gpus"
           :key="index"
           :gpu="gpu"
@@ -310,6 +348,7 @@ export default {
 
       <div v-if="!this.$_.isNil(hostSelfData.mlu_info)" class="row">
         <MluCard
+          class="col-md-12 col-xl-6 mt-2"
           v-for="(mlu, index) in hostSelfData.mlu_info.mlus"
           :key="index"
           :mlu="mlu"
