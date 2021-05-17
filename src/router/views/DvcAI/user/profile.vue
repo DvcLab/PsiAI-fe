@@ -53,7 +53,7 @@ export default {
     <Layout>
       <PageHeader :title="title" :items="items" />
       <div class="row">
-        <!--右边这一列(小窗口时才显示)-->
+        <!--个人信息框(小窗口时才显示)-->
         <div class="col-md-4 d-md-none">
           <div class="card text-center">
             <div class="card-body">
@@ -136,34 +136,106 @@ export default {
         <!--右边这一列结束-->
         <!--左边这一列-->
         <div class="col-md-8">
-          <div class="card">
-            <div class="card-body">
-              <b-tabs content-class="p-3" nav-class="nav-tabs-custom">
-                <b-tab title="项目" active>
-                  我的项目
-                </b-tab>
-                <b-tab title="数据集" active>
-                  我的数据集
-                </b-tab>
-                <b-tab title="镜像" active>
-                  我的镜像
-                </b-tab>
-                <b-tab title="容器" active>
-                  我的容器
-                </b-tab>
-                <b-tab title="收藏" active>
-                  我收藏的项目/数据集/镜像/容器
-                </b-tab>
-                <b-tab title="关注" active>
-                  我的关注
-                </b-tab>
-              </b-tabs>
-            </div>
+          <div class="custom-tab">
+            <b-tabs pills fill content-class="text-muted mt-4">
+              <b-tab active class="border-0">
+                <template v-slot:title>
+                  <span class="d-none d-sm-inline-block">项目</span>
+                </template>
+                <!--<Config :host="host"/>-->
+                <div class="card">
+                  <div class="card-body">
+                    <!--<h5 class="card-title mb-3">主机</h5>-->
+                    <div class="row">
+                      <div class="col-sm-12 col-md-2">
+                        <p class="text-muted mb-2">我的项目</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b-tab>
+              <b-tab>
+                <template v-slot:title>
+                  <span class="d-none d-sm-inline-block">数据集</span>
+                </template>
+                <div class="card">
+                  <div class="card-body">
+                    <!--<h5 class="card-title mb-3">主机</h5>-->
+                    <div class="row">
+                      <div class="col-sm-12 col-md-2">
+                        <p class="text-muted mb-2">我的数据集</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b-tab>
+              <b-tab>
+                <template v-slot:title>
+                  <span class="d-none d-sm-inline-block">镜像</span>
+                </template>
+                <div class="card">
+                  <div class="card-body">
+                    <!--<h5 class="card-title mb-3">主机</h5>-->
+                    <div class="row">
+                      <div class="col-sm-12 col-md-2">
+                        <p class="text-muted mb-2">我的镜像</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b-tab>
+              <b-tab>
+                <template v-slot:title>
+                  <span class="d-none d-sm-inline-block">容器</span>
+                </template>
+                <div class="card">
+                  <div class="card-body">
+                    <!--<h5 class="card-title mb-3">主机</h5>-->
+                    <div class="row">
+                      <div class="col-sm-12 col-md-2">
+                        <p class="text-muted mb-2">我的容器</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b-tab>
+              <b-tab>
+                <template v-slot:title>
+                  <span class="d-none d-sm-inline-block">收藏</span>
+                </template>
+                <div class="card">
+                  <div class="card-body">
+                    <!--<h5 class="card-title mb-3">主机</h5>-->
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6">
+                        <p class="text-muted">我收藏的项目/数据集/镜像/容器</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b-tab>
+              <b-tab>
+                <template v-slot:title>
+                  <span class="d-none d-sm-inline-block">关注</span>
+                </template>
+                <div class="card">
+                  <div class="card-body">
+                    <!--<h5 class="card-title mb-3">主机</h5>-->
+                    <div class="row">
+                      <div class="col-sm-12 col-md-2">
+                        <p class="text-muted mb-2">我的关注</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b-tab>
+            </b-tabs>
+              
           </div>
         </div>
         <!--左边这一列结束-->
 
-        <!--右边这一列-->
+        <!--右边这一列(大窗口显示)-->
         <div class="col-md-4 d-none d-md-block">
           <div class="card text-center">
             <div class="card-body">
