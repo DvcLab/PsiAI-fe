@@ -148,7 +148,8 @@ export default {
           <b-input v-else type="text" max="64" min="1" size="sm"
           v-model="newName" 
           :placeholder="name" 
-          @blur="changeName"/>
+          @blur="changeName"
+          @keyup.enter.native="changeName"/>
 
         </div>
 
