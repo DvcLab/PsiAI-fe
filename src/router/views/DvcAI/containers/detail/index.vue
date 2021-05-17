@@ -3,10 +3,12 @@ import Swal from "sweetalert2";
 import { mapState } from "vuex";
 import PageHeader from "@/components/page-header";
 import LoaderContainer from "@/components/DvcAI/loader-container";
-import Card from "./card";
+//import Card from "./card";
 import Rightsidebar from "./rightsidebar";
 import appConfig from "@/app.config";
 import { EventBus } from "@/utils/event-bus";
+import Header from './header';
+import Content from './content';
 
 /**
  * Container Detail component
@@ -18,7 +20,7 @@ export default {
     title: "容器详情",
     meta: [{ name: "description", content: appConfig.description }]
   },
-  components: { PageHeader, LoaderContainer, Card, Rightsidebar },
+  components: { PageHeader, LoaderContainer, Rightsidebar, Header, Content },
   data() {
     return {
       title: "容器详情",
@@ -174,7 +176,9 @@ export default {
       <div class="row font-size-14" @click="cancelEdit">
         
         <div class="col-12 col-md-8">
-          <Card :container="container" :canEdit="isAdmin || isMine"/>
+          <Header :container="container" :canEdit="canEdit"/>
+          <Content :container="container"/>
+          <!--<Card :container="container" :canEdit="isAdmin || isMine"/>-->
         </div>
 
         <div class="col-12 col-md-4">

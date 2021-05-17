@@ -23,12 +23,16 @@ export default {
 };
 </script>
 <template>
-<div data-prismjs-copy-timeout="500">
-  <pre
-		data-prismjs-copy="复制文本"
-		data-prismjs-copy-error="按Ctrl+C复制"
-		data-prismjs-copy-success="文本已复制！"><code class="language-yaml">{{file}}</code></pre>
-</div>
+  <div class="card">
+    <div class="card-body">
+      <div data-prismjs-copy-timeout="500">
+        <pre
+          data-prismjs-copy="复制文本"
+          data-prismjs-copy-error="按Ctrl+C复制"
+          data-prismjs-copy-success="文本已复制！"><code class="language-yaml">{{file}}</code></pre>
+      </div>
+    </div>
+  </div>
 </template>
 <style scoped>
 /*********************************************************
