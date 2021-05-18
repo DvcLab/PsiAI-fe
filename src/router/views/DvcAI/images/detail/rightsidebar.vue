@@ -32,7 +32,6 @@ export default {
       this.$request
         .delete("images/" + id)
         .then(({data}) => {
-          console.log(data)
           if (data.code === 1) {
             Swal.fire("镜像删除成功!", "", "success").then((res) => {
               if (res.isConfirmed) {

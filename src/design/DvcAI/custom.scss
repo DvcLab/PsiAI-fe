@@ -46,6 +46,11 @@
     width: 1.5rem;
     line-height: 1.5rem;
 }
+.img-sm {
+    height: 3rem;
+    width: 3rem;
+    object-fit: cover;
+}
 // 自定义tab按钮背景
 .custom-tab .nav {
     background-color: #fff;

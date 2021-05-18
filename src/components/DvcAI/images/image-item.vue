@@ -73,7 +73,7 @@ export default {
           v-real-img="image.cover_img_url"
           alt="镜像"
         /> -->
-        <CoverImg :src="image.cover_img_url" :class="'img-sm'" :imgColor="'#50a5f1'"/>
+        <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'"/>
       </div>
 
       <div class="col-6 col-md-2">

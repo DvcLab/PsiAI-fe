@@ -1,9 +1,7 @@
 <script>
 import Swal from "sweetalert2";
-// import { mapState } from "vuex";
 import PageHeader from "@/components/page-header";
 import LoaderContainer from "@/components/DvcAI/loader-container";
-// import Card from "./card";
 import Rightsidebar from "./rightsidebar";
 import Header from './header';
 import Content from './content';
@@ -53,6 +51,7 @@ export default {
   beforeDestroy() {
     // 退出关闭ws
     if (this.websock) this.websock.close();
+    EventBus.$off('update')
   },
   methods:{
 
