@@ -24,6 +24,7 @@ export default {
     };
   },
   methods: {
+
     // 删除镜像
     delImage() {
       this.loadingState = true;
@@ -50,6 +51,7 @@ export default {
           console.err(err);
         });
     },
+    
     // 删除镜像确认弹窗
     delImageMsg() {
       Swal.fire({

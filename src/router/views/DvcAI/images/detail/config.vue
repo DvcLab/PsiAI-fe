@@ -68,33 +68,24 @@ export default {
 
     // 初始化数据
     initInfo() {
-      this.imgUrl = this.image.cover_img_url?this.image.cover_img_url: '';
-      this.selectTypes = this.image.types;
-      this.selectLibs = this.libs;
-      this.desc = this.image.desc;
+      if(this.imgUrl === '' && this.image.cover_img_url) {
+        this.imgUrl = this.image.cover_img_url 
+      }
+      if(this.$_.isEmpty(this.selectTypes) && this.image.types) {
+        let len = this.selectTypes.length;
+        this.selectTypes.splice(0,len,...this.image.types) 
+      }
+      if(this.$_.isEmpty(this.selectLibs) && this.libs) {
+        this.selectLibs = this.libs 
+      }
+      if(this.desc === '' && this.image.desc) {
+        this.desc = this.image.desc 
+      }
     },
     // 编辑图片
     toImgEdit() {
       this.initInfo();
       this.isImgEdit = true;
-    },
-
-    // 取消修改图片
-    cancelImgEdit() {
-      Swal.fire({
-        icon:'question',
-        title: '确认修改镜像缩略图?',
-        showCancelButton: true,
-        confirmButtonText: `确认`,
-        cancelButtonText: `取消`
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('发出修改提交')
-          this.updateInfo()
-        } else if (result.isDenied) {
-          console.log('取消编辑')
-        }
-      })
     },
 
     // 开始编辑类型
@@ -115,37 +106,46 @@ export default {
       this.isDescEdit = true;
     },
     
-    // 取消编辑镜像说明
-    cancelDescEdit() {
-      Swal.fire({
-        icon:'question',
-        title: '确认修改镜像说明?',
-        showCancelButton: true,
-        confirmButtonText: `确认`,
-        cancelButtonText: `取消`
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('发出修改提交')
-          this.updateInfo()
-        } else if (result.isDenied) {
-          console.log('取消编辑')
-        }
-      })
-    },
-
-    // 取消编辑
+    // 取消编辑 - 事件代理
     cancelEdit(e) {
 
       let target = e.target;
 
-      if(this.isTypeEdit && !target.matches('i.bx.bx-edit-alt')) {
-        if(this.isLibEdit || this.isDescEdit) {
-          this.isLibEdit = false;
-          this.isDescEdit = false;
+      // 取消编辑缩略图
+      if(this.isImgEdit && !target.matches('.img-edit')) {
+        if(target.matches('input')) {
+          console.log('点击了img选择')
+        } else {
+          if(this.$_.isEqual(this.imgUrl, this.image.cover_img_url?this.image.cover_img_url:'')) {
+            return this.isImgEdit = false;
+          }
+          Swal.fire({
+            icon:'question',
+            title: '确认修改镜像缩略图?',
+            showCancelButton: true,
+            confirmButtonText: `确认`,
+            cancelButtonText: `取消`
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log('发出修改提交')
+              this.updateInfo()
+            } else if (result.isDismissed) {
+              console.log('取消编辑');
+              this.isImgEdit = false;
+            }
+          })
         }
-        if(target.matches('.type-select .multiselect') || target.matches('.type-select .multiselect__tags')) {
+      }
+
+      // 取消编辑类型
+      if(this.isTypeEdit && !target.matches('i.bx.bx-edit-alt.type-edit')) {
+        
+        if(target.matches('.type-select .multiselect') || target.matches('.type-select .multiselect__tags') ||target.matches('.type-select .multiselect__option')) {
           console.log('点击了type选择')
         } else {
+          if(this.$_.isEqual(this.selectTypes, this.image.types)) {
+            return this.isTypeEdit = false;
+          }
           Swal.fire({
             icon:'question',
             title: '确认修改镜像类型?',
@@ -156,19 +156,22 @@ export default {
             if (result.isConfirmed) {
               console.log('发出修改提交')
               this.updateInfo()
-            } else if (result.isDenied) {
+            } else if (result.isDismissed) {
               console.log('取消编辑');
               this.isTypeEdit = false;
-              this.isLibEdit = false;
-              this.isDescEdit = false;
             }
           })
         }
       }
-      if(this.isLibEdit && !target.matches('i.bx.bx-edit-alt')) {
-        if(target.matches('.lib-select .multiselect')|| target.matches('.lib-select .multiselect__select') || target.matches('.lib-select .multiselect__tags')) {
+      // 取消编辑类库
+      if(this.isLibEdit && !target.matches('i.bx.bx-edit-alt.lib-edit')) {
+        
+        if(target.matches('.lib-select .multiselect') || target.matches('.lib-select .multiselect__select') || target.matches('.lib-select .multiselect__tags') || target.matches('.lib-select .multiselect__option')) {
           console.log('点击了lib选择')
         } else {
+          if(this.$_.isEqual(this.sendLibs, this.image.libs)) {
+            return this.isLibEdit = false;
+          }
           Swal.fire({
             icon:'question',
             title: '确认修改镜像类库?',
@@ -179,10 +182,38 @@ export default {
             if (result.isConfirmed) {
               console.log('发出修改提交')
               this.updateInfo()
-            } else if (result.isDenied) {
+            } else if (result.isDismissed) {
               console.log('取消编辑');
-              this.isTypeEdit = false;
+              // this.isTypeEdit = false;
               this.isLibEdit = false;
+              // this.isDescEdit = false;
+            }
+          })
+        }
+      }
+      // 取消编辑说明
+      if(this.isDescEdit && !target.matches('i.bx.bx-edit-alt.desc-edit')) {
+        
+        if(target.matches('textarea')) {
+          console.log('点击了desc选择')
+        } else {
+          if(this.$_.isEqual(this.desc, this.image.desc)) {
+            return this.isDescEdit = false;
+          }
+          Swal.fire({
+            icon:'question',
+            title: '确认修改镜像说明?',
+            showCancelButton: true,
+            confirmButtonText: `确认`,
+            cancelButtonText: `取消`
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log('发出修改提交')
+              this.updateInfo()
+            } else if (result.isDismissed) {
+              console.log('取消编辑');
+              // this.isTypeEdit = false;
+              // this.isLibEdit = false;
               this.isDescEdit = false;
             }
           })
@@ -224,7 +255,7 @@ export default {
 </script>
 <template>
 <div v-if="image">
-  <div class="card" @click="cancelEdit">
+  <div class="card" @click.capture="cancelEdit">
     <div class="card-body">
 
       <div class="row">
@@ -248,8 +279,8 @@ export default {
         <div class="col-sm-12 col-md-10 i-text-middle mb-2">
           <div v-if="!isImgEdit" class="cover-img">
             <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'"/>
-            <div class="mask d-flex align-items-center justify-content-center cursor-pointer" @click="toImgEdit">
-              <i class="bx bx-camera font-size-18"></i>
+            <div class="mask d-flex align-items-center justify-content-center cursor-pointer img-edit" @click="toImgEdit">
+              <i class="bx bx-camera img-edit font-size-18"></i>
             </div>
           </div>
           <b-form-input
@@ -257,7 +288,6 @@ export default {
             size="sm"
             v-model="imgUrl"
             placeholder="请输入缩略图url..."
-            @blur="cancelImgEdit"
           ></b-form-input>
         </div>
 
@@ -273,7 +303,7 @@ export default {
 
           <span v-if="!isTypeEdit" class="i-text-middle mb-2">
             <span v-for="item in image.types" class="badge bg-warning me-1" :key="item">{{ item }}</span>
-            <i v-if="canEdit" class="bx bx-edit-alt font-size-16 cursor-pointer me-2" @click="toTypeEdit"></i>
+            <i v-if="canEdit" class="bx bx-edit-alt type-edit font-size-16 cursor-pointer me-2" @click="toTypeEdit"></i>
           </span>
 
           <multiselect
@@ -304,7 +334,7 @@ export default {
             <span v-for="item in libs" class="badge bg-info me-1" :key="item.name+item.tag">
             {{ item.name }} {{ item.tag }}
             </span>
-            <i v-if="canEdit" class="bx bx-edit-alt font-size-16 cursor-pointer me-2" @click="toLibEdit"></i>
+            <i v-if="canEdit" class="bx bx-edit-alt lib-edit font-size-16 cursor-pointer me-2" @click="toLibEdit"></i>
           </span>
 
           <multiselect
@@ -353,7 +383,7 @@ export default {
         <div class="col-sm-12 col-md-10 i-text-middle">
           <span v-if="!isDescEdit">
             <span v-if="image.desc" class="me-2 mb-2">{{image.desc}}</span>
-            <i v-if="canEdit" class="bx bx-edit-alt font-size-16 cursor-pointer me-2" @click="toDescEdit"></i>
+            <i v-if="canEdit" class="bx bx-edit-alt desc-edit font-size-16 cursor-pointer me-2" @click="toDescEdit"></i>
           </span>
           <textarea
             v-else
@@ -361,7 +391,6 @@ export default {
             class="form-control"
             placeholder="请输入镜像说明..."
             rows="5"
-            @blur="cancelDescEdit"
           ></textarea>
         </div>
 
