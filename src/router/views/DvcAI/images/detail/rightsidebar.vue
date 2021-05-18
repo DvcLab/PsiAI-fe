@@ -23,6 +23,11 @@ export default {
       loadingState: false,
     };
   },
+  computed:{
+    canEdit() {
+      return this.isAdmin
+    },
+  },
   methods: {
 
     // 删除镜像
@@ -51,7 +56,7 @@ export default {
           console.err(err);
         });
     },
-    
+
     // 删除镜像确认弹窗
     delImageMsg() {
       Swal.fire({
@@ -96,7 +101,7 @@ export default {
         <i class="bx bx-calendar me-1"></i>最近更新
         <span class="text-success">{{ image.update_time | moment("YYYY-MM-DD HH:mm:ss") }}</span>
       </p>
-      <div class="mt-4">
+      <div v-if="canEdit" class="mt-4">
         <b-button
           class="text-truncate i-text-middle btn-item me-2 mb-2"
           variant="outline-danger"

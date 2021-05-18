@@ -82,6 +82,7 @@ export default {
         this.desc = this.image.desc 
       }
     },
+
     // 编辑图片
     toImgEdit() {
       this.initInfo();
@@ -212,8 +213,6 @@ export default {
               this.updateInfo()
             } else if (result.isDismissed) {
               console.log('取消编辑');
-              // this.isTypeEdit = false;
-              // this.isLibEdit = false;
               this.isDescEdit = false;
             }
           })
@@ -244,7 +243,7 @@ export default {
             }
           });
         } else {
-          Swal.fire("容器名修改失败!", "", "error");
+          Swal.fire("容器信息修改失败!", "", "error");
         }
       })
     },
@@ -279,7 +278,7 @@ export default {
         <div class="col-sm-12 col-md-10 i-text-middle mb-2">
           <div v-if="!isImgEdit" class="cover-img">
             <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'"/>
-            <div class="mask d-flex align-items-center justify-content-center cursor-pointer img-edit" @click="toImgEdit">
+            <div v-if="canEdit" class="mask d-flex align-items-center justify-content-center cursor-pointer img-edit" @click="toImgEdit">
               <i class="bx bx-camera img-edit font-size-18"></i>
             </div>
           </div>
