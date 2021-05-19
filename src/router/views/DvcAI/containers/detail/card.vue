@@ -25,10 +25,16 @@ export default {
 };
 </script>
 <template>
+  <div v-if="container">
+    <Header :container="container" :canEdit="canEdit"/>
+    <Content :container="container"/>
+  </div>
+  <!--
   <div v-if="container" class="card">
     <div class="card-body">
       <Header :container="container" :canEdit="canEdit"/>
       <Content :container="container"/>
     </div>
   </div>
+  -->
 </template>
