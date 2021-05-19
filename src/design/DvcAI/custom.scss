@@ -46,6 +46,11 @@
     width: 1.5rem;
     line-height: 1.5rem;
 }
+.img-sm {
+    height: 3rem;
+    width: 3rem;
+    object-fit: cover;
+}
 // 自定义tab按钮背景
 .custom-tab .nav {
     background-color: #fff;
@@ -182,6 +187,33 @@
     height: 30px;
 }
 .host-select .multiselect__placeholder {
+    font-size: 0.75rem;
+}
+.type-select .multiselect__tags {
+    min-height: 0!important;
+    padding: 0.25rem 0.5rem!important;
+    border-radius: 0.2rem!important;
+    font-size: 0.75rem!important;
+}
+.type-select .multiselect__tag {
+    background-color: $warning !important;
+}
+.type-select .multiselect__select {
+    height: 30px;
+}
+.type-select .multiselect__placeholder {
+    font-size: 0.75rem;
+}
+.lib-select .multiselect__tags {
+    min-height: 0!important;
+    padding: 0.25rem 0.5rem!important;
+    border-radius: 0.2rem!important;
+    font-size: 0.75rem!important;
+}
+.lib-select .multiselect__select {
+    height: 30px;
+}
+.lib-select .multiselect__placeholder {
     font-size: 0.75rem;
 }
 @keyframes rotate{

@@ -1,5 +1,5 @@
 <script>
-import Layout from "@/router/layouts/main";
+// import Layout from "@/router/layouts/main";
 import ImageList from "./list";
 import Loader from "@/components/DvcAI/loader";
 import appConfig from "@/app.config";
@@ -14,7 +14,7 @@ export default {
     title: "镜像列表",
     meta: [{ name: "镜像列表", content: appConfig.description }]
   },
-  components: { Layout, Loader, ImageList, Autocomplete },
+  components: { Loader, ImageList, Autocomplete },
   data() {
     return {
       images: [],
@@ -189,7 +189,7 @@ export default {
 };
 </script>
 <template>
-  <Layout>
+  <!-- <Layout> -->
     <div class="row">
 
       <div class="col-12 mb-4 text-center">
@@ -222,5 +222,5 @@ export default {
       </div>
 
     </div>
-  </Layout>
+  <!-- </Layout> -->
 </template>

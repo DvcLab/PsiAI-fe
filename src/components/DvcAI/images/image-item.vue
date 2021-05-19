@@ -1,5 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
+import CoverImg from "@/components/DvcAI/images/image-img";
 
 export default {
   props: {
@@ -9,7 +10,8 @@ export default {
     },
   },
   components: {
-    Avatar
+    Avatar,
+    CoverImg
   },
   computed: {
     types() {
@@ -40,30 +42,46 @@ export default {
         libsList.push(i+' '+libs[i]);
       }
       return libsList;
-    }
+    },
   },
+  methods: {
+    // 跳转镜像详情页
+    toImageDetail(e){
+      let target = e.target;
+      if(target.matches('button') || target.matches('a') || target.matches('text') || target.matches('i')) {
+        console.log('不可跳转')
+        return;
+      }else if(target.matches('.username') || target.matches('.avatar')) {
+        console.log('点击跳转用户信息页');
+      } else {
+        return this.$router.push({ path: '/images/' + this.image.id })
+        // console.log('可以跳转详情页')
+      }
+    },
+  }
 };
 </script>
 
 <template>
-  <div class="list-item-con">
+  <div class="list-item-con" @click="toImageDetail">
     <div class="row align-items-center">
 
       <div class="col-md-1 d-none d-md-block">
-        <img
+        <!-- <img
           class="img-sm"
           src="@/assets/images/DvcAI/image-default.png"
           v-real-img="image.cover_img_url"
           alt="镜像"
-        />
+        /> -->
+        <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'"/>
       </div>
 
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-2">
         <h5 class="d-block text-truncate text-dark mb-0 list-item-name">
           <i class="bx bx-layer me-1 d-md-none"></i>
           {{ image.name }}
         </h5>
-        <p class="text-muted text-truncate mb-0">{{ image.desc }}</p>
+        <!-- <p class="text-muted text-truncate mb-0">{{ image.desc }}</p> -->
         <p
           class="text-muted text-truncate mb-0"
         >
@@ -80,7 +98,7 @@ export default {
         </p>
       </div>
 
-      <div class="col-md-1 text-center d-none d-md-block">
+      <div class="col-md-1 d-none d-md-block">
         <p
           v-if="types.length > 0"
           class="text-muted text-truncate mb-0"
@@ -89,7 +107,7 @@ export default {
         </p>
       </div>
       
-      <div class="col-md-2 text-md-center d-none d-md-block">
+      <div class="col-md-2 d-none d-md-block">
         <p
           v-if="libs.length > 0"
           class="text-muted text-truncate mb-0"
@@ -120,8 +138,9 @@ export default {
         </div>
       </div>
 
-      <div class="col-md-1 d-none d-md-block">
-        <Avatar v-if="image.user" size="xs" :src="image.user.avatar_url" :user-name="image.user.username" class="mx-auto"/>
+      <div class="col-md-2 d-none d-md-inline-flex align-items-center">
+        <Avatar v-if="image.user" size="xs" :src="image.user.avatar_url" :user-name="image.user.username" />
+        <p v-if="image.user" class="text-truncate ms-2 mb-0 d-none d-md-block"><a class="grid-username" href="javascript:void(0);">{{image.user.username}}</a></p>
       </div>
 
       <div class="col-md-2 text-end d-none d-md-block">
