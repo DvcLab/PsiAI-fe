@@ -1,6 +1,5 @@
 <script>
 import Swal from "sweetalert2";
-import { EventBus } from "@/utils/event-bus";
 import Avatar from "@/components/DvcAI/utility/avatar";
 /**
  * Image Detail Rightsidebar component
@@ -41,7 +40,7 @@ export default {
           if (data.code === 1) {
             Swal.fire("镜像删除成功!", "", "success").then((res) => {
               if (res.isConfirmed) {
-                EventBus.$emit("update");
+                this.backImagesList();
               }
             });
           } else {
@@ -53,7 +52,7 @@ export default {
         .catch((err) => {
           this.loadingState = false;
           this.$emit('changeLoading', false);
-          console.err(err);
+          console.log(err);
         });
     },
 
@@ -70,6 +69,11 @@ export default {
           this.delImage();
         }
       })
+    },
+
+    // 返回镜像列表
+    backImagesList() {
+      this.$router.push({path: '/images'})
     },
   },
 };
