@@ -29,7 +29,7 @@ export default {
     // 跳转数据集详情页
     toDatasetDetail(e){
       let target = e.target;
-      console.log(target)
+
       if(target.matches('button') || target.matches('a') || target.matches('text') || target.matches('i')) {
         console.log('不可跳转')
         return;
@@ -53,7 +53,13 @@ export default {
         <i class="bx bx-cube me-1 d-md-none"></i>
         <span class="text-dark">{{ dataset.name }}</span>
       </h5>
-      <p class="text-muted text-truncate-2 list-item-desc mb-0">{{ dataset.desc }}</p>
+      <p
+      class="text-muted text-truncate-2 list-item-desc mb-0"
+      :class="{
+       'text-truncate-2': this.tags.length > 0,
+       'text-truncate-3': this.tags.length === 0
+      }"
+      >{{ dataset.desc }}</p>
 
       <p class="mt-1 mb-0">
         <span v-for="item in tags" :key="item">

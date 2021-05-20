@@ -1,5 +1,4 @@
 <script>
-// import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import { EventBus } from "@/utils/event-bus";
 import CoverImg from "@/components/DvcAI/utility/icon-img";

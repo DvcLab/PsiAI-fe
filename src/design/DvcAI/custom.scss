@@ -31,6 +31,17 @@
     overflow: hidden;
     -webkit-box-orient: vertical;
 }
+
+// 文本显示三行省略
+.text-truncate-3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+}
+
 // icon与文字对齐
 .i-text-middle {
     display: inline-flex;

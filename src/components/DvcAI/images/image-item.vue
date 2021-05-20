@@ -1,6 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
-import CoverImg from "@/components/DvcAI/images/image-img";
+import CoverImg from "@/components/DvcAI/utility/icon-img";
 
 export default {
   props: {
