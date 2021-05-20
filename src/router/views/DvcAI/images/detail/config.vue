@@ -28,9 +28,8 @@ export default {
       imgUrl: '',
       typesList: ['CPU','GPU'],
       selectTypes: [],
-      libsList: [{name:"tensorflow",tag:"2.2.0",text:"tensorflow 2.2.0"}],
-      // libs: {},
       selectLibs: [],
+      inputLibText: '',
       desc: '',
     };
   },
@@ -101,6 +100,30 @@ export default {
       this.isLibEdit = true;
     },
 
+    // 输入框输入类库添加
+    addLib(){
+      console.log(this.inputLibText)
+      let libArr = this.inputLibText.split(' ');
+      // 检查输入是否正确
+      if(libArr.length === 2 && /^[A-Za-z]+$/.test(libArr[0]) && /^\d+\.\d+\.\d+$/.test(libArr[1])) {
+        let tmp = {
+          name: libArr[0],
+          tag: libArr[1],
+          text: this.inputLibText
+        }
+        this.selectLibs.push(tmp);
+        this.inputLibText = '';
+      } else {
+        Swal.fire("镜像类库添加失败!", "", "error");
+      }
+    },
+
+    // 移除某一个类库
+    removeLib(text) {
+      const index = this.selectLibs.findIndex(x => x.text === text);
+      this.selectLibs.splice(index, 1);
+    },
+
     // 开始编辑说明
     toDescEdit() {
       this.initInfo();
@@ -111,6 +134,7 @@ export default {
     cancelEdit(e) {
 
       let target = e.target;
+      // console.log(target);
 
       // 取消编辑缩略图
       if(this.isImgEdit && !target.matches('.img-edit')) {
@@ -164,10 +188,11 @@ export default {
           })
         }
       }
+
       // 取消编辑类库
       if(this.isLibEdit && !target.matches('i.bx.bx-edit-alt.lib-edit')) {
         
-        if(target.matches('.lib-select .multiselect') || target.matches('.lib-select .multiselect__select') || target.matches('.lib-select .multiselect__tags') || target.matches('.lib-select .multiselect__option')) {
+        if(target.matches('input') || target.matches('.lib-tag') || target.matches('.tag-icon')) {
           console.log('点击了lib选择')
         } else {
           if(this.$_.isEqual(this.sendLibs, this.image.libs)) {
@@ -185,13 +210,41 @@ export default {
               this.updateInfo()
             } else if (result.isDismissed) {
               console.log('取消编辑');
-              // this.isTypeEdit = false;
               this.isLibEdit = false;
-              // this.isDescEdit = false;
             }
           })
         }
       }
+
+      // 取消编辑类库
+      // if(this.isLibEdit && !target.matches('i.bx.bx-edit-alt.lib-edit')) {
+        
+      //   if(target.matches('.lib-select .multiselect') || target.matches('.lib-select .multiselect__select') || target.matches('.lib-select .multiselect__tags') || target.matches('.lib-select .multiselect__option')) {
+      //     console.log('点击了lib选择')
+      //   } else {
+      //     if(this.$_.isEqual(this.sendLibs, this.image.libs)) {
+      //       return this.isLibEdit = false;
+      //     }
+      //     Swal.fire({
+      //       icon:'question',
+      //       title: '确认修改镜像类库?',
+      //       showCancelButton: true,
+      //       confirmButtonText: `确认`,
+      //       cancelButtonText: `取消`
+      //     }).then((result) => {
+      //       if (result.isConfirmed) {
+      //         console.log('发出修改提交')
+      //         this.updateInfo()
+      //       } else if (result.isDismissed) {
+      //         console.log('取消编辑');
+      //         // this.isTypeEdit = false;
+      //         this.isLibEdit = false;
+      //         // this.isDescEdit = false;
+      //       }
+      //     })
+      //   }
+      // }
+
       // 取消编辑说明
       if(this.isDescEdit && !target.matches('i.bx.bx-edit-alt.desc-edit')) {
         
@@ -226,8 +279,8 @@ export default {
         "name": this.image.name,
         "tags": this.image.tags,
         "cover_img_url": this.imgUrl,
-        "types": this.selectTypes?this.selectTypes:this.image.types,
-        "libs": this.sendLibs==={}?this.sendLibs:this.image.libs,
+        "types": this.selectTypes,
+        "libs": this.sendLibs,
         "desc": this.desc?this.desc:this.image.desc,
       }
       this.$request.post('images/'+this.image.id,temp)
@@ -247,8 +300,6 @@ export default {
         }
       })
     },
-
-    
   }
 };
 </script>
@@ -298,7 +349,7 @@ export default {
           <p class="text-muted mb-2">类型</p>
         </div>
 
-        <div class="col-sm-12 col-md-10  type-select">
+        <div class="col-sm-12 col-md-10 type-select">
 
           <span v-if="!isTypeEdit" class="i-text-middle mb-2">
             <span v-for="item in image.types" class="badge bg-warning me-1" :key="item">{{ item }}</span>
@@ -330,13 +381,26 @@ export default {
         <div class="col-sm-12 col-md-10 lib-select">
 
           <span v-if="!isLibEdit" class="i-text-middle mb-2">
-            <span v-for="item in libs" class="badge bg-info me-1" :key="item.name+item.tag">
+            <span v-for="item in libs" class="badge bg-info me-1" :key="item.text">
             {{ item.name }} {{ item.tag }}
             </span>
             <i v-if="canEdit" class="bx bx-edit-alt lib-edit font-size-16 cursor-pointer me-2" @click="toLibEdit"></i>
           </span>
-
-          <multiselect
+          <div v-else>
+            <b-form-input
+              class="mb-2"
+              size="sm"
+              v-model="inputLibText"
+              placeholder="类库和版本号用空格分开，输入回车添加类库"
+              @keyup.enter="addLib"
+            ></b-form-input>
+            <span v-for="item in selectLibs" :key="item.text" class="lib-tag">
+              <span>{{item.name}} {{item.tag}}</span>
+              <i class="tag-icon" @click="removeLib(item.text)"></i>
+            </span>
+          </div>
+          
+          <!-- <multiselect
             v-else
             class="d-inline-block btn-item me-2 mb-2"
             v-model="selectLibs"
@@ -354,7 +418,7 @@ export default {
                 {{ option.name }} {{ option.tag }}
               </span>
             </template>
-          </multiselect>
+          </multiselect> -->
 
         </div>
       </div>
@@ -416,5 +480,42 @@ export default {
 }
 .cover-img:hover .mask{
   opacity: 1;
+}
+.lib-tag {
+  position: relative;
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 26px 4px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  color: #fff;
+  line-height: 1;
+  background: #50a5f1;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+.tag-icon {
+  cursor: pointer;
+  margin-left: 7px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-weight: 700;
+  font-style: normal;
+  width: 22px;
+  text-align: center;
+  line-height: 19px;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  border-radius: 5px;
+}
+.tag-icon:after {
+  content: "×";
+  color: #fff;
+  font-size: 14px;
 }
 </style>
