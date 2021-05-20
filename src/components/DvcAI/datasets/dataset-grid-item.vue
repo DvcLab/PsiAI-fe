@@ -25,20 +25,30 @@ export default {
       return tagList;
     },
   },
+  methods: {
+    // 跳转数据集详情页
+    toDatasetDetail(e){
+      let target = e.target;
+      if(target.matches('button') || target.matches('a') || target.matches('text') || target.matches('i')) {
+        console.log('不可跳转')
+        return;
+      }else if(target.matches('.username') || target.matches('.avatar')) {
+        console.log('点击跳转用户信息页');
+      } else {
+        return this.$router.push({ path: '/datasets/' + this.dataset.id })
+        // console.log('可以跳转详情页')
+      }
+    },
+  }
 };
 </script>
 
 <template>
-  <div class="grid-item-con">
+  <div class="grid-item-con" @click="toDatasetDetail">
     <!-- 暂时点击数据集卡片到空链接 -->
     <a href="javascript:void(0);">
       <LazyImg :img-class="'grid-img'" :src="dataset.cover_img_url"/>
-      <!-- <img
-        class="grid-img"
-        src="@/assets/images/companies/img-1.png"
-        v-real-img="dataset.cover_img_url"
-        alt="数据集"
-      /> -->
+
       <div class="grid-body">
         <h5 class="grid-item-name i-text-middle text-truncate">
           <i class="bx bx-cube me-1 d-md-none"></i>

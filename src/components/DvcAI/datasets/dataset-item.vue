@@ -25,20 +25,29 @@ export default {
       return tagList;
     },
   },
+  methods: {
+    // 跳转数据集详情页
+    toDatasetDetail(e){
+      let target = e.target;
+      if(target.matches('button') || target.matches('a') || target.matches('text') || target.matches('i')) {
+        console.log('不可跳转')
+        return;
+      }else if(target.matches('.username') || target.matches('.avatar')) {
+        console.log('点击跳转用户信息页');
+      } else {
+        return this.$router.push({ path: '/datasets/' + this.dataset.id })
+        // console.log('可以跳转详情页')
+      }
+    },
+  }
 };
 </script>
 
 <template>
-  <div class="list-item-con">
+  <div class="list-item-con" @click="toDatasetDetail">
     <div class="row align-items-center">
       <div class="col-md-1 d-none d-md-block">
         <LazyImg :img-class="'avatar-sm'" :src="dataset.cover_img_url" :imgColor="'#fff'"/>
-        <!-- <img
-          class="avatar-sm"
-          src="@/assets/images/companies/img-1.png"
-          v-real-img="dataset.cover_img_url"
-          alt="数据集"
-        /> -->
       </div>
 
       <div class="col-6 col-md-7">
