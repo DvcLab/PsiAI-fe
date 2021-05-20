@@ -1,6 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
-import LazyImg from "@/components/DvcAI/utility/lazy-img";
+import LazyImg from "@/components/DvcAI/utility/color-img";
 
 export default {
   props: {
@@ -29,10 +29,11 @@ export default {
     // 跳转数据集详情页
     toDatasetDetail(e){
       let target = e.target;
+      console.log(target)
       if(target.matches('button') || target.matches('a') || target.matches('text') || target.matches('i')) {
         console.log('不可跳转')
         return;
-      }else if(target.matches('.username') || target.matches('.avatar')) {
+      }else if(target.matches('.grid-username') || target.matches('.avatar-xxs')) {
         console.log('点击跳转用户信息页');
       } else {
         return this.$router.push({ path: '/datasets/' + this.dataset.id })
@@ -44,27 +45,24 @@ export default {
 </script>
 
 <template>
-  <div class="grid-item-con" @click="toDatasetDetail">
-    <!-- 暂时点击数据集卡片到空链接 -->
-    <a href="javascript:void(0);">
-      <LazyImg :img-class="'grid-img'" :src="dataset.cover_img_url"/>
+  <div class="grid-item-con cursor-pointer" @click="toDatasetDetail">
+    <LazyImg :img-class="'grid-img'" :src="dataset.cover_img_url"/>
 
-      <div class="grid-body">
-        <h5 class="grid-item-name i-text-middle text-truncate">
-          <i class="bx bx-cube me-1 d-md-none"></i>
-          <span class="text-dark">{{ dataset.name }}</span>
-        </h5>
-        <p class="text-muted text-truncate-2 list-item-desc mb-0">{{ dataset.desc }}</p>
+    <div class="grid-body">
+      <h5 class="grid-item-name i-text-middle text-truncate">
+        <i class="bx bx-cube me-1 d-md-none"></i>
+        <span class="text-dark">{{ dataset.name }}</span>
+      </h5>
+      <p class="text-muted text-truncate-2 list-item-desc mb-0">{{ dataset.desc }}</p>
 
-        <p class="mt-1 mb-0">
-          <span v-for="item in tags" :key="item">
-            <span class="badge bg-primary me-1">
-              {{ item }}
-            </span>
+      <p class="mt-1 mb-0">
+        <span v-for="item in tags" :key="item">
+          <span class="badge bg-primary me-1">
+            {{ item }}
           </span>
-        </p>
-      </div>
-    </a>
+        </span>
+      </p>
+    </div>
     <div class="row grid-footer">
       <!-- 暂时点击用户头像跳转空链接 -->
       <div class="col-8 d-inline-flex align-items-center">

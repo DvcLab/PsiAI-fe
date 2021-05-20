@@ -2,7 +2,7 @@
 // import Multiselect from "vue-multiselect";
 import Swal from "sweetalert2";
 import { EventBus } from "@/utils/event-bus";
-import CoverImg from "@/components/DvcAI/images/image-img";
+import CoverImg from "@/components/DvcAI/utility/icon-img";
 /**
  * 数据集配置信息
  */
@@ -29,10 +29,8 @@ export default {
       
       name: '',
       imgUrl: '',
-      typesList: ['CPU','GPU'],
-      selectTypes: [],
-      selectLibs: [],
       inputTagText: '',
+      tags: [],
       desc: '',
     };
   },
@@ -40,31 +38,6 @@ export default {
     canEdit() {
       return this.isAdmin
     },
-    libs() {
-      if (!this.dataset.libs) return [];
-      let libs = this.dataset.libs;
-      let libsList = [];
-      for(let i in libs) {
-        let tmp = {
-          name: i,
-          tag: libs[i],
-          text: i+' '+libs[i]
-        };
-        libsList.push(tmp);
-      }
-      return libsList;
-    },
-    sendLibs(){
-      let res = {};
-      if(!this.selectLibs && this.selectLibs.length === 0) {
-        return res;
-      }
-      let len = this.selectLibs.length;
-      for(let i = 0; i < len; i++) {
-        res[this.selectLibs[i].name] = this.selectLibs[i].tag
-      }
-      return res;
-    }
   },
   methods: {
 
@@ -96,12 +69,6 @@ export default {
       this.isImgEdit = true;
     },
 
-    // // 开始编辑类型
-    // toTypeEdit() {
-    //   this.initInfo();
-    //   this.isTypeEdit = true;
-    // },
-
     // 开始编辑标签
     toTagEdit() {
       this.initInfo();
@@ -111,17 +78,17 @@ export default {
     // 输入框输入标签添加
     addTag(){
       if(this.tags.includes(this.inputTagText)) {
-        // TODO
-        console.log('已存在')
+        Swal.fire("该数据集标签已存在!", "", "warning");
       } else {
-        this.tags = [...this.tag, this.inputTagText];
+        this.tags = [...this.tags, this.inputTagText];
+        this.inputTagText = '';
       }
     },
 
     // 移除某一个标签
     removeTag(text) {
-      const index = this.selectLibs.findIndex(x => x.text === text);
-      this.selectLibs.splice(index, 1);
+      const index = this.tags.findIndex(x => x === text);
+      this.tags.splice(index, 1);
     },
 
     // 开始编辑说明
@@ -134,7 +101,34 @@ export default {
     cancelEdit(e) {
 
       let target = e.target;
-      // console.log(target);
+      console.log(target);
+
+      // 取消编辑名称
+      if(this.isNameEdit && !target.matches('i.bx.bx-edit-alt.name-edit')) {
+        
+        if(target.matches('input')) {
+          console.log('点击了tag选择')
+        } else {
+          if(this.$_.isEqual(this.name, this.dataset.name)) {
+            return this.isNameEdit = false;
+          }
+          Swal.fire({
+            icon:'question',
+            title: '确认修改数据集名称?',
+            showCancelButton: true,
+            confirmButtonText: `确认`,
+            cancelButtonText: `取消`
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log('发出修改提交')
+              this.updateInfo()
+            } else if (result.isDismissed) {
+              console.log('取消编辑');
+              this.isNameEdit = false;
+            }
+          })
+        }
+      }
 
       // 取消编辑缩略图
       if(this.isImgEdit && !target.matches('.img-edit')) {
@@ -189,37 +183,10 @@ export default {
       //   }
       // }
 
-      // 取消编辑名称
-      if(this.isNameEdit && !target.matches('i.bx.bx-edit-alt.name-edit')) {
-        
-        if(target.matches('input')) {
-          console.log('点击了tag选择')
-        } else {
-          if(this.$_.isEqual(this.name, this.dataset.name)) {
-            return this.isNameEdit = false;
-          }
-          Swal.fire({
-            icon:'question',
-            title: '确认修改数据集名称?',
-            showCancelButton: true,
-            confirmButtonText: `确认`,
-            cancelButtonText: `取消`
-          }).then((result) => {
-            if (result.isConfirmed) {
-              console.log('发出修改提交')
-              this.updateInfo()
-            } else if (result.isDismissed) {
-              console.log('取消编辑');
-              this.isNameEdit = false;
-            }
-          })
-        }
-      }
-
       // 取消编辑标签
       if(this.isTagEdit && !target.matches('i.bx.bx-edit-alt.tag-edit')) {
         
-        if(target.matches('input') || target.matches('.tag') || target.matches('.tag-icon')) {
+        if(target.matches('input') || target.matches('.custom-tag') || target.matches('.tag-icon')) {
           console.log('点击了tag选择')
         } else {
           if(this.$_.isEqual(this.tags, this.dataset.tags)) {
@@ -274,8 +241,8 @@ export default {
     // 更新数据集信息
     updateInfo() {
       let temp = {
-        "name": this.name,
         "url": this.dataset.url,
+        "name": this.name,
         "tags": this.tags,
         "cover_img_url": this.imgUrl,
         "desc": this.desc,
@@ -325,7 +292,7 @@ export default {
         </div>
 
         <div v-if="dataset.name" class="col-sm-12 col-md-10 mb-2">
-          <span v-if="!isNameEdit">
+          <span class="i-text-middle" v-if="!isNameEdit">
             <span class="me-2">{{dataset.name}}</span>
             <i v-if="canEdit" class="bx bx-edit-alt name-edit font-size-16 cursor-pointer me-2" @click="toNameEdit"></i>
           </span>
@@ -348,7 +315,11 @@ export default {
 
         <div class="col-sm-12 col-md-10 i-text-middle mb-2">
           <div v-if="!isImgEdit" class="cover-img">
-            <CoverImg :src="dataset.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'"/>
+            <div class="i-text-middle">
+              <CoverImg :src="dataset.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'" :iconClass="'bx bx-data'"/>
+              <i v-if="canEdit" class="bx bx-edit-alt img-edit font-size-16 cursor-pointer me-2 d-md-none" @click="toImgEdit"></i>
+            </div>
+            
             <div v-if="canEdit" class="mask d-flex align-items-center justify-content-center cursor-pointer img-edit" @click="toImgEdit">
               <i class="bx bx-camera img-edit font-size-18"></i>
             </div>
@@ -375,37 +346,6 @@ export default {
 
       </div>
 
-      <!-- <div class="row">
-        
-        <div class="col-sm-12 col-md-2">
-          <p class="text-muted mb-2">标签</p>
-        </div>
-
-        <div class="col-sm-12 col-md-10 lib-select">
-
-          <span v-if="!isLibEdit" class="i-text-middle mb-2">
-            <span v-for="item in libs" class="badge bg-info me-1" :key="item.text">
-            {{ item.name }} {{ item.tag }}
-            </span>
-            <i v-if="canEdit" class="bx bx-edit-alt lib-edit font-size-16 cursor-pointer me-2" @click="toLibEdit"></i>
-          </span>
-          <div v-else>
-            <b-form-input
-              class="mb-2"
-              size="sm"
-              v-model="inputLibText"
-              placeholder="类库和版本号用空格分开，输入回车添加类库"
-              @keyup.enter="addLib"
-            ></b-form-input>
-            <span v-for="item in selectLibs" :key="item.text" class="lib-tag">
-              <span>{{item.name}} {{item.tag}}</span>
-              <i class="tag-icon" @click="removeLib(item.text)"></i>
-            </span>
-          </div>
-
-        </div>
-      </div> -->
-
       <div class="row">
 
         <div class="col-sm-12 col-md-2">
@@ -413,7 +353,7 @@ export default {
         </div>
 
         <div class="col-sm-12 col-md-10 mb-2">
-          <span v-if="!isTagEdit">
+          <span class="i-text-middle" v-if="!isTagEdit">
             <span v-for="item in dataset.tags" class="badge bg-primary me-1" :key="item">
               {{ item }}
             </span>
@@ -424,10 +364,10 @@ export default {
               class="mb-2"
               size="sm"
               v-model="inputTagText"
-              placeholder="输入回车添加标签"
+              placeholder="输入标签名，回车添加标签"
               @keyup.enter="addTag"
             ></b-form-input>
-            <span v-for="item in tags" :key="item" class="tag">
+            <span v-for="item in tags" :key="item" class="custom-tag">
               <span>{{item}}</span>
               <i class="tag-icon" @click="removeTag(item)"></i>
             </span>
@@ -443,8 +383,8 @@ export default {
         </div>
 
         <div class="col-sm-12 col-md-10 i-text-middle">
-          <span v-if="!isDescEdit">
-            <span v-if="dataset.desc" class="me-2 mb-2">{{dataset.desc}}</span>
+          <span class="mb-2" v-if="!isDescEdit">
+            <span v-if="dataset.desc" class="me-2 ">{{dataset.desc}}</span>
             <i v-if="canEdit" class="bx bx-edit-alt desc-edit font-size-16 cursor-pointer me-2" @click="toDescEdit"></i>
           </span>
           <textarea
@@ -480,7 +420,7 @@ export default {
 .cover-img:hover .mask{
   opacity: 1;
 }
-.tag {
+.custom-tag {
   position: relative;
   display: inline-block;
   font-size: 12px;
@@ -489,7 +429,7 @@ export default {
   margin-right: 10px;
   color: #fff;
   line-height: 1;
-  background: #50a5f1;
+  background: #556ee6;
   margin-bottom: 5px;
   white-space: nowrap;
   overflow: hidden;
