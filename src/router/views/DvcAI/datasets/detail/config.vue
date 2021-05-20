@@ -22,10 +22,8 @@ export default {
     return {
       isNameEdit: false,
       isImgEdit: false,
-      // isLibEdit: false,
       isTagEdit: false,
       isDescEdit: false,
-      
       name: '',
       imgUrl: '',
       inputTagText: '',
@@ -154,33 +152,6 @@ export default {
           })
         }
       }
-
-      // // 取消编辑类型
-      // if(this.isTypeEdit && !target.matches('i.bx.bx-edit-alt.type-edit')) {
-        
-      //   if(target.matches('.type-select .multiselect') || target.matches('.type-select .multiselect__tags') ||target.matches('.type-select .multiselect__option')) {
-      //     console.log('点击了type选择')
-      //   } else {
-      //     if(this.$_.isEqual(this.selectTypes, this.dataset.types)) {
-      //       return this.isTypeEdit = false;
-      //     }
-      //     Swal.fire({
-      //       icon:'question',
-      //       title: '确认修改数据集类型?',
-      //       showCancelButton: true,
-      //       confirmButtonText: `确认`,
-      //       cancelButtonText: `取消`
-      //     }).then((result) => {
-      //       if (result.isConfirmed) {
-      //         console.log('发出修改提交')
-      //         this.updateInfo()
-      //       } else if (result.isDismissed) {
-      //         console.log('取消编辑');
-      //         this.isTypeEdit = false;
-      //       }
-      //     })
-      //   }
-      // }
 
       // 取消编辑标签
       if(this.isTagEdit && !target.matches('i.bx.bx-edit-alt.tag-edit')) {
@@ -340,7 +311,7 @@ export default {
         </div>
 
         <div v-if="dataset.url" class="col-sm-12 col-md-10 mb-2">
-          <span>{{dataset.url}}</span>
+          <a :href="dataset.url" target="_blank">{{dataset.url}}</a>
         </div>
 
       </div>

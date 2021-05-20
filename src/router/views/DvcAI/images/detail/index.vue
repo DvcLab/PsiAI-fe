@@ -34,7 +34,6 @@ export default {
       ],
       id: this.$route.params.id,
       image: null,
-      websock: null,
       loadingState: false,
     };
   },
@@ -49,8 +48,6 @@ export default {
     EventBus.$on('update', () => this.reload());
   },
   beforeDestroy() {
-    // 退出关闭ws
-    if (this.websock) this.websock.close();
     EventBus.$off('update')
   },
   methods:{

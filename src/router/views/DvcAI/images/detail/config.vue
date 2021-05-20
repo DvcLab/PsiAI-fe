@@ -329,7 +329,7 @@ export default {
         <div class="col-sm-12 col-md-10 i-text-middle mb-2">
           <div v-if="!isImgEdit" class="cover-img">
             <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'"
-            :iconClass="'mdi mdi-docker'"/>
+            :iconClass="'mdi mdi-docker'" />
             <div v-if="canEdit" class="mask d-flex align-items-center justify-content-center cursor-pointer img-edit" @click="toImgEdit">
               <i class="bx bx-camera img-edit font-size-18"></i>
             </div>

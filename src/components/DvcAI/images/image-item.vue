@@ -67,7 +67,9 @@ export default {
     <div class="row align-items-center">
 
       <div class="col-md-1 d-none d-md-block">
-        <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'"/>
+        <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'"
+        :imgColor="'#50a5f1'"
+        :iconClass="'mdi mdi-docker'" />
       </div>
 
       <div class="col-6 col-md-2">

@@ -34,15 +34,7 @@ export default {
       </template>
       <Config :dataset="dataset" :isAdmin="isAdmin"/>
     </b-tab>
-    <!-- <b-tab>
-      <template v-slot:title>
-        <span class="d-inline-block d-sm-none">
-          <i class="bx bx-stats"></i>
-        </span>
-        <span class="d-none d-sm-inline-block">监控</span>
-      </template>
-    </b-tab> -->
   </b-tabs>
-    
+  
 </div>
 </template>
