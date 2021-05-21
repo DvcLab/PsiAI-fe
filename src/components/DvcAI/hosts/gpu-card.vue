@@ -50,7 +50,7 @@ export default {
         </div>
 
         <div class="col-4 col-md-2 text-truncate">
-          <span>GPU使用</span><br />
+          <span style="font-size: 0.7rem">GPU使用</span><br />
           <b-progress
             :value="gpu.gpu_util"
             :max="100"
@@ -60,7 +60,7 @@ export default {
         </div>
 
         <div class="col-4 col-md-2 text-truncate">
-          <span>显存使用</span><br />
+          <span style="font-size: 0.7rem">显存使用</span><br />
           <b-progress
             :value="gpu.memory_util"
             :max="100"
@@ -70,7 +70,7 @@ export default {
         </div>
 
         <div class="col-4 col-md-2 text-truncate">
-          <span>风扇转速</span><br />
+          <span style="font-size: 0.7rem">风扇转速</span><br />
           <b-progress
             :value="gpu.fan_speed"
             :max="100"
@@ -86,7 +86,7 @@ export default {
 <style scoped>
 .gpu-card {
   color: #916c2e;
-  background-color: #fcf0db;
+  background-color: #fff1daf8;
   border-color: #fbe9c9;
   padding: 0.2rem 0.4rem;
 }

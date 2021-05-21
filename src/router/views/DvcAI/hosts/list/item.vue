@@ -91,10 +91,10 @@ export default {
             },
             dataLabels: {
               name: {
-                fontSize: "0.8rem"
+                fontSize: "0.6rem"
               },
               value: {
-                fontSize: "0.8rem",
+                fontSize: "0.5rem",
                 formatter: function (val) {
                   return val + symbol;
                 },
@@ -210,19 +210,41 @@ export default {
     <div class="list-item-con" @click="toHostDetail">
       <div class="row">
         <div class="col-12 col-md-6">
-          <h4>{{ hostSelfData.ip }}<span class="text-secondary font-size-13">（{{ hostSelfData.id | preId }}）</span></h4>
+          <!--<h4 class="d-block text-truncate text-dark mb-0 list-item-name">-->
+          <h4>
+            <i class="bx bx-server me-1"></i>
+            <span class="me-2"> {{ hostSelfData.ip }}</span>
+            <span class="text-secondary font-size-13">（{{ hostSelfData.id | preId }}）</span>
+            <span 
+              class="d-md-none badge"
+              :class="{
+                'bg-success': running,
+                'bg-danger': !running,
+              }">
+              <span v-if="hostSelfData.status === 'RUNNING'">
+                运行中
+              </span>
+              <span v-else>
+                已删除
+              </span>
+            </span>
+          </h4>
         </div>
 
         <div class="col-12 col-md-6">
           <div class="float-start float-md-end">
-            <span
+            <span 
               class="badge me-2"
               :class="{
                 'bg-success': running,
                 'bg-danger': !running,
-              }"
-            >
-              {{ hostSelfData.status }}
+              }">
+              <span v-if="hostSelfData.status === 'RUNNING'">
+                运行中
+              </span>
+              <span v-else>
+                已删除
+              </span>
             </span>
             <span class="text-success">{{
               updateTime | moment("YYYY-MM-DD HH:mm:ss")
@@ -294,7 +316,7 @@ export default {
             <span class="col-sm-3 col-md-3">
               <apexchart
                 class="apex-charts"
-                height="140"
+                height="120"
                 type="radialBar"
                 :series="[cpuIOWait]"
                 :options="getChartOptions(cpuIOWait, 'IO wait', '%')"
@@ -303,7 +325,7 @@ export default {
             <span class="col-sm-3 col-md-3">
               <apexchart
                 class="apex-charts"
-                height="140"
+                height="120"
                 type="radialBar"
                 :series="[cpuUsage]"
                 :options="getChartOptions(cpuUsage, 'CPU usage', '%')"
@@ -312,7 +334,7 @@ export default {
             <span class="col-sm-3 col-md-3">
               <apexchart
                 class="apex-charts"
-                height="140"
+                height="120"
                 type="radialBar"
                 :series="[hostSelfData.cpu_info.max_temp]"
                 :options="
@@ -327,7 +349,7 @@ export default {
             <span class="col-sm-3 col-md-3">
               <apexchart
                 class="apex-charts"
-                height="140"
+                height="120"
                 type="radialBar"
                 :series="[memUsage]"
                 :options="getChartOptions(memUsage, 'MEM usage', '%')"
