@@ -354,7 +354,7 @@ export default {
 
           <span v-if="!isTypeEdit" class="i-text-middle mb-2">
             <span v-for="item in image.types" class="badge bg-warning me-1" :key="item">{{ item }}</span>
-            <i v-if="canEdit" class="bx bx-edit-alt type-edit font-size-16 cursor-pointer me-2" @click="toTypeEdit"></i>
+            <i v-if="canEdit" class="bx bx-edit-alt type-edit font-size-16 cursor-pointer ms-1" @click="toTypeEdit"></i>
           </span>
 
           <multiselect
@@ -385,7 +385,7 @@ export default {
             <span v-for="item in libs" class="badge bg-info me-1" :key="item.text">
             {{ item.name }} {{ item.tag }}
             </span>
-            <i v-if="canEdit" class="bx bx-edit-alt lib-edit font-size-16 cursor-pointer me-2" @click="toLibEdit"></i>
+            <i v-if="canEdit" class="bx bx-edit-alt lib-edit font-size-16 cursor-pointer ms-1" @click="toLibEdit"></i>
           </span>
           <div v-else>
             <b-form-input
@@ -446,8 +446,8 @@ export default {
 
         <div class="col-sm-12 col-md-10 i-text-middle">
           <span v-if="!isDescEdit">
-            <span v-if="image.desc" class="me-2 mb-2">{{image.desc}}</span>
-            <i v-if="canEdit" class="bx bx-edit-alt desc-edit font-size-16 cursor-pointer me-2" @click="toDescEdit"></i>
+            <span v-if="image.desc" class="mb-2">{{image.desc}}</span>
+            <i v-if="canEdit" class="bx bx-edit-alt desc-edit font-size-16 cursor-pointer ms-2" @click="toDescEdit"></i>
           </span>
           <textarea
             v-else
@@ -509,7 +509,7 @@ export default {
   font-style: normal;
   width: 22px;
   text-align: center;
-  line-height: 19px;
+  line-height: 20px;
   -webkit-transition: all 0.2s ease;
   transition: all 0.2s ease;
   border-radius: 5px;

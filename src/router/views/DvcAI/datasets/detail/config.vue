@@ -263,8 +263,8 @@ export default {
 
         <div v-if="dataset.name" class="col-sm-12 col-md-10 mb-2">
           <span class="i-text-middle" v-if="!isNameEdit">
-            <span class="me-2">{{dataset.name}}</span>
-            <i v-if="canEdit" class="bx bx-edit-alt name-edit font-size-16 cursor-pointer me-2" @click="toNameEdit"></i>
+            <span>{{dataset.name}}</span>
+            <i v-if="canEdit" class="bx bx-edit-alt name-edit font-size-16 cursor-pointer ms-2" @click="toNameEdit"></i>
           </span>
           <div v-else>
             <b-form-input
@@ -327,7 +327,7 @@ export default {
             <span v-for="item in dataset.tags" class="badge bg-primary me-1" :key="item">
               {{ item }}
             </span>
-            <i v-if="canEdit" class="bx bx-edit-alt tag-edit font-size-16 cursor-pointer me-2" @click="toTagEdit"></i>
+            <i v-if="canEdit" class="bx bx-edit-alt tag-edit font-size-16 cursor-pointer ms-1" @click="toTagEdit"></i>
           </span>
           <div v-else>
             <b-form-input
@@ -354,8 +354,8 @@ export default {
 
         <div class="col-sm-12 col-md-10 i-text-middle">
           <span class="mb-2" v-if="!isDescEdit">
-            <span v-if="dataset.desc" class="me-2 ">{{dataset.desc}}</span>
-            <i v-if="canEdit" class="bx bx-edit-alt desc-edit font-size-16 cursor-pointer me-2" @click="toDescEdit"></i>
+            <span v-if="dataset.desc">{{dataset.desc}}</span>
+            <i v-if="canEdit" class="bx bx-edit-alt desc-edit font-size-16 cursor-pointer ms-2" @click="toDescEdit"></i>
           </span>
           <textarea
             v-else
