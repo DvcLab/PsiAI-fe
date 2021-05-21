@@ -43,7 +43,7 @@ export default {
               {{ gpu.product_name }}
             </span>
             <br />
-            <span class="badge rounded-pill badge-soft-primary">
+            <span class="badge rounded-pill badge-soft-primary" style="font-size: 0.7rem">
               总显存：{{ gpu.memory_total }} MiB
             </span>
           </div>
@@ -86,8 +86,9 @@ export default {
 <style scoped>
 .gpu-card {
   color: #916c2e;
-  background-color: #fff1daf8;
-  border-color: #fbe9c9;
+  /*background-color: #fff1daf8;*/
+  background-color: #fff4e3c9;
+  border-color: #fff4e3c9;
   padding: 0.2rem 0.4rem;
 }
 .gpu-name {
