@@ -784,7 +784,7 @@ export default {
           </a> -->
           <b-dropdown-item v-if="isAdmin" @click="toKeycloak">
             <i class="bx bx-cog font-size-16 align-middle me-1"></i>
-            权限管理
+            用户列表
           </b-dropdown-item>
           <b-dropdown-item @click="toProfile">
             <i class="bx bx-user font-size-16 align-middle me-1"></i>
