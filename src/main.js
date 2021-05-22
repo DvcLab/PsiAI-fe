@@ -16,6 +16,8 @@ import VueMoment from 'vue-moment';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
+import { VueShowdown } from 'vue-showdown';
+
 import _ from 'lodash';
 
 import request from '@/utils/request';
@@ -77,7 +79,7 @@ Vue.component('apexchart', VueApexCharts)
 Vue.use(VueMoment, {
   moment
 })
-
+Vue.component('VueShowdown', VueShowdown);
 // new Vue({
 //   router,
 //   store,
