@@ -243,25 +243,25 @@ export default {
   <div class="card">
     <div class="card-body">
 
-      <div class="d-flex flex-column flex-md-row justify-content-md-center align-items-md-center">
+      <div class="row">
 
-        <div v-if="dataset.id" class="card-sub-title mb-2">
-          <p class="mb-0">ID</p>
+        <div v-if="dataset.id" class="col-sm-12 col-md-2 col-xl-1">
+          <p class="mb-2">ID</p>
         </div>
 
-        <div v-if="dataset.id" class="card-content mb-2">
+        <div v-if="dataset.id" class="col-sm-12 col-md-10 col-xl-11 mb-2">
           <span>{{dataset.id}}</span>
         </div>
 
       </div>
 
-      <div class="d-flex flex-column flex-md-row justify-content-md-center align-items-md-center">
+      <div class="row">
 
-        <div v-if="dataset.name" class="card-sub-title mb-2">
-          <p class="mb-0">名称</p>
+        <div v-if="dataset.name" class="col-sm-12 col-md-2 col-xl-1">
+          <p class="text-muted mb-2">名称</p>
         </div>
 
-        <div v-if="dataset.name" class="card-content mb-2">
+        <div v-if="dataset.name" class="col-sm-12 col-md-10 col-xl-11 mb-2">
           <span class="i-text-middle" v-if="!isNameEdit">
             <span>{{dataset.name}}</span>
             <i v-if="canEdit" class="bx bx-edit-alt name-edit font-size-16 cursor-pointer ms-2" @click="toNameEdit"></i>
@@ -277,13 +277,13 @@ export default {
 
       </div>
 
-      <div class="d-flex flex-column flex-md-row justify-content-md-center align-items-md-center">
+      <div class="row">
 
-        <div class="card-sub-title mb-2">
-          <p class="mb-0">缩略图</p>
+        <div class="col-sm-12 col-md-2 col-xl-1 mb-2">
+          <p class="text-muted mb-2">缩略图</p>
         </div>
 
-        <div class="card-content mb-2">
+        <div class="col-sm-12 col-md-10 col-xl-11 i-text-middle mb-2">
           <div v-if="!isImgEdit" class="cover-img">
             <div class="i-text-middle">
               <CoverImg :src="dataset.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'" :iconClass="'bx bx-data'"/>
@@ -304,25 +304,25 @@ export default {
 
       </div>
 
-      <div class="d-flex flex-column flex-md-row justify-content-md-center align-items-md-center">
+      <div class="row">
 
-        <div v-if="dataset.url" class="card-sub-title mb-2">
-          <p class="mb-0">URL</p>
+        <div v-if="dataset.url" class="col-sm-12 col-md-2 col-xl-1">
+          <p class="text-muted mb-2">URL</p>
         </div>
 
-        <div v-if="dataset.url" class="card-content mb-2">
+        <div v-if="dataset.url" class="col-sm-12 col-md-10 col-xl-11 mb-2">
           <a :href="dataset.url" target="_blank">{{dataset.url}}</a>
         </div>
 
       </div>
 
-      <div class="d-flex flex-column flex-md-row justify-content-md-center align-items-md-center">
+      <div class="row">
 
-        <div class="card-sub-title mb-2">
-          <p class="mb-0">标签</p>
+        <div class="col-sm-12 col-md-2 col-xl-1">
+          <p class="text-muted mb-2">标签</p>
         </div>
 
-        <div class="card-content mb-2">
+        <div class="col-sm-12 col-md-10 col-xl-11 mb-2">
           <span class="i-text-middle" v-if="!isTagEdit">
             <span v-for="item in dataset.tags" class="badge bg-primary me-1" :key="item">
               {{ item }}
@@ -352,7 +352,6 @@ export default {
       <h5 class="card-title mb-3">描述</h5>
       <span class="mb-2" v-if="!isDescEdit">
         <VueShowdown
-          class="md-style"
           :markdown="dataset.desc"
           flavor="github"
           :options="{ emoji: true }"
@@ -378,8 +377,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  width: 3rem;
-  /* width: 100%; */
+  width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
   color: #ffffff;
@@ -425,20 +423,5 @@ export default {
   content: "×";
   color: #fff;
   font-size: 14px;
-}
-.card-sub-title {
-  width: 10%;
-  min-width: 80px;
-  max-width: 90px;
-  font-weight: 500;
-  color: #495057;
-}
-.card-content {
-  width: 90%;
-}
-.desc-edit {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
 }
 </style>
