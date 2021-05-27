@@ -3,6 +3,7 @@ import Layout from "../../../layouts/main";
 import PageHeader from "@/components/page-header";
 import appConfig from "@/app.config";
 import { mapState } from 'vuex';
+import Rightsidecard from './rightsidecard.vue';
 
 /**
  * 容器列表
@@ -12,7 +13,7 @@ export default {
     title: "个人中心",
     meta: [{ name: "个人中心", content: appConfig.description }]
   },
-  components: {Layout, PageHeader},
+  components: {Layout, PageHeader,Rightsidecard},
   data() {
     return {
       title: "个人中心",
@@ -55,85 +56,8 @@ export default {
       <div class="row">
         <!--个人信息框(小窗口时才显示)-->
         <div class="col-md-4 d-md-none">
-          <div class="card text-center">
-            <div class="card-body">
-              <div v-if="!avatarUrl" class="avatar-sm mx-auto mb-4">
-                <span
-                  class="avatar-title rounded-circle bg-soft bg-primary text-primary font-size-16"
-                  >{{userInfo.name}}</span
-                >
-              </div>
-              <div v-if="avatarUrl" class="mb-4">
-                <img
-                  class="rounded-circle avatar-sm"
-                  :src="`${avatarUrl}`"
-                  alt
-                />
-              </div>
-              <h5 class="font-size-15 mb-1">
-                <p>
-                  <a href="javascript: void(0);" class="text-dark">{{
-                    userInfo.name
-                  }}</a>
-                  <a  v-if="isAdmin"
-                    href="javascript: void(0);"
-                    class="badge bg-primary font-size-11 flex"
-                    >管理员</a
-                  >
-                </p>
-              </h5>
-              <p class="text-muted">这个人很懒，什么也没有留下~</p>
-              <p v-if="userInfo.email" class="text-muted">{{userInfo.email}}</p>
-              <p v-if="userInfo.blog" class="text-muted">{{userInfo.blog}}</p>
-              <p v-if="userInfo.username" class="text-muted">{{userInfo.username}}</p>
-              <p v-if="userInfo.associatedAcount" class="text-muted">{{userInfo.associatedAcount}}</p>
-              <!--
-              <a
-                class="btn btn-outline-primary btn-md btn-item mb-2"
-                download="docker-compose-config"
-                style="width:100%; padding:4px 16px"
-              >
-                编辑
-              </a>
-              -->
-              <div class="text-muted">
-                <ul class="list-inline mb-0">
-                  <li class="list-inline-item me-3">
-                    <h5
-                      class="font-size-12"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Amount"
-                    >
-                      <i class="bx bxs-group"></i> 0 followers
-                    </h5>
-                  </li>
-                  <li class="list-inline-item me-3">
-                    <h5
-                      class="font-size-12"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Amount"
-                    >
-                      <i class="bx bx bx-share-alt"></i> 0 
-                    </h5>
-                  </li>
-                  <li class="list-inline-item me-3">
-                    <h5
-                      class="font-size-12"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Amount"
-                    >
-                      <i class="bx bx-star"></i> 0
-                    </h5>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <rightsidecard/>
         </div>
-        <!--右边这一列结束-->
         <!--左边这一列-->
         <div class="col-md-8">
           <div class="custom-tab">
@@ -237,83 +161,7 @@ export default {
 
         <!--右边这一列(大窗口显示)-->
         <div class="col-md-4 d-none d-md-block">
-          <div class="card text-center">
-            <div class="card-body">
-              <div v-if="!avatarUrl" class="avatar-sm mx-auto mb-4">
-                <span
-                  class="avatar-title rounded-circle bg-soft bg-primary text-primary font-size-16"
-                  >{{userInfo.name}}</span
-                >
-              </div>
-              <div v-if="avatarUrl" class="mb-4">
-                <img
-                  class="rounded-circle avatar-sm"
-                  :src="`${avatarUrl}`"
-                  alt
-                />
-              </div>
-              <h5 class="font-size-15 mb-1">
-                <p>
-                  <a href="javascript: void(0);" class="text-dark">{{
-                    userInfo.name
-                  }}     </a>
-                  <a  v-if="isAdmin"
-                    href="javascript: void(0);"
-                    class="badge bg-primary font-size-11 flex"
-                    >管理员</a
-                  >
-                </p>
-              </h5>
-              <p class="text-muted">这个人很懒，什么也没有留下~</p>
-              <p v-if="userInfo.email" class="text-muted">{{userInfo.email}}</p>
-              <p v-if="userInfo.blog" class="text-muted">{{userInfo.blog}}</p>
-              <p v-if="userInfo.username" class="text-muted">{{userInfo.username}}</p>
-              <p v-if="userInfo.associatedAcount" class="text-muted">{{userInfo.associatedAcount}}</p>
-              <!--
-              <a
-                class="btn btn-outline-primary btn-md btn-item mb-2"
-                download="docker-compose-config"
-                style="width:100%; padding:4px 16px"
-              >
-                编辑
-              </a>
-              -->
-              <div class="text-muted">
-                <ul class="list-inline mb-0">
-                  <li class="list-inline-item me-3">
-                    <h5
-                      class="font-size-12"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Amount"
-                    >
-                      <i class="bx bxs-group"></i> 0 followers
-                    </h5>
-                  </li>
-                  <li class="list-inline-item me-3">
-                    <h5
-                      class="font-size-12"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Amount"
-                    >
-                      <i class="bx bx bx-share-alt"></i> 0 
-                    </h5>
-                  </li>
-                  <li class="list-inline-item me-3">
-                    <h5
-                      class="font-size-12"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Amount"
-                    >
-                      <i class="bx bx-star"></i> 0
-                    </h5>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <rightsidecard/>
         </div>
         <!--右边这一列结束-->
 
