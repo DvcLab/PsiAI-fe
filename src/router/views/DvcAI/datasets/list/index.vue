@@ -1,5 +1,4 @@
 <script>
-import Layout from "@/router/layouts/main";
 import DatasetList from "./list";
 import DatasetGridList from "./grid";
 import Loader from "@/components/DvcAI/loader";
@@ -17,7 +16,6 @@ export default {
     meta: [{ name: "数据集列表", content: appConfig.description }]
   },
   components: { 
-    Layout,
     Loader, 
     DatasetList, 
     DatasetGridList,
@@ -273,75 +271,73 @@ export default {
 };
 </script>
 <template>
-  <Layout>
-    <div class="row">
+  <div class="row">
 
-      <div class="col-8 col-sm-9 col-md-10 mb-4 text-center">
-        <autocomplete
-          aria-label="搜索添加数据集..."
-          placeholder="搜索添加数据集..."
-          :search="search"
-          :get-result-value="getResultValue"
-          :debounce-time="500"
-          @submit="handleSubmit"
+    <div class="col-8 col-sm-9 col-md-10 mb-4 text-center">
+      <autocomplete
+        aria-label="搜索添加数据集..."
+        placeholder="搜索添加数据集..."
+        :search="search"
+        :get-result-value="getResultValue"
+        :debounce-time="500"
+        @submit="handleSubmit"
+        >
+        <template #result="{ result, props }">
+          <li
+            v-bind="props"
+            class="search-result"
           >
-          <template #result="{ result, props }">
-            <li
-              v-bind="props"
-              class="search-result"
-            >
-              <div v-if="isSearch" class="text-start">
-                <h6><i class="bx bx-cube me-1"></i>{{ result.name }}</h6>
+            <div v-if="isSearch" class="text-start">
+              <h6><i class="bx bx-cube me-1"></i>{{ result.name }}</h6>
+            </div>
+            <div v-else class="row align-items-center">
+              <div class="col-4 text-sm-start">
+                <h6 class="d-inline-block">
+                  <i class="bx bx-package me-1"></i>
+                  {{ result.name }}
+                </h6>
               </div>
-              <div v-else class="row align-items-center">
-                <div class="col-4 text-sm-start">
-                  <h6 class="d-inline-block">
-                    <i class="bx bx-package me-1"></i>
-                    {{ result.name }}
-                  </h6>
-                </div>
-                <div class="col-8 text-sm-end">
-                  <button type="button" class="btn btn-outline-primary btn-sm" @click="handleAddDataset(result)">
-                    <i class="mdi mdi-plus me-1"></i>
-                    添加
-                  </button>
-                </div>
+              <div class="col-8 text-sm-end">
+                <button type="button" class="btn btn-outline-primary btn-sm" @click="handleAddDataset(result)">
+                  <i class="mdi mdi-plus me-1"></i>
+                  添加
+                </button>
               </div>
-            </li>
-          </template>
-        </autocomplete>
-      </div>
-
-      <div class="col-4 col-sm-3 col-md-2 mb-4 text-center">
-        <ul class="nav nav-pills product-view-nav float-end">
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="javascript: void(0);"
-              :class="{ 'active': !isGrid }"
-              @click="toListLayout"
-              >
-              <i class="bx bx-list-ul nav-i-mt"></i>
-            </a>
+            </div>
           </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="javascript: void(0);"
-              :class="{ 'active': isGrid }"
-              @click="toGridLayout">
-              <i class="bx bx-grid-alt nav-i-mt"></i>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <DatasetGridList v-if="isGrid" class="col-12" :datasets="datasets" :updating="loadingState"/>
-      <DatasetList v-else class="col-12" :datasets="datasets" :updating="loadingState"/>
-
-      <div class="col-12 mt-4">
-        <Loader :loading="loadingState"/>
-      </div>
+        </template>
+      </autocomplete>
     </div>
-  </Layout>
+
+    <div class="col-4 col-sm-3 col-md-2 mb-4 text-center">
+      <ul class="nav nav-pills product-view-nav float-end">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="javascript: void(0);"
+            :class="{ 'active': !isGrid }"
+            @click="toListLayout"
+            >
+            <i class="bx bx-list-ul nav-i-mt"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="javascript: void(0);"
+            :class="{ 'active': isGrid }"
+            @click="toGridLayout">
+            <i class="bx bx-grid-alt nav-i-mt"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <DatasetGridList v-if="isGrid" class="col-12" :datasets="datasets" :updating="loadingState"/>
+    <DatasetList v-else class="col-12" :datasets="datasets" :updating="loadingState"/>
+
+    <div class="col-12 mt-4">
+      <Loader :loading="loadingState"/>
+    </div>
+  </div>
 </template>

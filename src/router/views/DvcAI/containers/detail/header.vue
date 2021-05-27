@@ -124,80 +124,85 @@ export default {
 };
 </script>
 <template>
-  <div class="row">
-    <div class="col-12 mb-2">
-      <div class="row align-items-center">
-
-        <div class="col-12 col-md-4">
-
-          <h4 v-if="!isEdit" class="card-title d-block text-truncate i-text-middle">
-            <span id="container-name" class="me-1" @click="toEdit">
-              <i class="bx bx-cube me-1"></i>
-              {{ container.container_name }}
-            </span>
-            <i v-if="canEdit" class="bx bx-edit-alt cursor-pointer me-2" @click="toEdit"></i>
-            <span
-              v-if="!canSelectLocation"
-              class="badge rounded-pill"
-              :class="`bg-${container.user_host ? 'primary' : 'info'}`"
-            >
-              {{ container.user_host ? "本地" : "远程" }}
-            </span>
-          </h4>
-
-          <b-input v-else type="text" max="64" min="1" size="sm"
-          v-model="newName" 
-          :placeholder="name" 
-          @blur="changeName"/>
-
-        </div>
-
-        <div class="col-12 col-md-4">
-          <span class="d-block text-truncate mb-0">
-            <i class="bx bx-layer me-1"></i>镜像
-            {{ container.image.name }}
-          </span>
-        </div>
-
-        <div v-if="container.gpu_enabled" class="col-12 col-md-4">
-          <span class="d-block text-truncate mb-0">
-            <i class="bx bx-chip me-1"></i>GPU
-            <span class="gpu-state">启用</span>
-          </span>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="col-12 mb-2">
+  <div class="card mb-4">
+    <div class="card-body">
       <div class="row">
+        <div class="col-12 mb-2">
+          <div class="row align-items-center">
 
-        <div class="col-6 col-md-4">
-          <div class="text-truncate mb-1">
-            <span class="me-2"><i class="bx bx-chip me-1"></i>内核</span>
-            <span>{{ container.cpus }} ({{ cpu.value }}%)</span>
+            <div class="col-12 col-md-4">
+
+              <h4 v-if="!isEdit" class="card-title d-block text-truncate i-text-middle">
+                <span id="container-name" class="me-1" @click="toEdit">
+                  <i class="bx bx-cube me-1"></i>
+                  {{ container.container_name }}
+                </span>
+                <i v-if="canEdit" class="bx bx-edit-alt cursor-pointer me-2" @click="toEdit"></i>
+                <span
+                  v-if="!canSelectLocation"
+                  class="badge rounded-pill"
+                  :class="`bg-${container.user_host ? 'primary' : 'info'}`"
+                >
+                  {{ container.user_host ? "本地" : "远程" }}
+                </span>
+              </h4>
+
+              <b-input v-else type="text" max="64" min="1" size="sm"
+              v-model="newName" 
+              :placeholder="name" 
+              @blur="changeName"
+              @keyup.enter.native="changeName"/>
+
+            </div>
+
+            <div class="col-12 col-md-4">
+              <span class="d-block text-truncate mb-0">
+                <i class="bx bx-layer me-1"></i>镜像
+                {{ container.image.name }}
+              </span>
+            </div>
+
+            <div v-if="container.gpu_enabled" class="col-12 col-md-4">
+              <span class="d-block text-truncate mb-0">
+                <i class="bx bx-chip me-1"></i>GPU
+                <span class="gpu-state">启用</span>
+              </span>
+            </div>
+
           </div>
-          <b-progress
-            :value="cpu.value"
-            :max="100"
-            :variant="cpu.variant"
-          ></b-progress>
         </div>
 
-        <div class="col-6 col-md-4">
-          <div class="text-truncate mb-1">
-            <span class="me-2"><i class="bx bx-chip me-1"></i>内存</span>
-            <span>{{ container.mem }}GB ({{ mem.value }}%)</span>
-          </div>
-          <b-progress
-            :value="mem.value"
-            :max="100"
-            :variant="mem.variant"
-          ></b-progress>
-        </div>
+        <div class="col-12 mb-2">
+          <div class="row">
 
+            <div class="col-6 col-md-4">
+              <div class="text-truncate mb-1">
+                <span class="me-2"><i class="bx bx-chip me-1"></i>内核</span>
+                <span>{{ container.cpus }} ({{ cpu.value }}%)</span>
+              </div>
+              <b-progress
+                :value="cpu.value"
+                :max="100"
+                :variant="cpu.variant"
+              ></b-progress>
+            </div>
+
+            <div class="col-6 col-md-4">
+              <div class="text-truncate mb-1">
+                <span class="me-2"><i class="bx bx-chip me-1"></i>内存</span>
+                <span>{{ container.mem }}GB ({{ mem.value }}%)</span>
+              </div>
+              <b-progress
+                :value="mem.value"
+                :max="100"
+                :variant="mem.variant"
+              ></b-progress>
+            </div>
+
+          </div>
+
+        </div>
       </div>
-
     </div>
   </div>
 </template>

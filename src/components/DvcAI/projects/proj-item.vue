@@ -1,6 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
-import LazyImg from "@/components/DvcAI/utility/lazy-img";
+import LazyImg from "@/components/DvcAI/utility/color-img";
 
 export default {
   props: {
@@ -105,7 +105,7 @@ export default {
 
       <div class="col-2 col-md-2 d-inline-flex align-items-center">
         <Avatar size="xs" :src="proj.user.avatar_url" :user-name="proj.user.username"/>
-        <p class="text-truncate ms-2 mb-0 d-none d-md-block"><a class="grid-username" href="javascript:void(0);">{{proj.user.username}}</a></p>
+        <p v-if="proj.user" class="text-truncate ms-2 mb-0 d-none d-md-block"><a class="grid-username" href="javascript:void(0);">{{proj.user.username}}</a></p>
       </div>
 
       <div class="col-2 col-md-2 text-end d-none d-md-block">

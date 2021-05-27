@@ -1,16 +1,15 @@
 <script>
 import Header from './header';
-// import HeaderEdit from './header-edit';
 import Content from './content';
 
 /**
- * Container Detail Card component
+ * host Detail Card component
  */
 
 export default {
   components: { Header, Content },
   props: {
-    container: {
+    host: {
       type: Object,
       default: () => {},
     },
@@ -25,16 +24,10 @@ export default {
 };
 </script>
 <template>
-  <div v-if="container">
-    <Header :container="container" :canEdit="canEdit"/>
-    <Content :container="container"/>
-  </div>
-  <!--
-  <div v-if="container" class="card">
+  <div v-if="host" class="card">
     <div class="card-body">
-      <Header :container="container" :canEdit="canEdit"/>
-      <Content :container="container"/>
+      <Header :host="host" :canEdit="canEdit"/>
+      <Content :host="host"/>
     </div>
   </div>
-  -->
 </template>
