@@ -9,6 +9,14 @@ export default {
       default: () => {},
     },
   },
+  data() {
+    return {
+      cpuClass:{
+        "CPU": "bg-warning",
+        "GPU": "bg-success"
+      },
+    };
+  },
   components: {
     Avatar,
     CoverImg
@@ -85,6 +93,10 @@ export default {
             <span v-for="item in types" class="badge bg-warning me-1 d-md-none" :key="item">
               {{ item }}
             </span>
+            <span v-for="item in types" class= "badge me-1 d-md-none" :class="cpuClass[item]" :key="item">
+              <i class="bx bx-chip"></i>
+              {{ item }}
+            </span>
           </span>
           <span v-if="tags.length > 0">
             <span v-for="item in tags" class="badge bg-primary me-1" :key="item">
@@ -94,12 +106,15 @@ export default {
         </p>
       </div>
 
-      <div class="col-md-1 d-none d-md-block">
+      <div class="col-md-3 d-none d-md-block">
         <p
           v-if="types.length > 0"
           class="text-muted text-truncate mb-0"
         >
-          <span v-for="item in types" class="badge bg-warning me-1" :key="item">{{ item }}</span>
+          <span v-for="item in types" class= "badge me-1" :class="cpuClass[item]" :key="item">
+            <i class="bx bx-chip"></i>
+            {{ item }}
+          </span>
         </p>
       </div>
       
