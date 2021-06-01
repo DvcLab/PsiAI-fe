@@ -12,7 +12,12 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      cpuClass:{
+        "CPU": "bg-warning",
+        "GPU": "bg-success"
+      },
+    };
   },
   computed: {
     types() {
@@ -63,7 +68,8 @@ export default {
             </span>
           </span>
         <span v-if="types.length > 0">
-          <span v-for="item in types" class="badge bg-warning me-1" :key="item">
+          <span v-for="item in types" class= "badge me-1" :class="cpuClass[item]" :key="item">
+            <i class="bx bx-chip"></i>
             {{ item }}
           </span>
         </span>
