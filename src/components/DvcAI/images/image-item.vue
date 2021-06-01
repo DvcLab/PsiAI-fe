@@ -1,6 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
-import CoverImg from "@/components/DvcAI/images/image-img";
+import CoverImg from "@/components/DvcAI/utility/icon-img";
 
 export default {
   props: {
@@ -67,13 +67,9 @@ export default {
     <div class="row align-items-center">
 
       <div class="col-md-1 d-none d-md-block">
-        <!-- <img
-          class="img-sm"
-          src="@/assets/images/DvcAI/image-default.png"
-          v-real-img="image.cover_img_url"
-          alt="镜像"
-        /> -->
-        <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'" :imgColor="'#50a5f1'"/>
+        <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'"
+        :imgColor="'#50a5f1'"
+        :iconClass="'mdi mdi-docker'" />
       </div>
 
       <div class="col-6 col-md-2">

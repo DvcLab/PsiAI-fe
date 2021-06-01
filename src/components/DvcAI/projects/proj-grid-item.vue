@@ -1,6 +1,6 @@
 <script>
 import Avatar from "@/components/DvcAI/utility/avatar";
-import LazyImg from "@/components/DvcAI/utility/lazy-img";
+import LazyImg from "@/components/DvcAI/utility/color-img";
 
 export default {
   props: {

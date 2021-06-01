@@ -9,31 +9,31 @@ import appConfig from "@/app.config";
 import { EventBus } from "@/utils/event-bus";
 
 /**
- * Image Detail component
+ * Dataset Detail component
  */
 
 export default {
   inject:['reload'],
   page: {
-    title: "镜像详情",
+    title: "数据集详情",
     meta: [{ name: "description", content: appConfig.description }]
   },
   components: { PageHeader, LoaderContainer, Rightsidebar, Header, Content},
   data() {
     return {
-      title: "镜像详情",
+      title: "数据集详情",
       items: [
         {
-          text: "镜像列表",
-          to: { path: '/images' },
+          text: "数据集列表",
+          to: { path: '/datasets' },
         },
         {
-          text: "镜像详情",
+          text: "数据集详情",
           active: true
         }
       ],
       id: this.$route.params.id,
-      image: null,
+      dataset: null,
       loadingState: false,
     };
   },
@@ -44,7 +44,7 @@ export default {
     },
   },
   mounted(){
-    this.getImage();
+    this.getDataset();
     EventBus.$on('update', () => this.reload());
   },
   beforeDestroy() {
@@ -52,24 +52,24 @@ export default {
   },
   methods:{
 
-    // 获取镜像信息
-    getImage() {
+    // 获取数据集信息
+    getDataset() {
       this.loadingState = true;
-      this.$request.get('images/'+ this.$route.params.id)
+      this.$request.get('datasets/'+ this.$route.params.id)
       .then(({data})=>{
         if(data.code === 1) {
           this.loadingState = false;
-          this.image = data.data;
+          this.dataset = data.data;
         } else {
           console.log(data)
           Swal.fire(
-            "镜像信息获取失败!",
-            "点击按钮返回镜像列表",
+            "数据集信息获取失败!",
+            "点击按钮返回数据集列表",
             "error"
           ).then((res) => {
             if(res.isConfirmed) {
               this.loadingState = false;
-              this.backImagesList();
+              this.backDatasetsList();
             }
           })
         }
@@ -77,21 +77,21 @@ export default {
       .catch((err)=>{
         console.log(err)
         Swal.fire(
-          "镜像信息获取失败!",
-          "点击按钮返回镜像列表",
+          "数据集信息获取失败!",
+          "点击按钮返回数据集列表",
           "error"
         ).then((res) => {
           if(res.isConfirmed) {
             this.loadingState = false;
-            this.backImagesList();
+            this.backDatasetsList();
           }
         })
       })
     },
 
-    // 返回镜像列表
-    backImagesList() {
-      this.$router.push({path: '/images'})
+    // 返回数据集列表
+    backDatasetsList() {
+      this.$router.push({path: '/datasets'})
     },
 
     // 加载状态改变
@@ -109,12 +109,12 @@ export default {
       <div class="row font-size-14">
         
         <div class="col-12 col-md-8">
-          <Header :image="image"/>
-          <Content :image="image" :isAdmin="isAdmin"/>
+          <Header :dataset="dataset"/>
+          <Content :dataset="dataset" :isAdmin="isAdmin"/>
         </div>
 
         <div class="col-12 col-md-4">
-          <Rightsidebar :image="image" :isAdmin="isAdmin" @changeLoading="onLoading" />
+          <Rightsidebar :dataset="dataset" :isAdmin="isAdmin" @changeLoading="onLoading" />
         </div>
 
       </div>

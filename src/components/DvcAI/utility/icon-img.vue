@@ -62,7 +62,7 @@ export default {
       class="avatar-sm align-self-center mini-stat-icon">
       <span class="avatar-title rounded"
       :style="{ backgroundColor: imgColor }">
-        <i class="mdi mdi-docker font-size-24" :class="iconClass"></i>
+        <i class="font-size-24" :class="iconClass"></i>
       </span>
     </div>
   </div>
