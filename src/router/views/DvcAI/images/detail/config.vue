@@ -31,6 +31,10 @@ export default {
       selectLibs: [],
       inputLibText: '',
       desc: '',
+      cpuClass:{
+        "CPU": "bg-warning",
+        "GPU": "bg-success"
+      },
     };
   },
   computed: {
@@ -61,7 +65,7 @@ export default {
         res[this.selectLibs[i].name] = this.selectLibs[i].tag
       }
       return res;
-    }
+    },
   },
   methods: {
 
@@ -353,7 +357,10 @@ export default {
         <div class="col-sm-12 col-md-10 type-select">
 
           <span v-if="!isTypeEdit" class="i-text-middle mb-2">
-            <span v-for="item in image.types" class="badge bg-warning me-1" :key="item">{{ item }}</span>
+            <span v-for="item in image.types" class= "badge me-1" :class="cpuClass[item]" :key="item">
+              <i class="bx bx-chip"></i>
+              {{ item }}
+            </span>
             <i v-if="canEdit" class="bx bx-edit-alt type-edit font-size-16 cursor-pointer ms-1" @click="toTypeEdit"></i>
           </span>
 
