@@ -23,7 +23,7 @@
     "@fullcalendar/vue": "^5.3.1",
     "@trevoreyre/autocomplete-vue": "^2.2.0",
     "@voerro/vue-tagsinput": "^2.4.3",
-    "apexcharts": "^3.22.2",
+    "apexcharts": "^3.26.3",
     "babel-plugin-prismjs": "^2.0.1",
     "bootstrap": "^5.0.0-beta2",
     "bootstrap-vue": "^2.21.2",
