@@ -37,7 +37,6 @@ export default {
     },
   },
   methods: {
-
     // 初始化数据
     initInfo() {
       if(this.name === '' && this.dataset.name) {
@@ -276,7 +275,6 @@ export default {
         </div>
 
       </div>
-
       <div class="d-flex flex-column flex-md-row justify-content-md-center align-items-md-center">
 
         <div class="card-sub-title mb-2">

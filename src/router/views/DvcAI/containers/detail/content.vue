@@ -1,12 +1,13 @@
 <script>
 import Dockerfile from './code';
+import Minio from './minio.vue';
 
 /**
  * Container Card Content component
  */
 
 export default {
-  components: { Dockerfile },
+  components: { Dockerfile, Minio },
   props: {
     container: {
       type: Object,
@@ -72,6 +73,9 @@ export default {
               </div>
             </div>
           </div>
+        </b-tab>
+        <b-tab>
+          <Minio />
         </b-tab>
       </b-tabs>
     </div>

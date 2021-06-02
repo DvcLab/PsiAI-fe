@@ -36,6 +36,7 @@
     "leaflet": "^1.7.1",
     "lodash": "^4.17.21",
     "metismenujs": "^1.2.1",
+    "minio": "^7.0.18",
     "moment": "^2.29.1",
     "prismjs": "^1.23.0",
     "query-string": "^7.0.0",
