@@ -454,7 +454,7 @@ export default {
         <div class="col-sm-12 col-md-10 i-text-middle">
           <span v-if="!isDescEdit">
             <span v-if="image.desc" class="mb-2">{{image.desc}}</span>
-            <i v-if="canEdit" class="bx bx-edit-alt desc-edit font-size-16 cursor-pointer ms-2" @click="toDescEdit"></i>
+            <i v-if="canEdit" class="bx bx-edit-alt desc-edit font-size-16 cursor-pointer ms-1" @click="toDescEdit"></i>
           </span>
           <textarea
             v-else

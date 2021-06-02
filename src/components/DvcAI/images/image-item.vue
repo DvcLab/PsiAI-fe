@@ -73,7 +73,6 @@ export default {
 <template>
   <div class="list-item-con" @click="toImageDetail">
     <div class="row align-items-center">
-
       <div class="col-md-1 d-none d-md-block">
         <CoverImg :src="image.cover_img_url" :imgClass="'img-sm'"
         :imgColor="'#50a5f1'"
@@ -106,7 +105,7 @@ export default {
         </p>
       </div>
 
-      <div class="col-md-3 d-none d-md-block">
+      <div class="col-md-2 d-none d-md-block">
         <p
           v-if="types.length > 0"
           class="text-muted text-truncate mb-0"
@@ -154,12 +153,12 @@ export default {
         <p v-if="image.user" class="text-truncate ms-2 mb-0 d-none d-md-block"><a class="grid-username" href="javascript:void(0);">{{image.user.username}}</a></p>
       </div>
 
-      <div class="col-md-2 text-end d-none d-md-block">
+      <div class="col-md-1 text-center d-none d-md-block">
         <i class="bx bx-calendar me-1"></i>
         <span>{{ image.create_time | moment("from", "now") }}</span>
       </div>
 
-      <div class="col-md-2 text-end d-none d-md-block">
+      <div class="col-md-2 text-center d-none d-md-block">
         <i class="bx bx-calendar me-1"></i>
         <span>{{ image.update_time | moment("from", "now") }}</span>
       </div>
