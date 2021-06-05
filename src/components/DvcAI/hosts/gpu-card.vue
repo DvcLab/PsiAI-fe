@@ -87,8 +87,8 @@ export default {
 .gpu-card {
   color: #916c2e;
   /*background-color: #fff1daf8;*/
-  background-color: #fff4e3c9;
-  border-color: #fff4e3c9;
+  /*background-color: #fff4e3c9;*/
+  border: dashed 2px rgba(241, 180, 76, 0.18);
   padding: 0.2rem 0.4rem;
 }
 .gpu-name {

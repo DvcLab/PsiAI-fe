@@ -254,7 +254,8 @@ export default {
       </div>
 
       <div class="row">
-        <div class="col-md-6">
+        <!--列表item左半部分，主机名，内存，内核等信息加下面的使用情况表盘-->
+        <div class="col-md-7">
           <div class="row mb-1">
             <div
               v-if="!this.$_.isNil(hostSelfData.cpu_info.cpu_model_name)"
@@ -274,7 +275,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.mem_info.total)"
-              class="col-sm-6 col-md-4 mb-2 text-truncate"
+              class="col-sm-6 col-md-3 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-grid-alt me-1" />内存
@@ -283,7 +284,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.container_num)"
-              class="col-sm-6 col-md-4 mb-2 text-truncate"
+              class="col-sm-6 col-md-2 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-cube me-1" />容器
@@ -301,7 +302,7 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.gpu_info)"
-              class="col-sm-6 col-md-4 mb-2 text-truncate"
+              class="col-sm-6 col-md-3 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-warning">
                 <i class="bx bx-command" /> CUDA
@@ -309,9 +310,6 @@ export default {
               >
             </div>
           </div>
-        </div>
-
-        <div class="col-md-6">
           <div class="row">
             <span class="col-sm-3 col-md-3">
               <apexchart
@@ -357,8 +355,74 @@ export default {
             </span>
           </div>
         </div>
-      </div>
 
+        <!--列表item右半部分，显示各CPU,GPU使用情况-->
+        <div class="col-md-5">
+          <!--
+          <div class="row">
+            <span class="col-sm-3 col-md-3">
+              <apexchart
+                class="apex-charts"
+                height="120"
+                type="radialBar"
+                :series="[cpuIOWait]"
+                :options="getChartOptions(cpuIOWait, 'IO wait', '%')"
+              ></apexchart>
+            </span>
+            <span class="col-sm-3 col-md-3">
+              <apexchart
+                class="apex-charts"
+                height="120"
+                type="radialBar"
+                :series="[cpuUsage]"
+                :options="getChartOptions(cpuUsage, 'CPU usage', '%')"
+              ></apexchart>
+            </span>
+            <span class="col-sm-3 col-md-3">
+              <apexchart
+                class="apex-charts"
+                height="120"
+                type="radialBar"
+                :series="[hostSelfData.cpu_info.max_temp]"
+                :options="
+                  getChartOptions(
+                    hostSelfData.cpu_info.max_temp,
+                    'CPU temp',
+                    '℃'
+                  )
+                "
+              ></apexchart>
+            </span>
+            <span class="col-sm-3 col-md-3">
+              <apexchart
+                class="apex-charts"
+                height="120"
+                type="radialBar"
+                :series="[memUsage]"
+                :options="getChartOptions(memUsage, 'MEM usage', '%')"
+              ></apexchart>
+            </span>
+          </div>-->
+          <div v-if="!this.$_.isNil(hostSelfData.gpu_info)" class="row">
+            <GpuCard
+              class="col-md-12 col-xl-12 mt-2"
+              v-for="(gpu, index) in hostSelfData.gpu_info.gpus"
+              :key="index"
+              :gpu="gpu"
+            />
+          </div>
+
+          <div v-if="!this.$_.isNil(hostSelfData.mlu_info)" class="row">
+            <MluCard
+              class="col-md-12 col-xl-12 mt-2"
+              v-for="(mlu, index) in hostSelfData.mlu_info.mlus"
+              :key="index"
+              :mlu="mlu"
+            />
+          </div>
+        </div>
+      </div>
+      <!--
       <div v-if="!this.$_.isNil(hostSelfData.gpu_info)" class="row">
         <GpuCard
           class="col-md-12 col-xl-6 mt-2"
@@ -375,7 +439,7 @@ export default {
           :key="index"
           :mlu="mlu"
         />
-      </div>
+      </div>-->
     </div>
   </LoaderContainer>
 </template>
