@@ -9,7 +9,7 @@ module.exports = {
     }
   },
   devServer: {
-    sockHost: 'http://localhost:8081/',
+    sockHost: 'http://localhost:8080/',
     // transportMode: 'ws',
     disableHostCheck: true,
     // proxy: {

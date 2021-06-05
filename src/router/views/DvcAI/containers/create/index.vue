@@ -93,6 +93,11 @@ export default {
       submitted: false,
       loadingState: false,
       matchImage: null,
+      containerRunningSelected: 'location',
+      locationOptions: [
+        { text: '本地', value: 'location', disabled: false },
+        { text: '云端', value: 'cloud', disabled: false }
+      ],
     };
   },
   computed: {
@@ -132,7 +137,13 @@ export default {
       let hasCPU = types.includes('CPU');
       let hasGPU = types.includes('GPU');
       return !(hasCPU && hasGPU)
-    }
+    },
+
+    // 本地/远程按钮控制其他按钮显示
+    isLocation() {
+      if(this.containerRunningSelected === 'cloud') return false;
+      return true;
+    },
 
   },
   validations: {
@@ -540,6 +551,75 @@ export default {
                   <span :class="{'checkbox-disabled-text': isDisabledGpu }">
                     {{ needGPU ? '需要GPU' : '无需GPU' }}
                   </span>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <!--选择云端或本地运行-->
+                <div class="float-end w-100 container-btn-group">
+            
+                  <b-form-radio-group
+                    id="location-radios"
+                    class="text-truncate check-group btn-item mb-0"
+                    size="sm"
+                    v-model="containerRunningSelected"
+                    :options="locationOptions"
+                    buttons
+                    button-variant="outline-primary"
+                    name="local-cloud-radios"
+                  ></b-form-radio-group>
+                
+                  <a
+                    v-if="isLocation"
+                    :href="configFile"
+                    class="btn btn-outline-primary btn-sm btn-item"
+                    download="docker-compose-config"
+                  >
+                  <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
+                  本地运行
+                  </a>
+
+                  <multiselect
+                    class="host-select d-inline-block btn-item"
+                    v-model="selectedHost"
+                    :options="hosts"
+                    @search-change="changeHostsAction"
+                    track-by="id"
+                    placeholder="选择主机"
+                    select-label="选择主机"
+                    selectedLabel="已选"
+                    deselectLabel="点击取消"
+                  >
+                    <template slot="option" slot-scope="{ option }">
+                      <span>
+                        {{ option.ip }}（{{ option.id | preId }}）
+                      </span>
+                    </template>
+                    <template slot="singleLabel" slot-scope="{ option }" class="i-text-middle">
+                      <div class="text-truncate i-text-middle">
+                        <i class="bx bx-laptop me-1"></i>
+                        {{ option.ip }}（{{ option.id | preId }}）
+                      </div>
+                    </template>
+                    <span slot="noResult">未搜索到相关主机</span>
+                  </multiselect>
+
+                  <b-button class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="runInCloud">
+                    <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
+                    云端运行
+                  </b-button>
+
+                  <a
+                    v-if="!isLocation"
+                    :href="jupyterUrl"
+                    class="btn btn-outline-primary btn-sm btn-item"
+                    download="docker-compose-config"
+                    target="_blank"
+                  >
+                    <i class="bx bx-code-block font-size-16 align-middle me-1"></i>
+                    JupyterLab
+                  </a>
+
                 </div>
               </div>
 

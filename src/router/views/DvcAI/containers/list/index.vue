@@ -164,6 +164,17 @@ export default {
       this.getContainersList('', this.curPage, true);
     },
 
+    // 获取我的容器列表
+    getMyContainerList() {
+      this.containers = [];
+      this.curTotal = 0;
+      this.curPage = 1;
+      this.getContainersList('', this.curPage, false);
+      this.containers = this.containers.filter(item => {
+        return item.newInfo.user.username === 'f it';
+      });
+    },
+
     // 获取全部状态容器列表
     getAllContainerList() {
       this.containers = [];
@@ -251,9 +262,9 @@ export default {
     </div>
     <div class="col-12">
       <b-tabs pills active-nav-item-class="text-white">
-        <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getRunningContainerList">
+        <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getMyContainerList">
           <template v-slot:title>
-            <span class="d-inline-block">运行</span>
+            <span class="d-inline-block">我的{{containers}}</span>
           </template>
           <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
         </b-tab>
