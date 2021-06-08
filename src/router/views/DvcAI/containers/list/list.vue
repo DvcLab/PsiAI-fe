@@ -2,27 +2,33 @@
 import Item from './item';
 
 export default {
-    components: {
-        Item
+  components: {
+    Item
+  },
+  props: {
+    containers: {
+      type: Array,
+      default: function () {
+        return [];
+      },
     },
-    props: {
-        containers: {
-            type: Array,
-            default: function () {
-              return [];
-            },
-        },
-        updating: {
-            type: Boolean,
-        },
+    updating: {
+      type: Boolean,
     },
+    mycontainer: {
+      type: Boolean,
+    },
+    containerState: {
+      type: String,
+    }
+  },
 }
 </script>
 <template>
     <div v-if="containers && containers.length > 0">
       <div class="row">
         <div class="col-12">
-          <Item v-for="item in containers" :key="item.id" :container="item"/>
+          <Item v-for="item in containers" :key="item.id" :container="item" :mycontainer="mycontainer" :containerState="containerState"/>
         </div>
       </div>
     </div>

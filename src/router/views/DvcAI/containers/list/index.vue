@@ -25,7 +25,9 @@ export default {
       curTotal: 0,
       meta: {},
       loadingState: true,
-      status: 'active'
+      status: 'active',
+      isMyContainer: false,
+      containerState: 'All',
     };
   },
   mounted() {
@@ -51,7 +53,7 @@ export default {
     },
 
     // 获取容器列表
-    getContainersList(q = '', page = 1, enabled = true) {
+    getContainersList(q = '', page = 1, enabled = false) {
       const _this = this;
       this.loadingState = true;
       this.getContainers({
@@ -163,24 +165,33 @@ export default {
       this.curPage = 1;
       this.getContainersList('', this.curPage, true);
     },
-
     // 获取我的容器列表
+    mycontainersList() {
+      this.isMyContainer = true;
+      this.containerState = "All";
+    },
+    /*
     getMyContainerList() {
       this.containers = [];
+      this.mycontainers = [];
       this.curTotal = 0;
       this.curPage = 1;
+      console.log("显示内容");
+      console.log("容器列表"+this.containers);
       this.getContainersList('', this.curPage, false);
-      this.containers = this.containers.filter(item => {
-        return item.newInfo.user.username === 'f it';
+      this.mycontainers = this.containers.filter((item) => {
+        item.user.username == "f it"
       });
-    },
-
+    },*/
     // 获取全部状态容器列表
     getAllContainerList() {
       this.containers = [];
       this.curTotal = 0;
       this.curPage = 1;
+      this.isMyContainer = false;
+      this.containerState = "All";
       this.getContainersList('', this.curPage, false);
+      console.log("容器列表"+this.containers)
     },
 
     // 滑动至底部，加载剩余镜像
@@ -200,10 +211,9 @@ export default {
 
     // 跳转创建容器页面
     toCreateContainerPage() {
-      this.$router.push({path: '/containers/create'})
+      this.$router.push({path: '/containers/create'});
     },
-
-  }
+  },
 };
 </script>
 <template>
@@ -247,7 +257,6 @@ export default {
               </li>
             </template>
           </autocomplete>
-          
         </div>
         <div class="col-5 align-self-center mb-3">
           <button
@@ -262,18 +271,29 @@ export default {
     </div>
     <div class="col-12">
       <b-tabs pills active-nav-item-class="text-white">
-        <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getMyContainerList">
-          <template v-slot:title>
-            <span class="d-inline-block">我的{{containers}}</span>
-          </template>
-          <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
-        </b-tab>
-        <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getAllContainerList">
+        <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getAllContainerList">
           <template v-slot:title>
             <span class="d-inline-block">全部</span>
           </template>
-          <ContainerList class="col-12" :containers="containers" :updating="loadingState"/>
+          <ContainerList class="col-12" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer" :containerState="containerState"/>
         </b-tab>
+        <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="mycontainersList">
+          <template v-slot:title>
+            <span class="d-inline-block">我的</span>
+          </template>
+          <ContainerList class="col-12" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer" :containerState="containerState"/>
+        </b-tab>
+        <div class="float-end" style="position: absolute; right: 20px; top:-3px;">
+            <!--<select class="form-select form-select-sm ms-2">-->
+            <select class="form-select form-select-sm ms-2" v-model="containerState">
+              <option disabled value="All">容器状态筛选</option>
+              <option value="All">全部</option>
+              <option value="New">新创建</option>
+              <option value="Running">运行中</option>
+              <option value="Paused">暂停</option>
+              <option value="Deleted">出错</option>
+            </select>
+          </div>
       </b-tabs>
     </div>
 

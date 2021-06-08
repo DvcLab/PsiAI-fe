@@ -11,8 +11,7 @@ import SelectCard from "@/components/DvcAI/select-card";
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import { required } from "vuelidate/lib/validators";
 import Swal from "sweetalert2";
-import { mapActions } from "vuex";
-
+import { mapState, mapActions } from "vuex";
 /**
  * Create Container component
  */
@@ -98,9 +97,21 @@ export default {
         { text: '本地', value: 'location', disabled: false },
         { text: '云端', value: 'cloud', disabled: false }
       ],
+      selectedHost: null,
     };
   },
   computed: {
+
+    // 主机列表
+    ...mapState("hosts", ["hosts"]),
+
+    // 当前用户信息
+    ...mapState("auth", ["currentUser"]),
+
+    // 是否是管理员
+    isAdmin() {
+      return this.$keycloak.realmAccess.roles.includes("DOCKHUB_ADMIN");
+    },
 
     // 项目分支
     branches() {
@@ -368,6 +379,27 @@ export default {
     isUrl(url) {
       return /^https?:\/\/.+/.test(url)
     },
+
+    // 解释本地运行的含义并向用户确认是否选择本地运行
+    locationConfirm() {
+      Swal.fire(
+        "容器创建成功!",
+        "点击按钮返回容器列表",
+        "success"
+      ).then((res) => {
+        if(res.isConfirmed) {
+          this.loadingState = false;
+          this.backContainersList();
+        }
+      })
+    },
+
+    // 搜索主机
+    changeHostsAction(value) {
+      this.getHosts({
+        q: value
+      })
+    },
   }
 };
 </script>
@@ -556,7 +588,7 @@ export default {
 
               <div class="mb-2">
                 <!--选择云端或本地运行-->
-                <div class="float-end w-100 container-btn-group">
+                <div class="float-end w-100 container-btn-group" style="margin-bottom: 1rem">
             
                   <b-form-radio-group
                     id="location-radios"
@@ -567,20 +599,12 @@ export default {
                     buttons
                     button-variant="outline-primary"
                     name="local-cloud-radios"
-                  ></b-form-radio-group>
-                
-                  <a
-                    v-if="isLocation"
-                    :href="configFile"
-                    class="btn btn-outline-primary btn-sm btn-item"
-                    download="docker-compose-config"
                   >
-                  <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
-                  本地运行
-                  </a>
+                  </b-form-radio-group>
 
                   <multiselect
                     class="host-select d-inline-block btn-item"
+                    v-if="!isLocation & isAdmin"
                     v-model="selectedHost"
                     :options="hosts"
                     @search-change="changeHostsAction"
@@ -604,27 +628,19 @@ export default {
                     <span slot="noResult">未搜索到相关主机</span>
                   </multiselect>
 
-                  <b-button class="text-truncate i-text-middle btn-item" variant="outline-primary" size="sm" @click="runInCloud">
-                    <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
-                    云端运行
-                  </b-button>
-
-                  <a
-                    v-if="!isLocation"
-                    :href="jupyterUrl"
-                    class="btn btn-outline-primary btn-sm btn-item"
-                    download="docker-compose-config"
-                    target="_blank"
-                  >
-                    <i class="bx bx-code-block font-size-16 align-middle me-1"></i>
-                    JupyterLab
-                  </a>
-
                 </div>
               </div>
 
               <div class="text-center mt-4">
-                <button type="submit" class="btn btn-success me-2" :disabled="$v.$invalid">创建</button>
+                <button v-if="isLocation" class="btn btn-success me-2" :disabled="$v.$invalid">
+                  <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
+                  本地运行
+                </button>
+                <button type="submit" v-if="!isLocation" class="btn btn-success me-2" :disabled="$v.$invalid">
+                  <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
+                  云端运行
+                </button>
+                <!--<button type="submit" class="btn btn-success me-2" :disabled="$v.$invalid">创建</button>-->
                 <button class="btn btn-secondary" @click="backContainersList">取消</button>
               </div>
 
