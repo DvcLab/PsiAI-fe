@@ -266,50 +266,70 @@ export default {
         }
       })
     },
+
+    // 跳转创建数据集页面
+    toCreateDatasetsPage() {
+      this.$router.push({path: '/datasets/create'});
+    },
     
   }
 };
 </script>
 <template>
   <div class="row">
-
-    <div class="col-8 col-sm-9 col-md-10 mb-4 text-center">
-      <autocomplete
-        aria-label="搜索添加数据集..."
-        placeholder="搜索添加数据集..."
-        :search="search"
-        :get-result-value="getResultValue"
-        :debounce-time="500"
-        @submit="handleSubmit"
-        >
-        <template #result="{ result, props }">
-          <li
-            v-bind="props"
-            class="search-result"
+    
+    <div class="col-12 align-items-center">
+      <div class="row d-flex align-item-center">
+        <!--<div class="col-7 col-sm-9 col-md-10 mb-4 text-center">-->
+        <div class="col-7 col-md-10 mb-3">
+          <autocomplete
+            aria-label="搜索添加数据集..."
+            placeholder="搜索添加数据集..."
+            :search="search"
+            :get-result-value="getResultValue"
+            :debounce-time="500"
+            @submit="handleSubmit"
+            >
+            <template #result="{ result, props }">
+              <li
+                v-bind="props"
+                class="search-result"
+              >
+                <div v-if="isSearch" class="text-start">
+                  <h6><i class="bx bx-cube me-1"></i>{{ result.name }}</h6>
+                </div>
+                <div v-else class="row align-items-center">
+                  <div class="col-4 text-sm-start">
+                    <h6 class="d-inline-block">
+                      <i class="bx bx-package me-1"></i>
+                      {{ result.name }}
+                    </h6>
+                  </div>
+                  <div class="col-8 text-sm-end">
+                    <button type="button" class="btn btn-outline-primary btn-sm" @click="handleAddDataset(result)">
+                      <i class="mdi mdi-plus me-1"></i>
+                      添加
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </template>
+          </autocomplete>
+        </div>
+        <div class="col-5 col-sm-3 col-md-2 mb-4 text-center">
+          <button
+            type="button"
+            class="btn btn-success btn-rounded float-end"
+            @click="toCreateDatasetsPage"
           >
-            <div v-if="isSearch" class="text-start">
-              <h6><i class="bx bx-cube me-1"></i>{{ result.name }}</h6>
-            </div>
-            <div v-else class="row align-items-center">
-              <div class="col-4 text-sm-start">
-                <h6 class="d-inline-block">
-                  <i class="bx bx-package me-1"></i>
-                  {{ result.name }}
-                </h6>
-              </div>
-              <div class="col-8 text-sm-end">
-                <button type="button" class="btn btn-outline-primary btn-sm" @click="handleAddDataset(result)">
-                  <i class="mdi mdi-plus me-1"></i>
-                  添加
-                </button>
-              </div>
-            </div>
-          </li>
-        </template>
-      </autocomplete>
-    </div>
+            <i class="mdi mdi-plus me-1"></i> 创建数据集
+          </button>
+        </div>
+      </div>
+    </div> 
 
-    <div class="col-4 col-sm-3 col-md-2 mb-4 text-center">
+      <!--
+    <div class="col-5 col-sm-3 col-md-2 mb-4 text-center">
       <ul class="nav nav-pills product-view-nav float-end">
         <li class="nav-item">
           <a
@@ -331,13 +351,54 @@ export default {
           </a>
         </li>
       </ul>
+    </div>-->
+    <div class="col-12">
+      <b-tabs pills active-nav-item-class="text-white">
+        <b-tab active title-item-class="pe-2" title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getAllContainerList">
+          <template v-slot:title>
+            <span class="d-inline-block">全部</span>
+          </template>
+          <ContainerList class="col-12" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer" :containerState="containerState"/>
+        </b-tab>
+        <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="mycontainersList">
+          <template v-slot:title>
+            <span class="d-inline-block">我的</span>
+          </template>
+          <ContainerList class="col-12" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer" :containerState="containerState"/>
+        </b-tab>
+      <div class="nav nav-pills product-view-nav float-end" style="position: absolute; right: 20px; top:-3px;">
+        <div class="nav-item">
+          <a
+            class="nav-link"
+            href="javascript: void(0);"
+            :class="{ 'active': !isGrid }"
+            @click="toListLayout"
+            >
+            <i class="bx bx-list-ul nav-i-mt"></i>
+          </a>
+        </div>
+        <div class="nav-item">
+          <a
+            class="nav-link"
+            href="javascript: void(0);"
+            :class="{ 'active': isGrid }"
+            @click="toGridLayout">
+            <i class="bx bx-grid-alt nav-i-mt"></i>
+          </a>
+        </div>
+      </div>
+  
+      </b-tabs>
     </div>
 
-    <DatasetGridList v-if="isGrid" class="col-12" :datasets="datasets" :updating="loadingState"/>
-    <DatasetList v-else class="col-12" :datasets="datasets" :updating="loadingState"/>
 
     <div class="col-12 mt-4">
-      <Loader :loading="loadingState"/>
+      <DatasetGridList v-if="isGrid" class="col-12" :datasets="datasets" :updating="loadingState"/>
+      <DatasetList v-else class="col-12" :datasets="datasets" :updating="loadingState"/>
+
+      <div class="col-12 mt-4">
+        <Loader :loading="loadingState"/>
+      </div>
     </div>
   </div>
 </template>

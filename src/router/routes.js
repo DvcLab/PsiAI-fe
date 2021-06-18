@@ -75,7 +75,15 @@ export default [
         },
         component: () => import('./views/DvcAI/datasets/detail'),
       },
-    ]
+      {
+        path: 'create',
+        name: '创建数据集',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/datasets/create'),
+      },
+    ],
   },
   {
     path: '/images',

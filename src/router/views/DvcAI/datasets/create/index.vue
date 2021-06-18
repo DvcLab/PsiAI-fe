@@ -17,20 +17,20 @@ import { mapState, mapActions } from "vuex";
  */
 export default {
   page: {
-    title: "创建容器",
-    meta: [{ name: "创建容器", content: appConfig.description }]
+    title: "创建数据集",
+    meta: [{ name: "创建数据集", content: appConfig.description }]
   },
   components: { PageHeader, LoaderContainer, VueSlideBar, Multiselect, ProjSelectItem, DatasetSelectItem, ImageSelectItem, SelectCard },
   data() {
     return {
-      title: "创建容器",
+      title: "创建数据集",
       linkItems: [
         {
-          text: "容器列表",
-          to: { path: '/containers' },
+          text: "数据集列表",
+          to: { path: '/datasets' },
         },
         {
-          text: "创建容器",
+          text: "创建数据集",
           active: true,
         },
       ],

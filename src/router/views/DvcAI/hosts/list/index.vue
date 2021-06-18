@@ -19,9 +19,8 @@ export default {
     // Layout,
     Loader,
     Autocomplete,
-    List
+    List,
   },
-
   data() {
     return {
       hosts: [],
@@ -166,7 +165,6 @@ export default {
 <template>
 
   <div class="row">
-
     <div class="col-12 text-center">
       <div class="row d-flex align-item-center">
         <div class="col-7 mb-3">

@@ -27,7 +27,7 @@ export default {
       loadingState: true,
       status: 'active',
       isMyContainer: false,
-      containerState: 'All',
+      containerState: 'Running',
     };
   },
   mounted() {
@@ -286,7 +286,7 @@ export default {
         <div class="float-end" style="position: absolute; right: 20px; top:-3px;">
             <!--<select class="form-select form-select-sm ms-2">-->
             <select class="form-select form-select-sm ms-2" v-model="containerState">
-              <option disabled value="All">容器状态筛选</option>
+              <option disabled value="Running">容器状态筛选</option>
               <option value="All">全部</option>
               <option value="New">新创建</option>
               <option value="Running">运行中</option>
