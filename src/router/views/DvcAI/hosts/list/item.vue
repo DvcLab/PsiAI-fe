@@ -2,9 +2,11 @@
 import LoaderContainer from "@/components/DvcAI/loader-container";
 import GpuCard from "@/components/DvcAI/hosts/gpu-card";
 import MluCard from "@/components/DvcAI/hosts/mlu-card";
+import ECharts from "vue-echarts";
+import "echarts/lib/chart/gauge";
 
 export default {
-  components: { GpuCard, MluCard, LoaderContainer },
+  components: { GpuCard, MluCard, LoaderContainer,"v-chart": ECharts},
   props: {
     host: {
       type: Object,
@@ -45,7 +47,7 @@ export default {
     return {
       websock: null,
       hostSelfData: this.host,
-      loadingState: false
+      loadingState: false,
     };
   },
   computed: {
@@ -76,35 +78,103 @@ export default {
   },
   methods: {
     // chartsOption参数设置
-    getChartOptions(value, label, symbol) {
-      let color = this.percent2color(value / 100, 0.35, 1);
+    // getChartOptions(value, label, symbol) {
+    //   let color = this.percent2color(value / 100, 0.35, 1);
 
+    //   return {
+    //     plotOptions: {
+    //       radialBar: {
+    //         hollow: {
+    //           margin: 0,
+    //           size: "70%",
+    //         },
+    //         track: {
+    //           margin: 0,
+    //         },
+    //         dataLabels: {
+    //           name: {
+    //             fontSize: "0.6rem"
+    //           },
+    //           value: {
+    //             fontSize: "0.5rem",
+    //             formatter: function (val) {
+    //               return val + symbol;
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //     colors: [color],
+    //     labels: [label],
+    //   };
+    // },
+    // chartsOption参数设置
+    getChartOptions(value, title) {
       return {
-        plotOptions: {
-          radialBar: {
-            hollow: {
-              margin: 0,
-              size: "70%",
-            },
-            track: {
-              margin: 0,
-            },
-            dataLabels: {
-              name: {
-                fontSize: "0.6rem"
-              },
-              value: {
-                fontSize: "0.5rem",
-                formatter: function (val) {
-                  return val + symbol;
-                },
-              },
-            },
-          },
+        tooltip: {
+            formatter: "{a} <br/>{b} : {c}%"
         },
-        colors: [color],
-        labels: [label],
-      };
+        toolbox: {
+            feature: {
+                restore: { title: "Refresh" },
+                saveAsImage: { title: "Download Image" }
+            }
+        },
+        series: [
+            {
+                name: '3刻度',
+                type: 'gauge',//仪表盘
+                radius: '100%',//仪表盘半径
+                center: ['50%', '60%'],//仪表盘位置
+                startAngle:190,//起始角度
+                endAngle: -10,//结束角度
+                title: {
+                    offsetCenter: [0,"-30%"],
+                    fontSize:10,
+                },
+                detail: { 
+                    formatter: '{value}%',
+                    textStyle: {
+                        fontSize: 10,
+                    },
+                    rich: {
+                        name: {
+                            fontSize:10
+                        }
+                    }
+                },
+                //仪表盘轴线相关配置，彩色的条条有多宽，用什么颜色
+                axisLine: {
+                    lineStyle: {
+                        color: [[0.2, '#34c38f'], [0.8, '#556ee6'], [1, '#f46a6a']],
+                        width: 8,
+                    }
+                },
+                splitLine: {//分隔线样式相关
+                    length: 12,//分割线的长度
+                    lineStyle: {
+                        width:2,
+                        //color:'#b0b3b8'
+                    }
+                },
+                axisLabel: {//大刻度标签。
+                    show:false
+                },
+                /*axisTick:{//小刻度相关
+                    show:false
+                },*/
+                pointer:{//指针长度与宽度
+                    width:4,
+                    length:'70%'
+                },
+                //表盘名字
+                data: [{ 
+                    value: value, 
+                    name: title,
+                }]
+            }
+        ]
+    };
     },
 
     // 跳转主机详情页
@@ -205,6 +275,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <LoaderContainer :loading="loadingState">
     <div class="list-item-con" @click="toHostDetail">
@@ -246,7 +317,10 @@ export default {
                 已删除
               </span>
             </span>
-            <span class="text-success">{{
+            <span v-if="hostSelfData.status === 'RUNNING'" class="text-success">{{
+              updateTime | moment("YYYY-MM-DD HH:mm:ss")
+            }}</span>
+            <span v-else class="text-danger">{{
               updateTime | moment("YYYY-MM-DD HH:mm:ss")
             }}</span>
           </div>
@@ -291,15 +365,7 @@ export default {
               </span>
               <span> {{ hostSelfData.container_num }}</span>
             </div>
-            <div
-              v-if="!this.$_.isNil(hostSelfData.gpu_info)"
-              class="col-sm-6 col-md-4 mb-2 text-truncate"
-            >
-              <span class="badge rounded-pill font-size-11 badge-soft-success">
-                <i class="bx bx-server" /> Nvidia Driver
-                {{ hostSelfData.gpu_info.driver_version }}</span
-              >
-            </div>
+            
             <div
               v-if="!this.$_.isNil(hostSelfData.gpu_info)"
               class="col-sm-6 col-md-3 mb-2 text-truncate"
@@ -309,28 +375,49 @@ export default {
                 {{ hostSelfData.gpu_info.cuda_version }}</span
               >
             </div>
+            <div
+              v-if="!this.$_.isNil(hostSelfData.gpu_info)"
+              class="col-sm-6 col-md-4 mb-2 text-truncate"
+            >
+              <span class="badge rounded-pill font-size-11 badge-soft-success">
+                <i class="bx bx-server" /> Nvidia Driver
+                {{ hostSelfData.gpu_info.driver_version }}</span
+              >
+            </div>
           </div>
           <div class="row">
             <span class="col-sm-3 col-md-3">
-              <apexchart
+              <!-- <apexchart
                 class="apex-charts"
                 height="120"
                 type="radialBar"
                 :series="[cpuIOWait]"
                 :options="getChartOptions(cpuIOWait, 'IO wait', '%')"
-              ></apexchart>
+              ></apexchart> -->
+              <v-chart 
+                style="width: 120px ; height: 80px"
+                :options="getChartOptions(
+                    cpuIOWait,
+                    'IO wait'
+                  )"/>
             </span>
             <span class="col-sm-3 col-md-3">
-              <apexchart
+              <!-- <apexchart
                 class="apex-charts"
                 height="120"
                 type="radialBar"
                 :series="[cpuUsage]"
                 :options="getChartOptions(cpuUsage, 'CPU usage', '%')"
-              ></apexchart>
+              ></apexchart> -->
+              <v-chart 
+                style="width: 120px ; height: 80px"
+                :options="getChartOptions(
+                    cpuUsage,
+                    'CPU usage'
+                  )"/>
             </span>
             <span class="col-sm-3 col-md-3">
-              <apexchart
+              <!-- <apexchart
                 class="apex-charts"
                 height="120"
                 type="radialBar"
@@ -342,68 +429,35 @@ export default {
                     '℃'
                   )
                 "
-              ></apexchart>
+              ></apexchart> -->
+              <v-chart 
+                style="width: 120px ; height: 80px"
+                :options="getChartOptions(
+                    hostSelfData.cpu_info.max_temp,
+                    'CPU temp'
+                  )"/>
             </span>
             <span class="col-sm-3 col-md-3">
-              <apexchart
+              <!--<apexchart
                 class="apex-charts"
                 height="120"
                 type="radialBar"
                 :series="[memUsage]"
                 :options="getChartOptions(memUsage, 'MEM usage', '%')"
-              ></apexchart>
+              ></apexchart>-->
+              <v-chart 
+                style="width: 120px ; height: 80px"
+                :options="getChartOptions(
+                    memUsage,
+                    'MEM usage'
+                  )"/>
             </span>
           </div>
         </div>
 
         <!--列表item右半部分，显示各CPU,GPU使用情况-->
         <div class="col-md-5">
-          <!--
-          <div class="row">
-            <span class="col-sm-3 col-md-3">
-              <apexchart
-                class="apex-charts"
-                height="120"
-                type="radialBar"
-                :series="[cpuIOWait]"
-                :options="getChartOptions(cpuIOWait, 'IO wait', '%')"
-              ></apexchart>
-            </span>
-            <span class="col-sm-3 col-md-3">
-              <apexchart
-                class="apex-charts"
-                height="120"
-                type="radialBar"
-                :series="[cpuUsage]"
-                :options="getChartOptions(cpuUsage, 'CPU usage', '%')"
-              ></apexchart>
-            </span>
-            <span class="col-sm-3 col-md-3">
-              <apexchart
-                class="apex-charts"
-                height="120"
-                type="radialBar"
-                :series="[hostSelfData.cpu_info.max_temp]"
-                :options="
-                  getChartOptions(
-                    hostSelfData.cpu_info.max_temp,
-                    'CPU temp',
-                    '℃'
-                  )
-                "
-              ></apexchart>
-            </span>
-            <span class="col-sm-3 col-md-3">
-              <apexchart
-                class="apex-charts"
-                height="120"
-                type="radialBar"
-                :series="[memUsage]"
-                :options="getChartOptions(memUsage, 'MEM usage', '%')"
-              ></apexchart>
-            </span>
-          </div>-->
-          <div v-if="!this.$_.isNil(hostSelfData.gpu_info)" class="row">
+          <div v-if="!this.$_.isNil(hostSelfData.gpu_info)" class="row carousel-vertical">
             <GpuCard
               class="col-md-12 col-xl-12 mt-2"
               v-for="(gpu, index) in hostSelfData.gpu_info.gpus"
@@ -411,8 +465,7 @@ export default {
               :gpu="gpu"
             />
           </div>
-
-          <div v-if="!this.$_.isNil(hostSelfData.mlu_info)" class="row">
+          <div v-if="!this.$_.isNil(hostSelfData.mlu_info)" class="row carousel-vertical">
             <MluCard
               class="col-md-12 col-xl-12 mt-2"
               v-for="(mlu, index) in hostSelfData.mlu_info.mlus"
@@ -422,24 +475,11 @@ export default {
           </div>
         </div>
       </div>
-      <!--
-      <div v-if="!this.$_.isNil(hostSelfData.gpu_info)" class="row">
-        <GpuCard
-          class="col-md-12 col-xl-6 mt-2"
-          v-for="(gpu, index) in hostSelfData.gpu_info.gpus"
-          :key="index"
-          :gpu="gpu"
-        />
-      </div>
-
-      <div v-if="!this.$_.isNil(hostSelfData.mlu_info)" class="row">
-        <MluCard
-          class="col-md-12 col-xl-6 mt-2"
-          v-for="(mlu, index) in hostSelfData.mlu_info.mlus"
-          :key="index"
-          :mlu="mlu"
-        />
-      </div>-->
     </div>
   </LoaderContainer>
 </template>
+
+
+
+ 
+ 
