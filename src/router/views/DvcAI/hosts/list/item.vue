@@ -278,7 +278,7 @@ export default {
 
 <template>
   <LoaderContainer :loading="loadingState">
-    <div class="list-item-con" @click="toHostDetail">
+    <div class="list-item-con" @click="toHostDetail" style="padding-bottom:0.3rem">
       <div class="row">
         <div class="col-12 col-md-6">
           <!--<h4 class="d-block text-truncate text-dark mb-0 list-item-name">-->
