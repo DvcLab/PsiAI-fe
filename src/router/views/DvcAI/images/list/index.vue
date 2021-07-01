@@ -185,6 +185,13 @@ export default {
         }
       }
     },
+
+    // 跳转创建镜像页面
+    toCreateImagePage() {
+      console.log('函数进来了')
+      this.$router.push({path: '/images/create'})
+      console.log('函数执行完了')
+    },
   }
 };
 </script>
@@ -192,7 +199,7 @@ export default {
   <!-- <Layout> -->
     <div class="row">
 
-      <div class="col-12 mb-4 text-center">
+      <div class="col-12 col-md-10 mb-4 text-center">
         <autocomplete
           aria-label="搜索镜像..."
           placeholder="搜索镜像..."
@@ -213,6 +220,14 @@ export default {
             </li>
           </template>
         </autocomplete>
+      </div>
+      <div class="col-2 align-self-center mb-3">
+        <a
+          class="btn btn-success btn-rounded float-end"
+          @click="toCreateImagePage"
+        >
+          <i class="mdi mdi-plus me-1"></i> 创建镜像
+        </a>
       </div>
 
       <ImageList class="col-12" :images="images" :updating="loadingState"/>

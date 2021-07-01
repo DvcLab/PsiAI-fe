@@ -94,6 +94,14 @@ export default [
         component: () => import('./views/DvcAI/images/list'),
       },
       {
+        path: 'create',
+        name: '创建镜像',
+        meta: {
+          authRequired: true,
+        },
+        component: () => import('./views/DvcAI/images/create'),
+      },
+      {
         path: ':id',
         name: '镜像详情',
         meta: {
