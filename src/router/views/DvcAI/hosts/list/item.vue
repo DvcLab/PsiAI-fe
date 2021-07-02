@@ -164,7 +164,7 @@ export default {
                     show:false
                 },*/
                 pointer:{//指针长度与宽度
-                    width:4,
+                    width:3,
                     length:'70%'
                 },
                 //表盘名字
