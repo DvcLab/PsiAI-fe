@@ -199,7 +199,7 @@ export default {
   <!-- <Layout> -->
     <div class="row">
 
-      <div class="col-12 col-md-10 mb-4 text-center">
+      <div class="col-10 mb-3 text-center">
         <autocomplete
           aria-label="搜索镜像..."
           placeholder="搜索镜像..."
@@ -222,12 +222,13 @@ export default {
         </autocomplete>
       </div>
       <div class="col-2 align-self-center mb-3">
-        <a
+        <button
+          type="button"
           class="btn btn-success btn-rounded float-end"
           @click="toCreateImagePage"
         >
           <i class="mdi mdi-plus me-1"></i> 创建镜像
-        </a>
+        </button>
       </div>
 
       <ImageList class="col-12" :images="images" :updating="loadingState"/>
