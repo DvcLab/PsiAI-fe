@@ -51,31 +51,52 @@ export default {
 
         <div class="col-4 col-md-2 text-truncate">
           <span style="font-size: 0.7rem">GPU使用</span><br />
+          <!-- 只有value大于30%时才显示数字，防止显示不全的问题 -->
           <b-progress
+            v-if="gpu.gpu_util > 30"
             :value="gpu.gpu_util"
             :max="100"
             :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(gpu.gpu_util)"
             show-progress
+          ></b-progress>
+          <b-progress
+            :value="gpu.gpu_util"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(gpu.gpu_util)"
           ></b-progress>
         </div>
 
         <div class="col-4 col-md-2 text-truncate">
           <span style="font-size: 0.7rem">显存使用</span><br />
           <b-progress
+            v-if="gpu.memory_util > 30"
             :value="gpu.memory_util"
             :max="100"
             :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(gpu.memory_util)"
             show-progress
+          ></b-progress>
+          <b-progress
+            v-else
+            :value="gpu.memory_util"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(gpu.memory_util)"
           ></b-progress>
         </div>
 
         <div class="col-4 col-md-2 text-truncate">
           <span style="font-size: 0.7rem">风扇转速</span><br />
           <b-progress
+            v-if="gpu.fan_speed > 30"
             :value="gpu.fan_speed"
             :max="100"
             :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(gpu.fan_speed)"
             show-progress
+          ></b-progress>
+          <b-progress
+            v-else
+            :value="gpu.fan_speed"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(gpu.fan_speed)"
           ></b-progress>
         </div>
         

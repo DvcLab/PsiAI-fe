@@ -23,20 +23,23 @@ export default {
     status() {
       const status = this.host.status;
       switch (status) {
-        case "运行中":
+        case "RUNNING":
           return {
             text: "运行",
             theme: "bg-success",
+            textTheme:"text-success",
           };
-        case "已停止":
+        case "STOPPED":
           return {
             text: "停止",
-            theme: "bg-secondary",
+            theme: "bg-danger",
+            textTheme:"text-danger",
           };
         default:
           return {
             text: "NULL",
             theme: "bg-secondary",
+            textTheme:"text-secondary",
           };
       }
     }
@@ -113,9 +116,9 @@ export default {
       </p>
       <p class="mb-1">
         <i class="bx bx-calendar me-1"></i>创建时间
-        <span class="text-success">{{ host.create_time | moment("YYYY-MM-DD HH:mm:ss") }}</span>
+        <span :class="status.textTheme">{{ host.create_time | moment("YYYY-MM-DD HH:mm:ss") }}</span>
       </p>
-      <p v-show="this.host.status === '运行中'" class="mb-1">
+      <p v-show="this.host.status === 'RUNNING'" class="mb-1">
         <i class="bx bx-calendar me-1"></i>更新时间
         <span class="text-success">{{ host.update_time | moment("YYYY-MM-DD HH:mm:ss") }}</span>
       </p>

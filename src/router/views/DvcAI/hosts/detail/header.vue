@@ -83,14 +83,14 @@ export default {
               <div class="row">
                 <div
                   v-if="!this.$_.isNil(host.cpu_info.cpu_model_name)"
-                  class="col-sm-12 col-md-6 mb-2"
+                  class="col-sm-12 col-md-12 col-lg-8 mb-2"
                   style="font-weight: bold"
                 >
                   <span>{{ host.cpu_info.cpu_model_name }}</span>
                 </div>
                 <div
                   v-if="!this.$_.isNil(host.cpu_info.cpu_num)"
-                  class="col-sm-12 col-md-6 mb-2"
+                  class="col-sm-12 col-md-12 col-lg-4 mb-2"
                 >
                   <span class="badge rounded-pill bg-primary">
                     <i class="bx bx-chip me-1" />内核
@@ -114,23 +114,12 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(host.container_num)"
-              class="col-sm-6 col-md-6 col-lg-3 mb-2 text-truncate"
+              class="col-sm-6 col-md-6 col-lg-2 mb-2 text-truncate"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-cube me-1" />容器
               </span>
               <span> {{ host.container_num }}</span>
-            </div>
-            <div
-              v-if="!this.$_.isNil(host.gpu_info)"
-              class="col-sm-6 col-md-6 col-lg-3 mb-2"
-            >
-              <div class="text-truncate">
-                <span class="badge rounded-pill font-size-11 badge-soft-success">
-                <i class="bx bx-server" /> Nvidia Driver
-                {{ host.gpu_info.driver_version }}
-                </span>
-              </div>
             </div>
             <div
               v-if="!this.$_.isNil(host.gpu_info)"
@@ -141,6 +130,18 @@ export default {
                 {{ host.gpu_info.cuda_version }}</span
               >
             </div>
+            <div
+              v-if="!this.$_.isNil(host.gpu_info)"
+              class="col-sm-6 col-md-6 col-lg-4 mb-2"
+            >
+              <div class="text-truncate">
+                <span class="badge rounded-pill font-size-11 badge-soft-success">
+                <i class="bx bx-server" /> Nvidia Driver
+                {{ host.gpu_info.driver_version }}
+                </span>
+              </div>
+            </div>
+            
           </div>
         </div>
       </div>

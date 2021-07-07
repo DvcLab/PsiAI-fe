@@ -42,6 +42,7 @@
     "sass": "^1.30.0",
     "sass-loader": "^10.1.0",
     "simplebar-vue": "^1.6.0",
+    "slick": "^1.12.2",
     "sockjs-client": "^1.5.1",
     "stompjs": "^2.3.3",
     "sweetalert2": "^10.12.3",

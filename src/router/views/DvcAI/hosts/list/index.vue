@@ -167,7 +167,8 @@ export default {
   <div class="row">
     <div class="col-12 text-center">
       <div class="row d-flex align-item-center">
-        <div class="col-7 mb-3">
+        <div class="col-10 mb-3">
+          <!-- 搜索主机框 -->
           <autocomplete
             aria-label="搜索主机..."
             placeholder="搜索主机..."
@@ -188,7 +189,8 @@ export default {
             </template>
           </autocomplete>
         </div>
-        <div class="col-5 align-self-center mb-3">
+        <div class="col-2 align-self-center mb-3">
+          <!-- 创建主机按钮 -->
           <button
             type="button"
             class="btn btn-success btn-rounded float-end"

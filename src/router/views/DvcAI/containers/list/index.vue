@@ -221,7 +221,7 @@ export default {
     
     <div class="col-12 align-items-center">
       <div class="row d-flex align-item-center">
-        <div class="col-7 mb-3">
+        <div class="col-10 mb-3">
           <autocomplete
             aria-label="搜索容器..."
             placeholder="搜索容器..."
@@ -258,7 +258,7 @@ export default {
             </template>
           </autocomplete>
         </div>
-        <div class="col-5 align-self-center mb-3">
+        <div class="col-2 align-self-center mb-3">
           <button
             type="button"
             class="btn btn-success btn-rounded float-end"
