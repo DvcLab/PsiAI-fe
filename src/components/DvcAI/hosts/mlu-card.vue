@@ -58,30 +58,48 @@ export default {
         <div class="col-4 col-md-2 text-truncate">
           <span>GPU使用</span><br />
           <b-progress
+            v-if="mlu.util > 30"
             :value="mlu.util"
             :max="100"
             :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(mlu.util)"
             show-progress
+          ></b-progress>
+          <b-progress
+            :value="mlu.util"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(mlu.util)"
           ></b-progress>
         </div>
 
         <div class="col-4 col-md-2 text-truncate">
           <span>内存使用</span><br />
           <b-progress
+            v-if="memRatio > 30"
             :value="memRatio"
             :max="100"
             :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(memRatio)"
             show-progress
+          ></b-progress>
+          <b-progress
+            :value="memRatio"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(memRatio)"
           ></b-progress>
         </div>
 
         <div class="col-4 col-md-2 text-truncate">
           <span>风扇转速</span><br />
           <b-progress
+            v-if="mlu.fan > 30"
             :value="mlu.fan"
             :max="100"
             :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(mlu.fan)"
             show-progress
+          ></b-progress>
+          <b-progress
+            :value="mlu.fan"
+            :max="100"
+            :style="{ 'background-color': '#e4e4e4' }" :variant="chartColor(mlu.fan)"
           ></b-progress>
         </div>
 

@@ -146,10 +146,13 @@ export default {
                 //仪表盘轴线相关配置，彩色的条条有多宽，用什么颜色
                 axisLine: {
                     lineStyle: {
-                        color: [[0.2, '#34c38f'], [0.8, '#556ee6'], [1, '#f46a6a']],
+                        //color: [[0.2, '#34c38f'], [0.8, '#556ee6'], [1, '#f46a6a']],
+                        //color: [[0.2, '#34c38f'], [0.8, '#556ee6'], [1, '#f1b44c']],
+                        color: [[0.2, '#34c38f'], [0.8, '#556ee6'], [1, '#f1b44c']],
                         width: 8,
                     }
                 },
+                splitNumber: 5,//每大格内分隔线数量
                 splitLine: {//分隔线样式相关
                     length: 12,//分割线的长度
                     lineStyle: {
@@ -160,9 +163,9 @@ export default {
                 axisLabel: {//大刻度标签。
                     show:false
                 },
-                /*axisTick:{//小刻度相关
-                    show:false
-                },*/
+                axisTick:{//小刻度相关
+                    show:true
+                },
                 pointer:{//指针长度与宽度
                     width:3,
                     length:'70%'
@@ -174,8 +177,9 @@ export default {
                 }]
             }
         ]
+          
     };
-    },
+  },
 
     // 跳转主机详情页
     toHostDetail(e){
@@ -277,7 +281,7 @@ export default {
 </script>
 
 <template>
-  <LoaderContainer :loading="loadingState">
+  <LoaderContainer v-if="host.status !== 'STOPPED'" :loading="loadingState">
     <div class="list-item-con" @click="toHostDetail" style="padding-bottom:0.3rem">
       <div class="row">
         <div class="col-12 col-md-6">
@@ -358,7 +362,8 @@ export default {
             </div>
             <div
               v-if="!this.$_.isNil(hostSelfData.container_num)"
-              class="col-sm-6 col-md-2 mb-2 text-truncate"
+              class="col-sm-6 col-md-2 mb-2"
+              style="white-space: nowrap;"
             >
               <span class="badge rounded-pill font-size-11 badge-soft-primary">
                 <i class="bx bx-cube me-1" />容器
