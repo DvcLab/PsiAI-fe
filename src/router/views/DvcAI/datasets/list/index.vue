@@ -6,6 +6,7 @@ import appConfig from "@/app.config";
 import Autocomplete from '@trevoreyre/autocomplete-vue';
 import Swal from "sweetalert2";
 import { getScrollHeight, getScrollTop, getWindowHeight } from "@/utils/screen";
+import FileBrowser from "vuetify-file-browser";
 
 /**
  * 数据集列表
@@ -19,7 +20,8 @@ export default {
     Loader, 
     DatasetList, 
     DatasetGridList,
-    Autocomplete
+    Autocomplete,
+    FileBrowser
   },
   data() {
     return {
@@ -324,6 +326,9 @@ export default {
           >
             <i class="mdi mdi-plus me-1"></i> 创建数据集
           </button>
+        </div>
+        <div class="col-12 col-md-12 mb-3">
+          <FileBrowser :axiosConfig="{baseURL: 'http://localhost:8081'}" />
         </div>
       </div>
     </div> 
