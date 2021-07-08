@@ -32,7 +32,7 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.load);
-    this.getContainersList('', 1);
+    this.getContainersList(1,'','','','');
     EventBus.$on('update', () => this.reload());
     // this.getHostList();
   },
@@ -53,14 +53,16 @@ export default {
     },
 
     // 获取容器列表
-    getContainersList(q = '', page = 1, enabled = false) {
+    getContainersList(page,size,q,status,uid) {
       const _this = this;
       this.loadingState = true;
       this.getContainers({
         params: {
-          q: q,
           page: page,
-          enabled: enabled
+          size: size,
+          q: q,
+          status: status,
+          uid: uid
         }
       })
       .then((res) => {
@@ -98,8 +100,11 @@ export default {
       return new Promise((resolve) => {
         this.getContainers({
           params: {
+            page: '',
+            size: '',
             q: input,
-            page: 1
+            status: '',
+            uid: ''
           }
         })
         .then((res) => {
@@ -163,7 +168,7 @@ export default {
       this.containers = [];
       this.curTotal = 0;
       this.curPage = 1;
-      this.getContainersList('', this.curPage, true);
+      this.getContainersList(this.curPage,'','','RUNNING',''); //这里应该再加上running状态参数，对应status
     },
     // 获取我的容器列表
     mycontainersList() {
@@ -190,7 +195,7 @@ export default {
       this.curPage = 1;
       this.isMyContainer = false;
       this.containerState = "All";
-      this.getContainersList('', this.curPage, false);
+      this.getContainersList('','','','','');
       console.log("容器列表"+this.containers)
     },
 
@@ -202,7 +207,7 @@ export default {
         let page = _this.curPage;
         if(page < totalPage) {                                       //先判断下一页是否有数据  
           _this.curPage++;                                           //查询条件的页码+1
-          _this.getContainersList('', _this.curPage);   //拉取接口数据
+          _this.getContainersList(_this.curPage,'','','','');   //拉取接口数据
         } else {
           console.log('全部容器加载完')
         }

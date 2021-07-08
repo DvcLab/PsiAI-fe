@@ -673,11 +673,11 @@ export default {
               </div>
 
               <div class="text-center mt-4">
-                <button type="button" v-if="isLocation" class="btn btn-success me-2" @click="locationConfirm" :disabled="$v.$invalid">
+                <button type="submit" v-if="isLocation" class="btn btn-success me-2" @click="locationConfirm" :disabled="$v.$invalid">
                   <i class="bx bx-cloud-download font-size-16 align-middle me-1"></i>
                   本地运行
                 </button>
-                <button v-if="!isLocation" class="btn btn-success me-2" :disabled="$v.$invalid">
+                <button type="submit" v-if="!isLocation" class="btn btn-success me-2" :disabled="$v.$invalid">
                   <i class="bx bx bx-cloud-upload font-size-16 align-middle me-1"></i>
                   云端运行
                 </button>
