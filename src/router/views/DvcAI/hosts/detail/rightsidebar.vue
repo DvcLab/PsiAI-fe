@@ -1,6 +1,6 @@
 <script>
 import Swal from "sweetalert2";
-import { EventBus } from "@/utils/event-bus";
+//import { EventBus } from "@/utils/event-bus";
 import Avatar from "@/components/DvcAI/utility/avatar";
 /**
  * Host Detail Rightsidebar component
@@ -57,7 +57,8 @@ export default {
           if (data.code === 1) {
             Swal.fire("主机删除成功!", "", "success").then((res) => {
               if (res.isConfirmed) {
-                EventBus.$emit("update");
+                //EventBus.$emit("update");
+                this.$router.push({path: '/hosts'})
               }
             });
           } else {
