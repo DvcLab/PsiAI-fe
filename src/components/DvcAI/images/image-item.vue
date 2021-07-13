@@ -153,15 +153,19 @@ export default {
         <p v-if="image.user" class="text-truncate ms-2 mb-0 d-none d-md-block"><a class="grid-username" href="javascript:void(0);">{{image.user.username}}</a></p>
       </div>
 
-      <div class="col-md-1 text-center d-none d-md-block">
-        <i class="bx bx-calendar me-1"></i>
-        <span>{{ image.create_time | moment("from", "now") }}</span>
+      <div class=" row col-md-3">
+        
+        <div class="col-md-6 text-center d-none d-md-block">
+          <i class="bx bx-calendar me-1"></i>
+          <span>{{ image.create_time | moment("from", "now") }}</span>
+        </div>
+        <div class="col-md-6 text-center d-none d-md-block">
+          <i class="bx bx-calendar me-1"></i>
+          <span>{{ image.update_time | moment("from", "now") }}</span>
+        </div>
       </div>
 
-      <div class="col-md-2 text-center d-none d-md-block">
-        <i class="bx bx-calendar me-1"></i>
-        <span>{{ image.update_time | moment("from", "now") }}</span>
-      </div>
+      
 
     </div>
   </div>
