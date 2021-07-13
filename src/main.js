@@ -22,6 +22,8 @@ import _ from 'lodash';
 
 import request from '@/utils/request';
 
+//为了解决随机乱码问题提前导入boxicons.scss
+import "../src/design/custom/plugins/icons/_boxicons.scss"
 import "../src/design/app.scss";
 
 import store from '@/state/store'
@@ -34,6 +36,11 @@ import i18n from './i18n'
 // import { configureFakeBackend } from './helpers/fake-backend';
 
 import tinymce from 'vue-tinymce-editor'
+
+import qs from 'qs'
+
+//配全局属性配置，在任意组件内可以使用this.$qs获取qs对象 
+Vue.prototype.$qs = qs
 
 // 全局注册
 Vue.prototype.$_ = _

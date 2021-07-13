@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
+import qs from 'qs'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, 
@@ -11,7 +12,12 @@ service.interceptors.request.use(
   config => {
     const token = Vue.prototype.$keycloak.token
     token && (config.headers['Authorization'] = 'Bearer ' + token)
-    // console.log(config)
+    //针对get方式进行序列化
+    if (config.method === 'get') {
+      config.paramsSerializer = function(params) {
+        return qs.stringify(params, { arrayFormat: 'repeat' })
+      }
+    }
     return config
   },
   error => {
