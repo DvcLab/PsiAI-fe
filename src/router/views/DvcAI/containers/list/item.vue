@@ -15,9 +15,9 @@ export default {
     mycontainer: {
       type: Boolean,
     },
-    containerState: {
-      type: String,
-    }
+    // containerState: {
+    //   type: String,
+    // }
   },
   components: {
     Multiselect,
@@ -287,25 +287,25 @@ export default {
       return URL.createObjectURL(blob);
     },
 
-    // 显示我的/全部容器列表
-    showMyContainer() {
-      if (this.mycontainer) {
-        console.log(this.currentUser)
-        return (this.newInfo.uid === this.currentUser.sub) && this.showContainerState;
-        //return this.newInfo.user.username == 'f it';
-      }else{
-        return this.showContainerState
-      }
-    },
+    // // 显示我的/全部容器列表
+    // showMyContainer() {
+    //   if (this.mycontainer) {
+    //     console.log(this.currentUser)
+    //     return (this.newInfo.uid === this.currentUser.sub) && this.showContainerState;
+    //     //return this.newInfo.user.username == 'f it';
+    //   }else{
+    //     return this.showContainerState
+    //   }
+    // },
 
-    //筛选容器列表中的容器状态
-    showContainerState() {
-      if (this.containerState == "All"){
-        return true;
-      }else{
-        return this.newInfo.status == this.containerState
-      }
-    }
+    // //筛选容器列表中的容器状态
+    // showContainerState() {
+    //   if (this.containerState == "All"){
+    //     return true;
+    //   }else{
+    //     return this.newInfo.status == this.containerState
+    //   }
+    // }
   },
   mounted() {
     // 未删除容器，请求ws
@@ -546,7 +546,7 @@ export default {
 
 <template>
   <LoaderContainer :loading="loadingState">
-    <div class="list-item-con" v-if="showMyContainer" @click="toContainerDetail">
+    <div class="list-item-con" @click="toContainerDetail">
       <div class="row d-flex align-items-center">
 
         <div class="col-12 col-md-6 mb-2">

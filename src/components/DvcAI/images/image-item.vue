@@ -89,16 +89,16 @@ export default {
           class="text-muted text-truncate mb-0"
         >
           <span v-if="types.length > 0">
-            <span v-for="item in types" class="badge bg-warning me-1 d-md-none" :key="item">
+            <span v-for="item in types" class="badge bg-warning me-1 d-md-none" :key="item.id">
               {{ item }}
             </span>
-            <span v-for="item in types" class= "badge me-1 d-md-none" :class="cpuClass[item]" :key="item">
+            <span v-for="item in types" class= "badge me-1 d-md-none" :class="cpuClass[item]" :key="item.id">
               <i class="bx bx-chip"></i>
               {{ item }}
             </span>
           </span>
           <span v-if="tags.length > 0">
-            <span v-for="item in tags" class="badge bg-primary me-1" :key="item">
+            <span v-for="item in tags" class="badge bg-primary me-1" :key="item.id">
               {{ item }}
             </span>
           </span>
@@ -110,7 +110,7 @@ export default {
           v-if="types.length > 0"
           class="text-muted text-truncate mb-0"
         >
-          <span v-for="item in types" class= "badge me-1" :class="cpuClass[item]" :key="item">
+          <span v-for="item in types" class= "badge me-1" :class="cpuClass[item]" :key="item.id">
             <i class="bx bx-chip"></i>
             {{ item }}
           </span>

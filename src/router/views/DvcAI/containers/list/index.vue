@@ -6,6 +6,7 @@ import { EventBus } from '@/utils/event-bus';
 import Loader from "@/components/DvcAI/loader";
 import Avatar from "@/components/DvcAI/utility/avatar";
 import ContainerList from "./list";
+import { mapState } from 'vuex';
 
 /**
  * 容器列表
@@ -27,13 +28,22 @@ export default {
       loadingState: true,
       status: 'active',
       isMyContainer: false,
-      containerState: 'Running',
+      containerStates: ['Running','New','Init','Deployed','Repo_Clone_Success','Pip_Install_Success','Dataset_Load_Success','Jupyterlab_Start_Success','Port_Forwarding_Success','Failure','Paused','Deleted'],
+      containerState: 'All',
+      //默认“”获取全部容器，当点击“我的”按钮时，uid变成用户的uid，就只获取用户自己的容器
+      uid:'',
+      containerOwner:''
     };
   },
-  mounted() {
+  watch: {
+    containerState:'changeStates'
+  },
+  created() {
     window.addEventListener('scroll', this.load);
-    this.getContainersList(1,'','','','');
     EventBus.$on('update', () => this.reload());
+  },
+  mounted() {
+    this.getContainersList(1,this.containerOwner,this.containerStates,this.uid);
     // this.getHostList();
   },
   destroyed(){
@@ -53,16 +63,15 @@ export default {
     },
 
     // 获取容器列表
-    getContainersList(page,size,q,status,uid) {
+    getContainersList(page,q,status,uid) {
       const _this = this;
       this.loadingState = true;
       this.getContainers({
         params: {
           page: page,
-          size: size,
           q: q,
-          status: status,
-          uid: uid
+          status:status,
+          uid: uid,
         }
       })
       .then((res) => {
@@ -81,7 +90,7 @@ export default {
       })
     },
 
-    // 搜索镜像
+    // 搜索容器
     getContainerById(id) {
       return this.$request.get('containers/' + id)
       .then((res) => {
@@ -100,10 +109,9 @@ export default {
       return new Promise((resolve) => {
         this.getContainers({
           params: {
-            page: '',
-            size: '',
+            page: 1,
+            status: ['Running','New','Init','Deployed','Repo_Clone_Success','Pip_Install_Success','Dataset_Load_Success','Jupyterlab_Start_Success','Port_Forwarding_Success','Failure','Paused','Deleted'],
             q: input,
-            status: '',
             uid: ''
           }
         })
@@ -163,53 +171,68 @@ export default {
       }
     },
 
-    // 获取正在运行容器列表
-    getRunningContainerList() {
-      this.containers = [];
-      this.curTotal = 0;
-      this.curPage = 1;
-      this.getContainersList(this.curPage,'','','RUNNING',''); //这里应该再加上running状态参数，对应status
-    },
     // 获取我的容器列表
-    mycontainersList() {
-      this.isMyContainer = true;
-      this.containerState = "All";
-    },
-    /*
     getMyContainerList() {
       this.containers = [];
-      this.mycontainers = [];
       this.curTotal = 0;
       this.curPage = 1;
-      console.log("显示内容");
-      console.log("容器列表"+this.containers);
-      this.getContainersList('', this.curPage, false);
-      this.mycontainers = this.containers.filter((item) => {
-        item.user.username == "f it"
-      });
-    },*/
+      this.uid = this.userInfo.sub;
+      this.containerOwner = this.userInfo.name;
+      this.containerState = 'All';
+      this.containerStates = ['Running','New','Init','Deployed','Repo_Clone_Success','Pip_Install_Success','Dataset_Load_Success','Jupyterlab_Start_Success','Port_Forwarding_Success','Failure','Paused','Deleted'];
+      this.getContainersList(1,this.containerOwner,this.containerStates,this.uid);
+      console.log("我的容器列表"+this.containers)
+    },
+
     // 获取全部状态容器列表
     getAllContainerList() {
       this.containers = [];
       this.curTotal = 0;
       this.curPage = 1;
-      this.isMyContainer = false;
-      this.containerState = "All";
-      this.getContainersList('','','','','');
+      this.uid = '';
+      this.containerOwner = '';
+      this.containerState = 'All';
+      this.containerStates = ['Running','New','Init','Deployed','Repo_Clone_Success','Pip_Install_Success','Dataset_Load_Success','Jupyterlab_Start_Success','Port_Forwarding_Success','Failure','Paused','Deleted'];
+      this.getContainersList(1,this.containerOwner,this.containerStates,this.uid);
       console.log("容器列表"+this.containers)
     },
 
+    changeStates() {
+      console.log('换状态')
+      this.containers = [];
+      this.curTotal = 0;
+      this.curPage = 1;
+      if (this.containerState=='All') {
+        this.containerStates=['Running','New','Init','Deployed','Repo_Clone_Success','Pip_Install_Success','Dataset_Load_Success','Jupyterlab_Start_Success','Port_Forwarding_Success','Failure','Paused','Deleted'];
+        this.getContainersList(1,this.containerOwner,this.containerStates,this.uid);
+        console.log("获取全部状态的容器");
+      }else if (this.containerState=='New'){
+        this.containerStates=['New'];
+        this.getContainersList(1,this.containerOwner,this.containerStates,this.uid);
+      }else if (this.containerState=='Running'){
+        this.containerStates=['Running'];
+        this.getContainersList(1,this.containerOwner,this.containerStates,this.uid);
+      }else if (this.containerState=='Paused'){
+        this.containerStates=['Paused'];
+        this.getContainersList(1,this.containerOwner,this.containerStates,this.uid);
+      }else if (this.containerState=='Deleted'){
+        this.containerStates=['Deleted'];
+        this.getContainersList(1,this.containerOwner,this.containerStates,this.uid);
+      }
+    },
     // 滑动至底部，加载剩余镜像
     load() {
       const _this = this;
       if(getScrollTop() + getWindowHeight() >= getScrollHeight()) {
+        console.log('页面滑动到底部了，要加载')
         let totalPage = _this.meta.total_page;
         let page = _this.curPage;
         if(page < totalPage) {                                       //先判断下一页是否有数据  
           _this.curPage++;                                           //查询条件的页码+1
-          _this.getContainersList(_this.curPage,'','','','');   //拉取接口数据
+          _this.getContainersList(_this.curPage,this.containerOwner,this.containerStates,this.uid);   //拉取接口数据
         } else {
           console.log('全部容器加载完')
+          window.removeEventListener('scroll', this.load, false);
         }
       }
     },
@@ -219,9 +242,24 @@ export default {
       this.$router.push({path: '/containers/create'});
     },
   },
+  computed: {
+    ...mapState({
+      userInfo(state){
+        if(state.auth.currentUser) {
+          return state.auth.currentUser
+        } else {
+          return {
+            avatar_url:"",
+            name: ''
+          }
+        }
+      } 
+    }),
+  }
 };
 </script>
 <template>
+
   <div class="row">
     
     <div class="col-12 align-items-center">
@@ -280,19 +318,20 @@ export default {
           <template v-slot:title>
             <span class="d-inline-block">全部</span>
           </template>
-          <ContainerList class="col-12" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer" :containerState="containerState"/>
+          <ContainerList class="col-12" v-for="state in containerStates" :key="state.id" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer" :containerState="state"/>
+          <!-- <ContainerList class="col-12" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer"/> -->
         </b-tab>
-        <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="mycontainersList">
+        <b-tab title-link-class="border border-primary text-primary font-size-10 px-2 py-1 border-pill" @click="getMyContainerList">
           <template v-slot:title>
             <span class="d-inline-block">我的</span>
           </template>
-          <ContainerList class="col-12" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer" :containerState="containerState"/>
+          <ContainerList class="col-12" v-for="state in containerStates" :key="state.id" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer" :containerState="state"/>
+          <!-- <ContainerList class="col-12" :containers="containers" :updating="loadingState" :mycontainer="isMyContainer"/> -->
         </b-tab>
         <div class="float-end" style="position: absolute; right: 20px; top:-3px;">
             <!--<select class="form-select form-select-sm ms-2">-->
-            <select class="form-select form-select-sm ms-2" v-model="containerState">
-              <option disabled value="Running">容器状态筛选</option>
-              <option value="All">全部</option>
+            <select class="form-select form-select-sm ms-2" @click="changeStates" v-model="containerState">
+              <option disabled value="All">容器状态筛选</option>
               <option value="New">新创建</option>
               <option value="Running">运行中</option>
               <option value="Paused">暂停</option>

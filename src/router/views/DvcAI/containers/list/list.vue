@@ -18,9 +18,9 @@ export default {
     mycontainer: {
       type: Boolean,
     },
-    containerState: {
-      type: String,
-    }
+    // containerState: {
+    //   type: String,
+    // }
   },
 }
 </script>
@@ -28,7 +28,8 @@ export default {
     <div v-if="containers && containers.length > 0">
       <div class="row">
         <div class="col-12">
-          <Item v-for="item in containers" :key="item.id" :container="item" :mycontainer="mycontainer" :containerState="containerState"/>
+          <!-- <Item v-for="item in containers" :key="item.id" :container="item" :mycontainer="mycontainer" :containerState="item.status"/> -->
+          <Item v-for="item in containers" :key="item.index" :container="item" :mycontainer="mycontainer"/>
         </div>
       </div>
     </div>
